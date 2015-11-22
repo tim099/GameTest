@@ -1,0 +1,4 @@
+vec3 toon(vec3 col,float val){	
+	float toncolval=(1.0/val)*floor(val*length(col.xyz)+0.5);
+	return toncolval*normalize(col);
+}

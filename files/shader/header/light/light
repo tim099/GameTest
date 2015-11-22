@@ -1,0 +1,219 @@
+#define MAX_POINTLIGHT 100 
+#define MAX_PARALLELLIGHT 10
+#define MAX_POINTLIGHT_SHADOW 4
+mat4 biasMat=mat4(
+	0.5, 0.0, 0.0, 0.0,
+	0.0, 0.5, 0.0, 0.0,
+	0.0, 0.0, 0.5, 0.0,
+	0.5, 0.5, 0.5, 1.0
+);
+vec4 PD[9] = vec4[](
+  	vec4(0,0,0.4,0.0),//x,y is PD value,z is weight,w is bias alter
+  	vec4(0,0.0006,0.1,0.0003),
+  	vec4(0,-0.0006,0.1,0.0003),
+  	vec4(0.0006,0,0.1,0.0003),
+  	vec4(-0.0006,0,0.1,0.0003),
+  	vec4(0.0006,0.0006,0.05,0.0003),
+  	vec4(0.0006,-0.0006,0.05,0.0003),
+  	vec4(-0.0006,0.0006,0.05,0.0003),
+  	vec4(-0.0006,-0.0006,0.05,0.0003)
+);
+struct paralight{
+	vec3 vec;
+};
+
+uniform int parallellight_num;
+uniform vec3 parallellight_vec[MAX_PARALLELLIGHT];
+uniform vec3 parallellight_color[MAX_PARALLELLIGHT];
+uniform int parallellight_shadow[MAX_PARALLELLIGHT];
+
+
+uniform int pointlight_num;
+uniform vec3 pointlight_pos[MAX_POINTLIGHT];
+uniform vec3 pointlight_color[MAX_POINTLIGHT];
+uniform int pointlight_shadow[MAX_PARALLELLIGHT];
+
+uniform mat4 pointLVP[MAX_POINTLIGHT_SHADOW*6];
+uniform mat4 parallelLVP[MAX_PARALLELLIGHT];
+
+uniform sampler2DArray depthMaps;
+uniform sampler2DArray pointdepthMaps;
+uniform sampler2DArray pointdepthMap[MAX_POINTLIGHT_SHADOW];
+
+int check_vec(vec3 v){
+	if(abs(v.x)>=abs(v.z)){
+		if(abs(v.x)>=abs(v.y)){//x=max
+			if(v.x>=0.0f)return 0;
+			else return 1;
+		}else{//y=max
+			if(v.y>=0.0f)return 2;
+			else return 3;
+		}
+	}else if(abs(v.y)>=abs(v.z)){//y==max
+		if(v.y>=0.0f)return 2;
+		else return 3;
+	}else{//z==max
+		if(v.z>=0.0f)return 4;
+		else return 5;
+	}
+	return 0;
+}
+float specular_value(float specular_val){
+	return mat.y*pow(specular_val,100*mat.y);//mat.w
+}
+vec3 point_light(vec3 N,vec4 pos){
+	vec3 total_light=vec3(0,0,0);
+    vec3 light_v,reflect_v;
+    vec3 pos_cam_v=normalize(pos.xyz-camera_pos);
+    float light_dis,light_val,specular_val,w,z_val,bias,del;
+    vec4 LVP_pos;
+	float visibility;
+	float biasval=0.00003;
+    for(int i=0;i<pointlight_num;i++){
+    	//diffuse
+        light_v=pointlight_pos[i]-pos.xyz;
+    	light_dis=length(light_v);
+    	light_val=mat.x*dot(N,normalize(light_v));
+    	//specular
+		reflect_v=light_v-(2*dot(N,light_v))*N;	
+		specular_val=dot(pos_cam_v,normalize(reflect_v));
+		if(specular_val>0.0f){
+			light_val+=specular_value(specular_val);			
+		}
+		light_val+=mat.z;//ambient
+		
+		light_val/=(light_dis*light_dis+0.1);
+		if(light_val<0.0)light_val=0.0;	
+		
+		if(pointlight_shadow[i]>0){//do shadow
+			int n=check_vec(light_v);
+			LVP_pos=biasMat*pointLVP[6*(pointlight_shadow[i]-1)+n]*pos;	
+			w=LVP_pos.w;
+			LVP_pos/=w;		
+			visibility=0.0;
+
+   	 		//z_val=(texture(pointdepthMap[6*(pointlight_shadow[i]-1)+n],LVP_pos.xy).x);//shadowMapDepth
+   	 		z_val=texture(pointdepthMaps,vec3(LVP_pos.xy,6*(pointlight_shadow[i]-1)+n)).x;//shadowMapDepth
+   	 		//int layer=pointlight_shadow[i]-1;
+   	 		//z_val=texture(pointdepthMap[layer],vec3(LVP_pos.xy,n)).x;
+   	 		//if(layer==1)z_val=texture(pointdepthMap[1],vec3(LVP_pos.xy,n)).x;//
+   	 		//else if(layer==2)z_val=texture(pointdepthMap[2],vec3(LVP_pos.xy,n)).x;
+   	 		//else z_val=texture(pointdepthMap[0],vec3(LVP_pos.xy,n)).x;
+			del=z_val-LVP_pos.z;	
+			bias=biasval;//*tan(acos(dot(N,light_v)))
+			bias=-bias;
+			//bias=-clamp(bias,0.0,biasval);// /w
+			if(del>=bias){//&&dot(normalize(light_v),normalize(vec3(VP*vec4(0,0,-1,0))))>0.3
+				visibility=1.0; 	
+			}else{
+				visibility=0.1;
+				//visibility=10.0*(del-bias);
+			}
+			total_light+=visibility*light_val*pointlight_color[i];	     		
+		}else{
+			total_light+=light_val*pointlight_color[i];	
+		}	
+			
+    }
+	return total_light;
+}
+vec3 parallel_light(vec3 N,vec4 pos){
+	vec3 total_light=vec3(0,0,0);
+    vec3 light_v;
+    vec3 reflect_v;
+    vec3 pos_cam_v=normalize(pos.xyz-camera_pos);
+
+    float light_val;
+    float specular_val;
+    
+    vec4 LVP_pos;
+    vec2 t;	
+    float z_val;
+	float bias,del;
+	float visibility;
+    for(int i=0;i<parallellight_num;i++){   	 	
+		//diffuse
+		light_v=normalize(-parallellight_vec[i]);//reverse	
+		light_val=mat.x*dot(N,light_v);
+		//specular
+		reflect_v=light_v-(2*dot(N,light_v))*N;
+		specular_val=dot(pos_cam_v,normalize(reflect_v));
+		if(specular_val>0.0f){
+			light_val+=specular_value(specular_val);			
+		}
+		light_val+=mat.z;//ambient
+		
+		if(light_val<0.0)light_val=0.0;
+		if(parallellight_shadow[i]>0){
+			LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]*pos;
+   			LVP_pos/=LVP_pos.w;
+   			visibility=0.0;
+   			for(int j=0;j<9;j++){
+   	 			t=LVP_pos.xy+PD[j].xy;//LVP_pos.w 	
+   	 			//z_val=(texture(depthMap[parallellight_shadow[i]-1],t).x);//shadowMapDepth/LVP_pos.w
+   	 			z_val=(texture(depthMaps,vec3(t,parallellight_shadow[i]-1)).x);//shadowMapDepth/LVP_pos.w
+   	 			
+				del=z_val-LVP_pos.z;	
+				bias=0.0002*tan(acos(dot(N,light_v)));
+				bias=-clamp(bias,0.0,0.0002);
+				bias-=PD[j].w;
+				if((t.x<=1.0&&t.y<=1.0&&t.x>=0.0&&t.y>=0.0)){//in depth map
+					if((del>bias)){				
+				 		visibility+=PD[j].z;
+    				}
+				}		
+			}
+		}else{
+			visibility=1.0;		
+		}
+
+		total_light+=visibility*light_val*parallellight_color[i];
+    }
+    return total_light;
+}
+vec3 light_scattering(vec4 pos){
+	vec3 total_scatter=vec3(0,0,0);
+	vec4 LVP_pos;
+    vec2 t;	
+    float z_val;
+	float del;
+	float scatter_value;
+	float per_scatter;
+	int sample_num;
+	for(int i=0;i<parallellight_num;i++){ 	
+		if(parallellight_shadow[i]>0){
+			scatter_value=0.0;
+			vec3 interpolated_sample;	
+			vec3 delvec=pos.xyz-camera_pos;
+			float len=length(delvec);
+			if(len>100)len=100;
+			delvec=normalize(delvec);
+			sample_num=50;
+			per_scatter=0.2/sample_num;
+			for(int j=0;j<sample_num;j++){
+				interpolated_sample=camera_pos+(len*delvec)/100*(sample_num+j);
+				LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]
+					*vec4(interpolated_sample,1.0);
+				LVP_pos/=LVP_pos.w;
+			
+				t=LVP_pos.xy;	
+   	 			//z_val=(texture(depthMaps,vec3(t,parallellight_shadow[i]-1)).x);//shadowMapDepth/LVP_pos.w
+   	 			z_val=(texture(depthMaps,vec3(t,parallellight_shadow[i]-1)).x);//shadowMapDepth/LVP_pos.w
+				del=z_val-LVP_pos.z;	
+		
+				if((t.x<=1.0&&t.y<=1.0&&t.x>=0.0&&t.y>=0.0)){//in depth map
+					if((del>0.0002)){				
+				 	  	scatter_value+=per_scatter; 	   	
+    				}
+				}		
+			}
+			total_scatter+=scatter_value*parallellight_color[i];
+		}
+	}
+	return total_scatter;
+}
+
+vec3 compute_total_light(vec3 Normal,vec4 position){
+	return (parallel_light(Normal,position)
+    	+point_light(Normal,position)+mat.w);//mat.w=emissive;
+}

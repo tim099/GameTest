@@ -1,0 +1,58 @@
+#LOADTEXTURE_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/texture/
+
+#HEADER_END
+
+Texture:
+	TextureName:
+		mypic
+	TexturePath:
+		input.bmp
+		
+Texture:
+	TextureName:
+		NormalTexture
+	TexturePath:
+		normal.bmp
+		
+Texture:
+	TextureName:
+		NormalTexture6
+	TexturePath:
+		normal6.bmp
+		
+Texture:
+	TextureName:
+		test
+	TexturePath:
+		test.bmp
+
+Texture:
+	TextureName:
+		test2
+	TexturePath:
+		test2.bmp
+
+Texture:
+	TextureName:
+		test3
+	TexturePath:
+		test3.BMP
+
+Texture:
+	TextureName:
+		galaxy
+	TexturePath:
+		galaxy.bmp
+
+Texture:
+	TextureName:
+		doge
+	TexturePath:
+		doge.bmp
+
+#END

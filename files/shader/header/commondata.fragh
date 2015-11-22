@@ -1,0 +1,25 @@
+#include <files/shader/header/option>
+
+in VertexData{
+	vec2 UV;
+	vec3 Normal;
+	vec4 position;
+	vec4 MVP_pos;
+	vec3 T;
+	vec3 B;
+}vert;
+
+layout(location = 0)out vec4 color;
+
+uniform int shaderData;
+
+uniform sampler2D myTextureSampler;
+uniform sampler2D NormalTexture;
+uniform sampler2DArray texarr;//test
+uniform vec3 camera_pos;
+
+uniform vec4 mat;
+uniform mat4 VP;
+
+#include <files/shader/header/light/light>
+#include <files/shader/header/normalMapping>

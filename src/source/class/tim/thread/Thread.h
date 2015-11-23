@@ -24,14 +24,44 @@ class Thread{
 public:
 	Thread(int priority=THREAD_PRIORITY_NORMAL,Tim::ExecuteDone *done=0);
 	virtual ~Thread();
+	/*
+	 *start execute task inside this thread
+	 *and automatically call wait() when finished
+	 */
 	void start();
+	/*
+	 *stop the thread until you call start() again
+	 */
 	void wait();
+	/*
+	 * set priority of this thread
+	 */
 	void set_priority(int priority);
+	/*
+	 * push a task into thread queue
+	 */
 	void push_task(Task* task);
+	/*
+	 * not implement yet
+	 */
 	void wait_for_this(DWORD time=INFINITE);
+	/*
+	 *this function only call by the win32 api CreateThread()
+	 *execute task in this function
+	 */
 	virtual void ExecuteTask();
+	/*
+	 *return true if this thread is going to be terminate
+	 */
 	bool END()const;
+	/*
+	 * return true if all task are done
+	 */
 	bool DONE()const;
+	/*
+	 * call to terminate this thread,and it will automatically delete this thread
+	 * use this instead of delete thread directly!!
+	 */
 	void Terminate();
 protected:
 	static DWORD WINAPI Execute(LPVOID lpParameter);

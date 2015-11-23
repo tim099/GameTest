@@ -314,7 +314,7 @@ void Test::draw_all_objects(Shader *shader,FrameBuffer *FBO,Camera *camera,doubl
 void Test::prepare_draw_obj(){
 	Model* m=Model::load_obj("files/obj/tiger.obj",2.0);
 	Model* m2=Model::load_obj("files/obj/cube.obj",40.0);
-	Model* m3=Model::load_obj("files/obj/ico.obj",0.1);
+	Model* m3=Model::load_obj("files/obj/ico.obj",0.05);
 	Model* m4=Model::load_obj("files/obj/stars.obj",10000.0);
 	Model* m5=Model::load_obj("files/obj/celestialSphere.obj",16000.0);
 	Model* m6=Model::load_obj("files/obj/cube.obj",40000.0);
@@ -436,7 +436,7 @@ void Test::draw(double &time){
 	//Renderer::enable_thread_render();
 	render_task=new RenderTask(renderer,window);
 	render_thread->push_task(render_task);
-	render_thread->join();
+	render_thread->start();
 
 	//*/
 	/*
@@ -474,11 +474,14 @@ void Test::timer_tic(double &time){
     camera->tic();
 
     update_map(camera);
+    std::cout<<"draw start"<<std::endl;
     //========================render thread start========================
     draw(time);
     //========================wait for rendering end=====================
+    std::cout<<"draw start"<<std::endl;
 	while(!render_thread->DONE()){//renderer->Rendering();!render_task->Done()
 	}
+	std::cout<<"render end"<<std::endl;
 	//render_thread->wait_for_this();
 	delete render_task;
 	//renderer->disable_thread_render();

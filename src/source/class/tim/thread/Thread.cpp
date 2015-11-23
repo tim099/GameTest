@@ -34,7 +34,7 @@ bool Thread::DONE()const{
 	if(task_q.empty())return true;
 	else return false;
 }
-void Thread::join(){
+void Thread::start(){
 	if(DONE()){
 		std::cout<<"can't join already done"<<std::endl;
 		return;
@@ -59,18 +59,18 @@ void Thread::push_task(Task* task){
 	task_q.push(task);
 }
 DWORD WINAPI Thread::Execute(LPVOID lpParameter){
-	Thread* obj=(Thread*)lpParameter;
+	Thread* thread=(Thread*)lpParameter;
 	//std::cout<<"Execute start"<<std::endl;
-	while(!obj->END()){
-		if(obj->DONE()){
-			obj->wait();
+	while(!thread->END()){
+		if(thread->DONE()){
+			thread->wait();
 		}else{
-			obj->ExecuteTask();
+			thread->ExecuteTask();
 		}
 	}
 	//std::cout<<"Execute end"<<std::endl;
-	obj->terminate=true;
-	delete obj;
+	thread->terminate=true;
+	delete thread;
 	return 0;
 }
 

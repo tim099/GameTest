@@ -24,7 +24,7 @@ class Thread{
 public:
 	Thread(int priority=THREAD_PRIORITY_NORMAL,Tim::ExecuteDone *done=0);
 	virtual ~Thread();
-	void join();
+	void start();
 	void wait();
 	void set_priority(int priority);
 	void push_task(Task* task);

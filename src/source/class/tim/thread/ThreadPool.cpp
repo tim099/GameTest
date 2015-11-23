@@ -33,7 +33,7 @@ void ThreadPool::push_task(Task* task){
 	///*
 	if(!ready_q.empty()){
 		ready_q.front()->push_task(task);
-		ready_q.front()->join();
+		ready_q.front()->start();
 		ready_q.pop();
 	}else{
 		task_q.push(task);
@@ -45,7 +45,7 @@ void ThreadPool::distribute_task(Tim::Thread* thread){
 	Distribute_Mutex->wait_for_this();
 	if(!task_q.empty()){
 		thread->push_task(task_q.front());
-		thread->join();
+		thread->start();
 		task_q.pop();
 	}else{
 		ready_q.push(thread);

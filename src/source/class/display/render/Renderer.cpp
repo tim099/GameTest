@@ -31,6 +31,8 @@ bool Renderer::Rendering()const{
 void Renderer::render(){
 	window->render_on();
 	rendering=true;
+
+	d_obj->update();
     lightControl->gen_shadow(camera,*shadow_dis,d_obj);
     (*shader)->active_shader();
 	FBO->bind_buffer();
@@ -50,7 +52,4 @@ void Renderer::render(){
 
 	window->swap_buffer();
 	window->render_off();//release thread using this window
-}
-void Renderer::render_all(){
-	render();
 }

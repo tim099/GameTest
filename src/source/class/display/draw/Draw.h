@@ -3,12 +3,18 @@
 #include <vector>
 #include "class/display/draw/DrawObject.h"
 #include "class/display/draw/texture/DrawTexture.h"
+#include "class/tim/thread/mutex/Mutex.h"
 class Draw {
 public:
 	Draw();
 	virtual ~Draw();
+	//render all object
 	void draw(Shader *shader);
+	//render shadow map
 	void draw_shadow(Shader *shader);
+	//update all object
+	void update();
+	//update all draw object
 	void remove(DrawObject* obj);
 	void push(DrawObject* obj);
 	void push(DrawTexture* tex);
@@ -19,6 +25,8 @@ protected:
 	std::vector<DrawObject*>d_objs;
 	std::vector<DrawTexture*>d_texs;
 	std::vector<Draw*>subdraw;
+	Tim::Mutex* d_objsMutex;
+	Tim::Mutex* d_texsMutex;
 };
 
 #endif /* DRAW_H_ */

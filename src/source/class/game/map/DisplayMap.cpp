@@ -16,9 +16,13 @@ DisplayMap::DisplayMap(Map *_map,Draw *_d_obj,TextureMap *_texmap,Window *_windo
 	createMapObjectMutex=new Tim::Mutex();
 	cube=new CubeModel(0.5*CUBE_SIZE);
 	segsize=floor(MX/SEG);
+	MapDrawObject *d_map;
     for(int i=0;i<SEG;i++){
     	for(int j=0;j<SEG;j++){
-    		dmaps[i][j]=0;
+    		d_map=new MapDrawObject(0,texmap->get_tex(std::string("test3")),
+    				texmap->get_tex(std::string("NormalTexture")));
+    		d_obj->push(d_map);
+    		dmaps[i][j]=d_map;
     	}
     }
 }
@@ -26,13 +30,6 @@ DisplayMap::~DisplayMap() {
 	delete cube;
 	delete createMapObjectMutex;
     //delete dmaps[i][j];handle by d_obj
-}
-void DisplayMap::gen_map_obj(){
-    for(int i=0;i<SEG;i++){
-    	for(int j=0;j<SEG;j++){
-    		create_map_object(i,j);
-    	}
-    }
 }
 void DisplayMap::gen_map_obj(Tim::ThreadPool* threadpool){
 	std::vector<TaskCreateMapModel*>tasks;
@@ -44,18 +41,15 @@ void DisplayMap::gen_map_obj(Tim::ThreadPool* threadpool){
     		threadpool->push_task(task);
     	}
     }
-    window->render_on();
     while(!tasks.empty()){
     	while(!tasks.front()->Done()){
 
     	}
     	task=tasks.front();
-    	create_map_object(task->px,task->pz,task->mapmodel);
     	delete task;
     	tasks.front()=tasks.back();
 		tasks.pop_back();
     }
-    window->render_off();
 }
 void DisplayMap::update_map(int x,int y,int z){
 	//window->render_on();
@@ -66,9 +60,10 @@ void DisplayMap::update_map(int x,int y,int z){
 	if(z%segsize==0)create_map_object(x/segsize,(z/segsize)-1);//update
 	//Window::render_off();
 }
-Model* DisplayMap::create_map_model(int px,int pz){
-	Model *mapmodel;
-	mapmodel=new Model(6*segsize*segsize*4);
+void DisplayMap::create_map_object(int px,int pz){
+	Model *mapmodel=dmaps[px][pz]->mapmodel;
+
+	mapmodel->clear();
     for(int i=px*segsize;i<(px+1)*segsize;i++){
     	for(int j=0;j<max_y;j++){
     		for(int k=pz*segsize;k<(pz+1)*segsize;k++){
@@ -84,28 +79,7 @@ Model* DisplayMap::create_map_model(int px,int pz){
     		}
     	}
     }
-    return mapmodel;
-}
-void DisplayMap::create_map_object(int px,int pz){
-	Model *mapmodel=create_map_model(px,pz);
-	window->render_on();
-	create_map_object(px,pz,mapmodel);
-	window->render_off();
-}
-void DisplayMap::create_map_object(int px,int pz,Model* mapmodel){
-	createMapObjectMutex->wait_for_this();
-	//window->render_on();
-	if(dmaps[px][pz]){//already exist
-		d_obj->remove(dmaps[px][pz]);
-	}
-    DrawObject *d_map=new DrawObject(new BufferObject(mapmodel),texmap->get_tex(std::string("test3")),
-    		texmap->get_tex(std::string("NormalTexture")));
-
-    delete mapmodel;
-    d_obj->push(d_map);
-    dmaps[px][pz]=d_map;
-    //window->render_off();
-    createMapObjectMutex->release();
+    dmaps[px][pz]->update_model();
 }
 void DisplayMap::draw_map(Camera *camera){
     glm::ivec2 min,max,dp_pos(camera->look_at.x,camera->look_at.z);

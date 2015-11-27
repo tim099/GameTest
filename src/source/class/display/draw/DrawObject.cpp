@@ -14,8 +14,18 @@ DrawObject::DrawObject(BufferObject* _obj,Texture* _texture,Texture* _NormalMap)
 DrawObject::~DrawObject() {
 	clear_position();
 	clear_temp_position();
-	if(obj->AutoDelete())delete obj;//handle by outside!!
+	if(obj){
+		if(obj->AutoDelete())delete obj;//handle by outside!!
+	}
+}
+void DrawObject::update(){
 
+}
+void DrawObject::set_obj(BufferObject *_obj){
+	if(obj){
+		if(obj->AutoDelete())delete obj;//handle by outside!!
+	}
+	obj=_obj;
 }
 void DrawObject::Model_veiw(GLuint programID,glm::mat4 M){
     glUniformMatrix4fv(glGetUniformLocation(programID,"M"),1,GL_FALSE,&(M[0][0]));

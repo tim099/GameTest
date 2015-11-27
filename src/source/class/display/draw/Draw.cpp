@@ -2,9 +2,12 @@
 #include "class/display/shader/Shader.h"
 #include <iostream>
 Draw::Draw() {
-
+	d_objsMutex=new Tim::Mutex();
+	d_texsMutex=new Tim::Mutex();
 }
 Draw::~Draw() {
+	delete d_objsMutex;
+	delete d_texsMutex;
 	while(!d_objs.empty()){
 		delete d_objs.back();
 		d_objs.pop_back();
@@ -35,16 +38,28 @@ void Draw::draw_shadow(Shader *shader){
     }
 }
 void Draw::push(DrawObject* obj){
+	d_objsMutex->wait_for_this();
 	d_objs.push_back(obj);
+	d_objsMutex->release();
 }
 void Draw::push(DrawTexture* tex){
+	d_texsMutex->wait_for_this();
 	d_texs.push_back(tex);
+	d_texsMutex->release();
 }
 DrawObject* Draw::get_obj(unsigned i){
 	return d_objs.at(i);
 }
 unsigned Draw::obj_size()const{
 	return d_objs.size();
+}
+void Draw::update(){
+    for(unsigned i=0;i<d_objs.size();i++){
+    	d_objs.at(i)->update();
+    }
+    for(unsigned i=0;i<subdraw.size();i++){
+    	subdraw.at(i)->update();
+    }
 }
 void Draw::clear_tmp_pos(){
     for(unsigned i=0;i<d_objs.size();i++){

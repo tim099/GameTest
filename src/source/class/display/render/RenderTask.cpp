@@ -10,6 +10,6 @@ RenderTask::~RenderTask() {
 }
 void RenderTask::ExecuteTask(){
 	//std::cout<<"render start"<<std::endl;
-	renderrer->render_all();
+	renderrer->render();
 	//std::cout<<"render end"<<std::endl;
 }

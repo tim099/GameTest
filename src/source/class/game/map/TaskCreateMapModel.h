@@ -7,7 +7,6 @@ class TaskCreateMapModel : public Tim::Task{
 public:
 	TaskCreateMapModel(DisplayMap* dmap,int px,int pz);
 	virtual ~TaskCreateMapModel();
-	Model* mapmodel;
 	int px;
 	int pz;
 protected:

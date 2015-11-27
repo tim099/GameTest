@@ -1,9 +1,10 @@
 #ifndef DISPLAYMAP_H_
 #define DISPLAYMAP_H_
-#include "class/display/draw/DrawObject.h"
+#include "class/game/map/MapDrawObject.h"
 #include "class/display/model/cube/CubeModel.h"
 #include "class/tim/thread/mutex/Mutex.h"
 #include "class/game/map/Map.h"
+#include <queue>
 namespace Tim{
 	class ThreadPool;
 }
@@ -19,10 +20,9 @@ public:
 
 	DisplayMap(Map *map,Draw *d_obj,TextureMap *texmap,Window *window);
 	virtual ~DisplayMap();
-	void create_map_object(int px,int pz,Model* mapmodel);
+
 	void create_map_object(int px,int pz);
-	Model* create_map_model(int px,int pz);
-	void gen_map_obj();
+
 	void gen_map_obj(Tim::ThreadPool* threadpool);
 	void draw_map(Camera *camera);
 
@@ -31,7 +31,7 @@ public:
 	int range,max_y;
 protected:
 	Draw *d_obj;
-	DrawObject* dmaps[SEG][SEG];
+	MapDrawObject* dmaps[SEG][SEG];
 	CubeModel *cube;
 	Map *map;
 	TextureMap *texmap;

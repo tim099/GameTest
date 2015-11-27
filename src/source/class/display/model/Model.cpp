@@ -51,7 +51,7 @@ void Model::initial(int _len,int _max_len){
 }
 void Model::len_alter(int _len){
 	if(_len>max_len){
-		max_len*=2;
+		while(_len>max_len)max_len*=2;
 		GLfloat* tmp_vtBuffer=new GLfloat[3*max_len];
 		GLfloat* tmp_uvBuffer=new GLfloat[2*max_len];
 		GLfloat* tmp_vnBuffer=new GLfloat[3*max_len];

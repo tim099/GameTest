@@ -15,10 +15,10 @@ public:
 	Renderer(LightControl* lightControl,Draw *d_obj,Window *window,Shader **shader,FrameBuffer *FBO,
 			Camera *camera,Mouse* mouse,double* shadow_dis);
 	virtual ~Renderer();
-	void render_all();
 	bool Rendering()const;
-protected:
 	void render();
+protected:
+
 	Shader **shader;
 	FrameBuffer *FBO;
 	Camera *camera;

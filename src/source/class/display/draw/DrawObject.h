@@ -15,15 +15,18 @@ public:
 	static void Model_veiw(GLuint programID,glm::mat4 model_matrix);
 	virtual void draw_object(Shader *shader);
 	virtual void draw_shadow_map(GLuint programID);
+	//update draw object if neccessary
+	virtual void update();
 
 	unsigned temp_pos_num()const;
 	Position* push_position(Position* p);
 	Position* push_temp_position(Position* p);
+	void set_obj(BufferObject *obj);
 	void clear_position();
 	void clear_temp_position();
-	BufferObject *obj;
 	bool draw_shadow;
 protected:
+	BufferObject *obj;
 	Texture* texture;
 	Texture* NormalMap;
 	void draw_vec(GLuint programID,std::vector<Position*> &pos_v);

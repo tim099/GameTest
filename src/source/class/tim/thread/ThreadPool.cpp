@@ -5,7 +5,6 @@ namespace Tim {
 ThreadPool::ThreadPool(int thread_num) {
 	Thread* thread;
 	distributeTask=new DistributeTask(this);
-	cur_at=0;
 	Distribute_Mutex=new Tim::Mutex();
 	for(int i=0;i<thread_num;i++){
 		//thread=new Tim::Thread(NORMAL_PRIORITY_CLASS,this);
@@ -23,14 +22,6 @@ ThreadPool::~ThreadPool() {
 	}
 }
 void ThreadPool::push_task(Task* task){
-	/*threads.at(cur_at)->push_task(task);
-	//std::cout<<"ThreadPool push to:"<<cur_at<<std::endl;
-	if(cur_at<threads.size()-1){
-		cur_at++;
-	}else{
-		cur_at=0;
-	}*/
-	///*
 	if(!ready_q.empty()){
 		ready_q.front()->push_task(task);
 		ready_q.front()->start();
@@ -38,7 +29,6 @@ void ThreadPool::push_task(Task* task){
 	}else{
 		task_q.push(task);
 	}
-	//*/
 }
 
 void ThreadPool::distribute_task(Tim::Thread* thread){

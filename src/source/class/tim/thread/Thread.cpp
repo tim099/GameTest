@@ -11,10 +11,11 @@ Thread::Thread(int priority,Tim::ExecuteDone *_done) {
 	done=_done;
 }
 Thread::~Thread() {
+
 	if(!terminate)std::cout<<"thread delete error not terminated yet!!"<<std::endl;
 	else std::cout<<"thread delete success!!"<<std::endl;
 	//if(done)delete done; dont!!if done=thread pool
-	//shoult terminate before delete!!
+
 }
 void Thread::Terminate(){
 	end=true;
@@ -36,7 +37,7 @@ bool Thread::DONE()const{
 }
 void Thread::start(){
 	if(DONE()){
-		std::cout<<"can't join already done"<<std::endl;
+		std::cout<<"can't start already done"<<std::endl;
 		return;
 	}
 	ResumeThread(threadhandle);

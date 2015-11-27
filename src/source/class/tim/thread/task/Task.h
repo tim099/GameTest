@@ -1,6 +1,6 @@
 #ifndef TASK_H_
 #define TASK_H_
-
+#include "class/tim/thread/mutex/Mutex.h"
 namespace Tim {
 
 class Task {

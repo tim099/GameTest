@@ -7,7 +7,6 @@ Task::Task() {
 	auto_terminate=false;
 }
 Task::~Task() {
-
 }
 bool Task::AutoTerminate()const{
 	return auto_terminate;

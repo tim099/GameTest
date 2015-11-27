@@ -18,7 +18,6 @@ public:
 	std::queue<Task*>task_q;
 	std::queue<Thread*>ready_q;
 	std::vector<Thread*>threads;
-	unsigned cur_at;
 	Tim::Mutex *Distribute_Mutex;
 protected:
 	DistributeTask *distributeTask;

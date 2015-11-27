@@ -8,6 +8,7 @@
 #include "class/input/mouse/Mouse.h"
 #include "class/display/texture/texture2D/Texture2D.h"
 #include <cstdio>
+#include <iostream>
 Renderer::Renderer(LightControl* _lightControl,Draw *_d_obj,Window *_window,Shader **_shader,
 		FrameBuffer *_FBO,Camera *_camera,Mouse* _mouse,double* _shadow_dis){
 	lightControl=_lightControl;
@@ -29,6 +30,7 @@ bool Renderer::Rendering()const{
 	return rendering;
 }
 void Renderer::render(){
+	std::cout<<"renderer render start"<<std::endl;
 	window->render_on();
 	rendering=true;
 
@@ -52,4 +54,5 @@ void Renderer::render(){
 
 	window->swap_buffer();
 	window->render_off();//release thread using this window
+	std::cout<<"renderer render end"<<std::endl;
 }

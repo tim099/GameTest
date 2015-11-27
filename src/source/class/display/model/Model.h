@@ -24,7 +24,7 @@ public:
 	void translate(glm::vec3 v);
 	void scale(GLfloat size);
 	void merge(Model *m,glm::vec3 trans);
-	void len_alter(int _len);
+	void max_len_alter(int _len);
 	GLfloat* vtBuffer;
 	GLfloat* uvBuffer;
 	GLfloat* vnBuffer;

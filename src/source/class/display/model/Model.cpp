@@ -49,7 +49,7 @@ void Model::initial(int _len,int _max_len){
 
 	mat=glm::vec4(0.3,0.4,0.01,0.05);
 }
-void Model::len_alter(int _len){
+void Model::max_len_alter(int _len){
 	if(_len>max_len){
 		while(_len>max_len)max_len*=2;
 		GLfloat* tmp_vtBuffer=new GLfloat[3*max_len];
@@ -68,7 +68,7 @@ void Model::len_alter(int _len){
 	}
 }
 void Model::merge(Model *m,glm::vec3 trans){
-	len_alter(len+m->len);
+	max_len_alter(len+m->len);
 	//std::copy(m->vtBuffer,m->vtBuffer+3*m->len,tmp_vtBuffer+3*len);
 	for(int i=0;i<m->len;i++){
 		vtBuffer[3*(i+len)]=m->vtBuffer[3*i]+trans.x;

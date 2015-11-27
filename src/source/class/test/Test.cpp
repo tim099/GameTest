@@ -479,7 +479,9 @@ void Test::timer_tic(double &time){
     draw(time);
     //========================wait for rendering end=====================
     std::cout<<"draw end"<<std::endl;
+    //render_thread->wait_for_this();
 	while(!render_thread->DONE()){//renderer->Rendering();!render_task->Done()
+		//std::cout<<"wait!!"<<std::endl;
 	}
 	std::cout<<"render end"<<std::endl;
 	//render_thread->wait_for_this();

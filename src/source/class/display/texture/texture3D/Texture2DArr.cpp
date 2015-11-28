@@ -21,6 +21,14 @@ void Texture2DArr::draw_texture(Shader* shader2D,double winaspect,double texaspe
 int Texture2DArr::layer()const{
 	return size.z;
 }
+Texture2DArr* Texture2DArr::gen_texture2DArr(std::vector<std::string>&path,glm::ivec3 size,GLint internalformat,GLenum format,
+		GLenum type,GLsizei mipLevelCount,int Parameteri){
+	Texture2DArr* texarr=Texture2DArr::gen_texture2DArr(size,internalformat,format,type,mipLevelCount,Parameteri);
+	for(unsigned i=0;i<path.size();i++){
+		Image<unsigned char>::load_sub_image(path.at(i).c_str(),texarr->target,i,type);
+	}
+	return texarr;
+}
 Texture2DArr* Texture2DArr::gen_texture2DArr(glm::ivec3 size,GLint internalformat,GLenum format,
 		GLenum type,GLsizei mipLevelCount,int Parameteri){
 

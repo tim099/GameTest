@@ -24,11 +24,7 @@ Test::Test() {
 	map=new Map();
 
 	window=new Window(glm::ivec2(1366,733),"Age of Cube",false);//must before any draw obj
-	//delete window;
-	//glfwTerminate();
-	//window=new Window(glm::ivec2(1366,733),"hello tim",false);//must before any draw obj
-	//std::cout<<"DC="<<wglGetCurrentDC()<<std::endl;
-	//std::cout<<"lrc="<<wglGetCurrentContext()<<std::endl;
+	//window=new Window(glm::ivec2(1920,1080),"Age of Cube",true);//must before any draw obj
 	d_obj=new Draw();
 	texmap=new TextureMap(std::string("files/script/loadTexture/loadTestTexture.txt"));
 	dmap=new DisplayMap(map,d_obj,texmap,window);
@@ -53,7 +49,7 @@ Test::Test() {
     creat_frame_buffer();
 
     render_thread=new Tim::Thread(REALTIME_PRIORITY_CLASS);
-    renderer=new Renderer(lightControl,d_obj,window,(&cur_shader),FBO,camera,mouse,&shadow_dis);
+    renderer=new Renderer(lightControl,d_obj,window,(&cur_shader),FBO,camera,mouse,texmap,&shadow_dis);
     thread_pool=new Tim::ThreadPool(4);
     render_task=0;
     glEnable(GL_DEPTH_TEST);
@@ -480,8 +476,17 @@ void Test::timer_tic(double &time){
     //========================wait for rendering end=====================
     std::cout<<"draw end"<<std::endl;
     //render_thread->wait_for_this();
+    int i=0,j=0;
 	while(!render_thread->DONE()){//renderer->Rendering();!render_task->Done()
 		//std::cout<<"wait!!"<<std::endl;
+		if(i<10000)i++;
+		else{
+			i=0;j++;
+		}
+		if(j>1000){
+			std::cerr<<"render time out!!"<<std::endl;
+			break;
+		}
 	}
 	std::cout<<"render end"<<std::endl;
 	//render_thread->wait_for_this();

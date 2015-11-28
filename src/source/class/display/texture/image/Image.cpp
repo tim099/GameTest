@@ -43,7 +43,8 @@ void Image<DataType>::initialize(glm::ivec2 _size,GLenum _format){
 		default:
 			std::cout<<"unknow image format:"<<format<<std::endl;
 	}
-	imageSize=((size.x+(size.x%2))*(size.y)*data_size);
+	//imageSize=((size.x+(size.x%2))*(size.y)*data_size);
+	imageSize=((size.x)*(size.y)*data_size);
 	data=new unsigned char [imageSize];
 }
 template<class DataType>
@@ -61,6 +62,17 @@ void Image<DataType>::loadBMP(const char * imagepath){
 	fread(data,sizeof(char),imageSize,file);
 	format=GL_BGR;
 	fclose(file);
+}
+template<class DataType>
+void Image<DataType>::sub_image(GLenum target,int layer,GLenum type){
+	glTexSubImage3D(target,0,0,0,layer,size.x,size.y,1,format,type,data);
+}
+template<class DataType>
+void Image<DataType>::load_sub_image(const char *imagepath,GLenum target,int layer,GLenum type){
+	Image<DataType>* bmp_img=new Image<DataType>();
+	bmp_img->loadBMP(imagepath);
+	bmp_img->sub_image(target,layer,type);
+	delete bmp_img;
 }
 template<class DataType>
 void Image<DataType>::convert_to_sobel(Image<DataType>* image,glm::vec2 dv,float clip){

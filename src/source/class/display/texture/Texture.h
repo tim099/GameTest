@@ -17,14 +17,15 @@ public:
 	Texture(GLuint TexID,GLenum target,GLenum type,GLenum format);
 	virtual ~Texture();
 	virtual Texture2D* Tex2D();
-
-
-	static void usetextureVec(Shader* shader,std::vector<Texture*>& texvec,int num,const char *name);
-	static GLuint gen_texture_vertex(GLfloat width,GLfloat height,glm::vec3 pos=glm::vec3(0,0,0));
 	virtual void draw_texture(Shader* shader2D,double winaspect=1.0,double texaspect=1.0,GLfloat alpha=1.0,
 			glm::vec3 pos=glm::vec3(0,0,0),double size=1.0);
 	virtual int layer()const;
 	virtual void sent_uniform(Shader* shader,int num,const char *name)const;
+
+	static void usetextureVec(Shader* shader,std::vector<Texture*>& texvec,int num,const char *name);
+	static GLuint gen_texture_vertex(GLfloat width,GLfloat height,glm::vec3 pos=glm::vec3(0,0,0));
+	void bind_texture();
+
 	GLuint TexID;
 	GLenum target;
 	GLenum format;

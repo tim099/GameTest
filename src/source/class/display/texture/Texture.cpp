@@ -21,6 +21,9 @@ Texture::~Texture() {
 Texture2D* Texture::Tex2D(){
 	return 0;
 }
+void Texture::bind_texture(){
+	glBindTexture(target,TexID);
+}
 void Texture::sent_uniform(Shader* shader,int num,const char *name)const{
 	std::cerr<<"please implement texture sent_uniform function"<<std::endl;
 }

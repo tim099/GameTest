@@ -14,6 +14,7 @@ public:
 	Texture* get_tex(std::string tex_name);
 protected:
 	void Load_texture(std::istream &is,const std::string &folder_path);
+	void Load_texture2DArr(std::istream &is,const std::string &folder_path);
 	void Load_Header(std::istream &is,std::string &folder_path);
 	std::map<std::string,Texture*>textures;
 };

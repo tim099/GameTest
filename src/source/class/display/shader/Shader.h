@@ -11,6 +11,8 @@ public:
 	void LoadShader(const char* vertex,const char* fragment);
 	void LoadShader(const char* vertex,const char* geometry,const char* fragment);
 	void active_shader();
+	void Enable(int flag);
+	void Disable(int flag);
 	void EnableNormapping();
 	void DisableNormapping();
 	void sent_Uniform1i(const char* name,int i);

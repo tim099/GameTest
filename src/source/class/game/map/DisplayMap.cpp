@@ -19,8 +19,8 @@ DisplayMap::DisplayMap(Map *_map,Draw *_d_obj,TextureMap *_texmap,Window *_windo
 	MapDrawObject *d_map;
     for(int i=0;i<SEG;i++){
     	for(int j=0;j<SEG;j++){
-    		d_map=new MapDrawObject(0,texmap->get_tex(std::string("test3")),
-    				texmap->get_tex(std::string("NormalTexture")));
+    		d_map=new MapDrawObject(0,texmap->get_tex(std::string("tex3")),//"test3"
+    				texmap->get_tex(std::string("NormalTexture3")));//"NormalTexture"
     		d_obj->push(d_map);
     		dmaps[i][j]=d_map;
     	}

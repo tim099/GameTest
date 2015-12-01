@@ -31,17 +31,10 @@ Texture2DArr* Texture2DArr::gen_texture2DArr(std::vector<std::string>&path,glm::
 }
 Texture2DArr* Texture2DArr::gen_texture2DArr(glm::ivec3 size,GLint internalformat,GLenum format,
 		GLenum type,GLsizei mipLevelCount,int Parameteri){
-
-	///*
 	GLuint texture;
 	glGenTextures(1,&texture);
 	glBindTexture(GL_TEXTURE_2D_ARRAY,texture);
 	glTexImage3D(GL_TEXTURE_2D_ARRAY,0,internalformat,size.x,size.y,size.z,0,format,type,NULL);//0=level,0=border
-
-	//glTexStorage3D(GL_TEXTURE_2D_ARRAY,mipLevelCount,internalformat,size.x,size.y,size.z);
-	//glTexSubImage3D(GL_TEXTURE_2D_ARRAY,0,0,0,0,size.x,size.y,size.z,format,type,0);
-
-	//GLubyte texels[32]={0,0,0,255,255,0,0,255,0,255,0,255,0,0,255,255,255,255,255,255,255,255,0,255,0,255,255,255,255,0,255,255,};
 
 	TexFilterParameteri(GL_TEXTURE_2D_ARRAY,Parameteri);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
@@ -49,7 +42,6 @@ Texture2DArr* Texture2DArr::gen_texture2DArr(glm::ivec3 size,GLint internalforma
 	glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 	Texture2DArr *tex=new Texture2DArr(texture,size,type,format);
-	//*
 
 	return tex;
 }

@@ -25,6 +25,14 @@ void Shader::DisableNormapping(){
 	shaderData&=(~NormalMappingActive);
 	sent_Uniform1i("shaderData",shaderData);
 }
+void Shader::Enable(int flag){
+	shaderData|=flag;
+	sent_Uniform1i("shaderData",shaderData);
+}
+void Shader::Disable(int flag){
+	shaderData&=(~flag);
+	sent_Uniform1i("shaderData",shaderData);
+}
 void Shader::sent_Uniform1i(const char* name,int i){
 	glUniform1i(glGetUniformLocation(programID,name),i);
 }

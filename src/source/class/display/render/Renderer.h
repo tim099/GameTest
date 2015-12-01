@@ -13,16 +13,15 @@ class Mouse;
 class Renderer{
 
 public:
-	Renderer(LightControl* lightControl,Draw *d_obj,Window *window,Shader **shader,FrameBuffer *FBO,
+	Renderer(LightControl* lightControl,Draw *d_obj,Window *window,Shader **shader,
 			Camera *camera,Mouse* mouse,TextureMap *texmap,double* shadow_dis);
 	virtual ~Renderer();
 	bool Rendering()const;
 	void render();
 protected:
-	Texture *texarr;
 	TextureMap *texmap;
 	Shader **shader;
-	FrameBuffer *FBO;
+	FrameBuffer *FBO,*FBO2;
 	Camera *camera;
 	Shader *shader2D;
 	LightControl* lightControl;

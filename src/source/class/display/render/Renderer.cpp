@@ -7,36 +7,46 @@
 #include "class/display/window/Window.h"
 #include "class/input/mouse/Mouse.h"
 #include "class/display/texture/texture2D/Texture2D.h"
+#include "class/tim/file/File.h"
 #include <cstdio>
 #include <iostream>
 Renderer::Renderer(LightControl* _lightControl,Draw *_d_obj,Window *_window,Shader **_shader,
-		FrameBuffer *_FBO,Camera *_camera,Mouse* _mouse,TextureMap *_texmap,double* _shadow_dis){
+		Camera *_camera,Mouse* _mouse,TextureMap *_texmap,double* _shadow_dis){
 	lightControl=_lightControl;
 	shadow_dis=_shadow_dis;
 	d_obj=_d_obj;
 	rendering=false;
 	window=_window;
 	shader=_shader;
-	FBO=_FBO;
+	//FBO=_FBO;
+    FBO=new FrameBuffer(window->get_size());
+    FBO->gen_color_texture(GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,P_Linear);
+    FBO->gen_color_texture(GL_RGB,GL_RGB,GL_UNSIGNED_BYTE,P_Linear);//just test!!
+    FBO->gen_depth_texture(GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear);
+
+    FBO2=new FrameBuffer(window->get_size());
+    FBO2->gen_color_texture(GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,P_Linear);
+    FBO2->gen_depth_texture(GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear);
+
 	camera=_camera;
 	mouse=_mouse;
 	texmap=_texmap;
 	shader2D=new Shader();
 	shader2D->LoadShader("files/shader/2D/2D.vert","files/shader/2D/2D.frag");
+	std::vector<std::string> files=Tim::File::get_all_files("files/texture/");
+	for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
+	//std::vector<std::string>path;
+	//path.push_back(std::string("files/texture/tes1.bmp"));
+	//path.push_back(std::string("files/texture/tes2.bmp"));
+	//path.push_back(std::string("files/texture/tes3.bmp"));
+	//texarr=Texture2DArr::gen_texture2DArr(path,glm::ivec3(256,256,3),GL_RGB,GL_RGB,GL_UNSIGNED_BYTE);
 
-	std::vector<std::string> path;
-	path.push_back(std::string("files/texture/tes1.bmp"));
-	path.push_back(std::string("files/texture/tes2.bmp"));
-	path.push_back(std::string("files/texture/tes3.bmp"));
-	texarr=Texture2DArr::gen_texture2DArr(path,glm::ivec3(256,256,3),GL_RGB,GL_RGB,GL_UNSIGNED_BYTE);
-	//texarr=Texture2DArr::gen_texture2DArr(glm::ivec3(256,256,3),GL_RGB,GL_RGB,GL_UNSIGNED_BYTE);
-	//texarr->bind_texture();
-	//Image<unsigned char>::load_sub_image("files/texture/tes1.bmp",texarr->target,0);
-	//Image<unsigned char>::load_sub_image("files/texture/tes2.bmp",texarr->target,1);
-	//Image<unsigned char>::load_sub_image("files/texture/tes3.bmp",texarr->target,2);
+	//texarr=texmap->get_tex("testarr");
 }
 Renderer::~Renderer() {
-	delete texarr;
+	//delete texarr;
+	delete FBO;
+	delete FBO2;
 	delete shader2D;
 }
 bool Renderer::Rendering()const{
@@ -54,16 +64,24 @@ void Renderer::render(){
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear buffer
     //sent uniform
+
     camera->sent_uniform((*shader)->programID,FBO->aspect());
     lightControl->sent_uniform((*shader),camera->pos);
-    texarr->sent_uniform((*shader),30,"testarr");
-    //lightControl->shadowData->SFBO->depth_textures.at(0)->sent_uniform((*shader),30,"testarr");
+    texmap->get_tex("cube_textures")->sent_uniform((*shader),30,"Texturearr");
     //start draw
     d_obj->draw((*shader));
-
+    /*
+    Camera cam2=(*camera);
+    cam2.move(glm::vec3(0.5,0.0,0.0));
+    cam2.rotate(glm::vec3(0,1,0),camera->look_dis());
+    cam2.sent_uniform((*shader)->programID,FBO2->aspect());
+    FBO2->bind_buffer();
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear buffer
+    d_obj->draw((*shader));
+    */
 	FrameBuffer::unbind_buffer(window->get_size());//start draw on window buffer
-	FBO->color_textures.at(0)->draw_texture(shader2D,window->aspect(),window->aspect(),1.0);
-
+	FBO->color_textures.at(0)->draw_texture(shader2D,1.0,1.0,1.0,glm::vec3(0,0,0),1.0);
+	//FBO2->color_textures.at(0)->draw_texture(shader2D,1.0,1.0,1.0,glm::vec3(-0.5,0,0),0.5);
 	mouse->get_world_space_pos(FBO,window->get_size(),glm::inverse(camera->view_matrix(window->aspect())));
 
 	rendering=false;

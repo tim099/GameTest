@@ -3,11 +3,11 @@
 #include <GL/glew.h>
 class Buffer {
 public:
-	Buffer(GLfloat* data,int size);
+	Buffer(GLfloat* data,int datasize,GLuint index,GLint size,GLenum type,GLboolean normalized=false
+			,GLsizei stride=0);
 	virtual ~Buffer();
 	static GLuint gen_buffer(GLfloat* data,int size);
 	static GLuint GenVertexArray();
-	//static void Draw_Framebuffer();
 
 	static void bind_vtbuffer(GLuint vertexbuffer);
 	static void bind_uvbuffer(GLuint uvbuffer);
@@ -15,6 +15,11 @@ public:
 	static void disable_all_buffer();
 protected:
 	GLuint buffer;
+	GLuint index;
+	GLint size;
+	GLenum type;
+	GLboolean normalized;
+	GLsizei stride;
 };
 
 #endif /* BUFFER_H_ */

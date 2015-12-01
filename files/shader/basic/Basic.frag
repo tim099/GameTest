@@ -18,12 +18,12 @@ uniform mat4 VP;
 
 #include <files/shader/header/light/light>
 
-uniform sampler2DArray testarr;
+uniform sampler2DArray Texturearr;
 void main(){ 
 	//vec3 tex_color=(texture(depthMap[1],vert.UV).rgb);
 	
 	//vec3 tex_color=(texture(myTextureSampler,vert.UV).rgb);
-	vec3 tex_color=texture(testarr,vec3(vert.UV,1)).xyz;
+	vec3 tex_color=texture(Texturearr,vec3(vert.UV,vert.UV.x+vert.UV.y)).xyz;
 	
 	vec3 total_light=compute_total_light(vert.Normal,vert.position);
 	

@@ -70,7 +70,7 @@ void DrawObject::draw_object(Shader *shader){
 	obj->bind_buffer(shader->programID);
 	texture->sent_uniform(shader,0,"myTextureSampler");
 	if(NormalMap){
-		shader->EnableNormapping();
+		shader->Enable(NormalMappingActive);
 		NormalMap->sent_uniform(shader,1,"NormalTexture");
 	}
 	draw_vec(shader->programID,m_pos);

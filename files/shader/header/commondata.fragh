@@ -11,11 +11,9 @@ in VertexData{
 
 layout(location = 0)out vec4 color;
 
-uniform int shaderData;
-
 uniform sampler2D myTextureSampler;
 uniform sampler2D NormalTexture;
-uniform sampler2DArray texarr;//test
+uniform sampler2DArray Texturearr;//test
 uniform vec3 camera_pos;
 
 uniform vec4 mat;

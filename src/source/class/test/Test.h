@@ -46,7 +46,6 @@ public:
 	void prepare_draw_obj();
 	void creat_shader();
 	void creat_light();
-	void creat_frame_buffer();
 	void Mainloop();
 	void timer_tic(double &time);
 private:
@@ -87,7 +86,6 @@ private:
 	Camera *camera;
 
 	Renderer *renderer;
-	FrameBuffer* FBO;
 	DisplayMap *dmap;
 	RenderTask *render_task;
 	Map *map;

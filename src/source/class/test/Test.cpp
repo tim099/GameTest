@@ -10,7 +10,7 @@ Test::Test() {
 	sun_col1=glm::vec3(2.2,2.3,2.5);
 	sun_col2=glm::vec3(1.2,0.9,0.5);
 	timeloop=0;
-	loop_time=2000;
+	loop_time=10000;
 	tiger_ry=0;
 	shadow_dis=1.0;
 
@@ -46,12 +46,11 @@ Test::Test() {
 
     creat_light();//
     prepare_draw_obj();
-    creat_frame_buffer();
 
     render_thread=new Tim::Thread(REALTIME_PRIORITY_CLASS);
-    renderer=new Renderer(lightControl,d_obj,window,(&cur_shader),FBO,camera,mouse,texmap,&shadow_dis);
+    renderer=new Renderer(lightControl,d_obj,window,(&cur_shader),camera,mouse,texmap,&shadow_dis);
     thread_pool=new Tim::ThreadPool(4);
-    render_task=0;
+    render_task=new RenderTask(renderer,window);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
@@ -72,6 +71,7 @@ void Test::terminate(){
 
 	delete camera;
 	delete thread_pool;
+	delete render_task;
 	render_thread->Terminate();
 	for(unsigned i=0;i<shaders.size();i++){
 		delete shaders.at(i);
@@ -419,18 +419,11 @@ void Test::creat_light(){
 	lightControl->push_parallel_light(s_light);
 
 }
-void Test::creat_frame_buffer(){
-    FBO=new FrameBuffer(window->get_size());
-    FBO->gen_color_texture(GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,P_Linear);
-    FBO->gen_color_texture(GL_RGB,GL_RGB,GL_UNSIGNED_BYTE,P_Linear);//just test!!
-    FBO->gen_depth_texture(GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear);
-
-}
 void Test::draw(double &time){
 	//renderer->render_all();
     ///*
 	//Renderer::enable_thread_render();
-	render_task=new RenderTask(renderer,window);
+	//render_task=new RenderTask(renderer,window);
 	render_thread->push_task(render_task);
 	render_thread->start();
 
@@ -483,14 +476,14 @@ void Test::timer_tic(double &time){
 		else{
 			i=0;j++;
 		}
-		if(j>1000){
+		if(j>10000){
 			std::cerr<<"render time out!!"<<std::endl;
 			break;
 		}
 	}
 	std::cout<<"render end"<<std::endl;
 	//render_thread->wait_for_this();
-	delete render_task;
+	//delete render_task;
 	//renderer->disable_thread_render();
 	d_obj->clear_tmp_pos();
 	//===================================================================

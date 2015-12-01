@@ -1,7 +1,13 @@
 #include "class/display/buffer/Buffer.h"
 #include <iostream>
-Buffer::Buffer(GLfloat* data,int size) {
-	buffer=gen_buffer(data,size);
+Buffer::Buffer(GLfloat* data,int datasize,GLuint _index,GLint _size,GLenum _type,GLboolean _normalized
+		,GLsizei _stride) {
+	buffer=gen_buffer(data,datasize);
+	index=_index;
+	size=_size;
+	type=_type;
+	normalized=_normalized;
+	stride=_stride;
 }
 Buffer::~Buffer() {
 

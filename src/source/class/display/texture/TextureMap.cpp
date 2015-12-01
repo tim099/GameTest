@@ -1,5 +1,6 @@
 #include "class/display/texture/TextureMap.h"
 #include "class/display/texture/texture2D/Texture2D.h"
+#include "class/display/texture/texture3D/Texture2DArr.h"
 #include "class/tim/file/File.h"
 #include "class/tim/string/String.h"
 #include <cstdio>
@@ -39,6 +40,48 @@ void TextureMap::Load_texture(std::istream &is,const std::string &folder_path){
 	}
 	push_tex(name,Texture2D::loadBMP(path.c_str()));
 }
+void TextureMap::Load_texture2DArr(std::istream &is,const std::string &folder_path){
+	std::string line;
+	std::string name,path;
+	std::vector<std::string>paths;
+	unsigned texnum;
+	Tim::String::get_line(is,line,true,true);
+	glm::ivec2 size;
+	if(line=="TextureName:"){
+		Tim::String::get_line(is,name,true,true);
+	}else{
+		std::cerr<<"Load_texture2DArr no Texture Name!!"<<line<<std::endl;
+		return;
+	}
+	Tim::String::get_line(is,line,true,true);
+	if(line=="TextureNum:"){
+		Tim::String::get_line(is,line,true,true);
+		sscanf(line.c_str(),"%d",&texnum);
+	}else{
+		std::cerr<<"Load_texture2DArr no TextureNum!!"<<line<<std::endl;
+	}
+	Tim::String::get_line(is,line,true,true);
+	if(line=="TextureSize:"){
+		is>>size.x;
+		is>>size.y;
+	}else{
+		std::cerr<<"Load_texture2DArr no TextureSize:!!"<<line<<std::endl;
+	}
+
+	for(unsigned i=0;i<texnum;i++){
+		Tim::String::get_line(is,line,true,true);
+		if(line=="TexturePath:"){
+			Tim::String::get_line(is,line,true,true);
+			path=folder_path+line;
+			paths.push_back(path);
+		}else{
+			std::cerr<<"Load_texture2DArr no TexturePath!!"<<line<<std::endl;
+			return;
+		}
+	}
+	Texture2DArr *texarr=Texture2DArr::gen_texture2DArr(paths,glm::ivec3(size.x,size.y,paths.size()),GL_RGB,GL_RGB,GL_UNSIGNED_BYTE);
+	push_tex(name,texarr);
+}
 void TextureMap::Load_Header(std::istream &is,std::string &folder_path){
 	std::string line;
 	if(Tim::String::get_line(is,line,true,true)&&line!="FolderPath:"){
@@ -73,9 +116,10 @@ void TextureMap::Load_texture_script(std::string script_path){
 		Tim::String::get_line(is,line,true,true);
 		if(line=="#END"){
 			break;
-		}
-		if(!strcmp(line.c_str(),"Texture:")){
+		}else if(!strcmp(line.c_str(),"Texture:")){
 			Load_texture(is,folder_path);
+		}else if(!strcmp(line.c_str(),"Texture2DArr:")){
+			Load_texture2DArr(is,folder_path);
 		}
 	}
 

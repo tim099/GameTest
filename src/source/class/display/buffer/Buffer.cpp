@@ -10,7 +10,7 @@ Buffer::Buffer(GLfloat* data,int datasize,GLuint _index,GLint _size,GLenum _type
 	stride=_stride;
 }
 Buffer::~Buffer() {
-
+	glDeleteBuffers(1,&buffer);
 }
 GLuint Buffer::gen_buffer(GLfloat* data,int size){
 	GLuint buffer;
@@ -24,6 +24,11 @@ GLuint Buffer::GenVertexArray(){
     glGenVertexArrays(1,&VertexArrayID);
     glBindVertexArray(VertexArrayID);
     return VertexArrayID;
+}
+void Buffer::bind_buffer(){
+	glBindBuffer(GL_ARRAY_BUFFER,buffer);
+	glEnableVertexAttribArray(index);
+	glVertexAttribPointer(index,size,type,normalized,stride,NULL);
 }
 void Buffer::bind_vtbuffer(GLuint vertexbuffer){
 	glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);

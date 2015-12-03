@@ -61,7 +61,7 @@ Test::~Test() {
 
 }
 void Test::terminate(){
-	delete map;
+
 	delete texmap;
 
 	delete dmap;
@@ -79,12 +79,9 @@ void Test::terminate(){
 	for(unsigned i=0;i<b_objs.size();i++){
 		delete b_objs.at(i);
 	}
-	//std::cout<<"delete d_obj"<<std::endl;
 	delete d_obj;
-	//std::cout<<"delete d_obj end"<<std::endl;
-	//std::cout<<"delete window"<<std::endl;
+	delete map;
 	delete window;
-	//std::cout<<"delete window end"<<std::endl;
 	glfwTerminate();
 }
 void Test::input(){

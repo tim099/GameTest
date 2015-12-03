@@ -3,40 +3,28 @@
 #include "class/display/model/Model.h"
 #include "class/display/texture/Texture.h"
 #include <iostream>
-BufferObject::BufferObject(GLuint _vtbuffer,GLuint _uvbuffer,GLuint _texturebuffer
-		,GLuint _nbuffer,int _vertex_num,glm::vec4 _mat){
-	vtbuffer=_vtbuffer;
-	uvbuffer=_uvbuffer;
-	vnbuffer=_nbuffer;
-	vertex_num=_vertex_num;
-	mat=_mat;
-	auto_delete=true;
-}
+
 BufferObject::BufferObject(Model *m,bool _auto_delete){
-	vtbuffer=Buffer::gen_buffer(m->vtBuffer,m->vtdatasize());
-	uvbuffer=Buffer::gen_buffer(m->uvBuffer,m->uvdatasize());
-	vnbuffer=Buffer::gen_buffer(m->vnBuffer,m->vndatasize());
+	vtbuffer=new Buffer(m->vtBuffer,m->vtdatasize(),0,3,GL_FLOAT);
+	uvbuffer=new Buffer(m->uvBuffer,m->uvdatasize(),1,2,GL_FLOAT);
+	vnbuffer=new Buffer(m->vnBuffer,m->vndatasize(),2,3,GL_FLOAT);
 	vertex_num=m->vtlen();
 	mat=m->mat;
 	auto_delete=_auto_delete;
 }
 BufferObject::~BufferObject() {
-	//std::cout<<"vtbuffer"<<vtbuffer<<std::endl;
-    glDeleteBuffers(1,&vtbuffer);
-    //std::cout<<"uvbuffer"<<uvbuffer<<std::endl;
-    glDeleteBuffers(1,&uvbuffer);
-    //std::cout<<"vnbuffer"<<vnbuffer<<std::endl;
-    glDeleteBuffers(1,&vnbuffer);
-    //std::cout<<"delete BufferObject end"<<std::endl;
+	delete vtbuffer;
+	delete uvbuffer;
+	delete vnbuffer;
 }
 bool BufferObject::AutoDelete()const{
 	//will delete by draw object!!
 	return auto_delete;
 }
 void BufferObject::bind_buffer(GLuint programID){
-	Buffer::bind_vtbuffer(vtbuffer);
-	Buffer::bind_uvbuffer(uvbuffer);
-	Buffer::bind_vnbuffer(vnbuffer);
+	vtbuffer->bind_buffer();
+	uvbuffer->bind_buffer();
+	vnbuffer->bind_buffer();
 	glUniform4f(glGetUniformLocation(programID,"mat"),mat.x,mat.y,mat.z,mat.w);
 }
 void BufferObject::draw(GLuint programID){

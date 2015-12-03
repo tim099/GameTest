@@ -61,14 +61,14 @@ void DrawObject::draw_vec(GLuint programID,std::vector<Position*> &pos_v){
 }
 void DrawObject::draw_shadow_map(GLuint programID){
 	if(!draw_shadow)return;
-	Buffer::bind_vtbuffer(obj->vtbuffer);
+	obj->vtbuffer->bind_buffer();
 	draw_vec(programID,m_pos);
 	draw_vec(programID,temp_pos);
 	glDisableVertexAttribArray(0);//vertexbuffer
 }
 void DrawObject::draw_object(Shader *shader){
 	obj->bind_buffer(shader->programID);
-	texture->sent_uniform(shader,0,"myTextureSampler");
+	texture->sent_uniform(shader,0,"Texture");
 	if(NormalMap){
 		shader->Enable(NormalMappingActive);
 		NormalMap->sent_uniform(shader,1,"NormalTexture");
@@ -76,5 +76,5 @@ void DrawObject::draw_object(Shader *shader){
 	draw_vec(shader->programID,m_pos);
 	draw_vec(shader->programID,temp_pos);
 	shader->DisableNormapping();
-	Buffer::disable_all_buffer();
+	//Buffer::disable_all_buffer();
 }

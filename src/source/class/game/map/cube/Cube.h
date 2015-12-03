@@ -3,8 +3,9 @@
 
 class Cube {
 public:
-	Cube();
+	Cube(int type);
 	virtual ~Cube();
+	int type;
 };
 
 #endif /* CUBE_H_ */

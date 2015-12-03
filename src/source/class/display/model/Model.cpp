@@ -46,7 +46,6 @@ void Model::initial(int _len,int _max_len){
 	vtBuffer=new GLfloat[3*_max_len];//3 for each point
 	uvBuffer=new GLfloat[2*_max_len];
 	vnBuffer=new GLfloat[3*_max_len];
-
 	mat=glm::vec4(0.3,0.4,0.01,0.05);
 }
 void Model::max_len_alter(int _len){

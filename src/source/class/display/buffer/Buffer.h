@@ -13,6 +13,7 @@ public:
 	static void bind_uvbuffer(GLuint uvbuffer);
 	static void bind_vnbuffer(GLuint vnbuffer);
 	static void disable_all_buffer();
+	void bind_buffer();
 protected:
 	GLuint buffer;
 	GLuint index;

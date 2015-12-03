@@ -2,21 +2,20 @@
 #define BUFFEROBJECT_H_
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-
+#include "class/display/buffer/Buffer.h"
 class Model;
 class BufferObject{
 public:
-	BufferObject(GLuint vtbuffer,GLuint uvbuffer,GLuint texturebuffer,GLuint nbuffer,int vertex_num
-			,glm::vec4 mat);
 	BufferObject(Model *m,bool auto_delete=true);
 	virtual ~BufferObject();
 	void bind_buffer(GLuint programID);
 	void draw(GLuint programID);
 	bool AutoDelete()const;
+
 	int vertex_num;
-	GLuint vtbuffer;
-	GLuint uvbuffer;
-	GLuint vnbuffer;
+	Buffer *vtbuffer;
+	Buffer *uvbuffer;
+	Buffer *vnbuffer;
 	glm::vec4 mat;
 
 private:

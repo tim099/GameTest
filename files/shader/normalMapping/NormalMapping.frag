@@ -6,7 +6,7 @@
 layout(location = 1)out vec3 color2;
 
 void main(){ 
-	vec3 tex_color=(texture(myTextureSampler,vert.UV).rgb);
+	vec3 tex_color=(texture(Texture,vert.UV).rgb);
 	vec3 Normal=get_normal();
 
     vec3 total_light=compute_total_light(Normal,vert.position);

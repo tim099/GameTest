@@ -21,10 +21,21 @@ Texture:
 		
 Texture:
 	TextureName:
+		NormalTexture3
+	TexturePath:
+		normal3.bmp	
+			
+Texture:
+	TextureName:
 		NormalTexture6
 	TexturePath:
 		normal6.bmp
 		
+Texture:
+	TextureName:
+		tex3
+	TexturePath:
+		tex3.bmp		
 Texture:
 	TextureName:
 		test
@@ -55,4 +66,32 @@ Texture:
 	TexturePath:
 		doge.bmp
 
+Texture2DArr:
+	TextureName:
+		cube_textures
+	TextureNum:
+		3
+	TextureSize:
+		256
+		256
+	TexturePath:
+		cube/tex1.bmp
+	TexturePath:
+		cube/tex2.bmp
+	TexturePath:
+		cube/tex3.bmp
+Texture2DArr:
+	TextureName:
+		cube_normals
+	TextureNum:
+		3
+	TextureSize:
+		256
+		256
+	TexturePath:
+		cube/cube1.bmp
+	TexturePath:
+		cube/cube2.bmp
+	TexturePath:
+		cube/cube3.bmp
 #END

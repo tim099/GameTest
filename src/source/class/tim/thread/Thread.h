@@ -32,7 +32,7 @@ public:
 	/*
 	 *stop the thread until you call start() again
 	 */
-	void wait();
+	void sleep();
 	/*
 	 * set priority of this thread
 	 */
@@ -42,7 +42,7 @@ public:
 	 */
 	void push_task(Task* task);
 	/*
-	 * not implement yet
+	 *wait for this thread until all task done
 	 */
 	void wait_for_this(DWORD time=INFINITE);
 	/*
@@ -50,6 +50,10 @@ public:
 	 *execute task in this function
 	 */
 	virtual void ExecuteTask();
+	/*
+	 * return true if thread is suspended
+	 */
+	bool Suspended()const;
 	/*
 	 *return true if this thread is going to be terminate
 	 */
@@ -69,6 +73,8 @@ protected:
 	std::queue<Task*> task_q;
 	bool end;
 	bool terminate;
+	bool thread_start;
+	Mutex *threadMutex;
 	ExecuteDone *done;
 	HANDLE threadhandle;
 	DWORD ThreadID;

@@ -7,13 +7,15 @@ Thread::Thread(int priority,Tim::ExecuteDone *_done) {
 	terminate=false;
 	threadhandle=CreateThread(NULL,0,Execute,this,CREATE_SUSPENDED,&ThreadID);
 	//threadhandle=CreateThread(NULL,0,Execute,this,0,&ThreadID);
+	threadMutex=new Mutex();
+	thread_start=false;
 	set_priority(priority);
 	done=_done;
 }
 Thread::~Thread() {
-
 	if(!terminate)std::cout<<"thread delete error not terminated yet!!"<<std::endl;
 	else std::cout<<"thread delete success!!"<<std::endl;
+	delete threadMutex;
 	//if(done)delete done; dont!!if done=thread pool
 
 }
@@ -22,7 +24,10 @@ void Thread::Terminate(){
 	if(DONE())ResumeThread(threadhandle);//to return
 }
 void Thread::wait_for_this(DWORD time){
+	while(!thread_start);
 
+	threadMutex->wait_for_this();
+	threadMutex->release();
 }
 void Thread::set_priority(int priority){
 	bool flag=SetThreadPriority(threadhandle,priority);
@@ -40,13 +45,43 @@ void Thread::start(){
 		std::cout<<"can't start already done"<<std::endl;
 		return;
 	}
+
 	ResumeThread(threadhandle);
+	int i=1;
+	while(!thread_start){
+		i++;
+		if(i%1000==0){
+			std::cout<<"thread not start"<<i<<std::endl;
+			ResumeThread(threadhandle);
+		}
+	}
 }
-void Thread::wait(){
+bool Thread::Suspended()const{
+	///*
+	DWORD val;
+	if((val=WaitForSingleObject(threadhandle,0))==WAIT_ABANDONED){
+		std::cout<<"cur suspended"<<std::endl;
+		//ReleaseMutex(threadhandle);
+		return true;
+	}else{
+		std::cout<<"not suspended:"<<val<<std::endl;
+		//ReleaseMutex(threadhandle);
+		return false;
+	}
+	//*/
+
+}
+void Thread::sleep(){
 	//std::cout<<"wait"<<std::endl;
-	SuspendThread(threadhandle);
+	thread_start=false;
+	threadMutex->release();
+	//may start at here causing problem
+	SuspendThread(threadhandle);//dangerous because may start again before suspend!!
 }
 void Thread::ExecuteTask(){
+	threadMutex->wait_for_this();
+	thread_start=true;
+
 	while(!task_q.empty()){
 		task_q.front()->Execute();
 		task_q.front()->done=true;//delete task_q.front(); dont!!
@@ -54,6 +89,8 @@ void Thread::ExecuteTask(){
 		task_q.pop();
 	}
 	if(done)done->done(this);
+
+
 	//std::cout<<"all task finish"<<std::endl;
 }
 void Thread::push_task(Task* task){
@@ -64,7 +101,7 @@ DWORD WINAPI Thread::Execute(LPVOID lpParameter){
 	//std::cout<<"Execute start"<<std::endl;
 	while(!thread->END()){
 		if(thread->DONE()){
-			thread->wait();
+			thread->sleep();
 		}else{
 			thread->ExecuteTask();
 		}

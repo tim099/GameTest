@@ -8,7 +8,6 @@ class Texture2DArr : public Texture {
 public:
 	Texture2DArr(GLuint _TexID,glm::ivec3 size,GLenum type,GLenum format);
 	virtual ~Texture2DArr();
-	virtual void sent_uniform(Shader* shader,int num,const char *name)const;
 	virtual int layer()const;
 	static Texture2DArr* gen_texture2DArr(glm::ivec3 size,GLint internalformat,GLenum format,
 			GLenum type=GL_UNSIGNED_BYTE,GLsizei mipLevelCount=1,int Parameteri=P_MipMap);

@@ -25,7 +25,9 @@ void Texture::bind_texture(){
 	glBindTexture(target,TexID);
 }
 void Texture::sent_uniform(Shader* shader,int num,const char *name)const{
-	std::cerr<<"please implement texture sent_uniform function"<<std::endl;
+	shader->sent_Uniform1i(name,num);//texturebuffer
+	glActiveTexture(GL_TEXTURE0+num);
+	glBindTexture(target,TexID);
 }
 void Texture::TexFilterParameteri(GLenum target,int Parameteri){
 	switch(Parameteri){

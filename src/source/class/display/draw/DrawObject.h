@@ -9,12 +9,12 @@ class Texture;
 class Shader;
 class DrawObject {
 public:
-	DrawObject(BufferObject* obj,Texture* texture,Texture* NormalMap=0);
+	DrawObject(BufferObject* obj,Texture* texture=0,Texture* NormalMap=0,bool layer_texture=false);
 	virtual ~DrawObject();
 	//static glm::mat4 model_matrix(Position* p);
 	static void Model_veiw(GLuint programID,glm::mat4 model_matrix);
 	virtual void draw_object(Shader *shader);
-	virtual void draw_shadow_map(GLuint programID);
+	virtual void draw_shadow_map(Shader *shader);
 	//update draw object if neccessary
 	virtual void update();
 
@@ -26,6 +26,7 @@ public:
 	void clear_temp_position();
 	bool draw_shadow;
 protected:
+	bool layer_texture;
 	BufferObject *obj;
 	Texture* texture;
 	Texture* NormalMap;

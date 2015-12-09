@@ -73,11 +73,6 @@ Texture2D* Texture2D::loadBMP(const char * imagepath,int Parameteri){
 	delete bmp_img;
 	return texture;
 }
-void Texture2D::sent_uniform(Shader* shader,int num,const char *name)const{
-	shader->sent_Uniform1i(name,num);//texturebuffer
-	glActiveTexture(GL_TEXTURE0+num);
-	glBindTexture(target,TexID);//GL_TEXTURE_CUBE_MAP
-}
 Image<unsigned char>* Texture2D::convert_to_image(GLenum _format){
 	glBindTexture(GL_TEXTURE_2D,TexID);
 	Image<unsigned char> *img=new Image<unsigned char>(size,_format);

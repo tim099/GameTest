@@ -7,15 +7,17 @@ in VertexData{
 	vec4 MVP_pos;
 	vec3 T;
 	vec3 B;
+	float UVlayer;
 }vert;
 
 layout(location = 0)out vec4 color;
 
-uniform int shaderData;
-
-uniform sampler2D myTextureSampler;
+//uniform sampler2D myTextureSampler;
+uniform sampler2D Texture;
 uniform sampler2D NormalTexture;
-uniform sampler2DArray texarr;//test
+
+uniform sampler2DArray TextureArr;
+uniform sampler2DArray NormalTextureArr;
 uniform vec3 camera_pos;
 
 uniform vec4 mat;
@@ -23,3 +25,12 @@ uniform mat4 VP;
 
 #include <files/shader/header/light/light>
 #include <files/shader/header/normalMapping>
+
+vec3 get_tex_color(){
+	if((shaderData&LayerTexture)==0){//not active LayerTexture
+		return (texture(Texture,vert.UV).rgb);
+	}
+	return texture(TextureArr,vec3(vert.UV,vert.UVlayer)).rgb;//+vec3(0.3*vert.UVlayer,0.0,0.0)
+
+}
+

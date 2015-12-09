@@ -29,7 +29,6 @@ public:
 			GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_MipMap);
 	virtual Texture2D* Tex2D();
 	virtual int layer()const;
-	virtual void sent_uniform(Shader* shader,int num,const char *name)const;
 	virtual void draw_texture(Shader* shader2D,double winaspect=1.0,double texaspect=1.0,GLfloat alpha=1.0,
 			glm::vec3 pos=glm::vec3(0,0,0),double size=1.0);
 	Image<unsigned char>* convert_to_image(GLenum format=GL_RGB);

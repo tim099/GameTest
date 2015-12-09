@@ -53,7 +53,7 @@ bool Renderer::Rendering()const{
 	return rendering;
 }
 void Renderer::render(){
-	std::cout<<"renderer render start"<<std::endl;
+	//std::cout<<"renderer render start"<<std::endl;
 
 	window->render_on();
 	rendering=true;
@@ -67,7 +67,7 @@ void Renderer::render(){
 
     camera->sent_uniform((*shader)->programID,FBO->aspect());
     lightControl->sent_uniform((*shader),camera->pos);
-    texmap->get_tex("cube_textures")->sent_uniform((*shader),30,"Texturearr");
+    //texmap->get_tex("cube_textures")->sent_uniform((*shader),30,"Texturearr");
     //start draw
     d_obj->draw((*shader));
     /*
@@ -90,5 +90,5 @@ void Renderer::render(){
 	window->swap_buffer();
 	window->render_off();//release thread using this window
 
-	std::cout<<"renderer render end"<<std::endl;
+	//std::cout<<"renderer render end"<<std::endl;
 }

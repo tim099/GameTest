@@ -11,11 +11,14 @@ public:
 	void Execute();
 	bool Done()const;
 	bool AutoTerminate()const;
+	void wait_for_this(DWORD time=INFINITE);
 protected:
 	virtual void TaskDone();
 	virtual void ExecuteTask()=0;
 	bool done;
 	bool auto_terminate;
+	bool task_start;
+	Mutex *taskMutex;
 };
 
 } /* namespace Tim */

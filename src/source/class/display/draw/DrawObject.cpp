@@ -5,18 +5,18 @@
 #include "class/display/shader/Shader.h"
 #include "class/display/texture/Texture.h"
 #include <iostream>
-DrawObject::DrawObject(BufferObject* _obj,Texture* _texture,Texture* _NormalMap) {
+DrawObject::DrawObject(BufferObject* _obj,Texture* _texture,Texture* _NormalMap,bool _layer_texture) {
 	obj=_obj;
 	texture=_texture;
 	NormalMap=_NormalMap;
 	draw_shadow=true;
+	layer_texture=_layer_texture;
 }
 DrawObject::~DrawObject() {
 	clear_position();
 	clear_temp_position();
-	if(obj){
-		if(obj->AutoDelete())delete obj;//handle by outside!!
-	}
+	if(obj->AutoDelete())delete obj;//if not AutoDelete() then let it handle by outside!!
+
 }
 void DrawObject::update(){
 
@@ -59,19 +59,30 @@ void DrawObject::draw_vec(GLuint programID,std::vector<Position*> &pos_v){
 		obj->draw(programID);
 	}
 }
-void DrawObject::draw_shadow_map(GLuint programID){
+void DrawObject::draw_shadow_map(Shader *shader){
 	if(!draw_shadow)return;
 	obj->vtbuffer->bind_buffer();
-	draw_vec(programID,m_pos);
-	draw_vec(programID,temp_pos);
+	draw_vec(shader->programID,m_pos);
+	draw_vec(shader->programID,temp_pos);
 	glDisableVertexAttribArray(0);//vertexbuffer
 }
 void DrawObject::draw_object(Shader *shader){
-	obj->bind_buffer(shader->programID);
-	texture->sent_uniform(shader,0,"Texture");
+
+	obj->bind_buffer(shader);
+	if(texture){
+		if(!layer_texture){//simple texture
+			texture->sent_uniform(shader,0,"Texture");
+		}else{
+			texture->sent_uniform(shader,10,"TextureArr");
+		}
+	}
 	if(NormalMap){
 		shader->Enable(NormalMappingActive);
-		NormalMap->sent_uniform(shader,1,"NormalTexture");
+		if(!layer_texture){
+			NormalMap->sent_uniform(shader,1,"NormalTexture");
+		}else{
+			NormalMap->sent_uniform(shader,11,"NormalTextureArr");
+		}
 	}
 	draw_vec(shader->programID,m_pos);
 	draw_vec(shader->programID,temp_pos);

@@ -2,8 +2,8 @@
 #include "class/display/model/Model.h"
 #include <iostream>
 MapDrawObject::MapDrawObject(BufferObject* obj,Texture* texture,Texture* NormalMap)
-: DrawObject(obj,texture,NormalMap){
-	mapmodel=new Model(60);
+: DrawObject(obj,texture,NormalMap,true){
+	mapmodel=new Model(60,true);
 	updated=false;
 }
 MapDrawObject::~MapDrawObject() {

@@ -421,6 +421,7 @@ void Test::draw(double &time){
     ///*
 	//Renderer::enable_thread_render();
 	//render_task=new RenderTask(renderer,window);
+	//while(!render_thread->Suspended());
 	render_thread->push_task(render_task);
 	render_thread->start();
 
@@ -460,25 +461,14 @@ void Test::timer_tic(double &time){
     camera->tic();
 
     update_map(camera);
-    std::cout<<"draw start"<<std::endl;
+    //std::cout<<"draw start"<<std::endl;
     //========================render thread start========================
     draw(time);
     //========================wait for rendering end=====================
-    std::cout<<"draw end"<<std::endl;
-    //render_thread->wait_for_this();
-    int i=0,j=0;
-	while(!render_thread->DONE()){//renderer->Rendering();!render_task->Done()
-		//std::cout<<"wait!!"<<std::endl;
-		if(i<10000)i++;
-		else{
-			i=0;j++;
-		}
-		if(j>10000){
-			std::cerr<<"render time out!!"<<std::endl;
-			break;
-		}
-	}
-	std::cout<<"render end"<<std::endl;
+    //std::cout<<"draw end"<<std::endl;
+    render_thread->wait_for_this();
+    //render_task->wait_for_this();
+	//std::cout<<"render end"<<std::endl;
 	//render_thread->wait_for_this();
 	//delete render_task;
 	//renderer->disable_thread_render();
@@ -500,6 +490,7 @@ void Test::Mainloop(){
 	}
 	*/
     //window->render_off();
+    //int i=WAIT_ABANDONED;
     while(!window->WindowShouldClose()&&!end){
     	timer_tic(time);
     }

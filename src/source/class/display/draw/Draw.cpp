@@ -31,7 +31,7 @@ void Draw::draw(Shader *shader){
 }
 void Draw::draw_shadow(Shader *shader){
     for(unsigned i=0;i<d_objs.size();i++){
-    	d_objs.at(i)->draw_shadow_map(shader->programID);//draw all obj
+    	d_objs.at(i)->draw_shadow_map(shader);//draw all obj
     }
     for(unsigned i=0;i<subdraw.size();i++){
     	subdraw.at(i)->draw_shadow(shader);

@@ -10,10 +10,11 @@
 #include "class/display/model/obj/Face.h"
 #include "class/tim/math/Math.h"
 #include "class/display/model/Vertex.h"
+#include "class/tim/array/Array.h"
 const GLfloat F_MAX=999999999999999999.0;
 const GLfloat F_MIN=-999999999999999999.0;
-Model::Model(int _max_len) {
-	initial(0,_max_len);
+Model::Model(int _max_len,bool layertex) {
+	initial(0,_max_len,layertex);
 }
 Model::Model(Obj* obj){
 	initial(3*obj->fs.size(),3*obj->fs.size());
@@ -38,46 +39,62 @@ Model::~Model() {
 	delete[] vtBuffer;
 	delete[] uvBuffer;
 	delete[] vnBuffer;
+	if(lyBuffer)delete[] lyBuffer;
 }
-void Model::initial(int _len,int _max_len){
+void Model::initial(int _len,int _max_len,bool layertex){
 	len=_len;
 	max_len=_max_len;
 
-	vtBuffer=new GLfloat[3*_max_len];//3 for each point
-	uvBuffer=new GLfloat[2*_max_len];
-	vnBuffer=new GLfloat[3*_max_len];
+	vtBuffer=new GLfloat[3*_max_len];//3 for x,y,z
+	uvBuffer=new GLfloat[2*_max_len];//2 for 2D texture UV
+	vnBuffer=new GLfloat[3*_max_len];//3 for normal vector x,y,z
+	if(layertex){
+		lyBuffer=new GLfloat[_max_len];
+	}else{
+		lyBuffer=0;
+	}
 	mat=glm::vec4(0.3,0.4,0.01,0.05);
 }
 void Model::max_len_alter(int _len){
 	if(_len>max_len){
 		while(_len>max_len)max_len*=2;
-		GLfloat* tmp_vtBuffer=new GLfloat[3*max_len];
-		GLfloat* tmp_uvBuffer=new GLfloat[2*max_len];
-		GLfloat* tmp_vnBuffer=new GLfloat[3*max_len];
-		std::copy(vtBuffer,vtBuffer+3*len,tmp_vtBuffer);
-		std::copy(uvBuffer,uvBuffer+2*len,tmp_uvBuffer);
-		std::copy(vnBuffer,vnBuffer+3*len,tmp_vnBuffer);
-		std::swap(vtBuffer,tmp_vtBuffer);
-		std::swap(uvBuffer,tmp_uvBuffer);
-		std::swap(vnBuffer,tmp_vnBuffer);
-		delete tmp_vtBuffer;
-		delete tmp_uvBuffer;
-		delete tmp_vnBuffer;
+
+		Tim::Array<GLfloat>::size_alter(vtBuffer,3*len,3*max_len);
+		Tim::Array<GLfloat>::size_alter(uvBuffer,2*len,2*max_len);
+		Tim::Array<GLfloat>::size_alter(vnBuffer,3*len,3*max_len);
+		if(lyBuffer)Tim::Array<GLfloat>::size_alter(lyBuffer,len,max_len);
+
 		//std::cout<<"model len_alter:"<<max_len<<std::endl;
+	}
+}
+void Model::merge(Model *m,glm::vec3 trans,float layer){
+	int prev_len=len;//buffer this before merge!!
+	merge(m,trans);
+	for(int i=0;i<m->len;i++){
+		lyBuffer[prev_len+i]=layer;
 	}
 }
 void Model::merge(Model *m,glm::vec3 trans){
 	max_len_alter(len+m->len);
-	//std::copy(m->vtBuffer,m->vtBuffer+3*m->len,tmp_vtBuffer+3*len);
-	for(int i=0;i<m->len;i++){
-		vtBuffer[3*(i+len)]=m->vtBuffer[3*i]+trans.x;
-		vtBuffer[3*(i+len)+1]=m->vtBuffer[3*i+1]+trans.y;
-		vtBuffer[3*(i+len)+2]=m->vtBuffer[3*i+2]+trans.z;
+	if(trans!=glm::vec3(0,0,0)){
+		for(int i=0;i<m->len;i++){
+			vtBuffer[3*(i+len)]=m->vtBuffer[3*i]+trans.x;
+			vtBuffer[3*(i+len)+1]=m->vtBuffer[3*i+1]+trans.y;
+			vtBuffer[3*(i+len)+2]=m->vtBuffer[3*i+2]+trans.z;
+		}
+	}else{
+		std::copy(m->vtBuffer,m->vtBuffer+3*m->len,vtBuffer+3*len);
 	}
+
 	std::copy(m->uvBuffer,m->uvBuffer+2*m->len,uvBuffer+2*len);
 	std::copy(m->vnBuffer,m->vnBuffer+3*m->len,vnBuffer+3*len);
+	if(m->lyBuffer){
+		if(!lyBuffer)std::cerr<<"Model merge failed no layer_buffer!!"<<std::endl;
+		else 	     std::copy(m->lyBuffer,m->lyBuffer+m->len,lyBuffer+len);
+	}
 
 	len+=m->len;
+
 }
 int Model::vtlen()const{
 	return 3*len;
@@ -87,6 +104,9 @@ int Model::uvlen()const{
 }
 int Model::vnlen()const{
 	return 3*len;
+}
+int Model::lylen()const{
+	return len;
 }
 Model* Model::load_obj(const char* path,GLfloat size,bool translate_to_o){
 	Obj *obj=Obj::load_obj(path);
@@ -110,7 +130,7 @@ void Model::scale(GLfloat size){
 void Model::check_size(){
 	GLfloat x,y,z;
 	glm::vec3 max(F_MIN,F_MIN,F_MIN),min(F_MAX,F_MAX,F_MAX);
-	for(int i=0;i<(vtlen()/3);i++){
+	for(int i=0;i<len;i++){
 		x=vtBuffer[3*i];
 		y=vtBuffer[3*i+1];
 		z=vtBuffer[3*i+2];
@@ -136,8 +156,11 @@ int Model::vtdatasize()const{
 int Model::vndatasize()const{
 	return vnlen()*sizeof(GLfloat);
 }
+int Model::lydatasize()const{
+	return lylen()*sizeof(GLfloat);
+}
 void Model::translate(glm::vec3 v){
-	for(int i=0;i<(vtlen()/3);i++){
+	for(int i=0;i<len;i++){
 		vtBuffer[3*i]+=v.x;
 		vtBuffer[3*i+1]+=v.y;
 		vtBuffer[3*i+2]+=v.z;

@@ -9,11 +9,6 @@ Texture2DArr::Texture2DArr(GLuint _TexID,glm::ivec3 _size,GLenum _type,GLenum _f
 Texture2DArr::~Texture2DArr() {
 
 }
-void Texture2DArr::sent_uniform(Shader* shader,int num,const char *name)const{
-	shader->sent_Uniform1i(name,num);//texturebuffer
-	glActiveTexture(GL_TEXTURE0+num);
-	glBindTexture(target,TexID);//GL_TEXTURE_2D
-}
 void Texture2DArr::draw_texture(Shader* shader2D,double winaspect,double texaspect,GLfloat alpha,glm::vec3 pos
 		,double size){
 

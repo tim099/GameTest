@@ -19,8 +19,10 @@ DisplayMap::DisplayMap(Map *_map,Draw *_d_obj,TextureMap *_texmap,Window *_windo
 	MapDrawObject *d_map;
     for(int i=0;i<SEG;i++){
     	for(int j=0;j<SEG;j++){
-    		d_map=new MapDrawObject(0,texmap->get_tex(std::string("tex3")),//"test3"
-    				texmap->get_tex(std::string("NormalTexture3")));//"NormalTexture"
+    		//d_map=new MapDrawObject(0,texmap->get_tex(std::string("tex3")),//"test3"
+    				//texmap->get_tex(std::string("NormalTexture3")));//"NormalTexture"
+    		d_map=new MapDrawObject(0,texmap->get_tex(std::string("cube_textures")),//"test3"
+    				texmap->get_tex(std::string("cube_normals")));//
     		d_obj->push(d_map);
     		dmaps[i][j]=d_map;
     	}
@@ -67,14 +69,16 @@ void DisplayMap::create_map_object(int px,int pz){
     for(int i=px*segsize;i<(px+1)*segsize;i++){
     	for(int j=0;j<max_y;j++){
     		for(int k=pz*segsize;k<(pz+1)*segsize;k++){
-    			if(map->get(i,j,k)){
+    			int type=map->get(i,j,k);
+    			if(type){
+    				type--;//convert to layer of texture
     				glm::vec3 pos=glm::vec3((i+0.5)*CUBE_SIZE,(j+0.5)*CUBE_SIZE,(k+0.5)*CUBE_SIZE);
-        			if(j+1>=max_y||!map->get(i,j+1,k))mapmodel->merge(cube->cube[0],pos);//DOC->m_objs.at(0)
-        			if(j-1<0||!map->get(i,j-1,k))mapmodel->merge(cube->cube[1],pos);
-        			if(i+1>=MX||!map->get(i+1,j,k))mapmodel->merge(cube->cube[2],pos);
-        			if(i-1<0||!map->get(i-1,j,k))mapmodel->merge(cube->cube[3],pos);
-        			if(k+1>=MZ||!map->get(i,j,k+1))mapmodel->merge(cube->cube[4],pos);
-        			if(k-1<0||!map->get(i,j,k-1))mapmodel->merge(cube->cube[5],pos);
+        			if(j+1>=max_y||!map->get(i,j+1,k))mapmodel->merge(cube->cube[0],pos,type);//DOC->m_objs.at(0)
+        			if(j-1<0||!map->get(i,j-1,k))mapmodel->merge(cube->cube[1],pos,type);
+        			if(i+1>=MX||!map->get(i+1,j,k))mapmodel->merge(cube->cube[2],pos,type);
+        			if(i-1<0||!map->get(i-1,j,k))mapmodel->merge(cube->cube[3],pos,type);
+        			if(k+1>=MZ||!map->get(i,j,k+1))mapmodel->merge(cube->cube[4],pos,type);
+        			if(k-1<0||!map->get(i,j,k-1))mapmodel->merge(cube->cube[5],pos,type);
     			}
     		}
     	}

@@ -75,10 +75,23 @@ Texture2DArr:
 		256
 		256
 	TexturePath:
+		cube/tex1.bmp
+	TexturePath:
+		cube/tex2.bmp
+	TexturePath:
+		cube/tex3.bmp
+Texture2DArr:
+	TextureName:
+		cube_normals
+	TextureNum:
+		3
+	TextureSize:
+		256
+		256
+	TexturePath:
 		cube/cube1.bmp
 	TexturePath:
 		cube/cube2.bmp
 	TexturePath:
 		cube/cube3.bmp
-
 #END

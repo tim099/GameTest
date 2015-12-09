@@ -1,5 +1,7 @@
 #include "class/game/map/Map.h"
 #include <cstdio>
+#include <ctime>
+#include <cstdlib>
 #include <iostream>
 Map::Map() {
 	for(int i=0;i<MX;i++){
@@ -33,12 +35,19 @@ void Map::load_map(const char *path){
 		std::cerr<<"load map error Map size too large"<<std::endl;
 		return;
 	}
+	srand(time(NULL));
+
 	for(int i=0;i<ms.x;i++){
 		for(int j=0;j<ms.y;j++){
 			for(int k=0;k<ms.z;k++){
 				int type=0;
 				fscanf(fop,"%d",&type);
-				map[i][j][k]=new Cube(type);
+				if(type){
+					type=rand()%3+1;
+					map[i][j][k]=new Cube(type);
+				}else{
+					map[i][j][k]=new Cube(type);
+				}
 			}
 		}
 	}

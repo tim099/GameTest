@@ -4,6 +4,7 @@
 #include <string>
 #include <GL/glew.h>
 const int NormalMappingActive=1<<0;
+const int LayerTexture=1<<1;
 class Shader {
 public:
 	Shader(std::string name=std::string("default"));

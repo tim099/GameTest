@@ -24,7 +24,7 @@ void Thread::Terminate(){
 	if(DONE())ResumeThread(threadhandle);//to return
 }
 void Thread::wait_for_this(DWORD time){
-	while(!thread_start);
+	while(!thread_start);//waste time until thread_start
 
 	threadMutex->wait_for_this();
 	threadMutex->release();
@@ -47,11 +47,13 @@ void Thread::start(){
 	}
 
 	ResumeThread(threadhandle);
-	int i=1;
-	while(!thread_start){
+	unsigned i=1;
+	while(!thread_start&&!DONE()){
 		i++;
-		if(i%1000==0){
-			std::cout<<"thread not start"<<i<<std::endl;
+		if(i%2000==0){
+			if(i>55000){
+				std::cout<<"thread not start"<<i<<std::endl;
+			}
 			ResumeThread(threadhandle);
 		}
 	}

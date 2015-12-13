@@ -64,14 +64,21 @@ void Image<DataType>::loadBMP(const char * imagepath){
 	fclose(file);
 }
 template<class DataType>
-void Image<DataType>::sub_image(GLenum target,int layer,GLenum type){
+void Image<DataType>::sub_image3D(GLenum target,int layer,GLenum type){
 	glTexSubImage3D(target,0,0,0,layer,size.x,size.y,1,format,type,data);
 }
 template<class DataType>
-void Image<DataType>::load_sub_image(const char *imagepath,GLenum target,int layer,GLenum type){
+void Image<DataType>::load_sub_image3D(const char *imagepath,GLenum target,int layer,GLenum type){
 	Image<DataType>* bmp_img=new Image<DataType>();
 	bmp_img->loadBMP(imagepath);
-	bmp_img->sub_image(target,layer,type);
+	bmp_img->sub_image3D(target,layer,type);
+	delete bmp_img;
+}
+template<class DataType>
+void Image<DataType>::load_sub_image2D(const char *imagepath,GLenum target,GLenum internalformat,GLenum format,GLenum type){
+	Image<DataType>* bmp_img=new Image<DataType>();
+	bmp_img->loadBMP(imagepath);
+	glTexImage2D(target,0,internalformat,bmp_img->size.x,bmp_img->size.y,0,format,type,bmp_img->data);
 	delete bmp_img;
 }
 template<class DataType>

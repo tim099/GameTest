@@ -93,8 +93,9 @@ void DisplayMap::draw_map(Camera *camera){
     max=dp_pos+glm::ivec2(range,range);
     if(min.x<0)min.x=0;if(min.y<0)min.y=0;
     if(max.x>=MX)max.x=MX-1;if(max.y>=MZ)max.y=MZ-1;
-    for(int i=min.x/segsize;i<max.x/segsize;i++){
-    	for(int j=min.y/segsize;j<max.y/segsize;j++){
+
+    for(int i=(min.x/segsize);i<(max.x/segsize+0.5);i++){
+    	for(int j=min.y/segsize;j<(max.y/segsize+0.5);j++){
     		dmaps[i][j]->push_temp_position(new Position(glm::vec3(0,0,0),glm::vec3()));
     	}
     }

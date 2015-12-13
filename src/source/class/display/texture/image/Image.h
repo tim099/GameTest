@@ -30,13 +30,14 @@ public:
 	virtual ~Image();
 	static void convert_to_sobel(Image<DataType>* image,
 			glm::vec2 dv=glm::vec2(2,1),float clip=0.0);
-	static void load_sub_image(const char * imagepath,
+	static void load_sub_image3D(const char * imagepath,
 			GLenum target,int layer,GLenum type=GL_UNSIGNED_BYTE);
+	static void load_sub_image2D(const char * imagepath,
+			GLenum target,GLenum internalformat,GLenum format,GLenum type=GL_UNSIGNED_BYTE);
 
 	void initialize(glm::ivec2 size,GLenum format);
 	void loadBMP(const char * imagepath);
-	void sub_image(GLenum target,int layer,GLenum type=GL_UNSIGNED_BYTE);
-
+	void sub_image3D(GLenum target,int layer,GLenum type=GL_UNSIGNED_BYTE);
 	GLenum format;
 	glm::ivec2 size;
 	unsigned int imageSize;   // = width*height*3

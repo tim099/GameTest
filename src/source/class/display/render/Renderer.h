@@ -1,7 +1,8 @@
 #ifndef RENDERER_H_
 #define RENDERER_H_
 #include "class/tim/Thread/Thread.h"
-#include "class/display/texture/texture3D/Texture2DArr.h"
+#include "class/display/texture/texture3D/Texture2DArr/Texture2DArr.h"
+#include "class/display/texture/texture3D/cubemap/TextureCubeMap.h"
 #include "class/display/texture/TextureMap.h"
 class Shader;
 class FrameBuffer;

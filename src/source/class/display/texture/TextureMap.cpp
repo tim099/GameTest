@@ -1,6 +1,7 @@
 #include "class/display/texture/TextureMap.h"
 #include "class/display/texture/texture2D/Texture2D.h"
-#include "class/display/texture/texture3D/Texture2DArr.h"
+#include "class/display/texture/texture3D/Texture2DArr/Texture2DArr.h"
+#include "class/display/texture/texture3D/cubemap/TextureCubeMap.h"
 #include "class/tim/file/File.h"
 #include "class/tim/string/String.h"
 #include <cstdio>
@@ -79,8 +80,44 @@ void TextureMap::Load_texture2DArr(std::istream &is,const std::string &folder_pa
 			return;
 		}
 	}
-	Texture2DArr *texarr=Texture2DArr::gen_texture2DArr(paths,glm::ivec3(size.x,size.y,paths.size()),GL_RGB,GL_RGB,GL_UNSIGNED_BYTE);
+	Texture2DArr *texarr=Texture2DArr::gen_texture2DArr(paths,glm::ivec3(size.x,size.y,paths.size()),
+			GL_RGB,GL_RGB,GL_UNSIGNED_BYTE,P_MipMap);
 	push_tex(name,texarr);
+}
+void TextureMap::Load_textureCubeMap(std::istream &is,const std::string &folder_path){
+	std::string line;
+	std::string name,path;
+	std::vector<std::string>paths;
+	Tim::String::get_line(is,line,true,true);
+	glm::ivec2 size;
+	if(line=="TextureName:"){
+		Tim::String::get_line(is,name,true,true);
+	}else{
+		std::cerr<<"Load_textureCubeMap no Texture Name!!"<<line<<std::endl;
+		return;
+	}
+	Tim::String::get_line(is,line,true,true);
+	if(line=="TextureSize:"){
+		is>>size.x;
+		is>>size.y;
+	}else{
+		std::cerr<<"Load_textureCubeMap no TextureSize:!!"<<line<<std::endl;
+	}
+
+	for(unsigned i=0;i<6;i++){
+		Tim::String::get_line(is,line,true,true);
+		if(line=="TexturePath:"){
+			Tim::String::get_line(is,line,true,true);
+			path=folder_path+line;
+			paths.push_back(path);
+		}else{
+			std::cerr<<"Load_textureCubeMap no TexturePath!!"<<line<<";"<<std::endl;
+			return;
+		}
+	}
+	TextureCubeMap *texcube=TextureCubeMap::gen_CubeMap(paths,glm::ivec2(size.x,size.y),
+			GL_RGB,GL_RGB,GL_UNSIGNED_BYTE,P_MipMap);
+	push_tex(name,texcube);
 }
 void TextureMap::Load_Header(std::istream &is,std::string &folder_path){
 	std::string line;
@@ -120,6 +157,8 @@ void TextureMap::Load_texture_script(std::string script_path){
 			Load_texture(is,folder_path);
 		}else if(!strcmp(line.c_str(),"Texture2DArr:")){
 			Load_texture2DArr(is,folder_path);
+		}else if(!strcmp(line.c_str(),"TextureCubeMap:")){
+			Load_textureCubeMap(is,folder_path);
 		}
 	}
 

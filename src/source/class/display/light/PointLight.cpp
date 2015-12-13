@@ -9,7 +9,7 @@ PointLight::~PointLight() {
 
 }
 glm::mat4 PointLight::get_LVP(float aspect,int n)const{
-	glm::mat4 P=glm::perspective(90.5f,aspect,0.01f,100.0f);
+	glm::mat4 P=glm::perspective(90.0f,aspect,0.01f,100.0f);
 	glm::mat4 V;
 
 	switch(n){

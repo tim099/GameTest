@@ -34,19 +34,19 @@ void Texture::TexFilterParameteri(GLenum target,int Parameteri){
 		case P_NONE:
 			break;
 		case P_MipMap:
-			glTexParameteri(target,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 			glTexParameteri(target,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(target,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 			glTexParameteri(target,GL_TEXTURE_BASE_LEVEL,0);
 			glTexParameteri(target,GL_TEXTURE_MAX_LEVEL,20);
-			glGenerateMipmap(target);
+			glGenerateMipmapEXT(target);
 			break;
 		case P_Linear:
-			glTexParameteri(target,GL_TEXTURE_MAG_FILTER,GL_LINEAR);//GL_NEAREST
 			glTexParameteri(target,GL_TEXTURE_MIN_FILTER,GL_LINEAR);//GL_NEAREST
+			glTexParameteri(target,GL_TEXTURE_MAG_FILTER,GL_LINEAR);//GL_NEAREST
 			break;
 		case P_Nearest:
-			glTexParameteri(target,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 			glTexParameteri(target,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+			glTexParameteri(target,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 			break;
 		default:
 			std::cout<<"err unknow texture Parameteri type:"<<Parameteri<<std::endl;
@@ -54,14 +54,10 @@ void Texture::TexFilterParameteri(GLenum target,int Parameteri){
 	}
 }
 void Texture::usetextureVec(Shader* shader,std::vector<Texture*>& texvec,int num,const char *name){
-	int slen=strlen(name);
 	char temp[100];
-	for(int i=0;i<slen;i++){
-		temp[i]=name[i];
-	}
 	for(unsigned i=0;i<texvec.size();i++){
-		Tim::String::gen_array_num(temp+slen,i);
-		//sprintf(temp,"%s[%d]",name,num);
+		//Tim::String::gen_array_num(temp+slen,i);
+		sprintf(temp,"%s[%d]",name,i);
 		texvec.at(i)->sent_uniform(shader,i+num,temp);
 	}
 }

@@ -4,6 +4,7 @@
 MapDrawObject::MapDrawObject(BufferObject* obj,Texture* texture,Texture* NormalMap)
 : DrawObject(obj,texture,NormalMap,true){
 	mapmodel=new Model(60,true);
+	mapmodel->mat=glm::vec4(0.3,0.2,0.1,0.15);
 	updated=false;
 }
 MapDrawObject::~MapDrawObject() {

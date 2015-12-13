@@ -102,11 +102,10 @@ void FrameBuffer::check_frame_buffer(){
 GLuint FrameBuffer::GenFramebuffer(){
 	GLuint FBO;
 	glGenFramebuffers(1,&FBO);
-	glBindFramebuffer(GL_FRAMEBUFFER,FBO);//GL_FRAMEBUFFER
+	//glGenFramebuffersEXT(1,&FBO);
 
-	/*GLuint err=glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (err!=GL_FRAMEBUFFER_COMPLETE){
-		std::cout<<"There is a problem with the FBO:"<<FBO<<"err:"<<err<<std::endl;
-	}*/
+	glBindFramebuffer(GL_FRAMEBUFFER,FBO);//GL_FRAMEBUFFER
+	//glBindFramebufferEXT(GL_FRAMEBUFFER,FBO);//GL_FRAMEBUFFER
+	//check_frame_buffer();
 	return FBO;
 }

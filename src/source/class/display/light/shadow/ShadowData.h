@@ -20,13 +20,15 @@ public:
 			double shadow_dis,Draw *d_obj);
 	void gen_parallelLights_LVP(std::vector<ParallelLight*>&lights,Camera *camera,double shadow_dis);
 	void gen_pointLight_LVP(std::vector<PointLight*>&point_lights);
-	void gen_shadows(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int num,Draw *d_obj,int depth_tex=0);
+	void gen_shadows(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int num,Draw *d_obj,int depth_tex=0
+			,int start_layer=0);
 
 	glm::mat4 *LVP;
 	glm::mat4 *PLVP;
 
 	FrameBuffer* SFBO;
 	FrameBuffer* PSFBO;
+	FrameBuffer* PSFBO2;
 	int s_num;
 	int ps_num;
 	unsigned max_l_shadow;

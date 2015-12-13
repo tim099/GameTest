@@ -1,5 +1,5 @@
 #include "class/test/Test.h"
-#include "class/display/texture/texture3D/Texture2DArr.h"
+#include "class/display/texture/texture3D/Texture2DArr/Texture2DArr.h"
 #include "class/display/texture/texture2D/Texture2D.h"
 #include <iostream>
 #include <cstdio>
@@ -30,7 +30,7 @@ Test::Test() {
 	dmap=new DisplayMap(map,d_obj,texmap,window);
 	//window=new Window(glm::ivec2(1920,1080),"hello tim",true);
 
-	lightControl=new LightControl(5000);
+	lightControl=new LightControl(120);
 
 
 	keyboard=new KeyBoard();
@@ -47,7 +47,7 @@ Test::Test() {
     creat_light();//
     prepare_draw_obj();
 
-    render_thread=new Tim::Thread(REALTIME_PRIORITY_CLASS);
+    render_thread=new Tim::Thread(HIGH_PRIORITY_CLASS);
     renderer=new Renderer(lightControl,d_obj,window,(&cur_shader),camera,mouse,texmap,&shadow_dis);
     thread_pool=new Tim::ThreadPool(4);
     render_task=new RenderTask(renderer,window);
@@ -61,7 +61,6 @@ Test::~Test() {
 
 }
 void Test::terminate(){
-
 	delete texmap;
 
 	delete dmap;
@@ -316,7 +315,7 @@ void Test::prepare_draw_obj(){
 	Model* m9=Model::load_obj("files/obj/celestialSphere.obj",6.0);
 	m->mat=glm::vec4(0.1,1.0,0.02,0.05);
 	m2->mat=glm::vec4(0.1,0.1,0.02,1.0);
-	m3->mat=glm::vec4(0.1,0.05,0.02,0.05);
+	//m3->mat=glm::vec4(0.1,0.05,0.02,0.05);
 	m4->mat=glm::vec4(0.4,0.05,0.02,1.7);
 	m5->mat=glm::vec4(0.0,0.0,0.02,0.1);
 	m6->mat=glm::vec4(0.0,0.0,0.02,0.8);
@@ -422,29 +421,11 @@ void Test::draw(double &time){
 	//Renderer::enable_thread_render();
 	//render_task=new RenderTask(renderer,window);
 	//while(!render_thread->Suspended());
+
 	render_thread->push_task(render_task);
 	render_thread->start();
+	//render_task->Execute();
 
-	//*/
-	/*
-
-	FrameBuffer::unbind_buffer(window->get_size());
-	if(to_sobel){
-		Image<unsigned char>*img=FBO->color_textures.at(1)->Tex2D()->convert_to_image();
-		Image<unsigned char>::convert_to_sobel(img,glm::vec2(20.0,10.0),0.9);
-		Texture* tmp_tex=Texture2D::gen_texture2D(img,GL_RGB);
-		FBO->color_textures.at(0)->draw_texture(shader2D,window->aspect(),window->aspect(),1.0);
-		tmp_tex->draw_texture(shader2D,window->aspect(),window->aspect(),0.2);
-		delete img;
-		delete tmp_tex;
-	}else{
-		FBO->color_textures.at(0)->draw_texture(shader2D,window->aspect(),window->aspect(),1.0);
-	}
-    glEnable(GL_BLEND);
-    //do blend draw
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	glDisable(GL_BLEND);
-	*/
 }
 void Test::timer_tic(double &time){
 	//=======================logical operation and input part==========================
@@ -467,10 +448,11 @@ void Test::timer_tic(double &time){
     //========================wait for rendering end=====================
     //std::cout<<"draw end"<<std::endl;
     render_thread->wait_for_this();
+
     //render_task->wait_for_this();
+
 	//std::cout<<"render end"<<std::endl;
-	//render_thread->wait_for_this();
-	//delete render_task;
+
 	//renderer->disable_thread_render();
 	d_obj->clear_tmp_pos();
 	//===================================================================
@@ -480,15 +462,7 @@ void Test::timer_tic(double &time){
 }
 void Test::Mainloop(){
     double time=0;
-    //void (Test::*ptr)(double&)=&Test::timer_tic;
-    /*
-    Model* m=Model::load_obj("files/obj/tiger.obj",2.0);
 
-	for(int i=0;i<100;i++){
-		BufferObject *test=new BufferObject(m);
-		delete test;
-	}
-	*/
     //window->render_off();
     //int i=WAIT_ABANDONED;
     while(!window->WindowShouldClose()&&!end){

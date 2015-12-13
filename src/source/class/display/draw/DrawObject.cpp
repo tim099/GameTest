@@ -73,7 +73,7 @@ void DrawObject::draw_object(Shader *shader){
 		if(!layer_texture){//simple texture
 			texture->sent_uniform(shader,0,"Texture");
 		}else{
-			texture->sent_uniform(shader,10,"TextureArr");
+			texture->sent_uniform(shader,2,"TextureArr");
 		}
 	}
 	if(NormalMap){
@@ -81,7 +81,7 @@ void DrawObject::draw_object(Shader *shader){
 		if(!layer_texture){
 			NormalMap->sent_uniform(shader,1,"NormalTexture");
 		}else{
-			NormalMap->sent_uniform(shader,11,"NormalTextureArr");
+			NormalMap->sent_uniform(shader,3,"NormalTextureArr");
 		}
 	}
 	draw_vec(shader->programID,m_pos);

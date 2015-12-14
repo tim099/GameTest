@@ -53,6 +53,18 @@ void DisplayMap::gen_map_obj(Tim::ThreadPool* threadpool){
 		tasks.pop_back();
     }
 }
+void DisplayMap::max_y_alter(int val,Tim::ThreadPool* threadpool){
+	if(val==0)return;
+	if(val<0){
+		if(max_y+val>0)max_y+=val;
+		else max_y=0;
+	}else{
+		if(max_y+val<MY)max_y+=val;
+		else max_y=MY-1;
+	}
+
+	gen_map_obj(threadpool);
+}
 void DisplayMap::update_map(int x,int y,int z){
 	//window->render_on();
 	create_map_object(x/segsize,z/segsize);//update

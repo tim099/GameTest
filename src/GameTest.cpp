@@ -15,6 +15,5 @@ int main(){
 	//printf("%d\n",test->creat_light());
 	test->Mainloop();
 	delete test;
-
     return 0;
 }

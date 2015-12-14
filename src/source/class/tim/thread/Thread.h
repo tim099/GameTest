@@ -22,7 +22,7 @@ namespace Tim {
 
 class Thread{
 public:
-	Thread(int priority=THREAD_PRIORITY_NORMAL,Tim::ExecuteDone *done=0);
+	Thread(int priority=NORMAL_PRIORITY_CLASS,Tim::ExecuteDone *done=0);
 	virtual ~Thread();
 	/*
 	 *start execute task inside this thread
@@ -44,7 +44,7 @@ public:
 	/*
 	 *wait for this thread until all task done
 	 */
-	void wait_for_this(DWORD time=INFINITE);
+	void join(DWORD time=INFINITE);
 	/*
 	 *this function only call by the win32 api CreateThread()
 	 *execute task in this function

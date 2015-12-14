@@ -35,10 +35,8 @@ Renderer::Renderer(LightControl* _lightControl,Draw *_d_obj,Window *_window,Shad
 	shader2D=new Shader();
 	shader2D->LoadShader("files/shader/2D/2D.vert","files/shader/2D/2D.frag");
 
-
 	//std::vector<std::string> files=Tim::File::get_all_files("files/texture/");
 	//for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
-
 }
 Renderer::~Renderer() {
 	//delete texarr;
@@ -77,7 +75,7 @@ void Renderer::render(){
 	rendering=false;
 
 
-	window->swap_buffer();
+	//window->swap_buffer();
 	window->render_off();//release thread using this window
 
 	//std::cout<<"renderer render end"<<std::endl;

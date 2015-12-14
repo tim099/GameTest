@@ -86,7 +86,7 @@ vec3 point_light(vec3 N,vec4 pos){
 		if(light_val<0.0)light_val=0.0;	
 		
 		if(pointlight_shadow[i]>0){//do shadow
-			if(((dot(N,light_v)/(length(N)*length(light_v)))<0.3)){		
+			if(((dot(vert.Normal,light_v)/(length(vert.Normal)*length(light_v)))<0.01)){		
 				total_light+=0.1*light_val*pointlight_color[i];
 			}else{
 				int n=check_vec(light_v);
@@ -144,7 +144,7 @@ vec3 parallel_light(vec3 N,vec4 pos){
 		
 		if(light_val<0.0)light_val=0.0;
 		if(parallellight_shadow[i]>0){
-			if(((dot(N,light_v)/(length(N)*length(light_v)))<0.2)){
+			if(((dot(vert.Normal,light_v)/(length(vert.Normal)*length(light_v)))<0.03)){
 				visibility=0.1;
 			}else{
 				LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]*pos;

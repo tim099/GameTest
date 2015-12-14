@@ -1,11 +1,13 @@
 #include "class/test/Test.h"
 #include "class/display/texture/texture3D/Texture2DArr/Texture2DArr.h"
 #include "class/display/texture/texture2D/Texture2D.h"
+#include "class/test/TestTask.h"
+#include <process.h>
 #include <iostream>
 #include <cstdio>
 #include <cmath>
 #include <cstdlib>
-
+//#include <chrono>
 Test::Test() {
 	sun_col1=glm::vec3(2.2,2.3,2.5);
 	sun_col2=glm::vec3(1.2,0.9,0.5);
@@ -47,7 +49,7 @@ Test::Test() {
     creat_light();//
     prepare_draw_obj();
 
-    render_thread=new Tim::Thread(HIGH_PRIORITY_CLASS);
+    render_thread=new Tim::Thread(REALTIME_PRIORITY_CLASS);
     renderer=new Renderer(lightControl,d_obj,window,(&cur_shader),camera,mouse,texmap,&shadow_dis);
     thread_pool=new Tim::ThreadPool(4);
     render_task=new RenderTask(renderer,window);
@@ -69,8 +71,9 @@ void Test::terminate(){
 	delete mouse;
 
 	delete camera;
-	delete thread_pool;
+	//delete thread_pool;
 	delete render_task;
+	thread_pool->Terminate();
 	render_thread->Terminate();
 	for(unsigned i=0;i<shaders.size();i++){
 		delete shaders.at(i);
@@ -235,13 +238,10 @@ void Test::input(){
 		camera->move(glm::vec3(0,-0.03,0));
 	}
 	if(keyboard->pressed('W')){
-		if(dmap->max_y<dmap->MY)dmap->max_y++;
-		dmap->gen_map_obj(thread_pool);
-		//dmap->gen_map_obj();
+		dmap->max_y_alter(1,thread_pool);
 	}
 	if(keyboard->pressed('S')){
-		if(dmap->max_y>0)dmap->max_y--;
-		dmap->gen_map_obj(thread_pool);
+		dmap->max_y_alter(-1,thread_pool);
 	}
 	if(keyboard->pressed('A')){
 		camera->move_side(0.04f);
@@ -271,13 +271,11 @@ void Test::set_obj_pos(Camera *camera){
 
     sunpos.pos=sun_pos;
     sun->push_temp_position(new Position(sunpos));
-    tiger->push_temp_position(new Position(glm::vec3(33.0,21.47,26.0),glm::vec3(0,tiger_ry,0)));
-    //Position* look_at_pos=
+    //tiger->push_temp_position(new Position(glm::vec3(33.0,21.47,26.0),glm::vec3(0,tiger_ry,0)));
     look_at->push_temp_position(new Position(camera->look_at,glm::vec3(0,camera->look_ry(),0)));
-    //look_at->push_temp_position(new Position(glm::vec3(0,0,-1),glm::vec3(0,0,0),look_at_pos));
     stars->push_temp_position(new Position(starpos));
     galaxy->push_temp_position(new Position(starpos));
-    //ico->push_temp_position(new Position(mouse->world_pos,glm::vec3()));
+
 }
 void Test::update_map(Camera *camera){
 	dmap->draw_map(camera);//push position
@@ -442,31 +440,44 @@ void Test::timer_tic(double &time){
     camera->tic();
 
     update_map(camera);
+
     //std::cout<<"draw start"<<std::endl;
+    //thread_pool->push_task(new TestTask());
+    //thread_pool->push_task(new TestTask());
     //========================render thread start========================
     draw(time);
     //========================wait for rendering end=====================
-    //std::cout<<"draw end"<<std::endl;
-    render_thread->wait_for_this();
-
+    render_thread->join();
     //render_task->wait_for_this();
 
-	//std::cout<<"render end"<<std::endl;
 
-	//renderer->disable_thread_render();
 	d_obj->clear_tmp_pos();
 	//===================================================================
 
-    //std::cout<<"d_objs size="<<d_obj->obj_size()<<std::endl;
-    //window->swap_buffer();
 }
 void Test::Mainloop(){
     double time=0;
 
     //window->render_off();
     //int i=WAIT_ABANDONED;
+    //glfwSwapInterval(1);
+
+    double interval,start_time;
     while(!window->WindowShouldClose()&&!end){
+
+    	start_time=glfwGetTime();
     	timer_tic(time);
+    	interval=glfwGetTime()-start_time;
+
+    	while((1.0/interval)>61.0){
+    		interval=glfwGetTime()-start_time;
+    	}
+    	window->render_on();
+    	window->swap_buffer();
+    	window->render_off();//release thread using this window
+
+
+    	std::cout<<"fps="<<(1.0/interval)<<std::endl;
     }
     window->render_on();
     terminate();

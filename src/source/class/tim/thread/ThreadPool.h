@@ -9,12 +9,14 @@ namespace Tim {
 
 class ThreadPool{
 public:
-	ThreadPool(int thread_num);
+	ThreadPool(int thread_num,int priority=NORMAL_PRIORITY_CLASS);
 	virtual ~ThreadPool();
 
 
 	void push_task(Task* task);
 	void distribute_task(Tim::Thread* thread);
+	void Terminate();
+	void thread_terminate(Thread* thread);
 	std::queue<Task*>task_q;
 	std::queue<Thread*>ready_q;
 	std::vector<Thread*>threads;

@@ -8,7 +8,10 @@ public:
 	DistributeTask(ThreadPool *thread_pool);
 	virtual ~DistributeTask();
 	virtual void done(Tim::Thread* thread);
+	void Terminate();
 	ThreadPool *thread_pool;
+protected:
+	bool end;
 };
 
 } /* namespace Tim */

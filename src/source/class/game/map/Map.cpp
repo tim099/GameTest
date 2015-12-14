@@ -11,10 +11,8 @@ Map::Map() {
 			}
 		}
 	}
-	end=false;
 }
 Map::~Map() {
-	end=true;
 	for(int i=0;i<ms.x;i++){
 		for(int j=0;j<ms.y;j++){
 			for(int k=0;k<ms.z;k++){
@@ -52,19 +50,25 @@ void Map::load_map(const char *path){
 		}
 	}
 }
-void Map::set(int x,int y,int z,int val){
-	if(end){
-		std::cout<<"wrong set!!end!!"<<x<<","<<y<<","<<z<<std::endl;
+bool Map::set(int x,int y,int z,int val){
+	if(x<0||x>=MX||y<0||y>=MY||z<0||z>=MZ){
+		//std::cout<<"get out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
+		return false;
 	}
 	if(map[x][y][z])map[x][y][z]->type=val;
+	return true;
 }
 int Map::get(int x,int y,int z)const{
-	if(end){
-		std::cout<<"wrong get!!end!!"<<x<<","<<y<<","<<z<<std::endl;
+	if(x<0||x>=MX||y<0||y>=MY||z<0||z>=MZ){
+		//std::cout<<"get out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
+		return 0;
 	}
 	if(map[x][y][z]){
 		return map[x][y][z]->type;
 	}else{
 		return 0;
 	}
+}
+void Map::tic(){
+
 }

@@ -8,11 +8,10 @@ public:
 	Map();
 	virtual ~Map();
 	void load_map(const char *path);
-	void set(int x,int y,int z,int val);
+	bool set(int x,int y,int z,int val);
 	int get(int x,int y,int z)const;
-
+	void tic();
 protected:
-	bool end;
 	Cube* map[MX][MY][MZ];
 	glm::ivec3 ms;
 };

@@ -60,7 +60,7 @@ void Thread::start(){
 	}
 }
 bool Thread::Suspended()const{
-	///*
+	/*
 	DWORD val;
 	if((val=WaitForSingleObject(threadhandle,0))==WAIT_ABANDONED){
 		std::cout<<"cur suspended"<<std::endl;
@@ -71,14 +71,13 @@ bool Thread::Suspended()const{
 		//ReleaseMutex(threadhandle);
 		return false;
 	}
-	//*/
-
+	*/
+	return false;
 }
 void Thread::sleep(){
-	//std::cout<<"wait"<<std::endl;
 	thread_start=false;
 	threadMutex->release();
-	//may start at here causing problem
+	//may start at here causing problem so start func should avoid this
 	SuspendThread(threadhandle);//dangerous because may start again before suspend!!
 }
 void Thread::ExecuteTask(){
@@ -99,18 +98,22 @@ void Thread::ExecuteTask(){
 void Thread::push_task(Task* task){
 	task_q.push(task);
 }
+void Thread::Execute(){
+	while(!END()){
+		if(DONE()){
+			sleep();
+		}else{
+			ExecuteTask();
+		}
+	}
+	terminate=true;
+}
 DWORD WINAPI Thread::Execute(LPVOID lpParameter){
 	Thread* thread=(Thread*)lpParameter;
 	//std::cout<<"Execute start"<<std::endl;
-	while(!thread->END()){
-		if(thread->DONE()){
-			thread->sleep();
-		}else{
-			thread->ExecuteTask();
-		}
-	}
+	thread->Execute();
 	//std::cout<<"Execute end"<<std::endl;
-	thread->terminate=true;
+
 	delete thread;
 	return 0;
 }

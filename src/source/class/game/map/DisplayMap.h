@@ -3,11 +3,12 @@
 #include "class/game/map/MapDrawObject.h"
 #include "class/display/model/cube/CubeModel.h"
 #include "class/tim/thread/mutex/Mutex.h"
-#include "class/game/map/Map.h"
+
 #include <queue>
 namespace Tim{
 	class ThreadPool;
 }
+class Map;
 class Camera;
 class Draw;
 class TextureMap;

@@ -69,7 +69,7 @@ public:
 	void Terminate();
 protected:
 	static DWORD WINAPI Execute(LPVOID lpParameter);
-
+	void Execute();
 	std::queue<Task*> task_q;
 	bool end;
 	bool terminate;

@@ -5,6 +5,7 @@
 #include "class/game/map/TaskCreateMapModel.h"
 #include "class/tim/thread/ThreadPool.h"
 #include "class/display/window/Window.h"
+#include "class/game/map/Map.h"
 #include <iostream>
 DisplayMap::DisplayMap(Map *_map,Draw *_d_obj,TextureMap *_texmap,Window *_window) {
 	map=_map;
@@ -68,10 +69,10 @@ void DisplayMap::max_y_alter(int val,Tim::ThreadPool* threadpool){
 void DisplayMap::update_map(int x,int y,int z){
 	//window->render_on();
 	create_map_object(x/segsize,z/segsize);//update
-	if(x%segsize==segsize-1)create_map_object((x/segsize)+1,z/segsize);//update
-	if(x%segsize==0)create_map_object((x/segsize)-1,z/segsize);//update
-	if(z%segsize==segsize-1)create_map_object(x/segsize,(z/segsize)+1);//update
-	if(z%segsize==0)create_map_object(x/segsize,(z/segsize)-1);//update
+	if(x%segsize==segsize-1&&((x/segsize)+1<SEG))create_map_object((x/segsize)+1,z/segsize);//update
+	if(x%segsize==0&&((x/segsize)-1>=0))create_map_object((x/segsize)-1,z/segsize);//update
+	if(z%segsize==segsize-1&&((z/segsize)+1<SEG))create_map_object(x/segsize,(z/segsize)+1);//update
+	if(z%segsize==0&&((z/segsize)-1>=0))create_map_object(x/segsize,(z/segsize)-1);//update
 	//Window::render_off();
 }
 void DisplayMap::create_map_object(int px,int pz){

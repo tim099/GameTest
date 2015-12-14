@@ -143,15 +143,17 @@ void Test::input(){
 	if(keyboard->pressed('B')){
 		int x=(int)fabs(camera->look_at.x),y=(int)fabs(camera->look_at.y),z=(int)fabs(camera->look_at.z);
 		if(!map->get(x,y,z)){
-			map->set(x,y,z,1);
-			dmap->update_map(x,y,z);
+			if(map->set(x,y,z,1)){
+				dmap->update_map(x,y,z);
+			}
 		}
 	}
 	if(keyboard->pressed('V')){
-		int x=(int)fabs(camera->look_at.x),y=(int)fabs(camera->look_at.y),z=(int)fabs(camera->look_at.z);
+		int x=(int)fabs(camera->look_at.x),y=(int)fabs(camera->look_at.y),z=(camera->look_at.z);
 		if(map->get(x,y,z)){
-			map->set(x,y,z,0);
-			dmap->update_map(x,y,z);
+			if(map->set(x,y,z,0)){
+				dmap->update_map(x,y,z);
+			}
 		}
 	}
 	if(keyboard->get('O')){
@@ -237,10 +239,10 @@ void Test::input(){
 	if(keyboard->pressed('X')){
 		camera->move(glm::vec3(0,-0.03,0));
 	}
-	if(keyboard->pressed('W')){
+	if(keyboard->get('W')){
 		dmap->max_y_alter(1,thread_pool);
 	}
-	if(keyboard->pressed('S')){
+	if(keyboard->get('S')){
 		dmap->max_y_alter(-1,thread_pool);
 	}
 	if(keyboard->pressed('A')){
@@ -436,9 +438,13 @@ void Test::timer_tic(double &time){
     keyboard->tic();
     glfwPollEvents();//get all input
     //=======================render data update==========================
+    //std::cout<<"tic1"<<std::endl;
     input();
+    //std::cout<<"tic1.2"<<std::endl;
+    map->tic();
+    //std::cout<<"tic1.3"<<std::endl;
     camera->tic();
-
+    //std::cout<<"tic2"<<std::endl;
     update_map(camera);
 
     //std::cout<<"draw start"<<std::endl;
@@ -477,7 +483,7 @@ void Test::Mainloop(){
     	window->render_off();//release thread using this window
 
 
-    	std::cout<<"fps="<<(1.0/interval)<<std::endl;
+    	//std::cout<<"fps="<<(1.0/interval)<<std::endl;
     }
     window->render_on();
     terminate();

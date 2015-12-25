@@ -7,6 +7,15 @@ Uniform::Uniform() {
 Uniform::~Uniform() {
 
 }
+void Uniform::sentUniform(GLuint programID,std::string name,glm::vec3 pos){
+	glUniform3f(glGetUniformLocation(programID,name.c_str()),pos.x,pos.y,pos.z);
+}
+void Uniform::sentUniform(GLuint programID,std::string name,glm::vec2 pos){
+	glUniform2f(glGetUniformLocation(programID,name.c_str()),pos.x,pos.y);
+}
+void Uniform::sentUniform(GLuint programID,std::string name,GLfloat val){
+	glUniform1f(glGetUniformLocation(programID,name.c_str()),val);
+}
 void Uniform::sentMat4Arr(GLuint programID,glm::mat4* MatArr,int num,std::string name){
 	//Tim::String::gen_array_num(name,0);
 	GLuint UNI=glGetUniformLocation(programID,name.c_str());

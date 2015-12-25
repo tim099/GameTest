@@ -1,12 +1,14 @@
 #version 400 core
 
 layout(location=0) in vec3 vertexPosition;
-
+layout(location = 1)in vec2 vertexUV;
 out vec2 UV;
+flat out ivec2 size;
+uniform sampler2D Texture;
 
-uniform float size;
-uniform vec3 position;
+uniform vec2 position;
 void main(){ 
-    gl_Position=vec4(size*vertexPosition+position,1);  //size* 
-    UV = vec2(0.5*vertexPosition.x+0.5,0.5*vertexPosition.y+0.5);//texture UV range 0.0~1.0
+	size=textureSize(Texture,0);
+    gl_Position=vec4(vertexPosition+vec3(position,0),1);//
+    UV=vertexUV;
 }

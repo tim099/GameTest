@@ -14,21 +14,26 @@ class Mouse;
 class Renderer{
 
 public:
-	Renderer(LightControl* lightControl,Draw *d_obj,Window *window,Shader **shader,
+	Renderer(LightControl* lightControl,Draw *d_obj,Window *window,
 			Camera *camera,Mouse* mouse,TextureMap *texmap,double* shadow_dis);
 	virtual ~Renderer();
 	bool Rendering()const;
 	void render();
-protected:
-	TextureMap *texmap;
-	Shader **shader;
+	void set_window(Window *window);
+	void switch_shader(std::string name);
 	FrameBuffer *FBO,*FBO2;
+protected:
+	void creat_shaders();
+	TextureMap *texmap;
+	Shader *shader;
+
 	Camera *camera;
 	Shader *shader2D;
 	LightControl* lightControl;
 	Draw *d_obj;
 	Window *window;
 	Mouse* mouse;//update 3d pos
+	std::vector<Shader*>shaders;
 	double* shadow_dis;
 	bool rendering;
 };

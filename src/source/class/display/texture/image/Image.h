@@ -29,13 +29,14 @@ public:
 	Image(glm::ivec2 size,GLenum format=GL_RGB);
 	virtual ~Image();
 	static void convert_to_sobel(Image<DataType>* image,
-			glm::vec2 dv=glm::vec2(2,1),float clip=0.0);
+			glm::ivec2 dv=glm::ivec2(2,1),float clip=0.0);
 	static void load_sub_image3D(const char * imagepath,
 			GLenum target,int layer,GLenum type=GL_UNSIGNED_BYTE);
 	static void load_sub_image2D(const char * imagepath,
 			GLenum target,GLenum internalformat,GLenum format,GLenum type=GL_UNSIGNED_BYTE);
 
 	void initialize(glm::ivec2 size,GLenum format);
+	void loadImage(const char * imagepath);
 	void loadBMP(const char * imagepath);
 	void sub_image3D(GLenum target,int layer,GLenum type=GL_UNSIGNED_BYTE);
 	GLenum format;

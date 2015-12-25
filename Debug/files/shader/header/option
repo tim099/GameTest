@@ -1,4 +1,4 @@
-const int NormalMappingActive=1<<0;
+const int NormalMapping=1<<0;
 const int LayerTexture=1<<1;
 
 

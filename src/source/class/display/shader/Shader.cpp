@@ -18,23 +18,32 @@ std::string Shader::Name()const{
 	return name;
 }
 void Shader::EnableNormapping(){
-	shaderData|=NormalMappingActive;
-	sent_Uniform1i("shaderData",shaderData);
+	shaderData|=NormalMapping;
+	sent_Uniform("shaderData",shaderData);
 }
 void Shader::DisableNormapping(){
-	shaderData&=(~NormalMappingActive);
-	sent_Uniform1i("shaderData",shaderData);
+	shaderData&=(~NormalMapping);
+	sent_Uniform("shaderData",shaderData);
 }
 void Shader::Enable(int flag){
 	shaderData|=flag;
-	sent_Uniform1i("shaderData",shaderData);
+	sent_Uniform("shaderData",shaderData);
 }
 void Shader::Disable(int flag){
 	shaderData&=(~flag);
-	sent_Uniform1i("shaderData",shaderData);
+	sent_Uniform("shaderData",shaderData);
 }
-void Shader::sent_Uniform1i(const char* name,int i){
-	glUniform1i(glGetUniformLocation(programID,name),i);
+void Shader::sent_Uniform(std::string name,int i){
+	glUniform1i(glGetUniformLocation(programID,name.c_str()),i);
+}
+void Shader::sent_Uniform(std::string name,glm::vec3 pos){
+	glUniform3f(glGetUniformLocation(programID,name.c_str()),pos.x,pos.y,pos.z);
+}
+void Shader::sent_Uniform(std::string name,glm::vec2 pos){
+	glUniform2f(glGetUniformLocation(programID,name.c_str()),pos.x,pos.y);
+}
+void Shader::sent_Uniform(std::string name,GLfloat val){
+	glUniform1f(glGetUniformLocation(programID,name.c_str()),val);
 }
 void Shader::active_shader(){
 	glUseProgram(programID);

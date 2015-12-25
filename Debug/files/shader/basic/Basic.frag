@@ -1,33 +1,42 @@
 #version 400 core
-#define MAX_LIGHT 100 
 
-in VertexData {
-    vec2 UV;
-    vec3 Normal;
-    vec4 position;
-}vert;
+#include <files/shader/header/commondata.fragh>
+#include <files/shader/header/toon.fragh>
 
-layout(location = 0)out vec4 color;
-
-uniform sampler2D Texture;
-
-uniform vec3 camera_pos;
-
-uniform vec4 mat;
-uniform mat4 VP;
-
-#include <files/shader/header/light/light>
-
-uniform sampler2DArray Texturearr;
+uniform samplerCube cubetex;
 void main(){ 
-	//vec3 tex_color=(texture(depthMap[1],vert.UV).rgb);
+	vec3 tex_color=get_tex_color();
+	vec3 Normal=vert.Normal;
 	
-	vec3 tex_color=(texture(Texture,vert.UV).rgb);
-	//vec3 tex_color=texture(Texturearr,vec3(vert.UV,vert.UV.x+vert.UV.y)).xyz;
-	
-	vec3 total_light=compute_total_light(vert.Normal,vert.position);
-	
-	
-    color = vec4((total_light)*tex_color,1.0);
-	
+    vec3 total_light=compute_total_light(Normal,vert.position);
+    
+    
+     
+    vec3 lvec=(vert.position.xyz-camera_pos);
+    vec3 vect=lvec-2*(lvec-dot(lvec,normalize(Normal))*normalize(Normal));
+    
+    float ratio = 1.00/1.3;
+    vec3 R=refract(lvec,normalize(Normal),ratio);    
+    //vec3 reflect_color=texture(cubetex,normalize(R)).xyz;
+    vec3 reflect_color=texture(cubetex,normalize(vect)).xyz;
+    
+    
+    //color=vec4(reflect_color,1.0);
+    
+    //color=vec4(total_light*tex_color+reflect_color,1.0);
+ 	
+ 	color = vec4(toon((total_light)*tex_color,5.0f),1.0);
+ 	
+ 	
+ 	//if(texture(cubedepthMap,vec3(vert.UV,vert.UVlayer)).x==0.0){
+ 		//color=vec4(total_light*vec3(1.5,1,1),1);
+ 	//}else{
+ 		//color=vec4(total_light*vec3(0.5,1,1),1);
+ 	//}
+ 	
+ 	//color = vec4(total_light*tex_color,1.0);	
+ 	
+ 	
+ 	//color=vec4(vert.Normal,1.0);
+
 }

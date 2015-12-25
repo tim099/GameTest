@@ -8,7 +8,7 @@ uniform samplerCube cubetex;
 void main(){ 
 	vec3 tex_color=get_tex_color();
 	vec3 Normal=get_normal();
-
+	
     vec3 total_light=compute_total_light(Normal,vert.position);
     
  	//color = vec4(toon((total_light)*tex_color,5.0f),1.0);
@@ -18,16 +18,10 @@ void main(){
  	//vec3 lvec=-(camera_pos-vert.position.xyz);
     //vec3 vect=lvec-2*(lvec-dot(lvec,normalize(Normal))*normalize(Normal));
     //vec3 reflect_color=texture(cubetex,normalize(vect)).xyz;
- 	
+
+ 	//color=vec4(cross(normalize(camera_pos-vert.position.xyz),Normal),1.0);//+reflect_color
 	color=vec4((total_light)*tex_color,1.0);//+reflect_color
 	
-	//color.x=texture(cubedepthMap[0],vec3(vert.UV,vert.UVlayer)).x;
+	
 
-	//color2=vert.Normal;
-	//float dpc=(1.0/vert.MVP_pos.w)*vert.MVP_pos.z;//test
-	//while(dpc<0.05)dpc+=0.05;
-	//while(dpc<10.0)dpc*=2.0;
-
-	//dpc=(dpc-floor(dpc));
-	//color2=dpc*vec3(1.0,1.0,1.0);
 }

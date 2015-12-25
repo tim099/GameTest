@@ -25,9 +25,15 @@ void Texture::bind_texture(){
 	glBindTexture(target,TexID);
 }
 void Texture::sent_uniform(Shader* shader,int num,const char *name)const{
-	shader->sent_Uniform1i(name,num);//texturebuffer
+	shader->sent_Uniform(name,num);//texturebuffer
 	glActiveTexture(GL_TEXTURE0+num);
 	glBindTexture(target,TexID);
+}
+glm::vec2 Texture::convert_to_texcoord(glm::vec2 pos){
+	return glm::vec2((pos.x+1.0)/2.0,(pos.y+1.0)/2.0);
+}
+glm::vec2 Texture::convert_to_wincoord(glm::vec2 pos){
+	return glm::vec2(pos.x*2.0-1.0,pos.y*2.0-1.0);
 }
 void Texture::TexFilterParameteri(GLenum target,int Parameteri){
 	switch(Parameteri){
@@ -61,15 +67,19 @@ void Texture::usetextureVec(Shader* shader,std::vector<Texture*>& texvec,int num
 		texvec.at(i)->sent_uniform(shader,i+num,temp);
 	}
 }
-GLuint Texture::gen_texture_vertex(GLfloat width,GLfloat height,glm::vec3 pos){
+GLuint Texture::gen_texture_vertex(glm::vec2 size){
 	GLfloat vertex_buffer_data[18];
-	Vertex::gen_quad_vt(vertex_buffer_data,pos,glm::vec3(width,height,0),true);
+	Vertex::gen_quad_vt(vertex_buffer_data,glm::vec3(0,0,0),glm::vec3(size.x,size.y,0),true);
 	return Buffer::gen_buffer(vertex_buffer_data,sizeof(vertex_buffer_data));
+}
+GLuint Texture::gen_texture_uv(){
+	GLfloat uv_buffer_data[12];
+	Vertex::gen_quad_uv(uv_buffer_data);
+	return Buffer::gen_buffer(uv_buffer_data,sizeof(uv_buffer_data));
 }
 int Texture::layer()const{
 	return 0;
 }
-void Texture::draw_texture(Shader* shader2D,double winaspect,double texaspect,GLfloat alpha,glm::vec3 pos
-		,double size){
+void Texture::draw_texture(Shader* shader2D,DrawData *data){
 	std::cerr<<"error not implement draw texture in this class"<<std::endl;
 }

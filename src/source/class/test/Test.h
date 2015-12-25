@@ -42,20 +42,21 @@ public:
 
 	void set_obj_pos(Camera *camera);
 	void update_map(Camera *camera);
-	void draw_all_objects(Shader *shader,FrameBuffer *FBO,Camera *camera,double &time);
 	void prepare_draw_obj();
-	void creat_shader();
 	void creat_light();
 	void Mainloop();
 	void timer_tic(double &time);
+	void test();
 private:
+	void swap_buffer();
 	void draw(double &time);
 	glm::vec3 sun_col1,sun_col2;
 	std::vector<Model*>models;
 	std::vector<BufferObject*>b_objs;
 
-	Draw *d_obj;
 
+	double start_time;
+	Draw *d_obj;
 	LightControl* lightControl;
 	PointLight *camlight;
 	ParallelLight *s_light;
@@ -72,14 +73,8 @@ private:
 	DrawObject* moon;
 
 
-	std::vector<Shader*>shaders;
 	TextureMap* texmap;
-	Shader* cur_shader;
-	Shader2D *shader2D;
 
-	Shader	*shaderLightScatter;
-	Shader* shaderBasic,*shaderNormalMapping;//,*shaderShadowMapping
-	Shader *shaderTest;
 
 	GLuint VertexArrayID;
 	Window *window;

@@ -21,12 +21,15 @@ Draw::~Draw() {
 		subdraw.pop_back();
 	}
 }
-void Draw::draw(Shader *shader){
+void Draw::draw(Shader *shader,Shader *shader2D){
     for(unsigned i=0;i<d_objs.size();i++){
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
+    for(unsigned i=0;i<d_texs.size();i++){
+    	d_texs.at(i)->draw_texture(shader2D);
+    }
     for(unsigned i=0;i<subdraw.size();i++){
-    	subdraw.at(i)->draw(shader);
+    	subdraw.at(i)->draw(shader,shader2D);
     }
 }
 void Draw::draw_shadow(Shader *shader){
@@ -67,6 +70,10 @@ void Draw::clear_tmp_pos(){
     }
     for(unsigned i=0;i<subdraw.size();i++){
     	subdraw.at(i)->clear_tmp_pos();
+    }
+    while(!d_texs.empty()){
+    	delete d_texs.back();
+    	d_texs.pop_back();
     }
 }
 void Draw::remove(DrawObject* obj){

@@ -17,8 +17,10 @@ public:
 	glm::vec3 get_world_space_pos(FrameBuffer* FBO,glm::ivec2 screen_size,glm::mat4 inverseMat);
 	glm::ivec2 pos_delta()const;
 
+
 	glm::ivec2 pos;
 	glm::ivec2 prev_pos;
+	glm::vec2 screen_pos;
 	glm::vec3 world_pos;
 	double scroll;
 	bool left,right,mid;

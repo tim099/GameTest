@@ -13,6 +13,7 @@ Map::Map() {
 	}
 }
 Map::~Map() {
+	std::cout<<"delete map start"<<std::endl;
 	for(int i=0;i<ms.x;i++){
 		for(int j=0;j<ms.y;j++){
 			for(int k=0;k<ms.z;k++){
@@ -23,6 +24,10 @@ Map::~Map() {
 			}
 		}
 	}
+	std::cout<<"delete map end"<<std::endl;
+}
+glm::ivec3 Map::convert_position(glm::vec3 pos){
+	return glm::ivec3(floor(pos.x/Map::CUBE_SIZE),floor(pos.y/Map::CUBE_SIZE),floor(pos.z/Map::CUBE_SIZE));
 }
 void Map::load_map(const char *path){
 	FILE * fop = fopen(path,"r");
@@ -50,21 +55,21 @@ void Map::load_map(const char *path){
 		}
 	}
 }
-bool Map::set(int x,int y,int z,int val){
-	if(x<0||x>=MX||y<0||y>=MY||z<0||z>=MZ){
+bool Map::set(glm::ivec3 pos,int val){
+	if(pos.x<0||pos.x>=MX||pos.y<0||pos.y>=MY||pos.z<0||pos.z>=MZ){
 		//std::cout<<"get out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return false;
 	}
-	if(map[x][y][z])map[x][y][z]->type=val;
+	if(map[pos.x][pos.y][pos.z])map[pos.x][pos.y][pos.z]->type=val;
 	return true;
 }
-int Map::get(int x,int y,int z)const{
-	if(x<0||x>=MX||y<0||y>=MY||z<0||z>=MZ){
+int Map::get(glm::ivec3 pos)const{
+	if(pos.x<0||pos.x>=MX||pos.y<0||pos.y>=MY||pos.z<0||pos.z>=MZ){
 		//std::cout<<"get out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return 0;
 	}
-	if(map[x][y][z]){
-		return map[x][y][z]->type;
+	if(map[pos.x][pos.y][pos.z]){
+		return map[pos.x][pos.y][pos.z]->type;
 	}else{
 		return 0;
 	}

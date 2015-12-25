@@ -3,7 +3,9 @@
 #include <vector>
 #include <string>
 #include <GL/glew.h>
-const int NormalMappingActive=1<<0;
+#include "class/display/uniform/Uniform.h"
+
+const int NormalMapping=1<<0;
 const int LayerTexture=1<<1;
 class Shader {
 public:
@@ -16,7 +18,12 @@ public:
 	void Disable(int flag);
 	void EnableNormapping();
 	void DisableNormapping();
-	void sent_Uniform1i(const char* name,int i);
+
+	void sent_Uniform(std::string name,int i);
+	void sent_Uniform(std::string name,glm::vec3 pos);
+	void sent_Uniform(std::string name,glm::vec2 pos);
+	void sent_Uniform(std::string name,GLfloat val);
+
 	std::string Name()const;
 	GLuint programID;
 protected:

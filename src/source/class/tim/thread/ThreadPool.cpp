@@ -14,14 +14,9 @@ ThreadPool::ThreadPool(int thread_num,int priority) {
 	}
 }
 ThreadPool::~ThreadPool() {
-
 	delete distributeTask;
 	delete Distribute_Mutex;
 
-
-	//for(unsigned i=0;i<threads.size();i++){
-		//threads.at(i)->Terminate();
-	//}
 	while(!task_q.empty()){
 		if(task_q.front()->AutoTerminate()){
 			delete task_q.front();
@@ -38,18 +33,17 @@ void ThreadPool::Terminate(){
 
 }
 void ThreadPool::thread_terminate(Thread* thread){
-	if(threads.size()==1){
-		delete this;
-	}else{//remove this thread if this is not last thread
-		for(unsigned i=0;i<threads.size();i++){
-			if(threads.at(i)==thread){
-				threads.at(i)=threads.back();
-				threads.pop_back();
-				break;
-			}
+	for(unsigned i=0;i<threads.size();i++){
+		if(threads.at(i)==thread){
+			threads.at(i)=threads.back();
+			threads.pop_back();
+			break;
 		}
 	}
 	thread->Terminate();
+	if(threads.empty()){
+		delete this;
+	}
 }
 void ThreadPool::push_task(Task* task){
 	Distribute_Mutex->wait_for_this();

@@ -29,6 +29,7 @@
 								<option id="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level.407945895" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.507483597" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/source}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/Cimg}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.66573887" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" value="gnu.cpp.compiler.dialect.default" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.546900987" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -38,6 +39,7 @@
 								<option id="gnu.c.compiler.mingw.exe.debug.option.debugging.level.1750156323" name="Debug Level" superClass="gnu.c.compiler.mingw.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1012627514" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/source}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/Cimg}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.225443484" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -83,6 +85,7 @@
 							<tool id="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release.1106217935" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.mingw.exe.release">
 								<option id="gnu.both.asm.option.include.paths.260627386" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/source}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/Cimg}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.111092655" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -92,6 +95,7 @@
 								<option id="gnu.cpp.compiler.mingw.exe.release.option.debugging.level.957906766" name="Debug Level" superClass="gnu.cpp.compiler.mingw.exe.release.option.debugging.level" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1878407536" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/source}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/Cimg}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.594013685" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -100,6 +104,7 @@
 								<option id="gnu.c.compiler.mingw.exe.release.option.debugging.level.139061072" name="Debug Level" superClass="gnu.c.compiler.mingw.exe.release.option.debugging.level" value="gnu.c.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.1877539073" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/source}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/GameTest/src/Cimg}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.131755549" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>

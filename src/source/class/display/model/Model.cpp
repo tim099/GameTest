@@ -52,7 +52,7 @@ void Model::initial(int _len,int _max_len,bool layertex){
 	}else{
 		lyBuffer=0;
 	}
-	mat=glm::vec4(0.3,0.4,0.01,0.15);
+	mat=glm::vec4(0.3,0.4,0.01,0.15);//x=diffuse,y=specular_value,z=ambient,w=emissive
 }
 void Model::max_len_alter(int _len){
 	if(_len>max_len){

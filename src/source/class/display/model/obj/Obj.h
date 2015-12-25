@@ -3,7 +3,9 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
+#include <cstdio>
 #include <class/display/model/obj/Face.h>
+
 class Model;
 
 class Obj{
@@ -16,6 +18,7 @@ public:
     std::vector<glm::vec3>vn;
     std::vector<Face>fs;
 protected:
+
 
 };
 

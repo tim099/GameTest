@@ -15,8 +15,8 @@ class TextureMap;
 class Window;
 class DisplayMap {
 public:
-	static const int SEG=10;
-	static const double CUBE_SIZE=1.0;
+	static const int SEG=15;
+
 
 	DisplayMap(Map *map,Draw *d_obj,TextureMap *texmap,Window *window);
 	virtual ~DisplayMap();
@@ -27,7 +27,7 @@ public:
 	void draw_map(Camera *camera);
 
 	void max_y_alter(int val,Tim::ThreadPool* threadpool);
-	void update_map(int x,int y,int z);
+	void update_map(glm::ivec3 pos);
 	Tim::Mutex* createMapObjectMutex;
 	int range,max_y;
 protected:

@@ -57,7 +57,7 @@ void Window::creat_window(glm::i16vec2 size,const char* name,bool full_screen){
     glfwMakeContextCurrent(window);
     dc=wglGetCurrentDC();
     lrc=wglGetCurrentContext();
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    glfwSetInputMode(window,GLFW_STICKY_KEYS,GL_TRUE);
     glewinit();
 }
 GLFWwindow* Window::get_window()const{

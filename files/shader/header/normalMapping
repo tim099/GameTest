@@ -1,7 +1,7 @@
 //uniform sampler2DArray cube_textures;
 
 vec3 get_normal(){
-	if((shaderData&NormalMappingActive)==0)return vert.Normal;
+	if((shaderData&NormalMapping)==0)return vert.Normal;
 	
 	vec3 T=normalize(vert.T-dot(vert.T,vert.Normal)*vert.Normal);
 	vec3 B=normalize(vert.B-dot(vert.B,vert.Normal)*vert.Normal);

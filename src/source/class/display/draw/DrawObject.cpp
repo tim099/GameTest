@@ -77,7 +77,7 @@ void DrawObject::draw_object(Shader *shader){
 		}
 	}
 	if(NormalMap){
-		shader->Enable(NormalMappingActive);
+		shader->Enable(NormalMapping);
 		if(!layer_texture){
 			NormalMap->sent_uniform(shader,1,"NormalTexture");
 		}else{

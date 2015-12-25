@@ -10,10 +10,10 @@ Mouse::~Mouse() {
 
 }
 glm::vec2 Mouse::get_screen_space_pos(glm::ivec2 screen_size){
-	glm::vec2 p;
-	p.x=(((double)2*(pos.x)/(double)screen_size.x)-1.0f);
-	p.y=(((double)2*(screen_size.y-pos.y)/(double)screen_size.y)-1.0f);
-	return p;
+	screen_pos.x=(((double)2*(pos.x)/(double)screen_size.x)-1.0f);
+	screen_pos.y=(((double)2*(screen_size.y-pos.y)/(double)screen_size.y)-1.0f);
+
+	return screen_pos;
 }
 glm::vec3 Mouse::get_world_space_pos(FrameBuffer* FBO,glm::ivec2 screen_size,glm::mat4 inverseMat){
 	glm::vec4 mwpos=FBO->get_world_space_pos(get_screen_space_pos(screen_size),inverseMat);

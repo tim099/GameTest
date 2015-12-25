@@ -2,14 +2,18 @@
 #define MAP_H_
 #include "class/game/map/cube/Cube.h"
 #include <glm/glm.hpp>
-static const int MX=300,MY=100,MZ=300;
+
 class Map {
 public:
+	static const int MX=300,MY=100,MZ=300;
+	static const double CUBE_SIZE=1.0;
 	Map();
 	virtual ~Map();
+
+	static glm::ivec3 convert_position(glm::vec3 pos);
 	void load_map(const char *path);
-	bool set(int x,int y,int z,int val);
-	int get(int x,int y,int z)const;
+	bool set(glm::ivec3 pos,int val);
+	int get(glm::ivec3 pos)const;
 	void tic();
 protected:
 	Cube* map[MX][MY][MZ];

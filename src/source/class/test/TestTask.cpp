@@ -8,7 +8,7 @@ TestTask::~TestTask() {
 }
 void TestTask::ExecuteTask(){
 	volatile int l=0;
-	for(unsigned long long i=0;i<30000000;i++){
+	for(unsigned long long i=0;i<10000000;i++){
 			l++;
 	}
 }

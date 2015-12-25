@@ -3,6 +3,7 @@
 class GLFWwindow;
 #include <glm/glm.hpp>
 #include <windows.h>
+
 class Window {
 	static bool glewinitial;
 	static bool glfwinitial;

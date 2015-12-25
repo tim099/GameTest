@@ -70,7 +70,7 @@ Texture2DArr:
 	TextureName:
 		cube_textures
 	TextureNum:
-		3
+		5
 	TextureSize:
 		256
 		256
@@ -80,11 +80,15 @@ Texture2DArr:
 		cube/tex2.bmp
 	TexturePath:
 		cube/tex3.bmp
+	TexturePath:
+		cube/tex4.bmp
+	TexturePath:
+		cube/tex5.bmp
 Texture2DArr:
 	TextureName:
 		cube_normals
 	TextureNum:
-		3
+		5
 	TextureSize:
 		256
 		256
@@ -94,4 +98,28 @@ Texture2DArr:
 		cube/cube2.bmp
 	TexturePath:
 		cube/cube3.bmp
+	TexturePath:
+		cube/cube4.bmp
+	TexturePath:
+		cube/cube5.bmp
+TextureCubeMap:
+	TextureName:
+		texcube
+	TextureSize:
+		256
+		256
+	TexturePath:
+		sky/sky0.bmp		
+	TexturePath:
+		sky/sky1.bmp
+	TexturePath:
+		sky/sky2.bmp
+	TexturePath:
+		sky/sky3.bmp					
+	TexturePath:
+		sky/sky4.bmp
+	TexturePath:
+		sky/sky5.bmp				
+		
+		
 #END

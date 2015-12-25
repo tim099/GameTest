@@ -24,7 +24,7 @@ void Thread::Terminate(){
 	if(DONE())ResumeThread(threadhandle);//to return
 }
 void Thread::join(DWORD time){
-	while(!thread_start);//waste time until thread_start
+	while(!thread_start&&!DONE());//waste time until thread_start
 
 	threadMutex->wait_for_this();
 	threadMutex->release();

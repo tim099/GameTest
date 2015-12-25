@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "class/display/texture/image/Image.h"
-
+#include "class/display/texture/drawData/DrawData.h"
 const int P_NONE=0;
 const int P_MipMap=1;
 const int P_Linear=2;
@@ -17,13 +17,15 @@ public:
 	Texture(GLuint TexID,GLenum target,GLenum type,GLenum format);
 	virtual ~Texture();
 	virtual Texture2D* Tex2D();
-	virtual void draw_texture(Shader* shader2D,double winaspect=1.0,double texaspect=1.0,GLfloat alpha=1.0,
-			glm::vec3 pos=glm::vec3(0,0,0),double size=1.0);
+	virtual void draw_texture(Shader* shader2D,DrawData *data);
 	virtual int layer()const;
 	virtual void sent_uniform(Shader* shader,int num,const char *name)const;
 
 	static void usetextureVec(Shader* shader,std::vector<Texture*>& texvec,int num,const char *name);
-	static GLuint gen_texture_vertex(GLfloat width,GLfloat height,glm::vec3 pos=glm::vec3(0,0,0));
+	static GLuint gen_texture_vertex(glm::vec2 size);
+	static GLuint gen_texture_uv();
+	static glm::vec2 convert_to_texcoord(glm::vec2 pos);
+	static glm::vec2 convert_to_wincoord(glm::vec2 pos);
 	void bind_texture();
 
 	GLuint TexID;

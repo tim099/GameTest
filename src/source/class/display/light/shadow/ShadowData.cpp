@@ -88,8 +88,8 @@ void ShadowData::gen_shadows(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int 
 
 	FBO->bind_depth_texture(depth_tex);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear buffer
-	shader->sent_Uniform1i("LVP_num",s_num);
-	shader->sent_Uniform1i("start_layer",start_layer);
+	shader->sent_Uniform("LVP_num",s_num);
+	shader->sent_Uniform("start_layer",start_layer);
 	Uniform::sentMat4Arr(shader->programID,LVP,s_num,std::string("LVP"));
 	d_obj->draw_shadow(shader);
 }

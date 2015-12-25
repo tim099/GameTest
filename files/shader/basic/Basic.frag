@@ -1,6 +1,7 @@
 #version 400 core
 
 #include <files/shader/header/commondata.fragh>
+#include <files/shader/header/toon.fragh>
 
 uniform samplerCube cubetex;
 void main(){ 
@@ -22,21 +23,11 @@ void main(){
     
     //color=vec4(reflect_color,1.0);
     
-    color=vec4(total_light*tex_color+reflect_color,1.0);
-
-    //float dval=texture(cubedepthMap[0],normalize(vect)).x;
-    //if(dval>0.999){
-    	//color=vec4(vec3(0.5,0.5,0.5),1.0);
-    //}else{
-    	//color=vec4(total_light*tex_color+reflect_color,1.0);
-    //}
-    
-    
+    //color=vec4(total_light*tex_color+reflect_color,1.0);
+ 	
+ 	color = vec4(toon((total_light)*tex_color,5.0f),1.0);
  	
  	
- 	//color=vec4(total_light*tex_color,1.0);
- 	
- 	//color = vec4(toon((total_light)*tex_color,5.0f),1.0);
  	//if(texture(cubedepthMap,vec3(vert.UV,vert.UVlayer)).x==0.0){
  		//color=vec4(total_light*vec3(1.5,1,1),1);
  	//}else{

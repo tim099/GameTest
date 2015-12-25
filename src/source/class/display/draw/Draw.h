@@ -9,7 +9,7 @@ public:
 	Draw();
 	virtual ~Draw();
 	//render all object
-	void draw(Shader *shader);
+	void draw(Shader *shader,Shader *shader2D);
 	//render shadow map
 	void draw_shadow(Shader *shader);
 	//update all object

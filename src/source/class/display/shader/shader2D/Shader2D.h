@@ -2,7 +2,8 @@
 #define SHADER2D_H_
 #include <glm/glm.hpp>
 #include "class/display/shader/Shader.h"
-
+const int SobelMode=1<<0;
+const int AddOnMode=1<<1;
 class Texture;
 class Shader2D : public Shader{
 public:

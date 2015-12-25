@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <queue>
+
 template<class DataType>
 Image<DataType>::Image() {
 	format=GL_RGB;
@@ -45,12 +46,16 @@ void Image<DataType>::initialize(glm::ivec2 _size,GLenum _format){
 	}
 	//imageSize=((size.x+(size.x%2))*(size.y)*data_size);
 	imageSize=((size.x)*(size.y)*data_size);
-	data=new unsigned char [imageSize];
+	data=new DataType[imageSize];
+}
+template<class DataType>
+void Image<DataType>::loadImage(const char * imagepath){
+
 }
 template<class DataType>
 void Image<DataType>::loadBMP(const char * imagepath){
 	unsigned char header[54]; // Each BMP file begins by a 54-bytes header
-	FILE * file = fopen(imagepath,"rb");// Open the file
+	FILE * file=fopen(imagepath,"rb");// Open the file
 	if (!file){printf("Image could not be opened:%s\n",imagepath);}
 	if (fread(header,1,54,file)!=54){ // If not 54 bytes read : problem
 	    printf("Not a correct BMP file:%s\n",imagepath);
@@ -60,7 +65,6 @@ void Image<DataType>::loadBMP(const char * imagepath){
 	}
 	initialize(glm::vec2(*(int*)&(header[0x12]),*(int*)&(header[0x16])),GL_BGR);
 	fread(data,sizeof(char),imageSize,file);
-	format=GL_BGR;
 	fclose(file);
 }
 template<class DataType>
@@ -82,7 +86,7 @@ void Image<DataType>::load_sub_image2D(const char *imagepath,GLenum target,GLenu
 	delete bmp_img;
 }
 template<class DataType>
-void Image<DataType>::convert_to_sobel(Image<DataType>* image,glm::vec2 dv,float clip){
+void Image<DataType>::convert_to_sobel(Image<DataType>* image,glm::ivec2 dv,float clip){
 	int col;
 	for(unsigned i=0;i<image->imageSize/3;i++){// convert to grey
 		col=(((int)image->data[3*i]+(int)image->data[3*i+1]+(int)image->data[3*i+2])/3);

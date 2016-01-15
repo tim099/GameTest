@@ -1,7 +1,7 @@
 #ifndef DRAW_H_
 #define DRAW_H_
 #include <vector>
-#include "class/display/draw/DrawObject.h"
+#include "class/display/draw/object/DrawObject.h"
 #include "class/display/draw/texture/DrawTexture.h"
 #include "class/tim/thread/mutex/Mutex.h"
 class Draw {
@@ -25,6 +25,8 @@ protected:
 	std::vector<DrawObject*>d_objs;
 	std::vector<DrawTexture*>d_texs;
 	std::vector<Draw*>subdraw;
+
+
 	Tim::Mutex* d_objsMutex;
 	Tim::Mutex* d_texsMutex;
 };

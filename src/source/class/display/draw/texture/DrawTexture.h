@@ -1,11 +1,15 @@
 #ifndef DRAWTEXTURE_H_
 #define DRAWTEXTURE_H_
+#include "class/display/texture/drawData/DrawData.h"
+#include "class/display/texture/Texture.h"
 class Shader;
 class DrawTexture{
 public:
-	DrawTexture();
+	DrawTexture(Texture *tex,DrawData* data);
 	virtual ~DrawTexture();
-	virtual void draw_texture(Shader *shader)=0;
+	void draw(Shader *shader);
+	DrawData* data;
+	Texture *tex;
 };
 
 #endif /* DRAWTEXTURE_H_ */

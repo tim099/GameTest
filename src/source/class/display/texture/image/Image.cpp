@@ -1,3 +1,5 @@
+#ifndef IMAGE_CPP_
+#define IMAGE_CPP_
 #include "class/display/texture/image/Image.h"
 #include "class/tim/math/Math.h"
 #include <cstdio>
@@ -85,85 +87,6 @@ void Image<DataType>::load_sub_image2D(const char *imagepath,GLenum target,GLenu
 	glTexImage2D(target,0,internalformat,bmp_img->size.x,bmp_img->size.y,0,format,type,bmp_img->data);
 	delete bmp_img;
 }
-template<class DataType>
-void Image<DataType>::convert_to_sobel(Image<DataType>* image,glm::ivec2 dv,float clip){
-	int col;
-	for(unsigned i=0;i<image->imageSize/3;i++){// convert to grey
-		col=(((int)image->data[3*i]+(int)image->data[3*i+1]+(int)image->data[3*i+2])/3);
-		image->data[3*i]=(unsigned char)col;
-		//if(i%50000==0)std::cout<<col<<std::endl;
-	}
-	//std::cout<<image->size.x<<","<<image->size.y<<"total="<<image->imageSize<<std::endl;
-	std::queue<Sobeldata<DataType>*>sobel_q;
-	glm::ivec2 se;
-	int seg=30;
-	for (int i=0;seg*i<=image->size.y;i++){
-		se.x=i*seg;
-		se.y=(i+1)*seg;
-		if(se.y>image->size.y)se.y=image->size.y;
-		Sobeldata<DataType>* dat=new Sobeldata<DataType>(image,dv,se,clip);
-		CreateThread(NULL,0,parallize_sobel,dat,0,0);
-		//parallize_sobel(dat);
-		sobel_q.push(dat);
-	}
-	while(!sobel_q.empty()){
-		if(sobel_q.front()->done){
-			delete sobel_q.front();
-			sobel_q.pop();
-		}
-	}
-	for(unsigned i=0;i<image->imageSize/3;i++){//convert to BMP
-		image->data[3*i]=image->data[3*i+2];
-		image->data[3*i+1]=image->data[3*i+2];
-	}
 
-}
-template<class DataType>
-int Image<DataType>::sobel(unsigned char arr[3][3],glm::vec2 dv){
-	int GX=-dv.y*arr[0][0]+dv.y*arr[0][2]-dv.x*arr[1][0]
-	   +dv.x*arr[1][2]-dv.y*arr[2][0]+dv.y*arr[2][2];
-	int GY=-dv.y*arr[0][0]+dv.y*arr[2][0]-dv.x*arr[0][1]
-	   +dv.x*arr[2][1]-dv.y*arr[0][2]+dv.y*arr[2][2];
-	return sqrt(GX*GX+GY*GY);
-}
-template<class DataType>
-DWORD WINAPI Image<DataType>::parallize_sobel(LPVOID lpParameter){
-	Sobeldata<DataType>* dat=(Sobeldata<DataType>*)lpParameter;
-	int value;
-	int GX,GY;
-	int x,y;
-	unsigned char arr[3][3];
-	for(int i=dat->se.x;i<dat->se.y;i++){
-		for(int j=0;j<dat->image->size.x;j++){
-			for(int l=0;l<3;l++){
-				for(int m=0;m<3;m++){
-					x=j+m-1,y=i+l-1;
-					if(x<0)x=0;
-					if(y<0)y=0;
-					if(x>=(int)dat->image->size.x)x=dat->image->size.x-1;
-					if(y>=(int)dat->image->size.y)y=dat->image->size.y-1;
-					arr[l][m]=dat->image->data[(x+y*(dat->image->size.x))*3];
-				}
-			}
-			GX=-dat->dv.y*arr[0][0]+dat->dv.y*arr[0][2]-dat->dv.x*arr[1][0]
-			   +dat->dv.x*arr[1][2]-dat->dv.y*arr[2][0]+dat->dv.y*arr[2][2];
-			GY=-dat->dv.y*arr[0][0]+dat->dv.y*arr[2][0]-dat->dv.x*arr[0][1]
-			   +dat->dv.x*arr[2][1]-dat->dv.y*arr[0][2]+dat->dv.y*arr[2][2];
-			value=sqrt(GX*GX+GY*GY);
-			//value=sobel(arr,dat->dv);
-
-			value=(value<255?value:255);
-			if(dat->clip!=0.0f){
-				if((float)value>255.0f*dat->clip){
-					value=255;
-				}else{
-					value=0;
-				}
-			}
-			dat->image->data[3*(j+i*(dat->image->size.x))+2]=(unsigned char)value;
-		}
-	}
-	dat->done=true;
-	return 0;
-}
-template class Image<unsigned char>;
+//template class Image<unsigned char>;
+#endif /* IMAGE_CPP_ */

@@ -24,8 +24,7 @@ public:
 	static void usetextureVec(Shader* shader,std::vector<Texture*>& texvec,int num,const char *name);
 	static GLuint gen_texture_vertex(glm::vec2 size);
 	static GLuint gen_texture_uv();
-	static glm::vec2 convert_to_texcoord(glm::vec2 pos);
-	static glm::vec2 convert_to_wincoord(glm::vec2 pos);
+
 	void bind_texture();
 
 	GLuint TexID;
@@ -33,6 +32,7 @@ public:
 	GLenum format;
 	GLenum type;
 protected:
+	virtual void draw(Shader* shader2D,DrawData *data);
 	static void TexFilterParameteri(GLenum target,int Parameteri);
 };
 

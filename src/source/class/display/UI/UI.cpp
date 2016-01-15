@@ -1,9 +1,12 @@
 #include "class/display/UI/UI.h"
 
-UI::UI() {
+namespace UI {
 
+UI::UI() {
+	hide=false;
 }
 UI::~UI() {
 
 }
 
+} /* namespace UI */

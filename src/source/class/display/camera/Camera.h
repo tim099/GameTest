@@ -32,7 +32,7 @@ public:
 	glm::vec3 pos;
 	glm::vec3 look_at;
 	glm::vec3 up;
-	glm::vec3 vel;
+	glm::vec3 v;
 	float fovy,z_near,z_far;
 	float dis_alter_v;
 protected:

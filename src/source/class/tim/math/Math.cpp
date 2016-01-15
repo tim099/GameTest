@@ -9,6 +9,12 @@ Math::Math() {
 Math::~Math() {
 
 }
+glm::vec2 Math::max(glm::vec2 a,glm::vec2 b){
+	return glm::vec2(Max(a.x,b.x),Max(a.y,b.y));
+}
+glm::vec2 Math::min(glm::vec2 a,glm::vec2 b){
+	return glm::vec2(Min(a.x,b.x),Min(a.y,b.y));
+}
 int Math::pow(int base,int power){
 	int sum=1;
 	for(int i=0;i<power;i++){
@@ -57,6 +63,11 @@ int Math::get_val_at(int val,int at){
 	}
 	return val%10;
 }
-
+glm::vec2 Math::convert_to_texcoord(glm::vec2 pos){
+	return glm::vec2((pos.x+1.0)/2.0,(pos.y+1.0)/2.0);
+}
+glm::vec2 Math::convert_to_wincoord(glm::vec2 pos){
+	return glm::vec2(pos.x*2.0-1.0,pos.y*2.0-1.0);
+}
 
 } /* namespace Tim */

@@ -83,6 +83,9 @@ bool Renderer::Rendering()const{
 void Renderer::set_window(Window *_window){
 	window=_window;
 }
+void Renderer::update_mouse_data(){
+	mouse->get_world_space_pos(FBO,window->get_size(),glm::inverse(camera->view_matrix(window->aspect())));
+}
 void Renderer::render(){
 	//std::cout<<"renderer render start"<<std::endl;
 	window->render_on();
@@ -94,7 +97,6 @@ void Renderer::render(){
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear buffer
     //sent uniform
-
     camera->sent_uniform((shader)->programID,FBO->aspect());
     lightControl->sent_uniform((shader),camera->pos);
 
@@ -105,31 +107,18 @@ void Renderer::render(){
 	FrameBuffer::unbind_buffer(window->get_size());//start draw on window buffer
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear window buffer
 
-	//FBO2->bind_buffer();//TEST
-
 	FBO->color_textures.at(0)->draw_texture(shader2D,
 			new DrawData2D(window->aspect(),1.0,glm::vec2(0,1.0),1.0));
-	///*
+	/*
 	shader2D->Enable(SobelMode|AddOnMode);
 	shader2D->sent_Uniform("sobel_dv",glm::vec2(250,120));
 	FBO->depth_textures.at(0)->draw_texture(shader2D,
 			new DrawData2D(window->aspect(),1.0,glm::vec2(0,1.0),1.0));
 	shader2D->Disable(SobelMode|AddOnMode);
-	//*/
-	/*//TEST
-	FrameBuffer::unbind_buffer(window->get_size());
-
-	shader2D->Enable(SobelMode);
-	shader2D->sent_Uniform("sobel_dv",glm::vec2(2,1));
-	FBO2->color_textures.at(0)->draw_texture(shader2D,
-			//new DrawData2D(window->aspect(),1.0,glm::vec2(0,1.0),1.0));
-	shader2D->Disable(SobelMode);
 	*/
-
-	mouse->get_world_space_pos(FBO,window->get_size(),glm::inverse(camera->view_matrix(window->aspect())));
+	update_mouse_data();
 
 	rendering=false;
-
 
 	//window->swap_buffer();
 	window->render_off();//release thread using this window

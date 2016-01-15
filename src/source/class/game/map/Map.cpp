@@ -4,27 +4,11 @@
 #include <cstdlib>
 #include <iostream>
 Map::Map() {
-	for(int i=0;i<MX;i++){
-		for(int j=0;j<MY;j++){
-			for(int k=0;k<MZ;k++){
-				map[i][j][k]=0;
-			}
-		}
-	}
+	int mx=MX,my=MY,mz=MZ;
+	map=new Tim::Array3D<Cube>(glm::ivec3(mx,my,mz));
 }
 Map::~Map() {
-	std::cout<<"delete map start"<<std::endl;
-	for(int i=0;i<ms.x;i++){
-		for(int j=0;j<ms.y;j++){
-			for(int k=0;k<ms.z;k++){
-				if(map[i][j][k]){
-					delete map[i][j][k];
-					map[i][j][k]=0;
-				}
-			}
-		}
-	}
-	std::cout<<"delete map end"<<std::endl;
+	delete map;
 }
 glm::ivec3 Map::convert_position(glm::vec3 pos){
 	return glm::ivec3(floor(pos.x/Map::CUBE_SIZE),floor(pos.y/Map::CUBE_SIZE),floor(pos.z/Map::CUBE_SIZE));
@@ -47,32 +31,29 @@ void Map::load_map(const char *path){
 				fscanf(fop,"%d",&type);
 				if(type){
 					type=rand()%3+1;
-					map[i][j][k]=new Cube(type);
+					map->get(i,j,k).set(type);
 				}else{
-					map[i][j][k]=new Cube(type);
+					map->get(i,j,k).set(type);
 				}
 			}
 		}
 	}
 }
-bool Map::set(glm::ivec3 pos,int val){
-	if(pos.x<0||pos.x>=MX||pos.y<0||pos.y>=MY||pos.z<0||pos.z>=MZ){
+bool Map::set(int x,int y,int z,int val){
+	if(x<0||x>=MX||y<0||y>=MY||z<0||z>=MZ){
 		//std::cout<<"get out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return false;
 	}
-	if(map[pos.x][pos.y][pos.z])map[pos.x][pos.y][pos.z]->type=val;
+	map->get(x,y,z).set(val);
 	return true;
 }
-int Map::get(glm::ivec3 pos)const{
-	if(pos.x<0||pos.x>=MX||pos.y<0||pos.y>=MY||pos.z<0||pos.z>=MZ){
+int Map::get(const int &x,const int &y,const int &z)const{
+	if(x<0||x>=MX||y<0||y>=MY||z<0||z>=MZ){
 		//std::cout<<"get out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return 0;
 	}
-	if(map[pos.x][pos.y][pos.z]){
-		return map[pos.x][pos.y][pos.z]->type;
-	}else{
-		return 0;
-	}
+	return map->get(x,y,z).type;
+	//return map->arr[map->size.y*map->size.z*pos.x+map->size.z*pos.y+pos.z].type;//for better performance
 }
 void Map::tic(){
 

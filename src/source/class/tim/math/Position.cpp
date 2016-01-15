@@ -1,6 +1,9 @@
 #include "class/tim/math/Position.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
+Position::Position(){
+	initialize(glm::vec3(0,0,0),glm::vec3(0,0,0),0);
+}
 Position::Position(const Position &p) {
 	initialize(p.pos,p.r,p.parent_pos);
 }
@@ -9,6 +12,9 @@ Position::Position(glm::vec3 _pos,glm::vec3 _r,Position *_parent_pos) {
 }
 Position::~Position() {
 
+}
+void Position::initialize(const Position &p){
+	initialize(p.pos,p.r,p.parent_pos);
 }
 void Position::initialize(glm::vec3 _pos,glm::vec3 _r,Position *_parent_pos){
 	pos=_pos;

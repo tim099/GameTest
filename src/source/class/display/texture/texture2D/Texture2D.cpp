@@ -33,26 +33,21 @@ Texture2D* Texture2D::gen_texture2D(const void *pixels,glm::ivec2 size,GLint int
 	Texture2D *tex=new Texture2D(textureID,size,type,internalformat);
 	return tex;
 }
-void Texture2D::draw_texture(Shader* shader2D,DrawData *data){
+void Texture2D::draw(Shader* shader2D,DrawData *data){
 	DrawData2D *dat=(DrawData2D*)data;
-	shader2D->active_shader();
+	//shader2D->active_shader();
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH_TEST);
 
 
-    float aspect=dat->targetaspect/Tim::Math::aspect(size);
+    float aspect=Tim::Math::aspect(size)/dat->targetaspect;
     glm::vec2 tsize;
 	if(aspect>0.99&&aspect<1.01){
-		tsize=glm::vec2(1.0,1.0);
+		tsize=glm::vec2(dat->width,dat->width);
 	}else{
-		if(aspect>1.0){
-			tsize=glm::vec2(1.0/aspect,1.0);
-		}else{
-			tsize=glm::vec2(1.0,aspect);
-		}
+		tsize=glm::vec2(dat->width,dat->width/aspect);
 	}
-	if(dat->size!=1.0)tsize*=dat->size;
 	GLuint tex_vt=gen_texture_vertex(tsize),tex_uv=gen_texture_uv();
 
 	Buffer::bind_vtbuffer(tex_vt);
@@ -71,15 +66,6 @@ void Texture2D::draw_texture(Shader* shader2D,DrawData *data){
     glDisableVertexAttribArray(0);//vertexbuffer
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
-
-    delete dat;
-}
-Texture2D* Texture2D::loadBMP_to_sobel(const char * imagepath,int Parameteri){
-	Image<unsigned char>* bmp=new Image<unsigned char>();
-	bmp->loadBMP(imagepath);
-	Image<unsigned char>::convert_to_sobel(bmp);
-	Texture2D* texture=gen_texture2D(bmp,GL_RGB,GL_UNSIGNED_BYTE,Parameteri);//BMP is BGR Format
-	return texture;
 }
 Texture2D* Texture2D::loadBMP(const char * imagepath,int Parameteri){
 	Image<unsigned char>* bmp_img=new Image<unsigned char>();

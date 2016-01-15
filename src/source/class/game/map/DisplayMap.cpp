@@ -13,7 +13,7 @@ DisplayMap::DisplayMap(Map *_map,Draw *_d_obj,TextureMap *_texmap,Window *_windo
 	texmap=_texmap;
 	window=_window;
 	max_y=Map::MY;
-	range=70;
+	range=50;
 	createMapObjectMutex=new Tim::Mutex();
 	cube=new CubeModel(0.5*Map::CUBE_SIZE);
 	segsize=floor(Map::MX/SEG);
@@ -42,14 +42,10 @@ void DisplayMap::gen_map_obj(Tim::ThreadPool* threadpool){
     		threadpool->push_task(task);
     	}
     }
-    while(!tasks.empty()){
-    	while(!tasks.front()->Done()){
-
-    	}
-    	task=tasks.front();
+    for(unsigned i=0;i<tasks.size();i++){
+    	task=tasks.at(i);
+    	task->wait_for_this();
     	delete task;
-    	tasks.front()=tasks.back();
-		tasks.pop_back();
     }
 }
 void DisplayMap::max_y_alter(int val,Tim::ThreadPool* threadpool){
@@ -82,16 +78,16 @@ void DisplayMap::create_map_object(int px,int pz){
     for(int i=px*segsize;i<(px+1)*segsize;i++){
     	for(int j=0;j<max_y;j++){
     		for(int k=pz*segsize;k<(pz+1)*segsize;k++){
-    			int type=map->get(glm::ivec3(i,j,k));
+    			int type=map->get(i,j,k);
     			if(type){
     				type--;//convert to layer of texture
     				glm::vec3 pos=glm::vec3((i+0.5)*Map::CUBE_SIZE,(j+0.5)*Map::CUBE_SIZE,(k+0.5)*Map::CUBE_SIZE);
-        			if(j+1>=max_y||!map->get(glm::ivec3(i,j+1,k)))mapmodel->merge(cube->cube[0],pos,type);//DOC->m_objs.at(0)
-        			if(j-1<0||!map->get(glm::ivec3(i,j-1,k)))mapmodel->merge(cube->cube[1],pos,type);
-        			if(i+1>=Map::MX||!map->get(glm::ivec3(i+1,j,k)))mapmodel->merge(cube->cube[2],pos,type);
-        			if(i-1<0||!map->get(glm::ivec3(i-1,j,k)))mapmodel->merge(cube->cube[3],pos,type);
-        			if(k+1>=Map::MZ||!map->get(glm::ivec3(i,j,k+1)))mapmodel->merge(cube->cube[4],pos,type);
-        			if(k-1<0||!map->get(glm::ivec3(i,j,k-1)))mapmodel->merge(cube->cube[5],pos,type);
+        			if(j+1>=max_y||map->get(i,j+1,k)<=0)mapmodel->merge(cube->cube[0],pos,type);//DOC->m_objs.at(0)
+        			if(j-1<0||map->get(i,j-1,k)<=0)mapmodel->merge(cube->cube[1],pos,type);
+        			if(i+1>=Map::MX||map->get(i+1,j,k)<=0)mapmodel->merge(cube->cube[2],pos,type);
+        			if(i-1<0||map->get(i-1,j,k)<=0)mapmodel->merge(cube->cube[3],pos,type);
+        			if(k+1>=Map::MZ||map->get(i,j,k+1)<=0)mapmodel->merge(cube->cube[4],pos,type);
+        			if(k-1<0||map->get(i,j,k-1)<=0)mapmodel->merge(cube->cube[5],pos,type);
     			}
     		}
     	}
@@ -100,12 +96,15 @@ void DisplayMap::create_map_object(int px,int pz){
 }
 void DisplayMap::draw_map(Camera *camera){
     glm::ivec2 min,max,dp_pos(camera->look_at.x,camera->look_at.z);
+
+
     if(dp_pos.x<0)dp_pos.x=0;if(dp_pos.y<0)dp_pos.y=0;
     if(dp_pos.x>=Map::MX)dp_pos.x=Map::MX-1;if(dp_pos.y>=Map::MZ)dp_pos.y=Map::MZ-1;
     min=dp_pos-glm::ivec2(range,range);
     max=dp_pos+glm::ivec2(range,range);
     if(min.x<0)min.x=0;if(min.y<0)min.y=0;
     if(max.x>=Map::MX)max.x=Map::MX-1;if(max.y>=Map::MZ)max.y=Map::MZ-1;
+
 
     for(int i=(min.x/segsize);i<(max.x/segsize+0.5);i++){
     	for(int j=min.y/segsize;j<(max.y/segsize+0.5);j++){

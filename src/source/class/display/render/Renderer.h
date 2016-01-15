@@ -24,13 +24,19 @@ public:
 	FrameBuffer *FBO,*FBO2;
 protected:
 	void creat_shaders();
+	/*
+	 * use FBO depth buffer data to get mouse position in world position
+	 */
+	void update_mouse_data();
 	TextureMap *texmap;
 	Shader *shader;
 
 	Camera *camera;
 	Shader *shader2D;
 	LightControl* lightControl;
+
 	Draw *d_obj;
+
 	Window *window;
 	Mouse* mouse;//update 3d pos
 	std::vector<Shader*>shaders;

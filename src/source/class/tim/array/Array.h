@@ -7,14 +7,9 @@ class Array {
 public:
 	Array();
 	virtual ~Array();
-	static void size_alter(DataType *&arr,int len,int new_len){
-		DataType* new_arr=new DataType[new_len];
-		std::copy(arr,arr+len,new_arr);
-		std::swap(arr,new_arr);
-		delete new_arr;
-	}
+	static void size_alter(DataType *&arr,int len,int new_len);
 };
 
 } /* namespace Tim */
-
+#include "class/tim/array/Array.cpp"
 #endif /* ARRAY_H_ */

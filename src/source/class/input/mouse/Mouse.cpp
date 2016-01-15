@@ -1,10 +1,14 @@
 #include "class/input/mouse/Mouse.h"
 #include "class/display/buffer/frameBuffer/FrameBuffer.h"
+#include "class/tim/math/Math.h"
 #include <iostream>
 Mouse::Mouse() {
 	prev_pos=glm::ivec2(-1,-1);
 	scroll=0;
 	left=0,right=0,mid=0;
+	left_click=false;
+	right_click=false;
+	mid_click=false;
 }
 Mouse::~Mouse() {
 
@@ -14,6 +18,9 @@ glm::vec2 Mouse::get_screen_space_pos(glm::ivec2 screen_size){
 	screen_pos.y=(((double)2*(screen_size.y-pos.y)/(double)screen_size.y)-1.0f);
 
 	return screen_pos;
+}
+glm::vec2 Mouse::get_tex_space_pos(){
+	return Tim::Math::convert_to_texcoord(screen_pos);
 }
 glm::vec3 Mouse::get_world_space_pos(FrameBuffer* FBO,glm::ivec2 screen_size,glm::mat4 inverseMat){
 	glm::vec4 mwpos=FBO->get_world_space_pos(get_screen_space_pos(screen_size),inverseMat);
@@ -35,24 +42,60 @@ void Mouse::scroll_callback(GLFWwindow* window,double xoffset,double yoffset){
 	scroll=yoffset;
 }
 void Mouse::mouse_button_callback(GLFWwindow* window,int button,int action,int mods){
+		left_click=false;
+		right_click=false;
+		mid_click=false;
 		switch(button){
 			case 0:
-				if(action==1)left=true;
-				else if(action==0)left=false;
+				if(action==1){
+					left=true;
+				}else if(action==0){
+					if(left)left_click=true;
+					left=false;
+				}
 				break;
 			case 1:
-				if(action==1)right=true;
-				else if(action==0)right=false;
+				if(action==1){
+					right=true;
+				}else if(action==0){
+					if(right)right_click=true;
+					right=false;
+				}
 				break;
 			case 2:
-				if(action==1)mid=true;
-				else if(action==0)mid=false;
+				if(action==1){
+					mid=true;
+				}else if(action==0){
+					if(mid)mid_click=true;
+					mid=false;
+				}
 				break;
 			default:
 				std::cout<<"unknow mouse but input"<<button<<std::endl;
 		}
 
 	//std::cout<<"button="<<button<<",action="<<action<<",mods="<<mods<<std::endl;
+}
+bool Mouse::get_left_click(){
+	if(left_click){
+		left_click=false;
+		return true;
+	}
+	return false;
+}
+bool Mouse::get_right_click(){
+	if(right_click){
+		right_click=false;
+		return true;
+	}
+	return false;
+}
+bool Mouse::get_mid_click(){
+	if(mid_click){
+		mid_click=false;
+		return true;
+	}
+	return false;
 }
 void Mouse::tic(){
 	prev_pos=pos;

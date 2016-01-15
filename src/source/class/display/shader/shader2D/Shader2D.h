@@ -4,6 +4,7 @@
 #include "class/display/shader/Shader.h"
 const int SobelMode=1<<0;
 const int AddOnMode=1<<1;
+const int ColorAlterMode=1<<2;
 class Texture;
 class Shader2D : public Shader{
 public:

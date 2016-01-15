@@ -8,7 +8,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 
-#include "headers/callback/callBackFunc.h"
 #include "class/display/shader/Shader.h"
 #include "class/display/shader/shader2D/Shader2D.h"
 #include "class/display/window/Window.h"
@@ -23,14 +22,13 @@
 
 #include "class/display/render/Renderer.h"
 #include "class/display/render/RenderTask.h"
-#include "class/display/draw/DrawObjectCreater.h"
 #include "class/display/light/LightControl.h"
 #include "class/display/uniform/Uniform.h"
 #include "class/game/map/DisplayMap.h"
-#include "class/tim/thread/Thread.h"
 #include "class/tim/thread/ThreadPool.h"
 #include "class/game/map/Map.h"
 
+#include "class/tim/objectpool/ObjPool.h"
 class Test {
 
 public:
@@ -38,7 +36,7 @@ public:
 	virtual ~Test();
 	void terminate();
 
-	void input();
+	void handle_input();
 
 	void set_obj_pos(Camera *camera);
 	void update_map(Camera *camera);
@@ -46,22 +44,22 @@ public:
 	void creat_light();
 	void Mainloop();
 	void timer_tic(double &time);
-	void test();
 private:
 	void swap_buffer();
-	void draw(double &time);
+	void draw();
 	glm::vec3 sun_col1,sun_col2;
 	std::vector<Model*>models;
 	std::vector<BufferObject*>b_objs;
-
+	Tim::ObjPool<Position>*position_pool;
 
 	double start_time;
 	Draw *d_obj;
 	LightControl* lightControl;
 	PointLight *camlight;
 	ParallelLight *s_light;
-	KeyBoard *keyboard;
-	Mouse *mouse;
+	Input* input;
+	//KeyBoard *keyboard;
+	//Mouse *mouse;
 
 	DrawObject* look_at;
 	DrawObject* base;
@@ -72,9 +70,7 @@ private:
 	DrawObject* ico;
 	DrawObject* moon;
 
-
 	TextureMap* texmap;
-
 
 	GLuint VertexArrayID;
 	Window *window;
@@ -86,15 +82,12 @@ private:
 	Map *map;
 	Tim::Thread *render_thread;
 	Tim::ThreadPool *thread_pool;
-	double tiger_ry;
 	double shadow_dis;
 
-	bool stop_the_sun;
-	bool to_sobel;
+	bool stop;
 	bool display_time;
 	bool end;
 	int shader_at;
-	int max_point_light;
 	int timeloop,loop_time;
 };
 

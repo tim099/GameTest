@@ -21,6 +21,7 @@ public:
 	unsigned point_light_size()const;
 	PointLight* get_point_light(int i)const;
 	ParallelLight* get_parallel_light(int i)const;
+
 	void push_point_light(PointLight* l);
 	void push_parallel_light(ParallelLight* l);
 	void gen_shadow(Camera *camera,double shadow_dis,Draw *d_obj);

@@ -29,12 +29,6 @@ void Texture::sent_uniform(Shader* shader,int num,const char *name)const{
 	glActiveTexture(GL_TEXTURE0+num);
 	glBindTexture(target,TexID);
 }
-glm::vec2 Texture::convert_to_texcoord(glm::vec2 pos){
-	return glm::vec2((pos.x+1.0)/2.0,(pos.y+1.0)/2.0);
-}
-glm::vec2 Texture::convert_to_wincoord(glm::vec2 pos){
-	return glm::vec2(pos.x*2.0-1.0,pos.y*2.0-1.0);
-}
 void Texture::TexFilterParameteri(GLenum target,int Parameteri){
 	switch(Parameteri){
 		case P_NONE:
@@ -81,5 +75,12 @@ int Texture::layer()const{
 	return 0;
 }
 void Texture::draw_texture(Shader* shader2D,DrawData *data){
+	shader2D->active_shader();
+	data->prepare_to_draw(shader2D);
+	draw(shader2D,data);
+	data->draw_end(shader2D);
+	delete data;//remember to delete this!!
+}
+void Texture::draw(Shader* shader2D,DrawData *data){
 	std::cerr<<"error not implement draw texture in this class"<<std::endl;
 }

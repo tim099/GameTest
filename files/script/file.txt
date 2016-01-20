@@ -1,0 +1,172 @@
+#include "File.h"
+#include "FileSystem.h"
+File::File(FileSystem *_dir) {
+	dataSize = 0;
+	data = 0;
+	dir = _dir;
+	headeralloced = false;
+	//resize_data(0,data);
+}
+File::File(std::string _name, FileSystem *_dir) {
+	dataSize = 0;
+	data = 0;
+	name = _name;
+	dir = _dir;
+	headeralloced = true; //alloc by system
+	//resize_data(0,data);
+}
+File::~File() {
+	if (data)
+		delete[] data;
+}
+void File::clear(){
+	dir->mfree(dataSize);
+	delete[] data;
+	data=0;
+	dataSize=0;
+}
+bool File::myscanf(char* &ptr, char* buffer) {
+	int num = sscanf(ptr, "%s", buffer);
+	if (num <= 0)
+		return false;
+	ptr += (strlen(buffer) + 1); //with next line char
+	return true;
+}
+int File::min_size() {
+	return FileHeaderSize;
+}
+int File::get_size() {
+	return FileHeaderSize + dataSize;
+}
+unsigned File::get_file_size(const char *path) {
+	struct stat st;
+	stat(path, &st);
+	return st.st_size;
+}
+bool File::resize_data(unsigned size, char *&data, bool copy_data) {
+	printf("File resize to %d,need alloc%d\n", size, (size - dataSize));
+	if (!headeralloced) {
+		if (dir->alloc(min_size())) { //for header
+			headeralloced = true;
+		}
+	}
+	if (data) {
+		printf("Data exist Resize!!\n");
+		if (!dir->alloc((size - dataSize))) { //alloc delta size
+			printf("File resize_data fail, bad alloc\n");
+			return false;
+		}
+		char *tmp_data = new char[size];
+		if (copy_data)
+			memcpy(tmp_data, data, dataSize * sizeof(char));
+		delete[] data;
+		data = tmp_data;
+		dataSize = size;
+	} else {
+		printf("File Data not exist Resize!!\n");
+		if (!dir->alloc(size)) {
+			printf("File resize_data fail, bad alloc\n");
+			return false;
+		}
+		dataSize = size;
+		data = new char[dataSize];
+	}
+
+	return true;
+}
+bool File::read_in_file(const char *path) { //open real file in system
+	FILE *file = fopen(path, "r");
+	if (!file) {
+		printf("File load file:%s open error", path);
+		return false;
+	}
+
+	if (!resize_data(get_file_size(path), data, false)) {
+		printf("File read_in_file fail, bad alloc\n");
+		fclose(file);
+		return false;
+	}
+
+	fread(data, sizeof(char), dataSize, file);
+	fclose(file);
+	return true;
+}
+bool File::write_to_file(const char *path) {
+	FILE *file = fopen(path, "w+");
+	if (!file) {
+		printf("File write file:%s open error", path);
+		return false;
+	}
+	fwrite(data, sizeof(char), dataSize, file);
+	fclose(file);
+	return true;
+}
+int File::Open() {
+	return 1;
+}
+int File::Close() {
+	return 1;
+}
+int File::Read(FileHandle* han,char *buffer, int count) {
+	if ((unsigned) han->read_at == dataSize) {
+		buffer[0] = 0;
+		printf("read_at=%d,dataSize=%d,Read file fail,reach end of file\n",
+				han->read_at, dataSize);
+		return -1;
+	}
+	if (han->read_at + (unsigned) count >= dataSize) {
+		count = dataSize - han->read_at;
+		printf("Read until at file end,count=%d\n", count);
+	}
+	memcpy(buffer, data + han->read_at, count);
+	buffer[count] = 0;
+	han->read_at += count;
+	return 1;
+}
+int File::Write(FileHandle* han,char *buffer, int count) {
+	if (!resize_data(dataSize + count, data)) {
+		printf("write file failed bad alloc\n");
+	}
+	memcpy(data + han->write_at, buffer, count);
+	han->write_at += count;
+	return 1;
+}
+void File::SaveHeader(char* &filedata) {
+	char header[FileHeaderSize];
+	char* header_ptr = header;
+
+	memset(header, 0, FileHeaderSize * sizeof(char));
+	header_ptr += sprintf(header_ptr, "%s\n", name.c_str());
+	header_ptr += sprintf(header_ptr, "%d\n", dataSize);
+
+	memcpy(filedata, header, FileHeaderSize * sizeof(char));
+	filedata += FileHeaderSize;
+	//printf("save file header done,file name=%s,dataSize=%u\n",name.c_str(),dataSize);
+}
+void File::LoadHeader(char* &filedata) {
+	char header[FileHeaderSize];
+	memcpy(header, filedata, FileHeaderSize * sizeof(char));
+	char buffer[200];
+	char *ptr = header;
+
+	myscanf(ptr, buffer);
+	name = buffer;
+	myscanf(ptr, buffer);
+	sscanf(buffer, "%d", &dataSize);
+
+	filedata += FileHeaderSize;
+	//printf("load file header done,file name=%s,dataSize=%u\n",name.c_str(),dataSize);
+}
+void File::Save(char* &filedata) {
+	SaveHeader(filedata);
+	memcpy(filedata, data, dataSize * sizeof(char));
+	filedata += dataSize;
+	//printf("save file done\n");
+}
+void File::Load(char* &filedata) {
+	LoadHeader(filedata);
+	resize_data(dataSize, data);
+	memcpy(data, filedata, dataSize * sizeof(char));
+	filedata += dataSize;
+	//printf("load file done\n");
+}

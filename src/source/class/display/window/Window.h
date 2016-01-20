@@ -11,12 +11,21 @@ public:
 	Window(glm::ivec2 size,const char* name,bool full_screen);
 	virtual ~Window();
 
-	void creat_window(glm::i16vec2 size,const char* name,bool full_screen);
-	float aspect()const;
+	void set_veiwport();
+	void creat_window(const char* name,bool full_screen);
+	float get_aspect()const;
 	int WindowShouldClose()const;
 	void swap_buffer()const;
 	void close_window();
+	/*
+	 * make current thread draw on this window
+	 * must call render_off to release this window for other thread
+	 */
 	void render_on();
+
+	/*
+	 * release this window for other thread
+	 */
 	void render_off();
 	glm::ivec2 get_size()const;
 	GLFWwindow* get_window()const;

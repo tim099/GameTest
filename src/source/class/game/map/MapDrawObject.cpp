@@ -12,7 +12,11 @@ MapDrawObject::~MapDrawObject() {
 }
 void MapDrawObject::update(){
 	if(updated){
-		set_obj(new BufferObject(mapmodel));
+		if(!obj){
+			set_obj(new BufferObject(mapmodel));
+		}else{
+			obj->load_model(mapmodel);
+		}
 		updated=false;
 	}
 }

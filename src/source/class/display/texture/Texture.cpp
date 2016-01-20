@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cmath>
 #include <cstring>
+#include <vector>
 #include <GL/glfw3.h>
 Texture::Texture(GLuint _TexID,GLenum _target,GLenum _type,GLenum _format) {
 	TexID=_TexID;
@@ -74,13 +75,18 @@ GLuint Texture::gen_texture_uv(){
 int Texture::layer()const{
 	return 0;
 }
-void Texture::draw_texture(Shader* shader2D,DrawData *data){
+void Texture::draw_texture(Shader2D* shader2D,DrawData *data){
 	shader2D->active_shader();
+	shader2D->set_format(format);
 	data->prepare_to_draw(shader2D);
 	draw(shader2D,data);
 	data->draw_end(shader2D);
 	delete data;//remember to delete this!!
 }
-void Texture::draw(Shader* shader2D,DrawData *data){
+void Texture::draw(Shader2D* shader2D,DrawData *data){
 	std::cerr<<"error not implement draw texture in this class"<<std::endl;
+}
+double Texture::get_aspect(){
+	std::cerr<<"error not implement get_aspect() in this class"<<std::endl;
+	return 1.0;
 }

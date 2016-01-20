@@ -4,7 +4,9 @@
 #include "class/display/texture/texture3D/Texture2DArr/Texture2DArr.h"
 #include "class/display/texture/texture3D/cubemap/TextureCubeMap.h"
 #include "class/display/texture/TextureMap.h"
+
 class Shader;
+class Shader2D;
 class FrameBuffer;
 class Camera;
 class LightControl;
@@ -32,14 +34,16 @@ protected:
 	Shader *shader;
 
 	Camera *camera;
-	Shader *shader2D;
+	Shader2D *shader2D;
 	LightControl* lightControl;
+
 
 	Draw *d_obj;
 
 	Window *window;
 	Mouse* mouse;//update 3d pos
 	std::vector<Shader*>shaders;
+	GLuint VertexArrayID;
 	double* shadow_dis;
 	bool rendering;
 };

@@ -9,6 +9,13 @@ Math::Math() {
 Math::~Math() {
 
 }
+glm::vec2 Math::get_size(float width,float aspect){
+	if (aspect > 0.999 && aspect < 1.001) {
+		return glm::vec2(width, width);
+	} else {
+		return glm::vec2(width, width / aspect);
+	}
+}
 glm::vec2 Math::max(glm::vec2 a,glm::vec2 b){
 	return glm::vec2(Max(a.x,b.x),Max(a.y,b.y));
 }

@@ -19,6 +19,9 @@ public:
 	 * detect if the dot is coincide with this RectP2D
 	 */
 	bool coincide(glm::vec2 dot);
+	static bool coincide(glm::vec2 dot,glm::vec2 a,glm::vec2 b);
+
+
 	/*
 	 * detect if another RectP2D is coincide with this RectP2D
 	 */

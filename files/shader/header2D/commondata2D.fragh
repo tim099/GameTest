@@ -10,7 +10,8 @@ uniform float alpha;
 vec3 get_color(){
 	vec3 temp_color;
 	if((shaderData&SobelMode)!=0){
-		temp_color=sobel(sobel_dv);
+		float val=sobel(sobel_dv);		
+		temp_color=vec3(val,val,val);
 	}else{
 		temp_color=texture(Texture,UV).xyz;
 	}
@@ -19,5 +20,20 @@ vec3 get_color(){
 		temp_color=color_alter(temp_color);
 	}
 	return temp_color;
+}
+float get_alpha(vec3 temp_color){
+	float a;
+	if(textureType==Type_RGBA){
+		a=texture(Texture,UV).a;
+	}else{
+		a=1.0;
+	}
 	
+	
+	if((shaderData&AddOnMode)!=0){
+		a*=length(temp_color);
+	}else{
+		a*=alpha;
+	}
+	return a;
 }

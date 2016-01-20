@@ -2,19 +2,24 @@
 #define SELECTABLECONTROL_H_
 #include "class/input/mouse/selectable/Selectable.h"
 #include <vector>
-class Mouse;
+class Input;
+template <class selectClass>
 class SelectableControl {
 public:
-	SelectableControl(Mouse *mou,std::vector<Selectable*>*selectables);
+	SelectableControl(Input *input,std::vector<selectClass*>*selectables);
 	virtual ~SelectableControl();
 	/*
-	 * check all selectable object and update their state
+	 * update all selectable object
 	 */
 	void update();
+	/*
+	 *find current selected object
+	 */
+	selectClass* find_selected();
 
-	Mouse *mou;
-	Selectable* cur_selected;
-	std::vector<Selectable*>*selectables;
+	Input *input;
+	selectClass* cur_selected;
+	std::vector<selectClass*>*selectables;
 };
-
+#include "class/input/mouse/selectable/SelectableControl.cpp"
 #endif /* SELECTABLECONTROL_H_ */

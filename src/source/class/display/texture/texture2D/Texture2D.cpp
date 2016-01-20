@@ -4,6 +4,8 @@
 #include "class/display/buffer/Buffer.h"
 #include "class/tim/math/Math.h"
 #include "class/display/uniform/Uniform.h"
+#include "class/tim/file/File.h"
+#include "class/display/window/ViewPort.h"
 #include <iostream>
 Texture2D::Texture2D(GLuint _TexID,glm::ivec2 _size,GLenum _type,GLenum _format)
 : Texture(_TexID,GL_TEXTURE_2D,_type,_format){
@@ -17,6 +19,9 @@ Texture2D* Texture2D::Tex2D(){
 }
 int Texture2D::layer()const{
 	return 0;
+}
+double Texture2D::get_aspect(){
+	return Tim::Math::aspect(size);
 }
 Texture2D* Texture2D::gen_texture2D(Image<unsigned char>* image,GLint internalformat,
 		GLenum type,int Parameteri){
@@ -33,21 +38,23 @@ Texture2D* Texture2D::gen_texture2D(const void *pixels,glm::ivec2 size,GLint int
 	Texture2D *tex=new Texture2D(textureID,size,type,internalformat);
 	return tex;
 }
-void Texture2D::draw(Shader* shader2D,DrawData *data){
+void Texture2D::draw(Shader2D* shader2D,DrawData *data){
 	DrawData2D *dat=(DrawData2D*)data;
-	//shader2D->active_shader();
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH_TEST);
 
+	float targetaspect=ViewPort::get_cur_viewport_aspect();
 
-    float aspect=Tim::Math::aspect(size)/dat->targetaspect;
     glm::vec2 tsize;
-	if(aspect>0.99&&aspect<1.01){
-		tsize=glm::vec2(dat->width,dat->width);
-	}else{
-		tsize=glm::vec2(dat->width,dat->width/aspect);
-	}
+    float aspect=Tim::Math::aspect(size)/targetaspect;
+    tsize=Tim::Math::get_size(dat->width,aspect);
+    if(!dat->height==DrawData2D::AutoHeight){
+    	tsize.y*=dat->height;
+    }
+
+
+
 	GLuint tex_vt=gen_texture_vertex(tsize),tex_uv=gen_texture_uv();
 
 	Buffer::bind_vtbuffer(tex_vt);
@@ -63,9 +70,27 @@ void Texture2D::draw(Shader* shader2D,DrawData *data){
 
     glDeleteBuffers(1,&tex_vt);
     glDeleteBuffers(1,&tex_uv);
-    glDisableVertexAttribArray(0);//vertexbuffer
+
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
+}
+Texture2D* Texture2D::loadImage(const char * imagepath,int Parameteri){
+	std::string type=Tim::File::get_type(imagepath);;
+	if (type == "bmp" || type == "BMP") {
+		return loadBMP(imagepath,Parameteri);
+	} else if (type == "png" || type == "PNG") {
+		return loadPNG(imagepath,Parameteri);
+	} else {
+		std::cerr << "unsupport image type:" << type << std::endl;
+	}
+	return 0;
+}
+Texture2D* Texture2D::loadPNG(const char * imagepath,int Parameteri){
+	Image<unsigned char>* img=new Image<unsigned char>();
+	img->loadPNG(imagepath);
+	Texture2D* texture=gen_texture2D(img,GL_RGBA,GL_UNSIGNED_BYTE,Parameteri);//BMP is BGR Format
+	delete img;
+	return texture;
 }
 Texture2D* Texture2D::loadBMP(const char * imagepath,int Parameteri){
 	Image<unsigned char>* bmp_img=new Image<unsigned char>();

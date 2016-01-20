@@ -1,6 +1,6 @@
 uniform vec2 sobel_dv;
 
-vec3 sobel(vec2 dv){
+float sobel(vec2 dv){
 	float val;
 	
 	float arr[9];
@@ -16,6 +16,6 @@ vec3 sobel(vec2 dv){
 	
 	val=sqrt(GX*GX+GY*GY);
 	
-	return vec3(val,val,val);
+	return val;
 
 }

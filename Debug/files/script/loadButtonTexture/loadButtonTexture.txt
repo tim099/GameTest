@@ -1,0 +1,23 @@
+#LOADTEXTURE_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/texture/button/
+
+#HEADER_END
+
+Texture:
+	TextureName:
+		button1
+	TexturePath:
+		font1.png
+Texture:
+	TextureName:
+		button2
+	TexturePath:
+		button2.png
+
+
+
+#END

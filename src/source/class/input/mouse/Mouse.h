@@ -5,13 +5,18 @@
 #include <glm/glm.hpp>
 class FrameBuffer;
 class Mouse {
+	static Mouse *rigister_mouse;
 public:
 	Mouse();
 	virtual ~Mouse();
+	static void cursor_pos_callback(GLFWwindow* window, double x, double y);
+	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+	void callback_rigister(GLFWwindow *window);
 
-	void cursor_pos_callback(GLFWwindow* window, double x, double y);
-	void scroll_callback(GLFWwindow* window,double xoffset,double yoffset);
-	void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+	void cursor_pos_input(GLFWwindow* window, double x, double y);
+	void scroll_input(GLFWwindow* window,double xoffset,double yoffset);
+	void mouse_button_input(GLFWwindow* window, int button, int action, int mods);
 	void tic();
 	glm::vec2 get_screen_space_pos(glm::ivec2 screen_size);
 

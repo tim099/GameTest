@@ -12,12 +12,16 @@ Buffer::Buffer(GLfloat* data,int datasize,GLuint _index,GLint _size,GLenum _type
 Buffer::~Buffer() {
 	glDeleteBuffers(1,&buffer);
 }
-GLuint Buffer::gen_buffer(GLfloat* data,int size){
+GLuint Buffer::gen_buffer(GLfloat* data,int datasize){
 	GLuint buffer;
 	glGenBuffers(1,&buffer);
 	glBindBuffer(GL_ARRAY_BUFFER,buffer);
-	glBufferData(GL_ARRAY_BUFFER,size,data,GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER,datasize,data,GL_STATIC_DRAW);
 	return buffer;
+}
+void Buffer::update_buffer(GLfloat* data,int datasize){
+	glBindBuffer(GL_ARRAY_BUFFER,buffer);
+	glBufferData(GL_ARRAY_BUFFER,datasize,data,GL_STATIC_DRAW);
 }
 GLuint Buffer::GenVertexArray(){
     GLuint VertexArrayID;

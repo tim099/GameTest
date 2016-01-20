@@ -3,20 +3,21 @@
 #include "class/input/mouse/selectable/SelectableControl.h"
 #include "class/display/UI/button/Button.h"
 
-class Mouse;
+class Input;
+class Draw;
 namespace UI {
 
 class ButtonControl {
 public:
-	ButtonControl(Mouse *mou);
+	ButtonControl(Input* input);
 	virtual ~ButtonControl();
 
-	inline Button* get_button(int i);
-
-
 	void update();
-	SelectableControl* SC;
-	std::vector<Selectable*>buttons;
+	void start_draw(Draw* draw);
+	SelectableControl<Button>* SC;
+	std::vector<Button*>buttons;
+protected:
+	Input* input;
 };
 
 } /* namespace UI */

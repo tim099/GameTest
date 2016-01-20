@@ -15,6 +15,7 @@ public:
 	static glm::vec2 min(glm::vec2 a,glm::vec2 b);
 	static int get_val_at(int val,int at);
 	static int get_len(int val);
+	static glm::vec2 get_size(float width,float aspect);
 	static glm::mat4 BiasMat();
 	static float aspect(glm::ivec2 size);
 	static int pow(int base,int power);

@@ -18,7 +18,15 @@ int main(){
 	test->Mainloop();
 
 	//Test2 *test=new Test2();
-
+	/*
+	for(int i=0;i<16;i++){
+		std::cout<<i<<" ";
+		for(int j=0;j<16;j++){
+			printf("%c ",char(i*16+j));
+			//std::cout<<char(i*16+j)<<" ";
+		}std::cout<<std::endl;
+	}
+	*/
 	delete test;
     return 0;
 }

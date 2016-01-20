@@ -25,7 +25,8 @@ void main(){
     
     //color=vec4(total_light*tex_color+reflect_color,1.0);
  	
- 	color = vec4(toon((total_light)*tex_color,5.0f),1.0);
+ 	color = vec4(toon((total_light+reflect_color),15.0f),1.0);
+ 	//color = vec4(toon((total_light)*tex_color,5.0f),1.0);
  	
  	
  	//if(texture(cubedepthMap,vec3(vert.UV,vert.UVlayer)).x==0.0){

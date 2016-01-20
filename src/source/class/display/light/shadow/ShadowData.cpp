@@ -18,17 +18,17 @@ ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow) {
 
 	SFBO=new FrameBuffer(glm::ivec2(4096,4096));
 	PSFBO=new FrameBuffer(glm::ivec2(512,512));
-	PSFBO2=new FrameBuffer(glm::ivec2(512,512));
+	//PSFBO2=new FrameBuffer(glm::ivec2(512,512));
 
     SFBO->push_depth_texture(Texture2DArr::gen_texture2DArr(glm::ivec3(SFBO->size.x,SFBO->size.y,max_l_shadow),
     		GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear));
     PSFBO->push_depth_texture(Texture2DArr::gen_texture2DArr(glm::ivec3(PSFBO->size.x,PSFBO->size.y,6*max_pl_shadow),
     		GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear));
 
-    for(unsigned i=0;i<max_pl_shadow;i++){
+    /*for(unsigned i=0;i<max_pl_shadow;i++){
     	PSFBO2->push_depth_texture(TextureCubeMap::gen_CubeMap(glm::ivec2(PSFBO2->size.x,PSFBO2->size.y),
     	    		GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear));
-    }
+    }*/
 	shaderMultiShadowMapping=new Shader();
 	shaderMultiShadowMapping->LoadShader("files/shader/shadow/multiShadowMapping/MultiShadowMapping.vert",
 			"files/shader/shadow/multiShadowMapping/MultiShadowMapping.geo",

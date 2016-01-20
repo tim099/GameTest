@@ -9,12 +9,6 @@ FolderPath:
 
 Texture:
 	TextureName:
-		mypic
-	TexturePath:
-		input.bmp
-		
-Texture:
-	TextureName:
 		NormalTexture
 	TexturePath:
 		normal.bmp

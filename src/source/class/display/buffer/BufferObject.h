@@ -9,6 +9,9 @@ class BufferObject{
 public:
 	BufferObject(Model *m,bool auto_delete=true);
 	virtual ~BufferObject();
+
+	void load_model(Model *m);
+
 	void bind_buffer(Shader *shader);
 	void draw(GLuint programID,GLenum mode=GL_TRIANGLES);
 	bool AutoDelete()const;

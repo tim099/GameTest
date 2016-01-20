@@ -39,7 +39,7 @@ void TextureMap::Load_texture(std::istream &is,const std::string &folder_path){
 		std::cerr<<"Load_texture no TexturePath!!"<<line<<std::endl;
 		return;
 	}
-	push_tex(name,Texture2D::loadBMP(path.c_str()));
+	push_tex(name,Texture2D::loadImage(path.c_str()));
 }
 void TextureMap::Load_texture2DArr(std::istream &is,const std::string &folder_path){
 	std::string line;
@@ -165,8 +165,17 @@ void TextureMap::Load_texture_script(std::string script_path){
 	file.close();
 }
 void TextureMap::push_tex(std::string tex_name,Texture* tex){
+	if(textures.find(tex_name)!=textures.end()){
+		std::cerr<<"texture name:"<<tex_name<<" already exist in this texture map"<<std::endl;
+		return;
+	}
 	textures[tex_name]=tex;
 }
 Texture* TextureMap::get_tex(std::string tex_name){
-	return textures[tex_name];
+	if(textures.find(tex_name)!=textures.end()){
+		return textures[tex_name];
+	}else{
+		std::cerr<<"no texture name:"<<tex_name<<" in this texture map"<<std::endl;
+		return 0;
+	}
 }

@@ -1,4 +1,4 @@
-#include <class/display/model/Vertex.h>
+#include "class/display/model/Vertex.h"
 #include <iostream>
 Vertex::Vertex() {
 
@@ -25,13 +25,14 @@ void Vertex::gen_vn(GLfloat* vt,GLfloat* vn){
 		vn[3*i+2]=n.z;
 	}
 }
-void Vertex::gen_quad_uv(GLfloat* uvBuffer){
-	fill_vec2(uvBuffer,glm::vec2(1,1));
-	fill_vec2(uvBuffer+2,glm::vec2(0,1));
-	fill_vec2(uvBuffer+4,glm::vec2(1,0));
-	fill_vec2(uvBuffer+6,glm::vec2(1,0));
-	fill_vec2(uvBuffer+8,glm::vec2(0,1));
-	fill_vec2(uvBuffer+10,glm::vec2(0,0));
+void Vertex::gen_quad_uv(GLfloat* uvBuffer,glm::vec2 a,glm::vec2 b){
+	fill_vec2(uvBuffer,glm::vec2(b.x,b.y));
+	fill_vec2(uvBuffer+2,glm::vec2(a.x,b.y));
+	fill_vec2(uvBuffer+4,glm::vec2(b.x,a.y));
+
+	fill_vec2(uvBuffer+6,glm::vec2(b.x,a.y));
+	fill_vec2(uvBuffer+8,glm::vec2(a.x,b.y));
+	fill_vec2(uvBuffer+10,glm::vec2(a.x,a.y));
 }
 void Vertex::gen_quad_vt(GLfloat* vtBuffer,glm::vec3 p,glm::vec3 size,bool up){
 	glm::vec3 d1,d2,d3,d4;

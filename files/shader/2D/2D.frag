@@ -5,11 +5,7 @@
 
 void main(){ 
 	vec3 temp_color=get_color();
-	
-	if((shaderData&AddOnMode)!=0){
-		color=vec4(temp_color,length(temp_color));
-	}else{
-		color=vec4(temp_color,alpha);
-	}
-    
+	float a=get_alpha(temp_color);
+
+    color=vec4(temp_color,a);
 }

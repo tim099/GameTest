@@ -1,0 +1,5 @@
+uniform vec3 alter_value;
+
+vec3 color_alter(vec3 color){
+	return color+alter_value;
+}

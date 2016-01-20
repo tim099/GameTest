@@ -8,7 +8,7 @@ DrawTexture::DrawTexture(Texture *_tex,DrawData* _data) {
 DrawTexture::~DrawTexture() {
 
 }
-void DrawTexture::draw(Shader *shader){
+void DrawTexture::draw(Shader2D *shader){
 	tex->draw_texture(shader,data);
 }
 

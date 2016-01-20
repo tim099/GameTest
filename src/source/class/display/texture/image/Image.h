@@ -18,10 +18,11 @@ public:
 			GLenum target,int layer,GLenum type=GL_UNSIGNED_BYTE);
 	static void load_sub_image2D(const char * imagepath,
 			GLenum target,GLenum internalformat,GLenum format,GLenum type=GL_UNSIGNED_BYTE);
-
+	void flip();
 	void initialize(glm::ivec2 size,GLenum format);
 	void loadImage(const char * imagepath);
 	void loadBMP(const char * imagepath);
+	void loadPNG(const char * imagepath);
 	void sub_image3D(GLenum target,int layer,GLenum type=GL_UNSIGNED_BYTE);
 
 

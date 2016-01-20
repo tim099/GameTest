@@ -6,13 +6,14 @@ public:
 	Buffer(GLfloat* data,int datasize,GLuint index,GLint size,GLenum type,GLboolean normalized=false
 			,GLsizei stride=0);
 	virtual ~Buffer();
-	static GLuint gen_buffer(GLfloat* data,int size);
+	static GLuint gen_buffer(GLfloat* data,int datasize);
 	static GLuint GenVertexArray();
 
 	static void bind_vtbuffer(GLuint vertexbuffer);
 	static void bind_uvbuffer(GLuint uvbuffer);
 	static void bind_vnbuffer(GLuint vnbuffer);
 	static void disable_all_buffer();
+	void update_buffer(GLfloat* data,int datasize);
 	void bind_buffer();
 protected:
 	GLuint buffer;

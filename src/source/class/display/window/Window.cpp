@@ -8,8 +8,8 @@ bool Window::glewinitial=false;
 bool Window::glfwinitial=false;
 
 Window::Window(glm::ivec2 _size,const char* name,bool full_screen) {
-	creat_window(_size,name,full_screen);
 	size=_size;
+	creat_window(name,full_screen);
 }
 Window::~Window() {
 
@@ -34,11 +34,15 @@ void Window::glfwinit(){
 	glfwinitial=true;
 	glfwInit();
 }
-float Window::aspect()const{
+float Window::get_aspect()const{
 	return Tim::Math::aspect(size);
 }
 glm::ivec2 Window::get_size()const{
 	return size;
+}
+void Window::set_veiwport(){
+	std::cout<<"set viewport"<<size.x<<","<<size.y<<std::endl;
+	glViewport(0,0,size.x,size.y);
 }
 void Window::render_on(){
 	wglMakeCurrent(dc,lrc);
@@ -46,7 +50,7 @@ void Window::render_on(){
 void Window::render_off(){
 	wglMakeCurrent(0,0);
 }
-void Window::creat_window(glm::i16vec2 size,const char* name,bool full_screen){
+void Window::creat_window(const char* name,bool full_screen){
 	glfwinit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,1);
@@ -59,6 +63,7 @@ void Window::creat_window(glm::i16vec2 size,const char* name,bool full_screen){
     lrc=wglGetCurrentContext();
     glfwSetInputMode(window,GLFW_STICKY_KEYS,GL_TRUE);
     glewinit();
+    set_veiwport();
 }
 GLFWwindow* Window::get_window()const{
 	return window;

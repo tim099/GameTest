@@ -1,5 +1,6 @@
 #include "class/display/buffer/frameBuffer/FrameBuffer.h"
 #include "class/display/texture/texture2D/Texture2D.h"
+#include "class/display/window/ViewPort.h"
 #include <iostream>
 FrameBuffer::FrameBuffer(glm::ivec2 _size) {
 	size=_size;
@@ -19,7 +20,7 @@ float FrameBuffer::aspect()const{
 }
 void FrameBuffer::bind_buffer(bool attach_all_texture){
 	glBindFramebuffer(GL_FRAMEBUFFER,FBOID);//bind the SFBO
-	glViewport(0,0,size.x,size.y);
+	ViewPort::set_viewport(0,0,size.x,size.y);
 	if(attach_all_texture&&!color_textures.empty()){
 		GLuint *DBcolor=new GLuint[color_textures.size()];
 		for(unsigned i=0;i<color_textures.size();i++)DBcolor[i]=(GL_COLOR_ATTACHMENT0+i);

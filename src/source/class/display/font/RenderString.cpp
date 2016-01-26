@@ -1,5 +1,7 @@
 #include "class/display/font/RenderString.h"
 #include "class/display/font/StringRenderer.h"
+#include "class/display/window/ViewPort.h"
+#include <iostream>
 RenderString::RenderString(std::string _str,float _size,glm::vec2 _pos,bool _render_at_middle) {
 	str=_str;
 	size=_size;
@@ -7,7 +9,7 @@ RenderString::RenderString(std::string _str,float _size,glm::vec2 _pos,bool _ren
 	render_at_middle=_render_at_middle;
 }
 RenderString::~RenderString() {
-
+	//std::cout<<"delete STR:\n"<<str<<std::endl;
 }
 glm::vec2 RenderString::font_size()const{
 	return glm::vec2(size*Font_Interval,size);

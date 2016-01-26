@@ -2,11 +2,13 @@
 #include "class/display/texture/texture3D/Texture2DArr/Texture2DArr.h"
 #include "class/display/texture/texture2D/Texture2D.h"
 #include "class/display/draw/texture/DrawTexture.h"
-#include "class/display/texture/drawData/drawDataEX/SobelData.h"
-#include "class/display/texture/drawData/drawDataEX/ColorAlter.h"
-#include "class/display/UI/button/pictureButton/PictureButton.h"
+#include "class/display/texture/texture2D/drawDataEX/SobelData.h"
+#include "class/display/texture/texture2D/drawDataEX/ColorAlter.h"
 #include "class/display/font/RenderString.h"
 #include "class/test/TestTask.h"
+#include "class/input/mouse/selectable/SelectableControl.h"
+#include "class/display/UI/panel/Panel.h"
+#include "class/display/UI/UIObjectCreator.h"
 #include <iostream>
 #include <cstdio>
 #include <cmath>
@@ -29,19 +31,19 @@ Test::Test() {
 	shader_at = 0;
 
 	position_pool = new Tim::ObjPool<Position>(100);
+	controller_system=new ControllerSystem();
+	controller_system->push(new SelectableControl());
 
 	map = new Map();
 	map->load_map("files/maps/map011");
 	window = new Window(glm::ivec2(1366, 733), "Age of Cube", false); //must before any draw obj
-	//window=new Window(glm::ivec2(1366,333),"Age of Cube",false);//must before any draw obj
 	//window = new Window(glm::ivec2(1920, 1080), "Age of Cube", true); //must before any draw obj
 
 	draw = new Draw();
-	texmap = new TextureMap("files/script/loadTexture/loadTestTexture.txt");
 
-	button_texmap = new TextureMap(
-			"files/script/loadButtonTexture/loadButtonTexture.txt");
-	dmap = new DisplayMap(map, draw, texmap, window);
+	textures=new AllTextures("files/script/loadTexture/loadAllTexture.txt");
+
+	dmap = new DisplayMap(map, draw, textures, window);
 
 	lightControl = new LightControl(120);
 
@@ -51,54 +53,26 @@ Test::Test() {
 
 	camera = new Camera(glm::vec3(36.0, 24.0, 24.0),
 			glm::vec3(34.0, 22.0, 27.0), glm::vec3(0, 1, 0), 60.0, 0.1f,
-			50000.0f);
+			10000.0f);
 
 	renderer = new Renderer(lightControl, draw, window, camera, input->mouse,
-			texmap, &shadow_dis);
+			textures, &shadow_dis);
 
 	creat_light();
 	prepare_draw_obj();
 
 	UI = new UI::UI();
-	button_control = new UI::ButtonControl(input);
-	UI->set_button_control(button_control);
+	UI->Load_script("files/script/UIscript/saveUI.txt");
 
 	render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 	thread_pool = new Tim::ThreadPool(8);
 	render_task = new RenderTask(renderer, window);
 
 	dmap->gen_map_obj(thread_pool);
-
-	UI::PictureButton* but;
-	but = new UI::PictureButton(glm::vec2(0.35, 1.0),
-			button_texmap->get_tex("button2"), 0.14);
-	but->set_signal(new Signal("P", "test"));
-	but->set_string(new std::string("switch_shader:\nNormalMapping"));//,0.018
-	button_control->buttons.push_back(but);
-
-	but = new UI::PictureButton(glm::vec2(0.2, 1.0),
-			button_texmap->get_tex("button2"), 0.14);
-	but->set_signal(new Signal("L", "test"));
-	but->set_string(new std::string("switch_shader:\nLightScattering"));
-	button_control->buttons.push_back(but);
-
-	but = new UI::PictureButton(glm::vec2(0.5, 1.0),
-			button_texmap->get_tex("button2"), 0.14);
-	but->set_signal(new Signal("O"));
-	but->set_string(new std::string("switch_shader:\nBasic"));
-	button_control->buttons.push_back(but);
-
-	but = new UI::PictureButton(glm::vec2(0.65, 0.9),
-			button_texmap->get_tex("button2"), 0.12);
-	but->set_signal(new Signal("O"));
-	but->set_string(new std::string("start"));
-	button_control->buttons.push_back(but);
 	window->render_off(); //release window for other thread
 }
 Test::~Test() {
-
-}
-void Test::terminate() {
+	window->render_on();
 	delete render_task;
 	thread_pool->Terminate();
 	render_thread->Terminate();
@@ -109,20 +83,20 @@ void Test::terminate() {
 	delete lightControl;
 
 	delete dmap;
-	delete button_texmap;
-	delete texmap;
 	delete draw;
 
 	for (unsigned i = 0; i < b_objs.size(); i++) {
 		delete b_objs.at(i);
 	}
-
+	for(unsigned i=0;i<models.size();i++){
+		delete models.at(i);
+	}
 	delete map;
-
+	delete textures;
 	delete window;
-
+	delete controller_system;
 	delete position_pool;
-	glfwTerminate();
+
 }
 void Test::handle_signal() {
 	//Signal *sig=receiver->get_signal();
@@ -140,17 +114,25 @@ void Test::handle_signal() {
 		std::cout << "got signal default:" << sig->get_data() << std::endl;
 		if (sig->get_data() == "O") {
 			renderer->switch_shader("Basic");
+		}else if(sig->get_data()=="QWQ"){
+			pic_but2->hide^=1;
+		}else if(sig->get_data()=="QAQ"){
+			pic_but->hide^=1;
+		}else if(sig->get_data()=="Quit"){
+			end=true;
 		}
 	}
 }
 void Test::handle_input() {
-	if (input->mouse->mid) {
+	if (input->mouse->mid_pressed()) {
 		//std::cout<<"move"<<(int)(mouse->pos.x)<<","<<(int)mouse->prev_pos.x<<std::endl;
 		camera->rotate(glm::vec3(0, 1, 0), -0.15 * input->mouse->pos_delta().x);
 		camera->rotate(camera->yaw_vec(), 0.15 * input->mouse->pos_delta().y);
 	}
 	if (input->keyboard->pressed('Q')) {
-		ico->push_position(new Position(input->mouse->world_pos, glm::vec3()));
+		Position *pos=Tim::ObjPool<Position>::mycreate();
+		if(pos)pos->initialize(input->mouse->world_pos, glm::vec3());
+		ico->push_drawdata(new DrawDataObj(pos));
 	}
 	if (input->keyboard->get('E')) {
 		camlight->shadow ^= 1;
@@ -159,14 +141,14 @@ void Test::handle_input() {
 		std::cout << "END" << std::endl;
 		end = true;
 	}
-	if (input->mouse->right) {
+	if (input->mouse->right_pressed()) {
 		camera->v += (float) (0.001f * sqrt(camera->look_dis() + 0.001)
 				* input->mouse->pos_delta().y) * camera->look_vec_xz();
 		camera->v += (float) (-0.001f * sqrt(camera->look_dis() + 0.001)
 				* input->mouse->pos_delta().x)
 				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
 	}
-	if (input->mouse->left) {
+	if (input->mouse->left_pressed()) {
 		camera->v += (float) (-0.0005f * sqrt(camera->look_dis() + 0.001)
 				* input->mouse->pos_delta().y) * glm::vec3(0, 1, 0);
 		camera->v += (float) (-0.001f * sqrt(camera->look_dis() + 0.001)
@@ -220,7 +202,11 @@ void Test::handle_input() {
 	}
 
 	if (input->keyboard->get(GLFW_KEY_LEFT)) {
-
+		UI::PictureButton* but;
+		but = new UI::PictureButton(glm::vec2(0.35, 1.0),"UI/button2", 0.14);
+		but->set_signal(new Signal("P", "test"));
+		but->set_string(new std::string(input->keyboard->get_str()));
+		UI->push_child(but);
 	}
 	if (input->keyboard->get(GLFW_KEY_RIGHT)) {
 
@@ -234,9 +220,10 @@ void Test::handle_input() {
 			shadow_dis *= 1.01;
 	}
 	if (input->keyboard->get('C')) {
-		look_at->push_position(
-				new Position(camera->look_at + glm::vec3(0, 0.1, 0),
-						glm::vec3(0, camera->look_ry(), 0)));
+		Position *pos=position_pool->create();
+		if(pos)pos->initialize(camera->look_at + glm::vec3(0, 0.1, 0),
+				glm::vec3(0, camera->look_ry(), 0));
+		look_at->push_drawdata(new DrawDataObj(pos));
 		lightControl->push_point_light(
 				new PointLight(camera->look_at, camlight->color,
 						camlight->shadow));
@@ -311,7 +298,7 @@ void Test::set_obj_pos(Camera *camera) {
 	static Position starpos(glm::vec3(0, 0, 0), glm::vec3());
 	static Position sunpos(glm::vec3(5.1, 80.6, 0.1), glm::vec3());
 	//obj move
-	starpos.r.y = 360.0f * ((float) timeloop / loop_time);
+	starpos.set_ry(360.0f * ((float) timeloop / loop_time));
 	glm::vec3 sun_pos = glm::vec3(
 			glm::rotate(360.0f * ((float) timeloop / loop_time),
 					glm::vec3(-1, 0, 1))
@@ -321,20 +308,21 @@ void Test::set_obj_pos(Camera *camera) {
 	s_light->color = (1.0f - ((float) timeloop / loop_time)) * sun_col1
 			+ ((float) timeloop / loop_time) * sun_col2;
 
-	sunpos.pos = sun_pos;
+	sunpos.set_pos(sun_pos);
+	sun->push_temp_drawdata(new DrawDataObj(&sunpos));
+	float tiger_ry=360.0f * ((float) timeloop / loop_time);
 
-	sun->push_temp_position(new Position(sunpos));
+	static Position tiger_pos;
+	tiger_pos.initialize(glm::vec3(33.0, 21.47, 26.0),
+			glm::vec3(0,tiger_ry, 0));
+	tiger->push_temp_drawdata(new DrawDataObj(&tiger_pos));
+	static Position cam_look_at;
+	cam_look_at.initialize(camera->look_at, glm::vec3(0, camera->look_ry(), 0));
+	look_at->push_temp_drawdata(new DrawDataObj(&cam_look_at));
 
-	tiger->push_temp_position(
-			new Position(glm::vec3(33.0, 21.47, 26.0),
-					glm::vec3(0, 360.0f * ((float) timeloop / loop_time), 0)));
+	stars->push_temp_drawdata(new DrawDataObj(&starpos));
 
-	look_at->push_temp_position(
-			new Position(camera->look_at, glm::vec3(0, camera->look_ry(), 0)));
-
-	stars->push_temp_position(new Position(starpos));
-
-	galaxy->push_temp_position(new Position(starpos));
+	galaxy->push_temp_drawdata(new DrawDataObj(&starpos));
 
 }
 void Test::update_map(Camera *camera) {
@@ -379,41 +367,36 @@ void Test::prepare_draw_obj() {
 	b_objs.push_back(new BufferObject(m8, false));
 	b_objs.push_back(new BufferObject(m9, false));
 
-	tiger = new DrawObject(b_objs.at(0), texmap->get_tex(std::string("test")));
+	tiger = new DrawObject(b_objs.at(0), textures->get_tex("test/test"));
 
 	draw->push(tiger);
-	sun = new DrawObject(b_objs.at(1), texmap->get_tex(std::string("test2")),
-			texmap->get_tex(std::string("NormalTexture")));
+	sun = new DrawObject(b_objs.at(1), textures->get_tex("test/test2"));
 	sun->draw_shadow = false;
 	draw->push(sun);
 	look_at = new DrawObject(b_objs.at(2),
-			texmap->get_tex(std::string("test3")),
-			texmap->get_tex(std::string("NormalTexture6")));
+			textures->get_tex("test/test3"));
 	look_at->draw_shadow = false;
 	draw->push(look_at);
-	stars = new DrawObject(b_objs.at(3), texmap->get_tex(std::string("test3")),
-			texmap->get_tex(std::string("NormalTexture")));
+	stars = new DrawObject(b_objs.at(3), textures->get_tex("test/test3"),
+			textures->get_tex("test/NormalTexture"));
 	stars->draw_shadow = false;
 	draw->push(stars);
 	galaxy = new DrawObject(b_objs.at(4),
-			texmap->get_tex(std::string("galaxy")),
-			texmap->get_tex(std::string("NormalTexture")));
+			textures->get_tex("test/galaxy"),
+			textures->get_tex("test/NormalTexture"));
 	draw->push(galaxy);
 	DrawObject* doge = new DrawObject(b_objs.at(5),
-			texmap->get_tex(std::string("doge")),
-			texmap->get_tex(std::string("NormalTexture")));
+			textures->get_tex("test/doge"),
+			textures->get_tex("test/NormalTexture"));
 	doge->draw_shadow = false;
 	draw->push(doge);
-	doge->push_position(new Position(glm::vec3(0, 0, 0), glm::vec3()));
-	base = new DrawObject(b_objs.at(6), texmap->get_tex(std::string("test2")),
-			texmap->get_tex(std::string("NormalTexture")));
-	draw->push(base);
-	base->push_position(
-			new Position(glm::vec3(54.0, 21.75, 26.0), glm::vec3(0, 0, 0)));
-	ico = new DrawObject(b_objs.at(2), texmap->get_tex(std::string("test3")),
-			texmap->get_tex(std::string("NormalTexture6")));
+	Position* doge_pos=position_pool->create();
+	doge_pos->initialize(glm::vec3(0, 0, 0), glm::vec3());
+	doge->push_drawdata(new DrawDataObj(doge_pos));
+
+	ico = new DrawObject(b_objs.at(2), textures->get_tex("test/test3"));
 	draw->push(ico);
-	moon = new DrawObject(b_objs.at(8), texmap->get_tex(std::string("doge")));
+	moon = new DrawObject(b_objs.at(8), textures->get_tex("test/doge"));
 	draw->push(moon);
 }
 void Test::creat_light() {
@@ -430,7 +413,7 @@ void Test::draw_start() {
 	render_thread->push_task(render_task);
 	render_thread->start();
 }
-void Test::timer_tic(double &time) {
+void Test::update() {
 	//=======================logical operation and input part==========================
 	if (!stop) {
 		if (timeloop < loop_time)
@@ -447,22 +430,21 @@ void Test::timer_tic(double &time) {
 	//data->ex_datas.push_back(new SobelData(glm::vec2(20, 10)));
 	//data->ex_datas.push_back(new ColorAlter(glm::vec3(0.3, 0, 0)));
 	//draw->push(new DrawTexture(texmap->get_tex(std::string("doge")), data));//texmap->get_tex(std::string("test"))
-	draw->push(
-			new RenderString(input->keyboard->get_str(), 0.015,
-					glm::vec2(0.0, 0.8)));
+	//draw->push(new RenderString(input->keyboard->get_str(), 0.015,glm::vec2(0.0, 0.8)));
 
 	char fpsbuff[20];
 	sprintf(fpsbuff, "fps=%.2lf\n", fps);
-	draw->push(
-			new RenderString(std::string(fpsbuff), 0.015, glm::vec2(0.0, 1.0)));
+	draw->push(new RenderString(fpsbuff, 0.015, glm::vec2(0.0, 1.0)));
 
-	UI->update();
+
+	UI->update_UIObject();
+	controller_system->update();
 	handle_input();
 	handle_signal();
 	map->tic();
 	camera->tic();
 	//==================logical update render data==============
-	UI->start_draw(draw);
+	UI->draw_UIObject(draw);
 	update_map(camera);
 	//==========================================================
 
@@ -491,7 +473,6 @@ void Test::swap_buffer() {
 	window->render_off();    //release thread using this window
 }
 void Test::Mainloop() {
-	double time = 0;
 	//wglSwapIntervalEXT(1);
 	//window->render_off();
 	//int i=WAIT_ABANDONED;
@@ -499,9 +480,9 @@ void Test::Mainloop() {
 	start_time = glfwGetTime();
 
 	while (!window->WindowShouldClose() && !end) {
-		timer_tic(time);
+		update();
 	}
-	window->render_on();
-	terminate();
+	UI->Save_script("files/script/UIscript/saveUI.txt");
+	//terminate();
 
 }

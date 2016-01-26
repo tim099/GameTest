@@ -1,25 +1,37 @@
 #ifndef SELECTABLECONTROL_H_
 #define SELECTABLECONTROL_H_
 #include "class/input/mouse/selectable/Selectable.h"
+#include "class/controller/Controller.h"
 #include <vector>
 class Input;
-template <class selectClass>
-class SelectableControl {
+
+class SelectableControl : public Controller{
+	static SelectableControl* cur_SelectableControl;
 public:
-	SelectableControl(Input *input,std::vector<selectClass*>*selectables);
+	SelectableControl();
 	virtual ~SelectableControl();
+	static SelectableControl* get_cur_selectableControl();
+
+	void push(Selectable* selectable);
+
+	template <class selectClass>
+	inline
+	void push(std::vector<selectClass*>*selectables){
+		for(unsigned i=0;i<selectables->size();i++){
+			push(selectables->at(i));
+		}
+	}
 	/*
 	 * update all selectable object
 	 */
-	void update();
+	virtual void update();
 	/*
 	 *find current selected object
 	 */
-	selectClass* find_selected();
+	Selectable* find_selected();
 
-	Input *input;
-	selectClass* cur_selected;
-	std::vector<selectClass*>*selectables;
+	Selectable* cur_selected;
+	std::vector<Selectable*>selectables;
 };
-#include "class/input/mouse/selectable/SelectableControl.cpp"
+//#include "class/input/mouse/selectable/SelectableControl.cpp"
 #endif /* SELECTABLECONTROL_H_ */

@@ -16,6 +16,12 @@ Texture::Texture(GLuint _TexID,GLenum _target,GLenum _type,GLenum _format) {
 	type=_type;
 	format=_format;
 }
+Texture::Texture() {
+	TexID=0;
+	target=0;
+	type=0;
+	format=0;
+}
 Texture::~Texture() {
 	glDeleteTextures(1,&TexID);
 }
@@ -54,7 +60,7 @@ void Texture::TexFilterParameteri(GLenum target,int Parameteri){
 
 	}
 }
-void Texture::usetextureVec(Shader* shader,std::vector<Texture*>& texvec,int num,const char *name){
+void Texture::sent_textureVec(Shader* shader,std::vector<Texture*>& texvec,int num,const char *name){
 	char temp[100];
 	for(unsigned i=0;i<texvec.size();i++){
 		//Tim::String::gen_array_num(temp+slen,i);
@@ -78,9 +84,11 @@ int Texture::layer()const{
 void Texture::draw_texture(Shader2D* shader2D,DrawData *data){
 	shader2D->active_shader();
 	shader2D->set_format(format);
+
 	data->prepare_to_draw(shader2D);
 	draw(shader2D,data);
 	data->draw_end(shader2D);
+
 	delete data;//remember to delete this!!
 }
 void Texture::draw(Shader2D* shader2D,DrawData *data){

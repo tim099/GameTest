@@ -9,6 +9,9 @@ KeyBoard::KeyBoard() {
 KeyBoard::~KeyBoard() {
 
 }
+KeyBoard* KeyBoard::get_cur_keyBoard(){
+	return rigister_keyboard;
+}
 void KeyBoard::callback_rigister(GLFWwindow *window) {
 	rigister_keyboard = this;
 	glfwSetKeyCallback(window, keyboard_callback);
@@ -49,7 +52,7 @@ void KeyBoard::inputkey(GLFWwindow *window, int key, int scancode, int action,
 std::string KeyBoard::get_str()const{
 	return input_str;
 }
-void KeyBoard::tic() {
+void KeyBoard::clear() {
 	if(cur_char>0&&cur_char<256)input_str+=(char)cur_char;
 	cur_char=0;
 	chars.clear();

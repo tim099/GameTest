@@ -3,7 +3,7 @@
 #include "class/tim/Thread/Thread.h"
 #include "class/display/texture/texture3D/Texture2DArr/Texture2DArr.h"
 #include "class/display/texture/texture3D/cubemap/TextureCubeMap.h"
-#include "class/display/texture/TextureMap.h"
+#include "class/display/texture/AllTextures.h"
 
 class Shader;
 class Shader2D;
@@ -17,7 +17,7 @@ class Renderer{
 
 public:
 	Renderer(LightControl* lightControl,Draw *d_obj,Window *window,
-			Camera *camera,Mouse* mouse,TextureMap *texmap,double* shadow_dis);
+			Camera *camera,Mouse* mouse,AllTextures *textures,double* shadow_dis);
 	virtual ~Renderer();
 	bool Rendering()const;
 	void render();
@@ -30,7 +30,7 @@ protected:
 	 * use FBO depth buffer data to get mouse position in world position
 	 */
 	void update_mouse_data();
-	TextureMap *texmap;
+	AllTextures *textures;
 	Shader *shader;
 
 	Camera *camera;

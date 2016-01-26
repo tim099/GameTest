@@ -1,4 +1,5 @@
 #include "class/display/window/Window.h"
+#include "class/display/window/ViewPort.h"
 #include "class/tim/math/Math.h"
 #include <GL/glew.h>
 #include <GL/glfw3.h>
@@ -12,7 +13,9 @@ Window::Window(glm::ivec2 _size,const char* name,bool full_screen) {
 	creat_window(name,full_screen);
 }
 Window::~Window() {
-
+	glfwTerminate();
+	glewinitial=false;
+	glfwinitial=false;
 }
 void Window::close_window(){
 	glfwSetWindowShouldClose(get_window(),1);
@@ -41,8 +44,8 @@ glm::ivec2 Window::get_size()const{
 	return size;
 }
 void Window::set_veiwport(){
-	std::cout<<"set viewport"<<size.x<<","<<size.y<<std::endl;
-	glViewport(0,0,size.x,size.y);
+	ViewPort::set_window_size(size);
+	ViewPort::set_viewport(0,0,size.x,size.y);
 }
 void Window::render_on(){
 	wglMakeCurrent(dc,lrc);

@@ -2,6 +2,10 @@
 #include "class/input/mouse/Mouse.h"
 #include "class/tim/geometry/2D/RectP2D.h"
 #include "class/input/signal/Signal.h"
+
+#include "class/input/Input.h"
+#include <iostream>
+//#include "class/tim/math/Math.h"
 namespace UI {
 
 Button::Button() {
@@ -10,21 +14,10 @@ Button::Button() {
 Button::~Button() {
 	if(signal)delete signal;
 }
-void Button::initial(glm::vec2 _pos, glm::vec2 _size){
-	pos=_pos;
-	size=_size;
-}
-bool Button::detect_mouse_collision(Mouse *mou){
-	return Tim::RectP2D::coincide(mou->get_tex_space_pos(),pos,pos+glm::vec2(size.x,-size.y));
-}
-glm::vec2 Button::get_middle_pos()const{
-	return pos+glm::vec2(0.5*size.x,-0.5*size.y);
-}
-void Button::mouse_on(){
-
-}
-void Button::selected(){
-
+void Button::selected(Mouse* mou){
+	if(get_signal()){
+		Input::get_cur_input()->sent_signal(get_signal());
+	}
 }
 void Button::set_signal(Signal* _signal){
 	if(signal)delete signal;
@@ -34,10 +27,12 @@ Signal* Button::get_signal()const{
 	return signal;
 }
 void Button::update(){
-	state=Selectable_null;
-	button_update();
+	if(get_state()==state_select){
+		set_pos(get_pos()+0.5f*Mouse::get_cur_mouse()->get_screen_pos_delta());
+	}
+	update_button();
 }
-void Button::button_update(){
+void Button::update_button(){
 
 }
 } /* namespace UI */

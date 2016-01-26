@@ -10,11 +10,14 @@
 #include <map>
 class GLFWwindow;
 class Input {
-
+	static Input *cur_input;
 public:
 	Input(GLFWwindow *window);
 	virtual ~Input();
-
+	/*
+	 * get cur createed input class!!need to create first before use
+	 */
+	static Input * get_cur_input();
 	void callback_rigister(GLFWwindow *window);
 	void update(glm::vec2 window_size);
 

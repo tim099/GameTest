@@ -6,6 +6,7 @@
 Mouse* Mouse::rigister_mouse=0;
 Mouse::Mouse() {
 	prev_pos=glm::ivec2(-1,-1);
+	prev_screen_pos=glm::vec2(-1.0,-1.0);
 	scroll=0;
 	left=0,right=0,mid=0;
 	left_click=false;
@@ -14,6 +15,9 @@ Mouse::Mouse() {
 }
 Mouse::~Mouse() {
 
+}
+Mouse* Mouse::get_cur_mouse(){
+	return rigister_mouse;
 }
 void Mouse::cursor_pos_callback(GLFWwindow* window, double x, double y){
 	rigister_mouse->cursor_pos_input(window,x,y);
@@ -30,11 +34,20 @@ void Mouse::callback_rigister(GLFWwindow *window){
 	glfwSetScrollCallback(window,scroll_callback);
 	glfwSetMouseButtonCallback(window,mouse_button_callback);
 }
+glm::vec2 Mouse::get_screen_pos_delta()const{
+	if(prev_screen_pos==glm::vec2(-1.0,-1.0))return glm::vec2(0,0);
+
+	return screen_pos-prev_screen_pos;
+}
 glm::vec2 Mouse::get_screen_space_pos(glm::ivec2 screen_size){
+	prev_screen_pos=screen_pos;
 	screen_pos.x=(((double)2*(pos.x)/(double)screen_size.x)-1.0f);
 	screen_pos.y=(((double)2*(screen_size.y-pos.y)/(double)screen_size.y)-1.0f);
 
 	return screen_pos;
+}
+void Mouse::update(glm::ivec2 screen_size){
+	get_screen_space_pos(screen_size);
 }
 glm::vec2 Mouse::get_tex_space_pos(){
 	return Tim::Math::convert_to_texcoord(screen_pos);
@@ -57,6 +70,24 @@ void Mouse::cursor_pos_input(GLFWwindow* window,double x,double y){
 void Mouse::scroll_input(GLFWwindow* window,double xoffset,double yoffset){
 	//std::cout<<"scroll"<<xoffset<<","<<yoffset<<std::endl;
 	scroll=yoffset;
+}
+bool Mouse::left_pressed()const{
+	return left;
+}
+bool Mouse::right_pressed()const{
+	return right;
+}
+bool Mouse::mid_pressed()const{
+	return mid;
+}
+bool Mouse::left_clicked()const{
+	return left_click;
+}
+bool Mouse::right_clicked()const{
+	return right_click;
+}
+bool Mouse::mid_clicked()const{
+	return mid_click;
 }
 void Mouse::mouse_button_input(GLFWwindow* window,int button,int action,int mods){
 		left_click=false;
@@ -114,7 +145,10 @@ bool Mouse::get_mid_click(){
 	}
 	return false;
 }
-void Mouse::tic(){
+void Mouse::clear(){
+	left_click=false;
+	right_click=false;
+	mid_click=false;
 	prev_pos=pos;
 	scroll=0;
 	//std::cout<<"mouse pos"<<pos.x<<","<<pos.y<<std::endl;

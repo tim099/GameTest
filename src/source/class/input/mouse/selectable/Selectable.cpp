@@ -1,25 +1,33 @@
 #include "class/input/mouse/selectable/Selectable.h"
 
 Selectable::Selectable() {
-	state=Selectable_null;
+	state=state_null;
 }
 Selectable::~Selectable() {
 
 }
-void Selectable::update(){
+void Selectable::mouse_on(Mouse* mou){
 
 }
-void Selectable::mouse_on(){
+void Selectable::select(Mouse* mou){
 
 }
-void Selectable::selected(){
+void Selectable::selected(Mouse* mou){
 
 }
-void Selectable::set_state(int _state){
+void Selectable::clear_state(){
+	state=state_null;
+}
+void Selectable::set_state(int _state,Mouse* mou){
 	state=_state;
-	if(state==Selectable_on){
-		mouse_on();
-	}else if(state==Selectable_selected){
-		selected();
+	if(state==state_on){
+		mouse_on(mou);
+	}else if(state==state_select){
+		select(mou);
+	}else if(state==state_selected){
+		selected(mou);
 	}
+}
+int Selectable::get_state()const{
+	return state;
 }

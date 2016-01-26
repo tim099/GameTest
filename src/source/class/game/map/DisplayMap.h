@@ -11,14 +11,15 @@ namespace Tim{
 class Map;
 class Camera;
 class Draw;
-class TextureMap;
+class AllTextures;
 class Window;
+class Position;
 class DisplayMap {
 public:
 	static const int SEG=15;
 
 
-	DisplayMap(Map *map,Draw *d_obj,TextureMap *texmap,Window *window);
+	DisplayMap(Map *map,Draw *d_obj,AllTextures *textures,Window *window);
 	virtual ~DisplayMap();
 
 	void create_map_object(int px,int pz);
@@ -35,8 +36,9 @@ protected:
 	MapDrawObject* dmaps[SEG][SEG];
 	CubeModel *cube;
 	Map *map;
-	TextureMap *texmap;
+	AllTextures *textures;
 	Window *window;
+	Position *pos;
 	int segsize;
 };
 

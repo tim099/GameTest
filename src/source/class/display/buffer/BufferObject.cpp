@@ -46,9 +46,8 @@ void BufferObject::load_model(Model *m) {
 	} else {
 		enable_lybuffer = false;
 		if (!lybuffer){
+			//lybuffer = new Buffer(m->vtBuffer,1, 3, 1, GL_FLOAT); //fake buffer!!
 			lybuffer = new Buffer(m->vtBuffer, m->lydatasize(), 3, 1, GL_FLOAT); //fake buffer!!
-		}else{
-			lybuffer->update_buffer(m->vtBuffer, m->lydatasize());
 		}
 	}
 	vertex_num = m->vtlen();

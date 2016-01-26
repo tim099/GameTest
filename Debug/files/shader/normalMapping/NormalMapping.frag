@@ -3,8 +3,7 @@
 #include <files/shader/header/commondata.fragh>
 #include <files/shader/header/toon.fragh>
 
-//layout(location = 1)out vec3 color2;
-uniform samplerCube cubetex;
+
 void main(){ 
 	vec3 tex_color=get_tex_color();
 	vec3 Normal=get_normal();

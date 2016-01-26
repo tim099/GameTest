@@ -5,7 +5,7 @@
 #include <iostream>
 Map::Map() {
 	int mx=MX,my=MY,mz=MZ;
-	map=new Tim::Array3D<Cube>(glm::ivec3(mx,my,mz));
+	map=new Tim::Array3D<Cube>(mx,my,mz);
 }
 Map::~Map() {
 	delete map;
@@ -13,8 +13,8 @@ Map::~Map() {
 glm::ivec3 Map::convert_position(glm::vec3 pos){
 	return glm::ivec3(floor(pos.x/Map::CUBE_SIZE),floor(pos.y/Map::CUBE_SIZE),floor(pos.z/Map::CUBE_SIZE));
 }
-void Map::load_map(const char *path){
-	FILE * fop = fopen(path,"r");
+void Map::load_map(std::string path){
+	FILE * fop = fopen(path.c_str(),"r");
 	unsigned seed;
 	fscanf(fop,"%d %d %d\n",&ms.x,&ms.y,&ms.z);
 	fscanf(fop,"%u\n",&seed);

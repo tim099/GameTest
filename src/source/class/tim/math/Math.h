@@ -19,6 +19,7 @@ public:
 	static glm::mat4 BiasMat();
 	static float aspect(glm::ivec2 size);
 	static int pow(int base,int power);
+	static float fit_in_maxsize(glm::vec2 size,glm::vec2 maxsize);
 	static glm::vec2 convert_to_texcoord(glm::vec2 pos);
 	static glm::vec2 convert_to_wincoord(glm::vec2 pos);
 };

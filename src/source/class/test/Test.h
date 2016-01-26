@@ -12,7 +12,9 @@
 #include "class/display/shader/shader2D/Shader2D.h"
 #include "class/display/window/Window.h"
 #include "class/display/UI/UI.h"
+#include "class/display/UI/button/pictureButton/PictureButton.h"
 #include "class/display/texture/TextureMap.h"
+#include "class/display/texture/AllTextures.h"
 #include "class/display/camera/Camera.h"
 
 #include "class/display/model/cube/CubeModel.h"
@@ -32,12 +34,13 @@
 #include "class/game/map/Map.h"
 
 #include "class/tim/objectpool/ObjPool.h"
+
+#include "class/controller/ControllerSystem.h"
 class Test {
 
 public:
 	Test();
 	virtual ~Test();
-	void terminate();
 	void Mainloop();
 
 private:
@@ -47,10 +50,11 @@ private:
 	void prepare_draw_obj();
 	void creat_light();
 
-	void timer_tic(double &time);
+	void update();
 	void swap_buffer();
 	void draw_start();
 	void handle_signal();
+
 	glm::vec3 sun_col1,sun_col2;
 	std::vector<Model*>models;
 	std::vector<BufferObject*>b_objs;
@@ -63,8 +67,8 @@ private:
 	ParallelLight *s_light;
 	Input* input;
 	Receiver* receiver;
+
 	DrawObject* look_at;
-	DrawObject* base;
 	DrawObject* sun;
 	DrawObject* tiger;
 	DrawObject* stars;
@@ -72,8 +76,7 @@ private:
 	DrawObject* ico;
 	DrawObject* moon;
 
-	TextureMap* texmap;
-	TextureMap* button_texmap;
+	AllTextures* textures;
 	Window *window;
 	Camera *camera;
 
@@ -82,9 +85,10 @@ private:
 	RenderTask *render_task;
 	Map *map;
 	UI::UI *UI;
-	UI::ButtonControl* button_control;
+	UI::PictureButton* pic_but,*pic_but2;
 	Tim::Thread *render_thread;
 	Tim::ThreadPool *thread_pool;
+	ControllerSystem *controller_system;
 	double fps;
 	double shadow_dis;
 	bool stop;

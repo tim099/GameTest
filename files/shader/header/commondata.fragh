@@ -17,6 +17,9 @@ uniform sampler2D NormalTexture;
 
 uniform sampler2DArray TextureArr;
 uniform sampler2DArray NormalTextureArr;
+
+uniform samplerCube skybox;
+
 uniform vec3 camera_pos;
 
 uniform vec4 mat;
@@ -30,6 +33,22 @@ vec3 get_tex_color(){
 		return (texture(Texture,vert.UV).rgb);
 	}
 	return texture(TextureArr,vec3(vert.UV,vert.UVlayer)).rgb;//+vec3(0.3*vert.UVlayer,0.0,0.0)
-
 }
+vec3 get_reflect(vec3 Normal){
+    vec3 look_vec=(vert.position.xyz-camera_pos);
+    vec3 look_reflect_vec=look_vec-2*(look_vec-dot(look_vec,normalize(Normal))*normalize(Normal));
+    return texture(skybox,normalize(look_reflect_vec)).xyz;
+}
+vec3 get_refract(vec3 Normal,float ratio){
+    vec3 look_vec=(vert.position.xyz-camera_pos); 
+    vec3 refract_vec=refract(look_vec,normalize(Normal),ratio);    
+    return texture(skybox,normalize(refract_vec)).xyz;
+}
+vec3 get_skybox(){
+	vec3 look_vec=(vert.position.xyz-camera_pos); 
+	return texture(skybox,normalize(look_vec)).xyz;
+}
+
+
+
 

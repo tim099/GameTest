@@ -9,6 +9,16 @@ Math::Math() {
 Math::~Math() {
 
 }
+float Math::fit_in_maxsize(glm::vec2 size,glm::vec2 maxsize){
+	float alter=1.0;
+	if(size.x>maxsize.x){
+		alter=(maxsize.x/size.x);
+	}
+	if(size.y>maxsize.y){
+		if((maxsize.y/size.y)<alter)alter=(maxsize.y/size.y);
+	}
+	return alter;
+}
 glm::vec2 Math::get_size(float width,float aspect){
 	if (aspect > 0.999 && aspect < 1.001) {
 		return glm::vec2(width, width);

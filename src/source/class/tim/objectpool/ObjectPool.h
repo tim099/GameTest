@@ -5,6 +5,8 @@
 namespace Tim {
 template <class Type>
 class ObjectPool {
+
+	static ObjectPool<Type>* cur_pool;
 public:
 	/*size is the max capacity of this Object pool
 	 * enable dynamic_malloc will auto malloc more object when there is no any more free object

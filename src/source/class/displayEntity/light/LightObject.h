@@ -1,0 +1,10 @@
+#ifndef SOURCE_CLASS_DISPLAYENTITY_LIGHT_LIGHTOBJECT_H_
+#define SOURCE_CLASS_DISPLAYENTITY_LIGHT_LIGHTOBJECT_H_
+
+class LightObject {
+public:
+	LightObject();
+	virtual ~LightObject();
+};
+
+#endif /* SOURCE_CLASS_DISPLAYENTITY_LIGHT_LIGHTOBJECT_H_ */

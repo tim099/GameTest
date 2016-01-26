@@ -10,6 +10,9 @@ class KeyBoard {
 public:
 	KeyBoard();
 	virtual ~KeyBoard();
+
+	static KeyBoard* get_cur_keyBoard();
+
 	static void keyboard_callback(GLFWwindow *window,int key,int scancode,int action,int mods);
 	static void character_callback(GLFWwindow* window, unsigned int codepoint, int mods);
 
@@ -26,7 +29,7 @@ public:
 	unsigned get_char()const;
 	std::string get_str()const;
 	void clear_input_str();
-	void tic();
+	void clear();
 protected:
 	void key_press(int key,int scancode,int mods);
 	void key_release(int key,int scancode,int mods);

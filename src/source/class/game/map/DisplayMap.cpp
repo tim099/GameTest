@@ -5,23 +5,25 @@
 #include "class/game/map/TaskCreateMapModel.h"
 #include "class/tim/thread/ThreadPool.h"
 #include "class/display/window/Window.h"
+#include "class/display/texture/AllTextures.h"
 #include "class/game/map/Map.h"
 #include <iostream>
-DisplayMap::DisplayMap(Map *_map,Draw *_d_obj,TextureMap *_texmap,Window *_window) {
+DisplayMap::DisplayMap(Map *_map,Draw *_d_obj,AllTextures *_textures,Window *_window) {
 	map=_map;
 	d_obj=_d_obj;
-	texmap=_texmap;
+	textures=_textures;
 	window=_window;
 	max_y=Map::MY;
 	range=50;
 	createMapObjectMutex=new Tim::Mutex();
 	cube=new CubeModel(0.5*Map::CUBE_SIZE);
 	segsize=floor(Map::MX/SEG);
+	pos=new Position(glm::vec3(0,0,0),glm::vec3());
 	MapDrawObject *d_map;
     for(int i=0;i<SEG;i++){
     	for(int j=0;j<SEG;j++){
-    		d_map=new MapDrawObject(0,texmap->get_tex(std::string("cube_textures")),//"test3"
-    				texmap->get_tex(std::string("cube_normals")));//
+    		d_map=new MapDrawObject(0,textures->get_tex(std::string("cube/cube_textures")),//"test3"
+    				textures->get_tex(std::string("cube/cube_normals")));//
     		d_obj->push(d_map);
     		dmaps[i][j]=d_map;
     	}
@@ -108,7 +110,7 @@ void DisplayMap::draw_map(Camera *camera){
 
     for(int i=(min.x/segsize);i<(max.x/segsize+0.5);i++){
     	for(int j=min.y/segsize;j<(max.y/segsize+0.5);j++){
-    		dmaps[i][j]->push_temp_position(new Position(glm::vec3(0,0,0),glm::vec3()));
+    		dmaps[i][j]->push_temp_drawdata(new DrawDataObj(pos,true));
     	}
     }
 }

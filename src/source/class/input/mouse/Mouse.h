@@ -9,6 +9,7 @@ class Mouse {
 public:
 	Mouse();
 	virtual ~Mouse();
+	static Mouse *get_cur_mouse();
 	static void cursor_pos_callback(GLFWwindow* window, double x, double y);
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
@@ -17,7 +18,9 @@ public:
 	void cursor_pos_input(GLFWwindow* window, double x, double y);
 	void scroll_input(GLFWwindow* window,double xoffset,double yoffset);
 	void mouse_button_input(GLFWwindow* window, int button, int action, int mods);
-	void tic();
+
+	void clear();
+	void update(glm::ivec2 screen_size);
 	glm::vec2 get_screen_space_pos(glm::ivec2 screen_size);
 
 	glm::vec2 get_tex_space_pos();
@@ -26,22 +29,33 @@ public:
 
 
 	glm::ivec2 pos_delta()const;
-
+	glm::vec2 get_screen_pos_delta()const;
 
 	glm::ivec2 pos;
 	glm::ivec2 prev_pos;
+
 	glm::vec2 screen_pos;
+	glm::vec2 prev_screen_pos;
 	glm::vec3 world_pos;
 	double scroll;
 	/*left is the mouse left key,value=true if being pressed
 	 *right is the mouse right key,value=true if being pressed
 	 *and middle is the scroll,value=true if being pressed
 	 */
-	bool left,right,mid;
+
+	bool left_pressed()const;
+	bool right_pressed()const;
+	bool mid_pressed()const;
+
+	bool left_clicked()const;
+	bool right_clicked()const;
+	bool mid_clicked()const;
+
 	bool get_left_click();
 	bool get_right_click();
 	bool get_mid_click();
 protected:
+	bool left,right,mid;
 	bool left_click,right_click,mid_click;
 };
 

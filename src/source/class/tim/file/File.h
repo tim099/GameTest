@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <dirent.h>
+#include <cstdarg>
 namespace Tim {
 
 class File {
@@ -15,8 +16,19 @@ public:
 	static std::string get_type(const char* path);
 	static off_t get_file_size(const char *path);
 	static std::string* load_file_to_string(const char* path);
-	static char* load_file(const char* path,int &size);
+	static char* load_file(const char* path,off_t &size);
+	void load(const char* path);
+	/*
+	 * scan a single string from file
+	 */
+	int myfscanf_str(char *buffer);
+	//int myfscanf(const char *format,...);
+	off_t read_at;
 	off_t size;
+	char *data;
+	std::string file_path;
+protected:
+
 };
 
 } /* namespace Tim */

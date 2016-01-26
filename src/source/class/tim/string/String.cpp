@@ -17,6 +17,14 @@ std::string String::to_string(int num){
 	sprintf(cnum,"%d",num);
 	return std::string(cnum);
 }
+void String::put_back_line(std::istream &is,std::string& line){
+	for(unsigned i=0;i<line.size();i++){
+		std::cout<<"put_back:"<<line[i]<<std::endl;
+		is.putback(line[i]);
+	}
+	is.putback('\n');
+	std::cout<<"put_back finish"<<std::endl;
+}
 bool String::get_line(std::istream &is,std::string& strline,bool skip_blankline,bool skip_blankspace){
 	char line[256];
 	if(is.eof())return false;
@@ -44,8 +52,7 @@ bool String::within(char c,const std::string& str){
 	}
 	return false;
 }
-std::vector<std::string> String::split(std::string str,std::string delimiter){
-	std::vector<std::string> out;
+void String::split(std::string str,std::string delimiter,std::vector<std::string> &out){
 	unsigned pos=0;
 	bool start=false;
 	for(unsigned i=0;i<str.size();i++){
@@ -64,7 +71,19 @@ std::vector<std::string> String::split(std::string str,std::string delimiter){
 	if(start){
 		out.push_back(str.substr(pos,str.size()-pos));
 	}
-	return out;
+
+}
+void String::get_between(std::istream &is,std::string& strline,std::string delimiter){
+	strline="";
+	char c=0;
+	while(!within(c,delimiter)){
+		is>>c;
+	}
+	while(true){
+		is.get(c);
+		if(within(c,delimiter))break;
+		strline+=c;
+	}
 }
 std::string String::cut(std::string str,std::string cskip,bool front,bool back){
 	unsigned start=0;

@@ -1,0 +1,123 @@
+#LOAD_UI_SCRIPT
+#HEADER
+#HEADER_END
+CreateUIObject:
+		Panel
+	Name:
+		ButPanel
+	Position:
+		0.134407 0.993179
+	Texture:
+		UI/panel1
+	Width:
+		0.6
+	Height:
+		0.6
+	Parent:
+		UI
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.0106881 -0.00863576
+	Texture:
+		UI/button2
+	Width:
+		0.14
+	Height:
+		0
+	Set_string:
+"switch_shader:
+LightScattering"
+	String_size:
+		0.014
+	Set_signal:
+		Data:
+			L
+		Receiver:
+			test
+	Parent:
+		ButPanel
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.159224 -0.00999999
+	Texture:
+		UI/button2
+	Width:
+		0.14
+	Height:
+		0
+	Set_string:
+"switch_shader:
+NormalMapping"
+	String_size:
+		0.014
+	Set_signal:
+		Data:
+			P
+		Receiver:
+			test
+	Parent:
+		ButPanel
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		Basic
+	Position:
+		0.305564 -0.00999987
+	Texture:
+		UI/button2
+	Width:
+		0.14
+	Height:
+		0
+	Set_string:
+"switch_shader:
+	Basic"
+	String_size:
+		0.014
+	Set_signal:
+		Data:
+			O
+		Receiver:
+			default
+	Parent:
+		ButPanel
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.155637 -0.00682133
+	Texture:
+		UI/button2
+	Width:
+		0.1
+	Height:
+		0
+	Set_string:
+"Quit"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			Quit
+		Receiver:
+			default
+	Parent:
+		Basic
+#create_end
+
+#END

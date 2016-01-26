@@ -53,8 +53,6 @@ void Texture2D::draw(Shader2D* shader2D,DrawData *data){
     	tsize.y*=dat->height;
     }
 
-
-
 	GLuint tex_vt=gen_texture_vertex(tsize),tex_uv=gen_texture_uv();
 
 	Buffer::bind_vtbuffer(tex_vt);

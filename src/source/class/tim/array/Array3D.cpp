@@ -4,9 +4,11 @@
 namespace Tim {
 
 template <class Type>
-Array3D<Type>::Array3D(glm::ivec3 _size) {
-	size=_size;
-	arr=new Type[size.x*size.y*size.z];
+Array3D<Type>::Array3D(int _sizex,int _sizey,int _sizez) {
+	sizex=_sizex;
+	sizey=_sizey;
+	sizez=_sizez;
+	arr=new Type[sizex*sizey*sizez];
 }
 template <class Type>
 Array3D<Type>::~Array3D() {
@@ -15,7 +17,7 @@ Array3D<Type>::~Array3D() {
 
 template <class Type>
 Type& Array3D<Type>::get(const int &x,const int &y,const int &z){
-	return arr[size.y*size.z*x+size.z*y+z];
+	return arr[sizey*sizez*x+sizez*y+z];
 }
 
 } /* namespace Tim */

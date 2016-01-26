@@ -48,5 +48,6 @@ Obj* Obj::load_obj(const char* path){
 	        obj->fs.push_back(Face(vertexIndex,uvIndex,normalIndex));
 	    }
 	}
+	fclose(file);
 	return obj;
 }

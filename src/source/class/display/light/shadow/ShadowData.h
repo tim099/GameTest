@@ -28,7 +28,7 @@ public:
 
 	FrameBuffer* SFBO;
 	FrameBuffer* PSFBO;
-	//FrameBuffer* PSFBO2;
+
 	int s_num;
 	int ps_num;
 	unsigned max_l_shadow;

@@ -5,12 +5,16 @@
 #include "class/tim/array/Array.h"
 #include <iostream>
 #include <cstring>
+
 namespace Tim {
+template <class Type>
+ObjectPool<Type>* ObjectPool<Type>::cur_pool=0;
 template <class Type>
 ObjectPool<Type>::ObjectPool(unsigned size,bool _dynamic_malloc) {
 	dynamic_malloc=_dynamic_malloc;
 	prev_create=0;
 	create_obj(size);
+	cur_pool=this;
 }
 template <class Type>
 ObjectPool<Type>::~ObjectPool() {

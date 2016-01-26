@@ -14,7 +14,7 @@ Thread::Thread(int priority,Tim::ExecuteDone *_done) {
 }
 Thread::~Thread() {
 	if(!terminate)std::cout<<"thread delete error not terminated yet!!"<<std::endl;
-	else std::cout<<"thread delete success!!"<<std::endl;
+	//else std::cout<<"thread delete success!!"<<std::endl;
 	delete threadMutex;
 	//if(done)delete done; dont!!if done=thread pool
 

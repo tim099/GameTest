@@ -8,7 +8,7 @@
 #include <cstdio>
 LightControl::LightControl(float _draw_dis) {
 	draw_dis=_draw_dis;
-	shadowData=new ShadowData(10,3);
+	shadowData=new ShadowData(10,4);
 }
 LightControl::~LightControl() {
 	for(unsigned i=0;i<point_lights.size();i++){
@@ -41,6 +41,14 @@ void LightControl::push_point_light(PointLight* l){
 void LightControl::push_parallel_light(ParallelLight* l){
 	parallel_lights.push_back(l);
 }
+void LightControl::choose_point_light(glm::vec3 camera_pos){
+    tmp_point_lights.clear();
+    for(unsigned i=0;i<point_lights.size();i++){
+    	if(glm::length(camera_pos-point_lights.at(i)->pos)<draw_dis&&tmp_point_lights.size()<MAX_POINT_LIGHT){
+    		tmp_point_lights.push_back(point_lights.at(i));
+    	}
+    }
+}
 void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
 	//try to sort by dis and merge far light!!
 
@@ -48,9 +56,11 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
     std::vector<glm::vec3>pointlight_pos;
     std::vector<glm::vec3>pointlight_color;
     std::vector<GLint>pointlight_shadow;
+
     std::vector<glm::vec3>parallellight_vec;
     std::vector<glm::vec3>parallellight_color;
     std::vector<GLint>parallellight_shadow;
+
     unsigned pointlight_shadow_num=0;
     unsigned parallellight_shadow_num=0;
     for(unsigned i=0;i<parallel_lights.size();i++){
@@ -63,17 +73,21 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
     	}
 
     }
-    for(unsigned i=0;i<point_lights.size();i++){
-    	if(glm::length(camera_pos-point_lights.at(i)->pos)<draw_dis&&pointlight_pos.size()<MAX_LIGHT){
-    		pointlight_pos.push_back(point_lights.at(i)->pos);
-    		pointlight_color.push_back(point_lights.at(i)->color);
-    		if(point_lights.at(i)->shadow&&shadowData->max_pl_shadow>pointlight_shadow_num){
-    			pointlight_shadow.push_back(++pointlight_shadow_num);
-    		}else{
-    			pointlight_shadow.push_back(0);
-    		}
-    	}
+
+    choose_point_light(camera_pos);
+
+    PointLight *p_light;
+    for(unsigned i=0;i<tmp_point_lights.size();i++){
+    	p_light=tmp_point_lights.at(i);
+		pointlight_pos.push_back(p_light->pos);
+		pointlight_color.push_back(p_light->color);
+		if(p_light->shadow&&shadowData->max_pl_shadow>pointlight_shadow_num){
+			pointlight_shadow.push_back(++pointlight_shadow_num);
+		}else{
+			pointlight_shadow.push_back(0);
+		}
     }
+
     glUniform1i(glGetUniformLocation(shader->programID,"parallellight_num"),parallellight_vec.size());
     glUniform3fv(glGetUniformLocation(shader->programID,"parallellight_vec"),
     		parallellight_vec.size(),(const GLfloat*)(parallellight_vec.data()));

@@ -17,6 +17,7 @@ GLuint Buffer::gen_buffer(GLfloat* data,int datasize){
 	glGenBuffers(1,&buffer);
 	glBindBuffer(GL_ARRAY_BUFFER,buffer);
 	glBufferData(GL_ARRAY_BUFFER,datasize,data,GL_STATIC_DRAW);
+
 	return buffer;
 }
 void Buffer::update_buffer(GLfloat* data,int datasize){

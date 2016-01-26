@@ -23,6 +23,7 @@ ThreadPool::~ThreadPool() {
 		}
 		task_q.pop();
 	}
+	//std::cout<<"delete ThreadPool()"<<std::endl;
 }
 void ThreadPool::Terminate(){
 	distributeTask->Terminate();

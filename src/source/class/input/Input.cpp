@@ -2,13 +2,14 @@
 #include <GL/glew.h>
 #include <GL/glfw3.h>
 #include <iostream>
-
+Input *Input::cur_input=0;
 Input::Input(GLFWwindow *window) {
 	keyboard=new KeyBoard();
 	mouse=new Mouse();
 	callback_rigister(window);
 	default_receiver=new Receiver("default");
 	push_receiver(default_receiver);
+	cur_input=this;
 }
 Input::~Input() {
 	delete keyboard;
@@ -19,17 +20,20 @@ Input::~Input() {
 		it++;
 	}
 }
+Input * Input::get_cur_input(){
+	return cur_input;
+}
 void Input::callback_rigister(GLFWwindow *window){
 	keyboard->callback_rigister(window);
 	mouse->callback_rigister(window);
 }
 void Input::update(glm::vec2 window_size){
-    mouse->tic();//clear mouse delta pos before update
-    keyboard->tic();
+    mouse->clear();//clear mouse delta pos before update
+    keyboard->clear();
 
     glfwPollEvents();//get all input
 
-    mouse->get_screen_space_pos(window_size);
+    mouse->update(window_size);
 }
 void Input::sent_signal(Signal* signal){
 	Receiver* receiver=get_receiver(signal->get_sent_to());

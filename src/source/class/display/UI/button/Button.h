@@ -1,36 +1,34 @@
 #ifndef SOURCE_CLASS_DISPLAY_UI_BUTTON_BUTTON_H_
 #define SOURCE_CLASS_DISPLAY_UI_BUTTON_BUTTON_H_
-#include <glm/glm.hpp>
-#include "class/input/mouse/selectable/Selectable.h"
+#include <glm/vec2.hpp>
+#include "class/display/UI/UIObject.h"
 class Draw;
 class Signal;
 namespace UI {
 
-class Button: public Selectable {
+class Button: public UIObject {
 public:
 	Button();
 	virtual ~Button();
-	virtual bool detect_mouse_collision(Mouse *mou);
-	virtual void start_draw(Draw* draw)=0;
 
-	virtual void mouse_on();
-	virtual void selected();
-	virtual void update();
+	virtual void selected(Mouse* mou);
 
 	void set_signal(Signal* signal);
-	Signal* get_signal()const;
-	void initial(glm::vec2 pos, glm::vec2 size);
-	/*
-	 * return the middle position of the button
-	 */
-	glm::vec2 get_middle_pos()const;
+	Signal* get_signal() const;
+
+	virtual std::string get_type_name()const{
+		return "Button";
+	}
 protected:
+	virtual void update();
+
 	/*
 	 * provide for inherit class from button
 	 * updated every frame
 	 */
-	virtual void button_update();
-	glm::vec2 pos,size;
+	virtual void update_button();
+
+
 	Signal* signal;
 };
 

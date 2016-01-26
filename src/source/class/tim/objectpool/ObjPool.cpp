@@ -4,8 +4,11 @@
 #include <iostream>
 namespace Tim {
 template <class Type>
+ObjPool<Type>* ObjPool<Type>::cur_pool=0;
+template <class Type>
 ObjPool<Type>::ObjPool(unsigned size) {
 	create_obj(size);
+	cur_pool=this;
 }
 template <class Type>
 ObjPool<Type>::~ObjPool() {
@@ -21,6 +24,14 @@ void ObjPool<Type>::create_obj(unsigned size){
 		objs.push_back(buff);
 		available_q.push(buff);
 	}
+}
+template <class Type>
+void ObjPool<Type>::myfree(Type* obj){
+	cur_pool->free(obj);
+}
+template <class Type>
+Type* ObjPool<Type>::mycreate(){
+	return cur_pool->create();
 }
 template <class Type>
 Type* ObjPool<Type>::create(){

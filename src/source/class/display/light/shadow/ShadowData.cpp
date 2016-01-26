@@ -18,17 +18,13 @@ ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow) {
 
 	SFBO=new FrameBuffer(glm::ivec2(4096,4096));
 	PSFBO=new FrameBuffer(glm::ivec2(512,512));
-	//PSFBO2=new FrameBuffer(glm::ivec2(512,512));
 
     SFBO->push_depth_texture(Texture2DArr::gen_texture2DArr(glm::ivec3(SFBO->size.x,SFBO->size.y,max_l_shadow),
     		GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear));
     PSFBO->push_depth_texture(Texture2DArr::gen_texture2DArr(glm::ivec3(PSFBO->size.x,PSFBO->size.y,6*max_pl_shadow),
     		GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear));
 
-    /*for(unsigned i=0;i<max_pl_shadow;i++){
-    	PSFBO2->push_depth_texture(TextureCubeMap::gen_CubeMap(glm::ivec2(PSFBO2->size.x,PSFBO2->size.y),
-    	    		GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear));
-    }*/
+
 	shaderMultiShadowMapping=new Shader();
 	shaderMultiShadowMapping->LoadShader("files/shader/shadow/multiShadowMapping/MultiShadowMapping.vert",
 			"files/shader/shadow/multiShadowMapping/MultiShadowMapping.geo",
@@ -55,23 +51,23 @@ void ShadowData::sent_uniform(Shader *shader){
 	//Texture::usetextureVec(shader,SFBO->depth_textures,3,"depthMap");
 	//0~2 is preserve for texture and normal mapping
 	PSFBO->depth_textures.at(0)->sent_uniform(shader,11,"pointdepthMaps");
-	//Texture::usetextureVec(shader,PSFBO2->depth_textures,12,"cubedepthMap");
-
-	//Texture::usetextureVec(shader,PSFBO->depth_textures,4,"pointdepthMap");
 }
 void ShadowData::gen_shadow_map(std::vector<PointLight*>&point_lights,
 		std::vector<ParallelLight*>&lights,Camera *camera,
 		double shadow_dis,Draw *d_obj){
+	SFBO->bind_depth_texture(0);
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear buffer
+	PSFBO->bind_depth_texture(0);
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear buffer
+
 	gen_parallelLights_LVP(lights,camera,shadow_dis);
 	gen_shadows(shaderMultiShadowMapping,SFBO,LVP,s_num,d_obj);//shaderMultiShadowMapping
 
 	gen_pointLight_LVP(point_lights);
-	//for(int i=0;i<ps_num;i++){
-		//gen_shadows(shaderCubeShadowMapping,PSFBO2,&PLVP[6*i],6,d_obj,i);//shaderMultiShadowMapping
-		//gen_shadows(shaderCubeShadowMapping,PSFBO,&PLVP[6*i],6,d_obj,0,6*i);//shaderMultiShadowMapping
-	//}
-
-	gen_shadows(shaderCubeShadowMapping,PSFBO,PLVP,6*ps_num,d_obj);//shaderMultiShadowMapping
+	for(int i=0;i<ps_num;i++){
+		gen_shadows(shaderCubeShadowMapping,PSFBO,&PLVP[6*i],6,d_obj,0,6*i);//shaderMultiShadowMapping
+	}
+	//gen_shadows(shaderCubeShadowMapping,PSFBO,PLVP,6*ps_num,d_obj);//shaderMultiShadowMapping
 }
 void ShadowData::gen_parallelLights_LVP(std::vector<ParallelLight*>&para_lights,Camera *camera,double shadow_dis){
 	double shadow_size=(shadow_dis/sqrt(camera->look_dis()+1.0));
@@ -87,7 +83,7 @@ void ShadowData::gen_shadows(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int 
 	shader->active_shader();
 
 	FBO->bind_depth_texture(depth_tex);
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear buffer
+	//glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//already clear by outside
 	shader->sent_Uniform("LVP_num",s_num);
 	shader->sent_Uniform("start_layer",start_layer);
 	Uniform::sentMat4Arr(shader->programID,LVP,s_num,std::string("LVP"));

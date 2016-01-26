@@ -13,7 +13,7 @@
 #include <iostream>
 
 Renderer::Renderer(LightControl* _lightControl, Draw *_d_obj, Window *_window,
-		Camera *_camera, Mouse* _mouse, TextureMap *_texmap,
+		Camera *_camera, Mouse* _mouse, AllTextures *_textures,
 		double* _shadow_dis) {
 	lightControl = _lightControl;
 	shadow_dis = _shadow_dis;
@@ -22,10 +22,9 @@ Renderer::Renderer(LightControl* _lightControl, Draw *_d_obj, Window *_window,
 	window = _window;
 	VertexArrayID = Buffer::GenVertexArray();
 
-	//FBO=_FBO;
 	FBO = new FrameBuffer(window->get_size());
 	FBO->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
-	FBO->gen_color_texture(GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_Linear); //just test!!
+	//FBO->gen_color_texture(GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_Linear); //just test!!
 	FBO->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
 			P_Linear);
 
@@ -36,7 +35,7 @@ Renderer::Renderer(LightControl* _lightControl, Draw *_d_obj, Window *_window,
 
 	camera = _camera;
 	mouse = _mouse;
-	texmap = _texmap;
+	textures=_textures;
 
 	creat_shaders();
 	glEnable(GL_DEPTH_TEST);
@@ -108,31 +107,31 @@ void Renderer::render() {
 	camera->sent_uniform(shader->programID, FBO->aspect());
 	lightControl->sent_uniform(shader, camera->pos);
 
-	texmap->get_tex("texcube")->sent_uniform(shader, 30, "cubetex");
+	textures->get_tex("test/texcube")->sent_uniform(shader, 30, "skybox");
 
 	//start draw
-	d_obj->draw(shader, shader2D, window->get_aspect());
+	d_obj->draw(shader);
+	update_mouse_data();	//update data of worldspace position
+
+	FBO2->bind_buffer();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
+	d_obj->draw2D(shader2D, window->get_aspect());
+
 	FrameBuffer::unbind_buffer(window->get_size()); //start draw on window buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    //clear window buffer
-
-	FBO->color_textures.at(0)->draw_texture(shader2D,new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
+	FBO->color_textures.at(0)->draw_texture(shader2D,
+			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
 	/*
-	 shader2D->Enable(SobelMode|AddOnMode);
-	 shader2D->sent_Uniform("sobel_dv",glm::vec2(250,120));
-	 FBO->depth_textures.at(0)->draw_texture(shader2D,
-	 new DrawData2D(window->aspect(),1.0,glm::vec2(0,1.0),1.0));
-	 shader2D->Disable(SobelMode|AddOnMode);
-	 */
-	/*
-	 * get world position of the mouse
-	 */
-
-
-
-	update_mouse_data();
+	shader2D->Enable(SobelMode | AddOnMode);
+	shader2D->sent_Uniform("sobel_dv", glm::vec2(250, 120));
+	FBO->depth_textures.at(0)->draw_texture(shader2D,
+			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
+	shader2D->Disable(SobelMode | AddOnMode);
+	*/
+	FBO2->color_textures.at(0)->draw_texture(shader2D,
+			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
 
 	rendering = false;
-
 	//window->swap_buffer();
 	window->render_off();    //release thread using this window
 	//std::cout<<"renderer render end"<<std::endl;

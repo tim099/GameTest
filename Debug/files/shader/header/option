@@ -1,5 +1,8 @@
+#ifndef OPTION
+#define OPTION
 const int NormalMapping=1<<0;
 const int LayerTexture=1<<1;
 
 
 uniform int shaderData;
+#endif

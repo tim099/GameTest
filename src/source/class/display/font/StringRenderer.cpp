@@ -37,21 +37,23 @@ void StringRenderer::render(Shader2D* shader2D, RenderString* render_str) {
 
 	glm::vec2 pos;
 	Vertex::gen_quad_vt(vertex_buffer_data, glm::vec3(0, 0, 0),
-			glm::vec3(tsize.x,tsize.y, 0), true);
+			glm::vec3(tsize.x, tsize.y, 0), true);
 	vtbuffer->update_buffer(vertex_buffer_data, sizeof(vertex_buffer_data));
 	vtbuffer->bind_buffer();
 	int col = 0, line = 0;
 	unsigned c;
 	glm::vec2 render_pos = render_str->pos;
-	if(render_str->render_at_middle){
-		glm::vec2 str_size=render_str->string_size();
-		render_pos+=glm::vec2(-0.5*str_size.x,str_size.y);
+	if (render_str->render_at_middle) {
+		glm::vec2 str_size = render_str->string_size();
+		render_pos += glm::vec2(-0.5 * str_size.x, 0.5*str_size.y/aspect);
 	}
 	for (unsigned i = 0; i < render_str->str.size(); i++) {
-		pos = 2.0f * (render_pos+glm::vec2(
-				tsize.x * RenderString::Font_Interval * (col + 0.5)-0.5,
-				 -tsize.y * (line + 0.5)-0.5));
-
+		pos = 2.0f
+				* (render_pos
+						+ glm::vec2(
+								tsize.x * RenderString::Font_Interval
+										* (col + 0.5) - 0.5,
+								-tsize.y * (line + 0.5) - 0.5));
 
 		shader2D->sent_Uniform("position", pos);
 		c = render_str->str.at(i);
@@ -69,14 +71,31 @@ void StringRenderer::render(Shader2D* shader2D, RenderString* render_str) {
 		}
 	}
 }
+void StringRenderer::draw_string(Shader2D* shader2D,RenderString* renderStr){
+	shader2D->active_shader();
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
+	shader2D->set_format(fontTexture->format);
+	fontTexture->sent_uniform(shader2D, 0, "Texture");
+	shader2D->sent_Uniform("alpha", 1.0f);
+	targetaspect = ViewPort::get_cur_viewport_aspect();
+
+	render(shader2D,renderStr);
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+}
 void StringRenderer::render_text(unsigned char c) {
 	int x, y;
 	x = c % 16;
 	y = c / 16;
-	static const float dx = 0.0f, dy = -0.005f;
+	static const float dx1 = 0.0f, dy1 = 0.0002f;
+	static const float dx2 = 0.0f, dy2 = -0.0002f;
 	Vertex::gen_quad_uv(uv_buffer_data,
-			glm::vec2(Font_seg * x + dx, 1.0 - Font_seg * (y + 1) + dy),
-			glm::vec2(Font_seg * (x + 1) + dx, 1.0 - (Font_seg * y) + dy));
+			glm::vec2(Font_seg * x - dx1 ,
+					1.0 - Font_seg * (y + 1) + dy1 ),
+			glm::vec2(Font_seg * (x + 1) + dx2 ,
+					1.0 - (Font_seg * y) + dy2 ));
 	uvbuffer->update_buffer(uv_buffer_data, sizeof(uv_buffer_data));
 	uvbuffer->bind_buffer();
 	glDrawArrays(GL_TRIANGLES, 0, 2 * 3); //2*3=two triangle

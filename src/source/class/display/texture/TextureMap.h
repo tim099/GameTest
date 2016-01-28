@@ -3,6 +3,7 @@
 
 #include "class/display/texture/Texture.h"
 #include "class/tim/parser/Parser.h"
+#include "class/tim/map/MapContainer.h"
 #include <string>
 #include <map>
 class TextureMap : public Tim::Parser{
@@ -12,8 +13,8 @@ public:
 	std::string get_name()const;
 	void set_name(std::string name);
 
-	void push_tex(std::string tex_name,Texture* tex);
-	Texture* get_tex(std::string tex_name);
+	void push(std::string tex_name,Texture* tex);
+	Texture* get(std::string tex_name);
 protected:
 	void Parse_texture(std::istream &is);
 	void Parse_texture2DArr(std::istream &is);
@@ -26,7 +27,7 @@ protected:
 	virtual void Parse_Script(std::istream &is,std::string &line);
 	virtual void Parse_Header(std::istream &is,std::string &line);
 
-	std::map<std::string,Texture*>textures;
+	Tim::MapContainer<std::string,Texture>textures;
 	std::string folder_path;
 	std::string name;
 };

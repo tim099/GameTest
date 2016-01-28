@@ -28,7 +28,7 @@ public:
 
 	glm::mat4 sent_uniform(GLuint programID,float aspect);
 
-	void tic();
+	void update();
 	glm::vec3 pos;
 	glm::vec3 look_at;
 	glm::vec3 up;

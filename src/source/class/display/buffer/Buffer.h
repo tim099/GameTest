@@ -15,6 +15,7 @@ public:
 	static void disable_all_buffer();
 	void update_buffer(GLfloat* data,int datasize);
 	void bind_buffer();
+	void unbind_buffer();
 protected:
 	GLuint buffer;
 	GLuint index;

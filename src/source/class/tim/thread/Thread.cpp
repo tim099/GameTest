@@ -21,7 +21,7 @@ Thread::~Thread() {
 }
 void Thread::Terminate(){
 	end=true;
-	if(DONE())ResumeThread(threadhandle);//to return
+	if(DONE())ResumeThread(threadhandle);//return to active state to terminate
 }
 void Thread::join(DWORD time){
 	while(!thread_start&&!DONE());//waste time until thread_start
@@ -47,32 +47,19 @@ void Thread::start(){
 	}
 
 	ResumeThread(threadhandle);
-	unsigned i=1;
+	unsigned i=1,j=0;
 	while(!thread_start&&!DONE()){
 		i++;
 		if(i%2000==0){
-			if(i>55000){
-				std::cout<<"thread not start"<<i<<std::endl;
-				i=0;
+			j++;
+			if(j>500){
+				std::cout<<"thread not start for:"<<j*i<<"loop of waiting"<<std::endl;
+				j=0;
 			}
+			i=0;
 			ResumeThread(threadhandle);
 		}
 	}
-}
-bool Thread::Suspended()const{
-	/*
-	DWORD val;
-	if((val=WaitForSingleObject(threadhandle,0))==WAIT_ABANDONED){
-		std::cout<<"cur suspended"<<std::endl;
-		//ReleaseMutex(threadhandle);
-		return true;
-	}else{
-		std::cout<<"not suspended:"<<val<<std::endl;
-		//ReleaseMutex(threadhandle);
-		return false;
-	}
-	*/
-	return false;
 }
 void Thread::sleep(){
 	thread_start=false;

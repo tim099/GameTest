@@ -10,7 +10,7 @@ public:
 	Model(Obj* obj);
 	virtual ~Model();
 
-	static Model* load_obj(const char* path,GLfloat size,bool translate_to_o=true);
+	static Model* load_obj(const char* path,float size,bool align_center=true);
 
 	void clear();
 
@@ -24,7 +24,7 @@ public:
 	int vnlen()const;
 	int lylen()const;
 	void translate(glm::vec3 v);
-	void scale(GLfloat size);
+	void scale(float size);
 	/*
 	 * merge model and set the model layer of the model being merge
 	 */
@@ -38,7 +38,6 @@ public:
 	GLfloat* uvBuffer;
 	GLfloat* vnBuffer;
 	GLfloat* lyBuffer;
-	glm::vec4 mat;
 	int len,max_len;
 protected:
 

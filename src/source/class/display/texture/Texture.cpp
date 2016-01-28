@@ -23,6 +23,7 @@ Texture::Texture() {
 	format=0;
 }
 Texture::~Texture() {
+	//std::cout<<"texture delete"<<std::endl;
 	glDeleteTextures(1,&TexID);
 }
 Texture2D* Texture::Tex2D(){

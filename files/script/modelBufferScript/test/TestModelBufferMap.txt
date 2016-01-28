@@ -1,0 +1,77 @@
+#LOAD_MODELBUFFERMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/obj/
+Name:
+	test
+#HEADER_END
+
+ModelBuffer:
+	Name:
+		tiger
+	Path:
+		tiger.obj
+	Size:
+		2.0
+	Align_center:
+		true
+		
+#load_end
+
+ModelBuffer:
+	Name:
+		cube
+	Path:
+		cube.obj
+	Size:
+		40.0	
+#load_end
+
+ModelBuffer:
+	Name:
+		ico
+	Path:
+		ico.obj
+	Size:
+		0.05	
+#load_end
+
+ModelBuffer:
+	Name:
+		stars
+	Path:
+		stars.obj
+	Size:
+		10000.0	
+#load_end
+
+ModelBuffer:
+	Name:
+		galaxy
+	Path:
+		celestialSphere.obj
+	Size:
+		16000.0
+#load_end
+
+ModelBuffer:
+	Name:
+		doge
+	Path:
+		cube.obj
+	Size:
+		40000.0
+#load_end
+
+ModelBuffer:
+	Name:
+		moon
+	Path:
+		celestialSphere.obj
+	Size:
+		15.0
+#load_end
+
+#END

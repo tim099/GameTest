@@ -7,10 +7,10 @@
 #include "class/input/mouse/Mouse.h"
 #include "class/input/keyboard/KeyBoard.h"
 #include "class/input/signal/Receiver.h"
+#include "class/tim/globalObject/GlobalObject.h"
 #include <map>
 class GLFWwindow;
-class Input {
-	static Input *cur_input;
+class Input : public Tim::GlobalObject<Input>{
 public:
 	Input(GLFWwindow *window);
 	virtual ~Input();
@@ -19,7 +19,7 @@ public:
 	 */
 	static Input * get_cur_input();
 	void callback_rigister(GLFWwindow *window);
-	void update(glm::vec2 window_size);
+	void update();
 
 	Receiver* get_receiver(std::string name);
 	/*

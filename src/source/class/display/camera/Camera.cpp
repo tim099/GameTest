@@ -67,7 +67,7 @@ void Camera::rotate(glm::vec3 v,float degrees){
 	vec=rmat*vec;
 	pos=look_at+glm::vec3(vec);
 }
-void Camera::tic(){
+void Camera::update(){
 	dis_alter(dis_alter_v);
 	dis_alter_v*=0.9;
 	move(v);

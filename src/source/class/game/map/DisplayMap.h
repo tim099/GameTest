@@ -10,7 +10,6 @@ namespace Tim{
 }
 class Map;
 class Camera;
-class Draw;
 class AllTextures;
 class Window;
 class Position;
@@ -18,8 +17,7 @@ class DisplayMap {
 public:
 	static const int SEG=15;
 
-
-	DisplayMap(Map *map,Draw *d_obj,AllTextures *textures,Window *window);
+	DisplayMap(Map *map,AllTextures *textures,Window *window);
 	virtual ~DisplayMap();
 
 	void create_map_object(int px,int pz);
@@ -32,7 +30,6 @@ public:
 	Tim::Mutex* createMapObjectMutex;
 	int range,max_y;
 protected:
-	Draw *d_obj;
 	MapDrawObject* dmaps[SEG][SEG];
 	CubeModel *cube;
 	Map *map;

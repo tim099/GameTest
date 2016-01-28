@@ -2,7 +2,7 @@
 #include "class/display/draw/Draw.h"
 #include "class/display/UI/UIObjectCreator.h"
 #include "class/tim/string/String.h"
-#include <iostream>
+//#include <iostream>
 namespace UI {
 UI* UI::cur_UI = 0;
 UI::UI() {

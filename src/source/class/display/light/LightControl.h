@@ -5,9 +5,10 @@
 #include "class/display/light/PointLight.h"
 #include "class/display/light/ParallelLight.h"
 #include "class/display/light/shadow/ShadowData.h"
-#include "class/display/draw/Draw.h"
+
 #include <vector>
 
+class Draw;
 class Shader;
 class Camera;
 class FrameBuffer;
@@ -24,20 +25,24 @@ static const int MAX_POINT_LIGHT=100;
 	LightControl(float draw_distance);
 	virtual ~LightControl();
 	void sent_uniform(Shader *shader,glm::vec3 camera_pos);
+	void gen_shadow(Camera *camera,Draw *d_obj);
+
 
 	unsigned parallel_light_size()const;
 	unsigned point_light_size()const;
 	PointLight* get_point_light(int i)const;
 	ParallelLight* get_parallel_light(int i)const;
 
-	void push_point_light(PointLight* l);
-	void push_parallel_light(ParallelLight* l);
-	void gen_shadow(Camera *camera,double shadow_dis,Draw *d_obj);
+	void push_light(PointLight* l);
+	void push_light(ParallelLight* l);
+
+
+
 
 	std::vector<ParallelLight*>parallel_lights;
 	std::vector<PointLight*>point_lights;
 	ShadowData *shadowData;
-
+	double shadow_dis;
 protected:
 	/*
 	 * find the point lights to draw this frame
@@ -46,7 +51,7 @@ protected:
 	/*
 	 * point lights buffer of point lights to draw at current frame
 	 */
-	std::vector<PointLight*>tmp_point_lights;
+	std::vector<PointLight*>selected_point_lights;
 	float draw_dis;
 };
 

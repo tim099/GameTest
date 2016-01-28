@@ -1,9 +1,10 @@
 #ifndef MAPDRAWOBJECT_H_
 #define MAPDRAWOBJECT_H_
-#include "class/display/draw/object/DrawObject.h"
+#include "class/display/draw/drawObject/DrawObject.h"
 class MapDrawObject : public DrawObject{
 public:
-	MapDrawObject(BufferObject* obj,Texture* texture,Texture* NormalMap=0);
+	MapDrawObject(std::string tex_str = "",
+			std::string NormalTex_str = "");
 	virtual ~MapDrawObject();
 	virtual void update();
 	void update_model();

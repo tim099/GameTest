@@ -1,0 +1,100 @@
+#LOAD_DRAWOBJECTMAP_SCRIPT
+
+#HEADER
+
+Name:
+	test
+	
+#HEADER_END
+
+DrawObject:
+	Name:
+		tiger
+	ModelBuffer:
+		test/tiger
+	Texture:
+		test/test
+	Material:
+		0.1 1.0 0.02 0.05	
+			
+#load_end
+
+DrawObject:
+	Name:
+		sun
+	ModelBuffer:
+		test/cube
+	Texture:
+		test/test2
+	Material:
+		0.1 0.1 0.02 1.0
+	DrawShadow:
+		false
+					
+#load_end
+
+DrawObject:
+	Name:
+		look_at
+	ModelBuffer:
+		test/ico
+	Texture:
+		test/test3
+	DrawShadow:
+		false
+					
+#load_end
+
+DrawObject:
+	Name:
+		stars
+	ModelBuffer:
+		test/stars
+	Texture:
+		test/test3
+	Material:
+		0.4 0.05 0.02 1.7
+	DrawShadow:
+		false				
+#load_end
+
+DrawObject:
+	Name:
+		galaxy
+	ModelBuffer:
+		test/galaxy
+	Texture:
+		test/galaxy
+	NormalMap:	
+		test/NormalTexture
+	Material:
+		0.0 0.0 0.02 0.1
+	DrawShadow:
+		false				
+#load_end
+
+DrawObject:
+	Name:
+		doge
+	ModelBuffer:
+		test/doge
+	Texture:
+		test/doge
+	NormalMap:	
+		test/NormalTexture
+	Material:
+		0.0 0.0 0.02 0.8
+	DrawShadow:
+		false				
+#load_end
+
+DrawObject:
+	Name:
+		ico
+	ModelBuffer:
+		test/ico
+	Texture:
+		test/test3
+
+#load_end
+#END

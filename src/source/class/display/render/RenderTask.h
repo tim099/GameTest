@@ -5,12 +5,12 @@
 class Window;
 class RenderTask : public Tim::Task{
 public:
-	RenderTask(Renderer *renderrer,Window *window);
+	RenderTask(Renderer *renderrer);
 	virtual ~RenderTask();
 protected:
 	virtual void ExecuteTask();
 	Renderer *renderrer;
-	Window *window;
+
 };
 
 #endif /* RENDERTASK_H_ */

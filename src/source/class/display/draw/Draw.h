@@ -2,22 +2,32 @@
 #define DRAW_H_
 #include <vector>
 #include <queue>
-#include "class/display/draw/object/DrawObject.h"
+#include "class/display/draw/drawObject/DrawObject.h"
 #include "class/display/draw/texture/DrawTexture.h"
 #include "class/tim/thread/mutex/Mutex.h"
+#include "class/tim/globalObject/GlobalObject.h"
 class DrawData;
 class RenderString;
 class StringRenderer;
-class Draw {
+class LightControl;
+class Shader;
+class Camera;
+class FrameBuffer;
+class Draw: public Tim::GlobalObject<Draw> {
 public:
 	Draw();
 	virtual ~Draw();
-	//render all object
-	void draw(Shader *shader);
+
+	void sent_shadow_uniform(Shader *shader);
+	void gen_shadow();
+
+
+	//render all object(3D Models)
+	void draw3D(Shader *shader,FrameBuffer *FBO);
 	/*
 	 * draw all 2D object(texture,font...etc)
 	 */
-	void draw2D(Shader2D *shader2D,double targetaspect);
+	void draw2D(Shader2D *shader2D,FrameBuffer *FBO);
 	//render shadow map
 	void draw_shadow(Shader *shader);
 	//update all object
@@ -30,15 +40,21 @@ public:
 	void push(RenderString* renderStr);
 	DrawData* push_as_tex(RenderString* renderStr);
 
-	unsigned obj_size()const;
-	void clear_tmp_pos();
+	void set_lightControl(LightControl* lightControl);
+	void set_camera(Camera *camera);
+
+	unsigned obj_size() const;
+	void clear_tmp_data();
 	DrawObject* get_obj(unsigned i);
+	Camera *camera;
+	bool Enable3D;
 protected:
-	std::vector<DrawObject*>d_objs;
-	std::vector<DrawTexture*>d_texs;
 
+	LightControl* lightControl;
 
-	std::vector<Draw*>subdraw;
+	std::vector<DrawObject*> d_objs;
+	std::vector<DrawTexture*> d_texs;
+
 	StringRenderer* strRenderer;
 
 	Tim::Mutex* d_objsMutex;

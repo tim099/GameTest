@@ -31,7 +31,6 @@ void ThreadPool::Terminate(){
 		thread_terminate(ready_q.front());
 		ready_q.pop();
 	}
-
 }
 void ThreadPool::thread_terminate(Thread* thread){
 	for(unsigned i=0;i<threads.size();i++){

@@ -50,10 +50,7 @@ public:
 	 *execute task in this function
 	 */
 	virtual void ExecuteTask();
-	/*
-	 * return true if thread is suspended
-	 */
-	bool Suspended()const;
+
 	/*
 	 *return true if this thread is going to be terminate
 	 */

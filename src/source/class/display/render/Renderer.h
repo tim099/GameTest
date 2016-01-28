@@ -9,19 +9,18 @@ class Shader;
 class Shader2D;
 class FrameBuffer;
 class Camera;
-class LightControl;
 class Draw;
 class Window;
 class Mouse;
 class Renderer{
 
 public:
-	Renderer(LightControl* lightControl,Draw *d_obj,Window *window,
-			Camera *camera,Mouse* mouse,AllTextures *textures,double* shadow_dis);
+	Renderer(Draw *d_obj,Window *window);
 	virtual ~Renderer();
 	bool Rendering()const;
 	void render();
 	void set_window(Window *window);
+
 	void switch_shader(std::string name);
 	FrameBuffer *FBO,*FBO2;
 protected:
@@ -30,21 +29,16 @@ protected:
 	 * use FBO depth buffer data to get mouse position in world position
 	 */
 	void update_mouse_data();
-	AllTextures *textures;
 	Shader *shader;
 
-	Camera *camera;
+
 	Shader2D *shader2D;
-	LightControl* lightControl;
 
-
-	Draw *d_obj;
+	Draw *draw;
 
 	Window *window;
-	Mouse* mouse;//update 3d pos
 	std::vector<Shader*>shaders;
 	GLuint VertexArrayID;
-	double* shadow_dis;
 	bool rendering;
 };
 

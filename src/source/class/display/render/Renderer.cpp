@@ -1,7 +1,6 @@
 #include "class/display/render/Renderer.h"
 #include "class/display/shader/Shader.h"
 #include "class/display/shader/shader2D/Shader2D.h"
-#include "class/display/light/LightControl.h"
 #include "class/display/buffer/frameBuffer/FrameBuffer.h"
 #include "class/display/draw/Draw.h"
 #include "class/display/window/Window.h"
@@ -9,15 +8,13 @@
 #include "class/display/texture/texture2D/Texture2D.h"
 #include "class/tim/file/File.h"
 #include "class/display/window/ViewPort.h"
+#include "class/display/camera/Camera.h"
 #include <cstdio>
 #include <iostream>
 
-Renderer::Renderer(LightControl* _lightControl, Draw *_d_obj, Window *_window,
-		Camera *_camera, Mouse* _mouse, AllTextures *_textures,
-		double* _shadow_dis) {
-	lightControl = _lightControl;
-	shadow_dis = _shadow_dis;
-	d_obj = _d_obj;
+Renderer::Renderer(Draw *_d_obj, Window *_window) {
+
+	draw = _d_obj;
 	rendering = false;
 	window = _window;
 	VertexArrayID = Buffer::GenVertexArray();
@@ -32,10 +29,6 @@ Renderer::Renderer(LightControl* _lightControl, Draw *_d_obj, Window *_window,
 	FBO2->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
 	FBO2->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
 			P_Linear);
-
-	camera = _camera;
-	mouse = _mouse;
-	textures=_textures;
 
 	creat_shaders();
 	glEnable(GL_DEPTH_TEST);
@@ -53,6 +46,10 @@ Renderer::~Renderer() {
 		delete shaders.at(i);
 	}
 	glDeleteVertexArrays(1, &VertexArrayID);
+}
+
+void Renderer::set_window(Window *_window) {
+	window = _window;
 }
 void Renderer::creat_shaders() {
 	shader2D = new Shader2D("Shader2D");
@@ -86,39 +83,26 @@ void Renderer::switch_shader(std::string name) {
 bool Renderer::Rendering() const {
 	return rendering;
 }
-void Renderer::set_window(Window *_window) {
-	window = _window;
-}
 void Renderer::update_mouse_data() {
-	mouse->get_world_space_pos(FBO, window->get_size(),
-			glm::inverse(camera->view_matrix(window->get_aspect())));
+	Mouse::get_cur_mouse()->get_world_space_pos(FBO, window->get_size(),
+			glm::inverse(draw->camera->view_matrix(window->get_aspect())));
 }
 void Renderer::render() {
 	//std::cout<<"renderer render start"<<std::endl;
+
 	window->render_on();
 	rendering = true;
 
-	d_obj->update();
-	lightControl->gen_shadow(camera, *shadow_dis, d_obj);
-	shader->active_shader();
-	FBO->bind_buffer();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
-	//sent uniform
-	camera->sent_uniform(shader->programID, FBO->aspect());
-	lightControl->sent_uniform(shader, camera->pos);
+	draw->update();
 
-	textures->get_tex("test/texcube")->sent_uniform(shader, 30, "skybox");
-
-	//start draw
-	d_obj->draw(shader);
+	draw->draw3D(shader,FBO);
 	update_mouse_data();	//update data of worldspace position
+	draw->draw2D(shader2D,FBO2);
 
-	FBO2->bind_buffer();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
-	d_obj->draw2D(shader2D, window->get_aspect());
 
 	FrameBuffer::unbind_buffer(window->get_size()); //start draw on window buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    //clear window buffer
+
 	FBO->color_textures.at(0)->draw_texture(shader2D,
 			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
 	/*

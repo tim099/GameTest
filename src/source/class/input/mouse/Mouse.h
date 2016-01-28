@@ -20,7 +20,7 @@ public:
 	void mouse_button_input(GLFWwindow* window, int button, int action, int mods);
 
 	void clear();
-	void update(glm::ivec2 screen_size);
+	void update();
 	glm::vec2 get_screen_space_pos(glm::ivec2 screen_size);
 
 	glm::vec2 get_tex_space_pos();

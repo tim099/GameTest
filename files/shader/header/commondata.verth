@@ -4,7 +4,7 @@ layout(location = 1)in vec2 vertexUV;
 layout(location = 2)in vec3 vertexNormal;
 
 layout(location = 3)in float UVlayer;//active at option LayerTexture
-
+//layout(location = 4)in float test;//active at option LayerTexture
 uniform mat4 VP;
 uniform mat4 M; 
 
@@ -27,4 +27,7 @@ void common_vert(){
     if((shaderData&LayerTexture)!=0){
     	vertout.UVlayer=UVlayer;
     }
+    //if((shaderData&LayerTexture)!=0){
+    	//vertout.UV.x+=test;//fake
+    //}
 }

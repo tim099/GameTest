@@ -1,5 +1,5 @@
 #include "class/display/UI/UIObject.h"
-#include "class/input/mouse/selectable/SelectableControl.h"
+#include "class/input/mouse/Mouse.h"
 #include "class/display/UI/UI.h"
 #include "class/tim/string/String.h"
 #include <iostream>
@@ -122,7 +122,12 @@ void UIObject::start_draw(Draw* draw) {
 void UIObject::update_UIObject() {
 	if (hide)
 		return;
-	SelectableControl::get_cur_selectableControl()->push(this);
+
+	detect_selection();
+	if ((check_mode(Mode::EDIT))&&get_state() == state_select) {
+		set_pos(get_pos()+ 0.5f
+					* Mouse::get_cur_mouse()->get_screen_pos_delta());
+	}
 	update();
 	for (unsigned i = 0; i < childs.size(); i++) {
 		childs.at(i)->update_UIObject();
@@ -170,6 +175,10 @@ void UIObject::Disable_Mode(int flag) {
 	for (unsigned i = 0; i < childs.size(); i++) {
 		childs.at(i)->Disable_Mode(flag);
 	}
+}
+bool UIObject::check_mode(int flag)const{
+	if((mode&flag)!=0)return true;
+	return false;
 }
 UIObject* UIObject::get_parent() const {
 	return parent;

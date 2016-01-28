@@ -5,7 +5,7 @@
 #include "class/display/texture/texture2D/drawDataEX/ColorAlter.h"
 #include "class/display/window/ViewPort.h"
 #include "class/display/draw/Draw.h"
-#include "class/input/mouse/Mouse.h"
+
 #include "class/tim/string/String.h"
 #include "class/display/texture/AllTextures.h"
 namespace UI {
@@ -74,12 +74,7 @@ void Panel::start_draw(Draw* draw) {
 	draw->push(new DrawTexture(tex2D, data));
 }
 void Panel::update() {
-	if (get_state() == state_select) {
-		set_pos(
-				get_pos()
-						+ 0.5f
-								* Mouse::get_cur_mouse()->get_screen_pos_delta());
-	}
+
 	update_panel();
 }
 void Panel::update_panel() {

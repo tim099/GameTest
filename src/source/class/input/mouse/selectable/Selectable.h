@@ -33,8 +33,16 @@ public:
 	/*
 	 * set the state
 	 */
-	void clear_state();
 	void set_state(int state,Mouse* mou);
+	/*
+	 * push current object into selectable control to detect collision with mouse
+	 * need to do this per frame because order is important(object call this function earlier
+	 * will detect in higher priority
+	 */
+	void detect_selection();
+
+	void clear_state();
+
 	int get_state()const;
 protected:
 	int state;

@@ -1,0 +1,12 @@
+#LOAD_ALL_TEXTURES_SCRIPT
+
+#HEADER
+Name:
+	UI
+#HEADER_END
+
+TextureMap:
+	ScriptPath:
+		files/script/loadTextureScript/loadUITexture/loadUITexture.txt	
+
+#END

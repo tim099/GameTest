@@ -1,9 +1,8 @@
 #include "class/display/render/RenderTask.h"
 #include "class/display/window/Window.h"
 #include <iostream>
-RenderTask::RenderTask(Renderer *_renderrer,Window *_window) {
+RenderTask::RenderTask(Renderer *_renderrer) {
 	renderrer=_renderrer;
-	window=_window;
 }
 RenderTask::~RenderTask() {
 

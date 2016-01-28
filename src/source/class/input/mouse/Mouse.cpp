@@ -1,5 +1,6 @@
 #include "class/input/mouse/Mouse.h"
 #include "class/display/buffer/frameBuffer/FrameBuffer.h"
+#include "class/display/window/ViewPort.h"
 #include "class/tim/math/Math.h"
 #include <iostream>
 
@@ -46,8 +47,8 @@ glm::vec2 Mouse::get_screen_space_pos(glm::ivec2 screen_size){
 
 	return screen_pos;
 }
-void Mouse::update(glm::ivec2 screen_size){
-	get_screen_space_pos(screen_size);
+void Mouse::update(){
+	get_screen_space_pos(ViewPort::get_cur_window_size());
 }
 glm::vec2 Mouse::get_tex_space_pos(){
 	return Tim::Math::convert_to_texcoord(screen_pos);

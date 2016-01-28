@@ -7,7 +7,9 @@
 #include "class/input/mouse/selectable/rectangle/SelectableRec.h"
 class Draw;
 namespace UI {
-
+namespace Mode{
+	static const int EDIT=1<<0;
+}
 class UIObject :public SelectableRec{
 public:
 	UIObject();
@@ -25,8 +27,6 @@ public:
 
 	void Parse_UIObj_Script(std::istream &is,std::string &line);
 	void Parse_UIObj_Script(std::ostream &os);
-
-
 	//===================================
 
 	std::string get_name()const;
@@ -38,16 +38,14 @@ public:
 	void draw_UIObject(Draw* draw);
 
 	glm::vec2 get_pos()const;
-	/*
-	 * return the middle position of UIObject
-	 */
+
+	//return the middle position of UIObject
 	glm::vec2 get_middle_pos() const;
 
 	UIObject* get_parent()const;
 	UIObject* get_root();
-	/*
-	 * find a child(include object itself)which name match and return it's pointer
-	 */
+
+	//find a child(include object itself)which name match and return it's pointer
 	UIObject* get_child(std::string name);
 	void set_pos(glm::vec2 pos);
 	/*
@@ -72,6 +70,10 @@ public:
 	void clear_child();
 	void Enable_Mode(int flag);
 	void Disable_Mode(int flag);
+	/*
+	 * return true if mode active
+	 */
+	bool check_mode(int mode)const;
 	bool hide;
 protected:
 	virtual void Parse_Script(std::istream &is,std::string &line);

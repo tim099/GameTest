@@ -1,0 +1,19 @@
+#LOAD_ALL_MODELBUFFERS_SCRIPT
+
+#HEADER
+
+Name:
+	root
+FolderPath:
+	files/script/modelBufferScript/
+#HEADER_END
+
+Map:
+	ScriptPath:
+		test/TestModelBufferMap.txt
+
+
+
+
+
+#END

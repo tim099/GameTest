@@ -1,0 +1,49 @@
+#LOAD_TEXTUREMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/texture/
+Name:
+	cube
+#HEADER_END
+
+Texture2DArr:
+	TextureName:
+		cube_textures
+	TextureNum:
+		5
+	TextureSize:
+		256
+		256
+	TexturePath:
+		cube/tex1.bmp
+	TexturePath:
+		cube/tex2.bmp
+	TexturePath:
+		cube/tex3.bmp
+	TexturePath:
+		cube/tex4.bmp
+	TexturePath:
+		cube/tex5.bmp
+Texture2DArr:
+	TextureName:
+		cube_normals
+	TextureNum:
+		5
+	TextureSize:
+		256
+		256
+	TexturePath:
+		cube/cube1.bmp
+	TexturePath:
+		cube/cube2.bmp
+	TexturePath:
+		cube/cube3.bmp
+	TexturePath:
+		cube/cube4.bmp
+	TexturePath:
+		cube/cube5.bmp
+
+
+#END	

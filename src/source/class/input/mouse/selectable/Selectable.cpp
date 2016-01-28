@@ -1,10 +1,13 @@
 #include "class/input/mouse/selectable/Selectable.h"
-
+#include "class/input/mouse/selectable/SelectableControl.h"
 Selectable::Selectable() {
 	state=state_null;
 }
 Selectable::~Selectable() {
 
+}
+void Selectable::detect_selection(){
+	SelectableControl::get_cur_selectableControl()->push(this);
 }
 void Selectable::mouse_on(Mouse* mou){
 

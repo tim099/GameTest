@@ -15,12 +15,7 @@ TextureMap::TextureMap(std::string script_path) {
 	}
 }
 TextureMap::~TextureMap() {
-	//std::cout<<"delete texture map:"<<get_name()<<std::endl;
-	std::map<std::string, Texture*>::iterator it = textures.begin();
-	while (it != textures.end()) {
-		delete (it->second);
-		it++;
-	}
+
 }
 std::string TextureMap::get_name() const {
 	return name;
@@ -28,12 +23,17 @@ std::string TextureMap::get_name() const {
 void TextureMap::set_name(std::string _name) {
 	name = _name;
 }
-
+void TextureMap::push(std::string tex_name, Texture* tex) {
+	textures.push(tex_name,tex);
+}
+Texture* TextureMap::get(std::string tex_name) {
+	return textures.get(tex_name);
+}
 void TextureMap::Parse_Header(std::istream &is, std::string &line) {
 	if (line == "FolderPath:") {
 		Tim::String::get_line(is, line, true, true);
 		folder_path = std::string(line);
-	} else if (line == "TextureMapName:") {
+	} else if (line == "Name:") {
 		Tim::String::get_line(is, line, true, true);
 		set_name(std::string(line));
 	}
@@ -57,7 +57,7 @@ void TextureMap::Parse_texture(std::istream &is) {
 		std::cerr << "Load_texture no TexturePath!!" << line << std::endl;
 		return;
 	}
-	push_tex(name, Texture2D::loadImage(path.c_str()));
+	push(name, Texture2D::loadImage(path.c_str()));
 }
 void TextureMap::Parse_texture2DArr(std::istream &is) {
 	std::string line;
@@ -102,7 +102,7 @@ void TextureMap::Parse_texture2DArr(std::istream &is) {
 	Texture2DArr *texarr = Texture2DArr::gen_texture2DArr(paths,
 			glm::ivec3(size.x, size.y, paths.size()),
 			GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_MipMap);
-	push_tex(name, texarr);
+	push(name, texarr);
 }
 void TextureMap::Parse_textureCubeMap(std::istream &is) {
 	std::string line;
@@ -141,30 +141,15 @@ void TextureMap::Parse_textureCubeMap(std::istream &is) {
 	TextureCubeMap *texcube = TextureCubeMap::gen_CubeMap(paths,
 			glm::ivec2(size.x, size.y),
 			GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_MipMap);
-	push_tex(name, texcube);
+	push(name, texcube);
 }
 void TextureMap::Parse_Script(std::istream &is, std::string &line) {
-	if (!strcmp(line.c_str(), "Texture:")) {
+	if (line=="Texture:") {
 		Parse_texture(is);
-	} else if (!strcmp(line.c_str(), "Texture2DArr:")) {
+	} else if (line=="Texture2DArr:") {
 		Parse_texture2DArr(is);
-	} else if (!strcmp(line.c_str(), "TextureCubeMap:")) {
+	} else if (line=="TextureCubeMap:") {
 		Parse_textureCubeMap(is);
 	}
 }
-void TextureMap::push_tex(std::string tex_name, Texture* tex) {
-	if (textures.find(tex_name) != textures.end()) {
-		std::cerr << "texture name:" << tex_name
-				<< " already exist in this texture map" << std::endl;
-		return;
-	}
-	textures[tex_name] = tex;
-}
-Texture* TextureMap::get_tex(std::string tex_name) {
-	if (textures.find(tex_name) == textures.end()) {
-		std::cerr << "no texture name:" << tex_name << " in this texture map"
-				<< std::endl;
-		return 0;
-	}
-	return textures[tex_name];
-}
+

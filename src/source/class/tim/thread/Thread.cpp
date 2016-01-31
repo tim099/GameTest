@@ -42,7 +42,7 @@ bool Thread::DONE()const{
 }
 void Thread::start(){
 	if(DONE()){
-		std::cout<<"can't start already done"<<std::endl;
+		std::cout<<"Thread::start ,can't start because already done"<<std::endl;
 		return;
 	}
 

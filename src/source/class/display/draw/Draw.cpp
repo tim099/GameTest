@@ -8,6 +8,8 @@
 #include "class/display/light/LightControl.h"
 #include "class/display/buffer/frameBuffer/FrameBuffer.h"
 #include "class/display/texture/AllTextures.h"
+#include "class/input/mouse/Mouse.h"
+#include "class/display/window/ViewPort.h"
 #include <iostream>
 
 Draw::Draw() {
@@ -23,13 +25,7 @@ Draw::~Draw() {
 	delete d_objsMutex;
 	delete d_texsMutex;
 	delete strRenderer;
-	/* handle by AllDrawObjects
-	while(!d_objs.empty()){
-		delete d_objs.back();
-		d_objs.pop_back();
-	}
-	*/
-	//std::cout<<"draw object size="<<d_objs.size()<<std::endl;
+
 	while(!d_texs.empty()){
 		delete d_texs.back();
 		d_texs.pop_back();
@@ -61,8 +57,9 @@ void Draw::draw3D(Shader *shader,FrameBuffer *FBO){
 		return;
 	}
 	gen_shadow();
-	shader->active_shader();
 
+	shader->active_shader();
+	//return;
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 	//sent uniform
@@ -70,9 +67,12 @@ void Draw::draw3D(Shader *shader,FrameBuffer *FBO){
 
 	camera->sent_uniform(shader->programID, FBO->aspect());
 	sent_shadow_uniform(shader);
+
     for(unsigned i=0;i<d_objs.size();i++){
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
+	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
+			glm::inverse(camera->view_matrix(ViewPort::get_cur_window_aspect())));
 }
 void Draw::draw2D(Shader2D *shader2D,FrameBuffer *FBO){
 	FBO->bind_buffer();

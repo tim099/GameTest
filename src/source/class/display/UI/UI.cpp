@@ -4,20 +4,31 @@
 #include "class/tim/string/String.h"
 //#include <iostream>
 namespace UI {
-UI* UI::cur_UI = 0;
 UI::UI() {
-	creator = new UIObjectCreator();
-	cur_UI = this;
-	set_name("UI");
+
+}
+UI::UI(std::string script_path){
+	Load_script(script_path);
 }
 UI::~UI() {
-	delete creator;
+
+}
+void UI::Parse_UIScript(std::istream &is,std::string &line){
+	if (line == "ScriptPath:") {
+		Tim::String::get_line(is, script_path, true, true);
+		Load_script(script_path);
+	}
+}
+void UI::Parse_UIScript(std::ostream &os){
+	os<<"	"<<"ScriptPath:"<<std::endl;
+	os<<"		"<<script_path<<std::endl;
+	Save_script(script_path);
 }
 void UI::Parse_Script(std::istream &is, std::string &line) {
 	if (!strcmp(line.c_str(), "CreateUIObject:")) {
 		Tim::String::get_line(is, line, true, true);
 		UIObject* obj = creator->create(line);
-		obj->Parse_UIObj_Script(is,line);
+		obj->Parse_UIObj_Script(this,is,line);
 	}
 }
 void UI::Parse_Script(std::ostream &os){
@@ -28,16 +39,17 @@ void UI::Parse_Script(std::ostream &os){
 	}
 }
 void UI::Parse_Header(std::istream &is, std::string &line) {
-
+	if (line == "Name:") {
+		Tim::String::get_line(is, line, true, true);
+		set_name(std::string(line));
+	}
 }
 void UI::Parse_Header(std::ostream &os){
-
+	os<<"	"<<"Name:"<<std::endl;
+	os<<"		"<<get_name()<<std::endl;
 }
 UIObject* UI::create_UIObject() {
 	return new UI();
-}
-UI* UI::get_cur_UI() {
-	return cur_UI;
 }
 void UI::update() {
 

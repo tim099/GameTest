@@ -1,0 +1,61 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		createNewMap
+#HEADER_END
+CreateUIObject:
+		Panel
+	Name:
+		ButPanel
+	Position:
+		0 1
+	Texture:
+		UI/UI/panel2
+	Width:
+		1
+	Height:
+		0.55
+	Parent:
+		createNewMap
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.625184 0.129604
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Back"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			newGamePage
+		Receiver:
+			pageControl
+	Parent:
+		createNewMap
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		default_UIObject
+	Position:
+		0.0783305 0.917257
+	String:
+"Enter Map Name:"
+	String_size:
+		0.02
+	Parent:
+		createNewMap
+#create_end
+
+#END

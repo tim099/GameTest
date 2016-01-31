@@ -4,7 +4,6 @@
 #include "class/display/buffer/frameBuffer/FrameBuffer.h"
 #include "class/display/draw/Draw.h"
 #include "class/display/window/Window.h"
-#include "class/input/mouse/Mouse.h"
 #include "class/display/texture/texture2D/Texture2D.h"
 #include "class/tim/file/File.h"
 #include "class/display/window/ViewPort.h"
@@ -83,20 +82,16 @@ void Renderer::switch_shader(std::string name) {
 bool Renderer::Rendering() const {
 	return rendering;
 }
-void Renderer::update_mouse_data() {
-	Mouse::get_cur_mouse()->get_world_space_pos(FBO, window->get_size(),
-			glm::inverse(draw->camera->view_matrix(window->get_aspect())));
-}
 void Renderer::render() {
 	//std::cout<<"renderer render start"<<std::endl;
 
-	window->render_on();
+	//window->render_on();
 	rendering = true;
 
 	draw->update();
 
 	draw->draw3D(shader,FBO);
-	update_mouse_data();	//update data of worldspace position
+
 	draw->draw2D(shader2D,FBO2);
 
 
@@ -117,6 +112,6 @@ void Renderer::render() {
 
 	rendering = false;
 	//window->swap_buffer();
-	window->render_off();    //release thread using this window
+	//window->render_off();    //release thread using this window
 	//std::cout<<"renderer render end"<<std::endl;
 }

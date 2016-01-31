@@ -53,7 +53,8 @@ void Mouse::update(){
 glm::vec2 Mouse::get_tex_space_pos(){
 	return Tim::Math::convert_to_texcoord(screen_pos);
 }
-glm::vec3 Mouse::get_world_space_pos(FrameBuffer* FBO,glm::ivec2 screen_size,glm::mat4 inverseMat){
+glm::vec3 Mouse::get_world_space_pos(FrameBuffer* FBO,glm::mat4 inverseMat){
+	glm::ivec2 screen_size=ViewPort::get_cur_window_size();
 	glm::vec4 mwpos=FBO->get_world_space_pos(get_screen_space_pos(screen_size),inverseMat);
 	world_pos=glm::vec3(mwpos.x,mwpos.y,mwpos.z);
 	return glm::vec3(mwpos.x,mwpos.y,mwpos.z);

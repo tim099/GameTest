@@ -28,7 +28,6 @@ protected:
 	/*
 	 * use FBO depth buffer data to get mouse position in world position
 	 */
-	void update_mouse_data();
 	Shader *shader;
 
 

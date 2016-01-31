@@ -7,14 +7,16 @@ class Array3D {
 public:
 	Array3D(int sizex,int sizey,int sizez);
 	virtual ~Array3D();
-	/*
-	 * will not check the bound!!used carefully
-	 */
 
-	Type& get(const int &x,const int &y,const int &z);
+	//will not check the bound!!used carefully
+	inline Type& get(const int &x,const int &y,const int &z){
+		//return arr[sizey*sizez*x+sizez*y+z];
+		return arr[x+y*sizex+z*sizex*sizey];
+	}
 	int sizex;
 	int sizey;
 	int sizez;
+protected:
 	Type* arr;
 };
 } /* namespace Tim */

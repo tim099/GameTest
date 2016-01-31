@@ -77,9 +77,14 @@ void ModelBuffer::bind_buffer(Shader *shader) {
 void ModelBuffer::unbind_buffer(Shader *shader) {
 	if (lybuffer)
 		lybuffer->unbind_buffer();
+	//vtbuffer->unbind_buffer();
+	//uvbuffer->unbind_buffer();
+	//vnbuffer->unbind_buffer();
 }
 void ModelBuffer::draw(GLuint programID, GLenum mode) {
+
 	glDrawArrays(mode, 0, vertex_num);
+
 	//glDrawArrays(GL_LINES,0,vertex_num);
 	//glDrawArrays(GL_POINTS,0,vertex_num);
 }

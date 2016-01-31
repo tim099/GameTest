@@ -1,7 +1,9 @@
 #include "class/display/UI/UIObject.h"
 #include "class/input/mouse/Mouse.h"
 #include "class/display/UI/UI.h"
-#include "class/tim/string/String.h"
+#include "class/input/Input.h"
+#include "class/input/signal/Receiver.h"
+#include "class/display/UI/UIObjectCreator.h"
 #include <iostream>
 namespace UI {
 
@@ -9,22 +11,30 @@ UIObject::UIObject() {
 	parent = 0;
 	mode = 0;
 	hide = false;
-	name = "default";
+	name = "default_UIObject";
+	receiver=0;
+	creator = UIObjectCreator::get_cur_object();
 }
 UIObject::~UIObject() {
 	if (parent) {
 		parent->remove_child(this);
 	}
+	if (receiver) {
+		Input::get_cur_object()->remove_receiver(receiver->get_name());
+	}
 	clear_child();
 }
-void UIObject::Parse_UIObj_Script(std::istream &is, std::string &line) {
-	UI* cur_UI = UI::get_cur_UI();
+void UIObject::Parse_UIObj_Script(UIObject* cur_root,std::istream &is, std::string &line) {
 	while (Tim::String::get_line(is, line, true, true)) {
 		if (line == "#create_end") {
+			Parse_UIScript(is, line);//tell UIOBject to end parsing!!
+			if(!get_parent()&&cur_root){
+				cur_root->push_child(this);
+			}
 			break;
 		} else if (line == "Parent:") {
 			Tim::String::get_line(is, line, true, true);
-			UIObject* parent = cur_UI->get_child(line);
+			UIObject* parent = cur_root->get_child(line);
 			if (parent) {
 				parent->push_child(this);
 			} else {
@@ -37,9 +47,12 @@ void UIObject::Parse_UIObj_Script(std::istream &is, std::string &line) {
 			glm::vec2 tpos;
 			is >> tpos.x;
 			is >> tpos.y;
-			set_pos(tpos);
+			set_relative_pos(tpos);
+		}else if (line == "Set_receiver:") {
+			Tim::String::get_line(is, line, true, true);
+			set_receiver(line);
 		} else {
-			Parse_Script(is, line);
+			Parse_UIScript(is, line);
 		}
 	}
 
@@ -47,28 +60,41 @@ void UIObject::Parse_UIObj_Script(std::istream &is, std::string &line) {
 void UIObject::Parse_UIObj_Script(std::ostream &os) {
 	//UI* cur_UI=UI::get_cur_UI();
 	os << "CreateUIObject:" << std::endl;
-	os << "		" << get_type_name() << std::endl;
+	os << "		" << get_type() << std::endl;
 	os << "	" << "Name:" << std::endl;
 	os << "		" << get_name() << std::endl;
 	os << "	" << "Position:" << std::endl;
 	os << "		" << pos.x << " " << pos.y << std::endl;
 
-	Parse_Script(os);
+	Parse_UIScript(os);
 
 	os << "	" << "Parent:" << std::endl;
 	os << "		" << get_parent()->get_name() << std::endl;
+	if (receiver) {
+		os << "	" << "Set_receiver:" << std::endl;
+		os << "		" << receiver->get_name() << std::endl;
+	}
 	os << "#create_end" << std::endl << std::endl;
+
+
+
+	if(!save_child()){
+		return;
+	}
 	UIObject* obj;
 	for (unsigned i = 0; i < childs.size(); i++) {
 		obj = childs.at(i);
 		obj->Parse_UIObj_Script(os);
 	}
 }
-void UIObject::Parse_Script(std::istream &is, std::string &line) {
+void UIObject::Parse_UIScript(std::istream &is, std::string &line) {
 
 }
-void UIObject::Parse_Script(std::ostream &os) {
+void UIObject::Parse_UIScript(std::ostream &os) {
 
+}
+UIObject* UIObject::search_root(std::string name){
+	return get_root()->get_child(name);
 }
 UIObject* UIObject::get_child(std::string name) {
 	if (name == get_name())
@@ -93,7 +119,7 @@ void UIObject::clear_child() {
 	}
 	//childs.clear();//just for safety, all child should already removed
 }
-void UIObject::initial(glm::vec2 _pos, glm::vec2 _size) {
+void UIObject::init(glm::vec2 _pos, glm::vec2 _size) {
 	set_pos(_pos);
 	size = _size;
 }
@@ -128,6 +154,8 @@ void UIObject::update_UIObject() {
 		set_pos(get_pos()+ 0.5f
 					* Mouse::get_cur_mouse()->get_screen_pos_delta());
 	}
+
+
 	update();
 	for (unsigned i = 0; i < childs.size(); i++) {
 		childs.at(i)->update_UIObject();
@@ -146,6 +174,11 @@ void UIObject::set_parent(UIObject* _parent) {
 	parent = _parent;
 }
 void UIObject::remove_child(UIObject* child) {
+	if(child==childs.back()){
+		childs.back()->clear_parent();
+		childs.pop_back();
+		return;
+	}
 	for (unsigned i = 0; i < childs.size(); i++) {
 		if (child == childs.at(i)) {
 			childs.at(i)->clear_parent();
@@ -189,6 +222,9 @@ UIObject* UIObject::get_root() {
 	}
 	return this;
 }
+void UIObject::set_relative_pos(glm::vec2 _pos){
+	pos = _pos;
+}
 void UIObject::set_pos(glm::vec2 _pos) {
 	pos = _pos;
 	if (parent)
@@ -199,5 +235,22 @@ glm::vec2 UIObject::get_pos() const {
 		return pos + parent->get_pos();
 	}
 	return pos;
+}
+glm::vec2 UIObject::get_relative_pos()const{
+	return pos;
+}
+void UIObject::set_receiver(std::string receiver_name) {
+	if (receiver) {
+		Input::get_cur_object()->remove_receiver(receiver->get_name());
+	}
+	receiver = new Receiver(receiver_name);
+	Input::get_cur_object()->push_receiver(receiver);
+}
+UIObject* UIObject::copy_UIObject(){
+	std::cerr<<"UIObject:"<<get_type()<<"not implement UIObject::copy_UIObject()"<<std::endl;
+	return 0;
+}
+glm::vec2 UIObject::get_size()const{
+	return size;
 }
 } /* namespace UI */

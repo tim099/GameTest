@@ -16,7 +16,7 @@ public:
 	void set_signal(Signal* signal);
 	Signal* get_signal() const;
 
-	virtual std::string get_type_name()const{
+	virtual std::string get_type()const{
 		return "Button";
 	}
 protected:

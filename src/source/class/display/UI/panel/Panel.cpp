@@ -5,8 +5,6 @@
 #include "class/display/texture/texture2D/drawDataEX/ColorAlter.h"
 #include "class/display/window/ViewPort.h"
 #include "class/display/draw/Draw.h"
-
-#include "class/tim/string/String.h"
 #include "class/display/texture/AllTextures.h"
 namespace UI {
 Panel::Panel() {
@@ -16,7 +14,7 @@ Panel::Panel() {
 Panel::Panel(glm::vec2 _pos,std::string _tex_path, float _width, float _height) {
 	initialize(_pos, _tex_path, _width, _height);
 }
-void Panel::initialize(std::string _tex_path, float width, float _height) {
+void Panel::set_texture(std::string _tex_path, float width, float _height) {
 	tex_path=_tex_path;
 	tex2D=AllTextures::get_cur_tex(tex_path);
 	height = _height;
@@ -31,25 +29,21 @@ void Panel::initialize(std::string _tex_path, float width, float _height) {
 void Panel::initialize(glm::vec2 _pos,std::string _tex_path, float width,
 		float _height) {
 	set_pos(_pos);
-	initialize(_tex_path, width, _height);
+	set_texture(_tex_path, width, _height);
 }
-void Panel::Parse_Script(std::istream &is, std::string &line) {
-	if (line == "Texture:") {
+void Panel::Parse_UIScript(std::istream &is, std::string &line) {
+	if (line == "#create_end") {
+		set_texture(tex_path, size.x, height);
+	} else if (line == "Texture:") {
 		Tim::String::get_line(is, tex_path, true, true);
-		float width = 0.0f, height;
-		Tim::String::get_line(is, line, true, true);
-		if (line == "Width:") {
-			is >> width;
-		}
-		Tim::String::get_line(is, line, true, true);
-		if (line == "Height:") {
-			is >> height;
-		}
-		initialize(tex_path, width, height);
+		size.x=1.0f;height=0.0f;
+	}else if(line == "Width:"){
+		is >> size.x;
+	}else if(line == "Height:"){
+		is >> height;
 	}
-
 }
-void Panel::Parse_Script(std::ostream &os) {
+void Panel::Parse_UIScript(std::ostream &os) {
 	os<<"	"<<"Texture:"<<std::endl;
 	os<<"		"<<tex_path<<std::endl;
 	os<<"	"<<"Width:"<<std::endl;
@@ -65,11 +59,12 @@ UIObject* Panel::create_UIObject() {
 }
 void Panel::start_draw(Draw* draw) {
 	DrawData* data = new DrawData2D(1.0, get_pos(), size.x, height);
-
-	if (state == Selectable::state_on) {
-		data->ex_datas.push_back(new ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
-	} else if (state == Selectable::state_selected) {
-		data->ex_datas.push_back(new ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
+	if(check_mode(UI::Mode::EDIT)){
+		if (state == Selectable::state_on) {
+			data->ex_datas.push_back(new ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
+		} else if (state == Selectable::state_selected) {
+			data->ex_datas.push_back(new ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
+		}
 	}
 	draw->push(new DrawTexture(tex2D, data));
 }

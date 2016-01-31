@@ -10,6 +10,7 @@ public:
 	const std::string& get_sent_to()const;
 	const std::string& get_data()const;
 	virtual void sent();
+	void *ex_data;
 protected:
 	std::string sent_to;
 	std::string data;

@@ -1,7 +1,8 @@
 #LOAD_UI_SCRIPT
 
 #HEADER
-
+	Name:
+		root
 #HEADER_END
 
 CreateUIObject:
@@ -17,7 +18,7 @@ CreateUIObject:
 	Height:
 		0.6
 	Parent:
-		UI	
+		root	
 #create_end
 
 CreateUIObject:
@@ -114,7 +115,7 @@ CreateUIObject:
 		Receiver:
 			default
 	Parent:
-		UI			
+		root			
 #create_end
 
 #END

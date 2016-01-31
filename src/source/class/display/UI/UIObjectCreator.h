@@ -2,11 +2,12 @@
 #define SOURCE_CLASS_DISPLAY_UI_UIOBJECTCREATOR_H_
 #include "class/display/UI/UIObject.h"
 #include "class/tim/map/MapContainer.h"
+#include "class/tim/globalObject/GlobalObject.h"
 #include <string>
 
 namespace UI {
 
-class UIObjectCreator {
+class UIObjectCreator : public Tim::GlobalObject<UIObjectCreator>{
 public:
 	UIObjectCreator();
 	virtual ~UIObjectCreator();

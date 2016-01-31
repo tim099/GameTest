@@ -3,8 +3,8 @@
 class GLFWwindow;
 #include <glm/glm.hpp>
 #include <windows.h>
-
-class Window {
+#include "class/tim/globalObject/GlobalObject.h"
+class Window : public Tim::GlobalObject<Window>{
 	static bool glewinitial;
 	static bool glfwinitial;
 public:

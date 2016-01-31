@@ -55,7 +55,9 @@ void Model::initial(int _len,int _max_len,bool layertex){
 }
 void Model::max_len_alter(int _len){
 	if(_len>max_len){
-		while(_len>max_len)max_len*=2;
+		while(_len>max_len){
+			max_len=2*max_len+1;
+		}
 
 		Tim::Array<GLfloat>::size_alter(vtBuffer,3*len,3*max_len);
 		Tim::Array<GLfloat>::size_alter(uvBuffer,2*len,2*max_len);

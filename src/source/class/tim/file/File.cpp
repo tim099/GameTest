@@ -24,15 +24,17 @@ std::string File::get_type(const char* path) {
 	pch = strtok(NULL, ".");
 	return std::string(pch);
 }
-std::vector<std::string> File::get_all_files(const char* path) {
+std::vector<std::string> File::get_all_files(std::string path) {
 	std::vector<std::string> filenames;
 	DIR *dir;
 	struct dirent *ent;
-	dir = opendir(path);
+	dir = opendir(path.c_str());
 	if (dir) {
 		while ((ent = readdir(dir))) {
 			if (strcmp(".", ent->d_name) && strcmp("..", ent->d_name)) {
-				filenames.push_back(std::string(ent->d_name));
+				if(ent->d_type==0){//if type==0 then ent is a file
+					filenames.push_back(std::string(ent->d_name));
+				}
 				//if ent->d_type == 16, ent is a folder
 				//printf ("%s,type=%d\n",ent->d_name,ent->d_type);
 			}
@@ -42,6 +44,27 @@ std::vector<std::string> File::get_all_files(const char* path) {
 		std::cerr << "File::get_all_files() can't open :" << path << std::endl;
 	}
 	return filenames;
+}
+std::vector<std::string> File::get_all_dirs(std::string path) {
+	std::vector<std::string> dirnames;
+	DIR *dir;
+	struct dirent *ent;
+	dir = opendir(path.c_str());
+	if (dir) {
+		while ((ent = readdir(dir))) {
+			if (strcmp(".", ent->d_name) && strcmp("..", ent->d_name)) {
+				if(ent->d_type==16){//if type==0 then ent is a file
+					dirnames.push_back(std::string(ent->d_name));
+				}
+				//if ent->d_type == 16, ent is a folder
+				//printf ("%s,type=%d\n",ent->d_name,ent->d_type);
+			}
+		}
+		closedir(dir);
+	} else {
+		std::cerr << "File::get_all_files() can't open :" << path << std::endl;
+	}
+	return dirnames;
 }
 bool File::check_if_file_exist(std::string dir_path, std::string file_name) {
 	std::vector<std::string> files = get_all_files(dir_path.c_str());

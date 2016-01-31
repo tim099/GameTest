@@ -30,7 +30,7 @@ void SelectableControl::update(){
 Selectable* SelectableControl::find_selected(){
 	Selectable* select;
 	cur_selected=0;
-	Input *input=Input::get_cur_input();
+	Input *input=Input::get_cur_object();
 	bool click=input->mouse->left_clicked();
 	bool pressed=input->mouse->left_pressed();
 	unsigned selectables_size=selectables.size();

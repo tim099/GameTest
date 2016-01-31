@@ -9,6 +9,10 @@
 #include "class/display/light/ParallelLight.h"
 #include "class/display/light/PointLight.h"
 #include "class/display/draw/Draw.h"
+/*
+ * require initialize when window render on(can access to GPU)
+ * because this class create shadow mapping shader itself
+ */
 class Shader;
 class ShadowData{
 public:

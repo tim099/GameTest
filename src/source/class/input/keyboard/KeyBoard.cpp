@@ -52,7 +52,7 @@ void KeyBoard::inputkey(GLFWwindow *window, int key, int scancode, int action,
 std::string KeyBoard::get_str()const{
 	return input_str;
 }
-void KeyBoard::clear() {
+void KeyBoard::update() {
 	if(cur_char>0&&cur_char<256)input_str+=(char)cur_char;
 	cur_char=0;
 	chars.clear();
@@ -76,19 +76,18 @@ bool KeyBoard::get_char(unsigned key) {
 		chars.erase(key);
 	return true;
 }
-unsigned KeyBoard::get_char() const {
-	return cur_char;
+unsigned KeyBoard::get_char(){
+	unsigned c=cur_char;
+	cur_char=0;
+	return c;
 }
 bool KeyBoard::pressed_char(unsigned key) {
 	if (chars.find(key) == chars.end())
 		return false;
 	return true;
 }
-void KeyBoard::clear_input_str(){
-	input_str.clear();
-}
+
 void KeyBoard::key_press(int key, int scancode, int mods) {
-	//std::cout<<"key press:"<<(char)key<<",scancode:"<<scancode<<",mods:"<<mods<<std::endl;
 	//std::cout<<"key press:"<<key<<","<<(char)key<<",scancode:"<<scancode<<",mods:"<<mods<<std::endl;
 	if(key==257){//ENTER
 		cur_char='\n';
@@ -99,6 +98,21 @@ void KeyBoard::key_press(int key, int scancode, int mods) {
 	}
 	keys.insert(key);
 
+}
+void KeyBoard::clear_input_str(){
+	input_str.clear();
+}
+void KeyBoard::clear_keys(){
+	keys.clear();
+}
+void KeyBoard::clear_chars(){
+	chars.clear();
+}
+void KeyBoard::clear(){
+	clear_keys();
+	clear_chars();
+	clear_input_str();
+	cur_char=0;
 }
 void KeyBoard::key_release(int key, int scancode, int mods) {
 	//std::cout<<"key release:"<<(char)key<<",scancode:"<<scancode<<",mods:"<<mods<<std::endl;

@@ -14,11 +14,5 @@ template <class Type>
 Array3D<Type>::~Array3D() {
 	delete[] arr;
 }
-
-template <class Type>
-Type& Array3D<Type>::get(const int &x,const int &y,const int &z){
-	return arr[sizey*sizez*x+sizez*y+z];
-}
-
 } /* namespace Tim */
 #endif /* SOURCE_CLASS_TIM_ARRAY_ARRAY3D_CPP_ */

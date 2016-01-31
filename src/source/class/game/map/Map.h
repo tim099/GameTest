@@ -6,19 +6,22 @@
 #include <string>
 class Map {
 public:
-	static const int MX=300,MY=100,MZ=300;
+	static const int MX=5000,MY=5000,MZ=5000;
 	static const double CUBE_SIZE=1.0;
 	Map();
 	virtual ~Map();
-
+	void gen_map(glm::ivec3 map_size,unsigned seed);
 	static glm::ivec3 convert_position(glm::vec3 pos);
+	void save_map(std::string path);
 	void load_map(std::string path);
-	bool set(int x,int y,int z,int val);
-	int get(const int &x,const int &y,const int &z)const;
-	void tic();
+	bool set_cube_type(int x,int y,int z,int val);
+	int get_cube_type(const int &x,const int &y,const int &z)const;
+	void update();
+	glm::ivec3 get_size()const;
 protected:
 	Tim::Array3D<Cube> *map;
-	glm::ivec3 ms;
+	glm::ivec3 map_size;
+	unsigned seed;
 };
 
 #endif /* MAP_H_ */

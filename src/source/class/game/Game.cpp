@@ -10,13 +10,15 @@ Game::Game() {
 
 	window=0;
 	draw=0;
+	UIObj_Creator=0;
 	renderer = 0;
-	render_task = 0;
+	//render_task = 0;
 
 	input=0;
+	game_receiver=0;
 	controller_system=0;
 
-	render_thread = 0;
+	//render_thread = 0;
 	thread_pool = 0;
 }
 Game::~Game() {
@@ -26,38 +28,46 @@ Game::~Game() {
 }
 void Game::initialize(){
 	window=create_window();
+	window->render_on();
 	draw = new Draw();
 	draw->register_cur();
+	UIObj_Creator=new UI::UIObjectCreator();
+	UIObj_Creator->register_cur();
+
 	renderer = new Renderer(draw, window);
-	render_task = new RenderTask(renderer);
+	//render_task = new RenderTask(renderer);
+
 
 	input = new Input(window->get_window());
 	input->register_cur();
+	game_receiver=new Receiver("Game");
+	input->push_receiver(game_receiver);
 	controller_system=new ControllerSystem();
 	controller_system->push(new SelectableControl());
 
-	render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
+	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 	thread_pool = new Tim::ThreadPool(8);
 	initialize_game();
 
-	window->render_off();
+	//window->render_off();
 }
 void Game::terminate(){
 	std::cout<<"terminate start"<<std::endl;
-	window->render_on();
-	for(unsigned i=0;i<scenes.size();i++){
-		delete scenes.at(i);
+	//window->render_on();
+	while(!scenes.empty()){
+		pop_scene();
 	}
 	terminate_game();
 
 	thread_pool->Terminate();
-	render_thread->Terminate();
+	//render_thread->Terminate();
 
 	delete controller_system;
 	delete input;
 
-	delete render_task;
+	//delete render_task;
 	delete renderer;
+	delete UIObj_Creator;
 	delete draw;
 	delete window;
 	std::cout<<"terminate end"<<std::endl;
@@ -69,32 +79,57 @@ Scene* Game::get_cur_scene(){
 	return scenes.back();
 }
 void Game::push_scene(Scene* scene){
+	//window->render_on();
 	Scene* cur_scene=get_cur_scene();
 	if(cur_scene)cur_scene->pause();
 	scene->initialize(draw,input,thread_pool);
 	scenes.push_back(scene);
+	//window->render_off();
 }
 void Game::pop_scene(){
 	if(scenes.empty())return;
-
+	scenes.back()->terminate();
 	delete scenes.back();
 	scenes.pop_back();
+
 	Scene* cur_scene=get_cur_scene();
-	cur_scene->resume();
+	if(cur_scene){
+		cur_scene->resume();
+	}
+}
+void Game::handle_game_signal(){
+	Signal *sig = game_receiver->get_signal(); //get signal from receiver "test"
+	if (sig) {
+		std::cout << "got signal:" << sig->get_data() << std::endl;
+		if (sig->get_data() == "Quit") {
+			end=true;
+		}else if(sig->get_data()=="push_scene"){
+			push_scene((Scene*)sig->ex_data);
+			delete sig;
+		}
+	}
 }
 void Game::update(){
 	input->update();
-	controller_system->update();
+	handle_game_signal();
 
-	//===========game update=============
+	//===========game update===============
+	//std::cout<<"Game::update() cur_state="<<get_cur_scene()->scene_name()<<std::endl;
 	game_update();
 	get_cur_scene()->update();
-	//===========render start=============
-	render_thread->push_task(render_task);
-	render_thread->start();
-	//===========wait for render end=============
+	get_cur_scene()->draw_scene();
+	//std::cout<<"Game::update() draw end"<<std::endl;
+	//===========system update=============
+	controller_system->update();
+	//std::cout<<"Game::update() controller_system->update() end"<<std::endl;
+	//===========render start==============
+	//render_thread->push_task(render_task);
+	//render_thread->start();
+	renderer->render();
+	//std::cout<<"Game::update() renderer->render() end"<<std::endl;
+	//===========wait for render end=======
 
-	render_thread->join();
+	//render_thread->join();
 	draw->clear_tmp_data();
 	swap_buffer();
 }
@@ -112,7 +147,7 @@ void Game::swap_buffer(){
 
 	//std::cout << "fps=" <<  << std::endl;
 	frame_start_time = glfwGetTime();
-	window->render_on();
+	//window->render_on();
 	window->swap_buffer();
-	window->render_off();    //release thread using this window
+	//window->render_off();    //release thread using this window
 }

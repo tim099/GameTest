@@ -3,7 +3,8 @@
 #include <GL/glew.h>
 class Buffer {
 public:
-	Buffer(GLfloat* data,int datasize,GLuint index,GLint size,GLenum type,GLboolean normalized=false
+	Buffer(GLfloat* data,int datasize,GLuint index,GLint size,GLenum type
+			,GLboolean normalized=GL_FALSE
 			,GLsizei stride=0);
 	virtual ~Buffer();
 	static GLuint gen_buffer(GLfloat* data,int datasize);

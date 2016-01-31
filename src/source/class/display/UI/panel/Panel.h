@@ -12,25 +12,24 @@ public:
 	Panel();
 	Panel(glm::vec2 pos,std::string tex_path,float width,float height=AutoHeight);
 	void initialize(glm::vec2 pos,std::string tex_path,float width,float height=AutoHeight);
-	void initialize(std::string tex_path,float width,float height=AutoHeight);
+	void set_texture(std::string tex_path,float width,float height=AutoHeight);
 	virtual ~Panel();
 
 	virtual UIObject* create_UIObject();
-	virtual std::string get_type_name()const{
+	virtual std::string get_type()const{
 		return "Panel";
 	}
 
 protected:
-	virtual void Parse_Script(std::istream &is,std::string &line);
-	virtual void Parse_Script(std::ostream &os);
+	virtual void Parse_UIScript(std::istream &is,std::string &line);
+	virtual void Parse_UIScript(std::ostream &os);
 	virtual void update();
-
-	/*
-	 * provide for inherit class from Panel
-	 * updated every frame
-	 */
-	virtual void update_panel();
 	virtual void start_draw(Draw* draw);
+//========================================================
+
+	//provide update for inherit class from Panel
+	virtual void update_panel();
+
 	std::string tex_path;
 	Texture* tex2D;
 	float height;

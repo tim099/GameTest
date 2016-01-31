@@ -5,8 +5,8 @@
 #include "class/display/window/Window.h"
 #include "class/display/draw/Draw.h"
 #include "class/display/render/Renderer.h"
-#include "class/display/render/RenderTask.h"
-
+//#include "class/display/render/RenderTask.h"
+#include "class/display/UI/UIObjectCreator.h"
 
 #include "class/input/Input.h"
 #include "class/controller/ControllerSystem.h"
@@ -27,20 +27,23 @@ protected:
 	virtual void game_update()=0;
 	virtual Window* create_window()=0;
 	Scene* get_cur_scene();
+	void handle_game_signal();
 	void swap_buffer();
 	void push_scene(Scene* scene);
 	void pop_scene();
 	std::vector<Scene*>scenes;
 	Window* window;
 	Draw *draw;
-	RenderTask *render_task;
+	//RenderTask *render_task;
 	Renderer *renderer;
 
-	Tim::Thread *render_thread;
+	Receiver* game_receiver;
+	//Tim::Thread *render_thread;
 	Tim::ThreadPool *thread_pool;
 
 	Input* input;
 	ControllerSystem *controller_system;
+	UI::UIObjectCreator *UIObj_Creator;
 	bool end,terminated;
 	double fps,max_fps;
 	double frame_start_time;

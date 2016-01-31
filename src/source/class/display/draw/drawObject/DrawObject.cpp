@@ -13,9 +13,16 @@
 
 DrawObject::DrawObject(std::string _obj_str, std::string _tex_str,
 		std::string _normalTex_str, bool _layer_texture) {
-	initialize(_obj_str, _tex_str, _normalTex_str, _layer_texture);
+	init_drawObject(_obj_str, _tex_str, _normalTex_str, _layer_texture);
 }
-void DrawObject::initialize(std::string _obj_str, std::string _tex_str,
+DrawObject::DrawObject(){
+	obj = 0;
+	texture = 0;
+	NormalMap = 0;
+	draw_shadow = false;
+	layer_texture = 0;
+}
+void DrawObject::init_drawObject(std::string _obj_str, std::string _tex_str,
 		std::string _normalTex_str, bool _layer_texture) {
 	if (_tex_str != "") {
 		texture = AllTextures::get_cur_tex(_tex_str);
@@ -32,9 +39,9 @@ void DrawObject::initialize(std::string _obj_str, std::string _tex_str,
 	}else{
 		obj=0;
 	}
-	initialize(obj, texture, NormalMap, _layer_texture);
+	init_drawObject(obj, texture, NormalMap, _layer_texture);
 }
-void DrawObject::initialize(ModelBuffer* _obj, Texture* _texture,
+void DrawObject::init_drawObject(ModelBuffer* _obj, Texture* _texture,
 		Texture* _NormalMap, bool _layer_texture) {
 	obj = _obj;
 	texture = _texture;
@@ -114,12 +121,13 @@ void DrawObject::draw_vec(Shader *shader, std::vector<DrawDataObj*> &data_v) {
 	}
 }
 void DrawObject::draw_shadow_map(Shader *shader) {
+
 	if (!draw_shadow)
 		return;
 	obj->vtbuffer->bind_buffer();
 	draw_shadow_vec(shader, datas);
 	draw_shadow_vec(shader, temp_datas);
-	glDisableVertexAttribArray(0); //vertexbuffer
+	obj->vtbuffer->unbind_buffer();
 }
 void DrawObject::draw_object(Shader *shader) {
 	shader->active_shader();
@@ -143,7 +151,6 @@ void DrawObject::draw_object(Shader *shader) {
 	}
 	draw_vec(shader, datas);
 	draw_vec(shader, temp_datas);
-
 	obj->unbind_buffer(shader);
 	shader->DisableNormapping();
 	//Buffer::disable_all_buffer();

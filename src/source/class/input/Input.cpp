@@ -13,14 +13,6 @@ Input::Input(GLFWwindow *window) {
 Input::~Input() {
 	delete keyboard;
 	delete mouse;
-	std::map<std::string,Receiver*>::iterator it=receiver_map.begin();
-	while(it!=receiver_map.end()){
-		delete (it->second);
-		it++;
-	}
-}
-Input * Input::get_cur_input(){
-	return get_cur_object();
 }
 void Input::callback_rigister(GLFWwindow *window){
 	keyboard->callback_rigister(window);
@@ -28,7 +20,7 @@ void Input::callback_rigister(GLFWwindow *window){
 }
 void Input::update(){
     mouse->clear();//clear mouse delta pos before update
-    keyboard->clear();
+    keyboard->update();
 
     glfwPollEvents();//get all input
 
@@ -47,17 +39,20 @@ Signal* Input::get_signal(std::string name){
 	}
 	return 0;
 }
+void Input::remove_receiver(std::string name){
+	receiver_map.remove(name);
+}
 Receiver* Input::get_receiver(std::string name){
-	if(receiver_map.find(name)==receiver_map.end()){
+	if(!receiver_map.find(name)){
 		std::cerr<<"Receiver name:"<<name<<" not exist in Input."<<std::endl;
 		return 0;
 	}
-	return receiver_map[name];
+	return receiver_map.get(name);
 }
 void Input::push_receiver(Receiver* receiver){
-	if(receiver_map.find(receiver->get_name())!=receiver_map.end()){
+	if(receiver_map.find(receiver->get_name())){
 		std::cerr<<"Receiver name:"<<receiver->get_name()<<" already exist in Input."<<std::endl;
 		return;
 	}
-	receiver_map[receiver->get_name()]=receiver;
+	receiver_map.push(receiver->get_name(),receiver);
 }

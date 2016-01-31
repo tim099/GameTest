@@ -11,7 +11,8 @@ class File {
 public:
 	File();
 	virtual ~File();
-	static std::vector<std::string> get_all_files(const char* path);
+	static std::vector<std::string> get_all_files(std::string path);
+	static std::vector<std::string> get_all_dirs(std::string path);
 	static bool check_if_file_exist(std::string dir_path,std::string file_name);
 	static std::string get_type(const char* path);
 	static off_t get_file_size(const char *path);

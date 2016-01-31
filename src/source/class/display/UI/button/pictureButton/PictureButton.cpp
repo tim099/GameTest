@@ -7,7 +7,6 @@
 #include "class/display/draw/Draw.h"
 #include "class/display/font/RenderString.h"
 #include "class/tim/math/Math.h"
-#include "class/tim/string/String.h"
 #include "class/display/texture/AllTextures.h"
 #include "class/input/signal/Signal.h"
 #include <iostream>
@@ -21,9 +20,9 @@ PictureButton::PictureButton(glm::vec2 _pos, std::string _tex_path, float width,
 void PictureButton::initialize(glm::vec2 _pos, std::string _tex_path,
 		float width, float _height) {
 	set_pos(_pos);
-	initialize(_tex_path, width, _height);
+	set_texture(_tex_path, width, _height);
 }
-void PictureButton::initialize(std::string _tex_path, float width,
+void PictureButton::set_texture(std::string _tex_path, float width,
 		float _height) {
 	tex_path = _tex_path;
 	tex2D = AllTextures::get_cur_tex(tex_path);
@@ -35,33 +34,32 @@ void PictureButton::initialize(std::string _tex_path, float width,
 		_size.y *= height;
 	}
 	size = _size;
-
-	str_size = 0;
-	str = 0;
+}
+void PictureButton::set_texture() {
+	set_texture(tex_path, size.x, height);
 }
 PictureButton::~PictureButton() {
 	if (str)
 		delete str;
 }
-void PictureButton::Parse_Script(std::istream &is, std::string &line) {
-	if (line == "Texture:") {
-		Tim::String::get_line(is, tex_path, true, true);
 
-		float width = 1.0f, height = 0.0f;
-		Tim::String::get_line(is, line, true, true);
-		if (line == "Width:") {
-			is >> width;
-		}
-		Tim::String::get_line(is, line, true, true);
-		if (line == "Height:") {
-			is >> height;
-		}
-		initialize(tex_path, width, height);
+UIObject* PictureButton::copy_UIObject() {
+	PictureButton *copy = new PictureButton();
+	copy->initialize(get_pos(), tex_path, size.x, height);
+	if (get_parent())
+		get_parent()->push_child(copy);
+	//if(str)copy->set_string(new std::string(*str),font_size);
+	return copy;
+}
+
+void PictureButton::Parse_UIScript(std::istream &is, std::string &line) {
+	if (line == "#create_end") {
+
 	} else if (line == "Set_string:") {
 		Tim::String::get_between(is, line, "\"");
 		std::string *str = new std::string(line);
 		Tim::String::get_line(is, line, true, true);
-		float str_size = auto_stringSize;
+		float str_size = auto_Size;
 		if (line == "String_size:") {
 			is >> str_size;
 		}
@@ -78,55 +76,72 @@ void PictureButton::Parse_Script(std::istream &is, std::string &line) {
 			Tim::String::get_line(is, receiver, true, true);
 		}
 		set_signal(new Signal(data, receiver));
+	}else{
+		Parse_texture(is,line);
 	}
 
 }
-void PictureButton::Parse_Script(std::ostream &os) {
-	os<<"	"<<"Texture:"<<std::endl;
-	os<<"		"<<tex_path<<std::endl;
-	os<<"	"<<"Width:"<<std::endl;
-	os<<"		"<<size.x<<std::endl;
-	os<<"	"<<"Height:"<<std::endl;
-	os<<"		"<<height<<std::endl;
-	if(str){
-		os<<"	"<<"Set_string:"<<std::endl;
-		os<<"\""<<*str<<"\""<<std::endl;
-		os<<"	"<<"String_size:"<<std::endl;
-		os<<"		"<<str_size<<std::endl;
+void PictureButton::Parse_texture(std::istream &is, std::string &line) {
+	if (line == "Texture:") {
+		Tim::String::get_line(is, tex_path, true, true);
+		size.x = 1.0f;
+		height = 0.0f;
+	} else if (line == "Width:") {
+		is >> size.x;
+	} else if (line == "Height:") {
+		is >> height;
+		set_texture();
 	}
-	if(signal){
-		os<<"	"<<"Set_signal:"<<std::endl;
-		os<<"		"<<"Data:"<<std::endl;
-		os<<"			"<<signal->get_data()<<std::endl;
-		os<<"		"<<"Receiver:"<<std::endl;
-		os<<"			"<<signal->get_sent_to()<<std::endl;
+}
+void PictureButton::Parse_texture(std::ostream &os) {
+	os << "	" << "Texture:" << std::endl;
+	os << "		" << tex_path << std::endl;
+	os << "	" << "Width:" << std::endl;
+	os << "		" << size.x << std::endl;
+	os << "	" << "Height:" << std::endl;
+	os << "		" << height << std::endl;
+}
+void PictureButton::Parse_UIScript(std::ostream &os) {
+	Parse_texture(os);
+	if (str) {
+		os << "	" << "Set_string:" << std::endl;
+		os << "\"" << *str << "\"" << std::endl;
+		os << "	" << "String_size:" << std::endl;
+		os << "		" << font_size << std::endl;
+	}
+	if (signal) {
+		os << "	" << "Set_signal:" << std::endl;
+		os << "		" << "Data:" << std::endl;
+		os << "			" << signal->get_data() << std::endl;
+		os << "		" << "Receiver:" << std::endl;
+		os << "			" << signal->get_sent_to() << std::endl;
 	}
 }
 PictureButton::PictureButton() {
 	height = 0;
-	str_size = 0;
+	font_size = 0;
 	tex2D = 0;
 	str = 0;
 }
 UIObject* PictureButton::create_UIObject() {
 	return new PictureButton();
 }
-void PictureButton::set_string(std::string* _str, float _str_size) {
-
-	if (str)
+void PictureButton::set_string(std::string* _str, float _font_size) {
+	if (str) {
 		delete str;
+	}
+
 	str = _str;
-	str_size = _str_size;
-	if (str_size == auto_stringSize) {
-		str_size = 1.0;
-		RenderString* rstr = new RenderString(*str, str_size, get_middle_pos(),
-				true);
-		glm::vec2 strsize = rstr->string_size();
-		strsize.y *= ViewPort::get_cur_window_aspect();
+	font_size = _font_size;
+	if (font_size == auto_Size) {
+
 		static const float edgex = 0.9, edgey = 0.8;
 		glm::vec2 max_size(edgex * size.x, edgey * size.y);
-		str_size = Tim::Math::fit_in_maxsize(strsize, max_size);
 
+		font_size = 1.0;
+		RenderString* rstr = new RenderString(*str, font_size);
+		rstr->auto_char_size(max_size);
+		font_size = rstr->size;
 		delete rstr;
 	}
 }
@@ -141,7 +156,7 @@ void PictureButton::start_draw(Draw* draw) {
 	draw->push(new DrawTexture(tex2D, data));
 	if (str) {
 		data = draw->push_as_tex(
-				new RenderString(*str, str_size, get_middle_pos(), true));
+				new RenderString(*str, font_size, get_middle_pos(), true));
 		if (state == Selectable::state_on) {
 			data->ex_datas.push_back(new ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
 		} else if (state == Selectable::state_selected) {

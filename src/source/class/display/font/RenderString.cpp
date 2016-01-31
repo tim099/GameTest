@@ -1,6 +1,7 @@
 #include "class/display/font/RenderString.h"
 #include "class/display/font/StringRenderer.h"
 #include "class/display/window/ViewPort.h"
+#include "class/tim/math/Math.h"
 #include <iostream>
 RenderString::RenderString(std::string _str,float _size,glm::vec2 _pos,bool _render_at_middle) {
 	str=_str;
@@ -10,6 +11,11 @@ RenderString::RenderString(std::string _str,float _size,glm::vec2 _pos,bool _ren
 }
 RenderString::~RenderString() {
 	//std::cout<<"delete STR:\n"<<str<<std::endl;
+}
+void RenderString::auto_char_size(glm::vec2 max_size){
+	glm::vec2 strsize = string_size();
+	strsize.y *= ViewPort::get_cur_window_aspect();
+	size = Tim::Math::fit_in_maxsize(strsize, max_size);
 }
 glm::vec2 RenderString::font_size()const{
 	return glm::vec2(size*Font_Interval,size);

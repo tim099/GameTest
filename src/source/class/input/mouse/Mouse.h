@@ -25,7 +25,7 @@ public:
 
 	glm::vec2 get_tex_space_pos();
 
-	glm::vec3 get_world_space_pos(FrameBuffer* FBO,glm::ivec2 screen_size,glm::mat4 inverseMat);
+	glm::vec3 get_world_space_pos(FrameBuffer* FBO,glm::mat4 inverseMat);
 
 
 	glm::ivec2 pos_delta()const;

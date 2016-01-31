@@ -26,13 +26,13 @@ ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow) {
 
 
 	shaderMultiShadowMapping=new Shader();
-	shaderMultiShadowMapping->LoadShader("files/shader/shadow/multiShadowMapping/MultiShadowMapping.vert",
+	shaderMultiShadowMapping->LoadShader("files/shader/shadow/MultiShadowCommon.vert",
 			"files/shader/shadow/multiShadowMapping/MultiShadowMapping.geo",
-			"files/shader/shadow/multiShadowMapping/MultiShadowMapping.frag");
+			"files/shader/shadow/MultiShadowCommon.frag");
 	shaderCubeShadowMapping=new Shader();
-	shaderCubeShadowMapping->LoadShader("files/shader/shadow/cubeShadowMapping/CubeShadowMapping.vert",
+	shaderCubeShadowMapping->LoadShader("files/shader/shadow/MultiShadowCommon.vert",
 			"files/shader/shadow/cubeShadowMapping/CubeShadowMapping.geo",
-			"files/shader/shadow/cubeShadowMapping/CubeShadowMapping.frag");
+			"files/shader/shadow/MultiShadowCommon.frag");
 }
 ShadowData::~ShadowData() {
 	delete[] LVP;
@@ -59,14 +59,14 @@ void ShadowData::gen_shadow_map(std::vector<PointLight*>&point_lights,
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear buffer
 	PSFBO->bind_depth_texture(0);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);//clear buffer
-
 	gen_parallelLights_LVP(lights,camera,shadow_dis);
-	gen_shadows(shaderMultiShadowMapping,SFBO,LVP,s_num,d_obj);//shaderMultiShadowMapping
-
+	gen_shadows(shaderMultiShadowMapping,SFBO,LVP,s_num,d_obj,0,0);//shaderMultiShadowMapping
 	gen_pointLight_LVP(point_lights);
+
 	for(int i=0;i<ps_num;i++){
 		gen_shadows(shaderCubeShadowMapping,PSFBO,&PLVP[6*i],6,d_obj,0,6*i);//shaderMultiShadowMapping
 	}
+
 	//gen_shadows(shaderCubeShadowMapping,PSFBO,PLVP,6*ps_num,d_obj);//shaderMultiShadowMapping
 }
 void ShadowData::gen_parallelLights_LVP(std::vector<ParallelLight*>&para_lights,Camera *camera,double shadow_dis){
@@ -80,6 +80,7 @@ void ShadowData::gen_parallelLights_LVP(std::vector<ParallelLight*>&para_lights,
 }
 void ShadowData::gen_shadows(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int s_num,Draw *d_obj,
 		int depth_tex,int start_layer){
+	if(s_num==0)return;
 	shader->active_shader();
 
 	FBO->bind_depth_texture(depth_tex);

@@ -23,10 +23,16 @@ Texture:
 		button3
 	TexturePath:
 		button3.png
+				
 Texture:
 	TextureName:
 		panel1
 	TexturePath:
 		panel1.png
+Texture:
+	TextureName:
+		panel2
+	TexturePath:
+		panel2.png
 
 #END

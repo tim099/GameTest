@@ -10,6 +10,10 @@ class MapContainer {
 public:
 	MapContainer();
 	virtual ~MapContainer();
+	/*
+	 * check if key valid(object inside this map)
+	 */
+	bool find(Key key);
 	Type* get(Key key);
 	void push(Key key,Type *type);
 	void remove(Key key);

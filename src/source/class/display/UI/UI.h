@@ -5,28 +5,30 @@
 #include "class/display/UI/UIObject.h"
 #include "class/tim/parser/Parser.h"
 class Draw;
-namespace UI {
-	class UIObjectCreator;
-}
+
 
 namespace UI {
+
 
 class UI : public UIObject,public Tim::Parser{
-	static UI *cur_UI;
 public:
 	UI();
+	UI(std::string script_path);
 	virtual ~UI();
 
 	virtual UIObject* create_UIObject();
-	virtual std::string get_type_name()const{
+	virtual std::string get_type()const{
 		return "UI";
 	}
 
-	static UI* get_cur_UI();
-
-
-	UIObjectCreator* creator;
 protected:
+	virtual bool save_child()const{
+		return false;
+	}
+	//=================UIObject==========================
+	virtual void Parse_UIScript(std::istream &is,std::string &line);
+	virtual void Parse_UIScript(std::ostream &os);
+	//=================Tim::Parser=======================
 	virtual inline std::string Script_name()const{
 		return "#LOAD_UI_SCRIPT";
 	}
@@ -38,7 +40,7 @@ protected:
 	virtual void start_draw(Draw* draw);
 	virtual void update();
 
-
+	std::string script_path;
 };
 
 } /* namespace UI */

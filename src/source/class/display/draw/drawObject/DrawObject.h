@@ -11,14 +11,15 @@ class Texture;
 class Shader;
 class DrawObject {
 public:
-	DrawObject(std::string _obj_str="", std::string tex_str = "",
+	DrawObject(std::string _obj_str, std::string tex_str = "",
 			std::string NormalTex_str = "", bool layer_texture = false);
+	DrawObject();
 	virtual ~DrawObject();
 
 
-	void initialize(std::string obj, std::string tex_str,
+	void init_drawObject(std::string obj, std::string tex_str,
 			std::string NormalTex_str, bool layer_texture);
-	void initialize(ModelBuffer* obj, Texture* texture, Texture* NormalMap,
+	void init_drawObject(ModelBuffer* obj, Texture* texture, Texture* NormalMap,
 			bool layer_texture);
 
 

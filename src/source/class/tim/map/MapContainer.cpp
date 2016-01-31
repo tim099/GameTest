@@ -27,6 +27,13 @@ void MapContainer<Key,Type>::remove(Key key){
 	}
 }
 template<class Key,class Type>
+bool MapContainer<Key,Type>::find(Key key){
+	if (map.find(key) == map.end()) {
+		return false;
+	}
+	return true;
+}
+template<class Key,class Type>
 Type* MapContainer<Key,Type>::get(Key key){
 	if (map.find(key) == map.end()) {
 		std::cerr << "MapContainer key:" << key

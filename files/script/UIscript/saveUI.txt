@@ -1,12 +1,14 @@
 #LOAD_UI_SCRIPT
 #HEADER
+	Name:
+		root
 #HEADER_END
 CreateUIObject:
 		Panel
 	Name:
 		ButPanel
 	Position:
-		0.0875567 0.997271
+		0.0970735 0.99045
 	Texture:
 		UI/UI/panel1
 	Width:
@@ -14,7 +16,7 @@ CreateUIObject:
 	Height:
 		0.6
 	Parent:
-		UI
+		root
 #create_end
 
 CreateUIObject:

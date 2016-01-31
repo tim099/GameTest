@@ -13,7 +13,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <windows.h>
-
+#include <ctime>
 //#include <wglew.h>
 //#include <chrono>
 Test::Test() {
@@ -32,6 +32,7 @@ Test::Test() {
 	controller_system->push(new SelectableControl());
 
 	map = new Map();
+	//map->gen_map(glm::ivec3(15,30,15),time(NULL));
 	map->load_map("files/maps/map011");
 
 	window = new Window(glm::ivec2(1366, 733), "Age of Cube", false); //must before any draw obj
@@ -39,7 +40,8 @@ Test::Test() {
 
 	draw = new Draw();
 	draw->register_cur();
-
+	UIObj_Creator=new UI::UIObjectCreator();
+	UIObj_Creator->register_cur();
 	textures = new AllTextures("files/script/loadTextureScript/loadAllTexture.txt");
 	textures->register_cur();	//set as cur using textures
 	modelBuffers = new AllModelBuffers(
@@ -49,7 +51,7 @@ Test::Test() {
 	drawObjects = new AllDrawObjects("files/script/drawObjectScript/loadAllDrawObjects.txt");
 	drawObjects->register_cur();
 
-	dmap = new DisplayMap(map, textures, window);
+
 
 	lightControl = new LightControl(120);
 
@@ -64,20 +66,25 @@ Test::Test() {
 			10000.0f);
 
 	renderer = new Renderer(draw, window);
+
 	draw->set_camera(camera);
 	draw->set_lightControl(lightControl);
 	creat_light();
 	//prepare_draw_obj();
 
-	UI = new UI::UI();
-	UI->Load_script("files/script/UIscript/saveUI.txt");
+
 
 	render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 	thread_pool = new Tim::ThreadPool(8);
 	render_task = new RenderTask(renderer);
 
+	//dmap->gen_map_obj();
+	dmap = new DisplayMap(map);
 	dmap->gen_map_obj(thread_pool);
 	window->render_off(); //release window for other thread
+
+	UI = new UI::UI();
+	UI->Load_script("files/script/UIscript/saveUI.txt");
 }
 Test::~Test() {
 	window->render_on();
@@ -98,6 +105,7 @@ Test::~Test() {
 	delete modelBuffers;
 	delete textures;
 
+	delete UIObj_Creator;
 	delete draw;
 	delete window;
 	delete controller_system;
@@ -191,16 +199,16 @@ void Test::handle_input() {
 	}
 	if (input->keyboard->pressed('B')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
-		if (!map->get(pos.x, pos.y, pos.z)) {
-			if (map->set(pos.x, pos.y, pos.z, 1)) {
+		if (!map->get_cube_type(pos.x, pos.y, pos.z)) {
+			if (map->set_cube_type(pos.x, pos.y, pos.z, 1)) {
 				dmap->update_map(pos);
 			}
 		}
 	}
 	if (input->keyboard->pressed('V')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
-		if (map->get(pos.x, pos.y, pos.z)) {
-			if (map->set(pos.x, pos.y, pos.z, 0)) {
+		if (map->get_cube_type(pos.x, pos.y, pos.z)) {
+			if (map->set_cube_type(pos.x, pos.y, pos.z, 0)) {
 				dmap->update_map(pos);
 			}
 		}
@@ -265,12 +273,12 @@ void Test::handle_input() {
 		camlight->color = glm::vec3(((rand() % 10000) / 4000.0),
 				((rand() % 10000) / 4000.0), ((rand() % 10000) / 4000.0));
 	}
-	if (input->keyboard->get('I')) {
-		dmap->range += 10;
+	if (input->keyboard->pressed('I')) {
+		dmap->range += 1;
 	}
-	if (input->keyboard->get('K')) {
-		if (dmap->range > 10)
-			dmap->range -= 10;
+	if (input->keyboard->pressed('K')) {
+		if (dmap->range > 1)
+			dmap->range -= 1;
 		else
 			dmap->range = 0;
 	}
@@ -352,9 +360,9 @@ void Test::creat_light() {
 	lightControl->push_light(camlight);
 
 	s_light = new ParallelLight(glm::vec3(-300, 0, -500), sun_col1, true);
-
-	//lightControl->push_light(new ParallelLight(glm::vec3(1.0,-1.2,0.2),glm::vec3(0.2,0.2,0.2),true));
 	lightControl->push_light(s_light);
+	//lightControl->push_light(new ParallelLight(glm::vec3(1.0,-1.2,0.2),glm::vec3(0.2,0.2,0.2),true));
+
 }
 void Test::draw_start() {
 	render_thread->push_task(render_task);
@@ -388,7 +396,7 @@ void Test::update() {
 
 	handle_input();
 	handle_signal();
-	map->tic();
+	map->update();
 	camera->update();
 	//==================logical update render data==============
 	UI->draw_UIObject(draw);
@@ -397,12 +405,17 @@ void Test::update() {
 
 	//std::cout<<"draw start"<<std::endl;
 	//thread_pool->push_task(new TestTask());
+	//Tim::Task *task=new TestTask();
+	//task->Execute();
+	//delete task;
 	//thread_pool->push_task(new TestTask());
 
 	//========================render thread start========================
-	draw_start();
+	renderer->render();
+	//draw_start();
 	//========================wait for rendering end=====================
-	render_thread->join();
+	//render_thread->join();
+
 	draw->clear_tmp_data();
 	swap_buffer();
 	//===================================================================

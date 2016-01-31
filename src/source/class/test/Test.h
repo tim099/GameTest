@@ -26,6 +26,7 @@
 #include "class/controller/ControllerSystem.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/model/modelBuffer/AllModelBuffers.h"
+#include "class/display/UI/UIObjectCreator.h"
 class Test {
 
 public:
@@ -71,7 +72,7 @@ private:
 	Tim::Thread *render_thread;
 	Tim::ThreadPool *thread_pool;
 	ControllerSystem *controller_system;
-
+	UI::UIObjectCreator *UIObj_Creator;
 	double start_time;
 	double fps;
 	bool stop;

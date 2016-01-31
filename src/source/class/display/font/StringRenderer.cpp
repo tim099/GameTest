@@ -89,8 +89,8 @@ void StringRenderer::render_text(unsigned char c) {
 	int x, y;
 	x = c % 16;
 	y = c / 16;
-	static const float dx1 = 0.0f, dy1 = 0.0002f;
-	static const float dx2 = 0.0f, dy2 = -0.0002f;
+	static const float dx1 = 0.0f, dy1 = 0.001f;
+	static const float dx2 = 0.0f, dy2 = -0.0005f;
 	Vertex::gen_quad_uv(uv_buffer_data,
 			glm::vec2(Font_seg * x - dx1 ,
 					1.0 - Font_seg * (y + 1) + dy1 ),

@@ -10,6 +10,11 @@ public:
 	virtual ~RenderString();
 	glm::vec2 font_size()const;
 	glm::vec2 string_size()const;
+	/*
+	 * max_size define the max size of this string
+	 */
+	void auto_char_size(glm::vec2 max_size);
+
 	std::string str;
 	float size;
 	glm::vec2 pos;

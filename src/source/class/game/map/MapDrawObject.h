@@ -6,10 +6,11 @@ public:
 	MapDrawObject(std::string tex_str = "",
 			std::string NormalTex_str = "");
 	virtual ~MapDrawObject();
+	virtual void init(std::string tex_str = "",
+			std::string NormalTex_str = "");
 	virtual void update();
 	void update_model();
 	Model *mapmodel;
-
 protected:
 	bool updated;
 };

@@ -14,7 +14,7 @@ Task::~Task() {
 bool Task::AutoTerminate()const{
 	return auto_terminate;
 }
-void Task::wait_for_this(DWORD time){
+void Task::join(DWORD time){
 	while(!task_start);
 	taskMutex->wait_for_this(time);
 	taskMutex->release();

@@ -5,6 +5,9 @@ class LightObject {
 public:
 	LightObject();
 	virtual ~LightObject();
+
+
+
 };
 
 #endif /* SOURCE_CLASS_DISPLAYENTITY_LIGHT_LIGHTOBJECT_H_ */

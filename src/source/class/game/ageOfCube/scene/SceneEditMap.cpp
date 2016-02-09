@@ -12,12 +12,13 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 }
 void SceneEditMap::scene_initialize() {
 	map = new Map();
-	//map->gen_map(map_size,time(NULL));
-	map->load_map("files/maps/map011");
+	map->gen_map(map_size,time(NULL));
+	//map->load_map("files/maps/map011");
 	dmap = new DisplayMap(map);
-	dmap->gen_map_obj(thread_pool);
-	camera = new Camera(glm::vec3(36.0, 24.0, 24.0),
-			glm::vec3(34.0, 22.0, 27.0), glm::vec3(0, 1, 0), 60.0, 0.1f,
+	dmap->update_whole_map();
+	glm::vec3 pos(0,map->get_size().y+10,0);
+	camera = new Camera(pos,
+			pos+glm::vec3(1,-10,1), glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	lightControl = new LightControl(120);
 	lightControl->push_light(
@@ -64,8 +65,6 @@ void SceneEditMap::handle_input() {
 				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
 	}
 	if (input->mouse->scroll) {
-		std::cout<<"scroll:"<<sqrt(camera->look_dis() + 0.1)
-						* (0.05 * input->mouse->scroll)<<std::endl;
 		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
 				* (0.05 * input->mouse->scroll);
 	}
@@ -75,15 +74,50 @@ void SceneEditMap::handle_input() {
 	if (input->keyboard->pressed_char('s')) {
 		dmap->max_y_alter(-1, thread_pool);
 	}
+	if (input->keyboard->pressed('I')) {
+		dmap->range += 1;
+	}
+	if (input->keyboard->pressed('K')) {
+		if (dmap->range > 1)
+			dmap->range -= 1;
+		else
+			dmap->range = 0;
+	}
+	if (input->keyboard->pressed('B')) {
+		glm::ivec3 pos = Map::convert_position(camera->look_at);
+		if (!map->get_cube_type(pos.x, pos.y, pos.z)) {
+			if (map->set_cube_type(pos.x, pos.y, pos.z, 1)) {
+				dmap->update_map(pos);
+			}
+		}
+	}
+	if (input->keyboard->pressed('V')) {
+		glm::ivec3 pos = Map::convert_position(camera->look_at);
+		if (map->get_cube_type(pos.x, pos.y, pos.z)) {
+			if (map->set_cube_type(pos.x, pos.y, pos.z, 0)) {
+				dmap->update_map(pos);
+			}
+		}
+	}
+	if (input->keyboard->pressed(GLFW_KEY_UP)) {
+		if (lightControl->shadow_dis > 0.01)
+			lightControl->shadow_dis *= 0.98;
+	}
+	if (input->keyboard->pressed(GLFW_KEY_DOWN)) {
+		if (lightControl->shadow_dis < 30.0)
+			lightControl->shadow_dis *= 1.01;
+	}
 }
 void SceneEditMap::scene_update() {
 	//std::cout<<"scene_update()"<<std::endl;
 	//UI->update_UIObject();
 	camera->update();
 	handle_input();
+	//map->regen_map();
+	//dmap->update_whole_map();
 }
 void SceneEditMap::scene_draw() {
-	dmap->draw_map(camera); //push position
+	dmap->draw_map(camera,thread_pool); //push position
 	//UI->draw_UIObject(draw);
 }
 void SceneEditMap::pause() {
@@ -94,14 +128,5 @@ void SceneEditMap::pause() {
 }
 void SceneEditMap::resume() {
 	//draw->Enable3D=false;
-	UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
-	UI::PageControl* p_control = (UI::PageControl*) UI->get_child(
-			"pageControl");
-	if (!p_control) {
-		std::cerr
-				<< "SceneStart::scene_initialize ,can't find child page control"
-				<< std::endl;
-	} else {
-		p_control->switch_page("startPage");
-	}
+
 }

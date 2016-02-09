@@ -16,7 +16,7 @@ DrawObject::DrawObject(std::string _obj_str, std::string _tex_str,
 	init_drawObject(_obj_str, _tex_str, _normalTex_str, _layer_texture);
 }
 DrawObject::DrawObject(){
-	obj = 0;
+	model_buffer = 0;
 	texture = 0;
 	NormalMap = 0;
 	draw_shadow = false;
@@ -35,15 +35,15 @@ void DrawObject::init_drawObject(std::string _obj_str, std::string _tex_str,
 		NormalMap = 0;
 	}
 	if(_obj_str!=""){
-		obj=AllModelBuffers::get_cur_model(_obj_str);
+		model_buffer=AllModelBuffers::get_cur_model(_obj_str);
 	}else{
-		obj=0;
+		model_buffer=0;
 	}
-	init_drawObject(obj, texture, NormalMap, _layer_texture);
+	init_drawObject(model_buffer, texture, NormalMap, _layer_texture);
 }
 void DrawObject::init_drawObject(ModelBuffer* _obj, Texture* _texture,
 		Texture* _NormalMap, bool _layer_texture) {
-	obj = _obj;
+	model_buffer = _obj;
 	texture = _texture;
 	NormalMap = _NormalMap;
 	draw_shadow = true;
@@ -59,30 +59,23 @@ void DrawObject::init_drawObject(ModelBuffer* _obj, Texture* _texture,
 }
 DrawObject::~DrawObject() {
 	//std::cout << "delete draw object" << std::endl;
-	clear_drawdata();
 	clear_temp_drawdata();
 	Draw* cur_draw=Draw::get_cur_object();
 	if(cur_draw){
 		Draw::get_cur_object()->remove(this);
 	}else{
-		std::cerr<<"cur Draw is not exist!!can't remove DrawObject"<<std::endl;
+		std::cerr<<"cur \"Draw\" object is not exist!!can't remove DrawObject"<<std::endl;
 	}
 }
 void DrawObject::update() {
 
 }
 void DrawObject::set_obj(ModelBuffer *_obj) {
-	obj = _obj;
+	model_buffer = _obj;
 }
-void DrawObject::Model_veiw(GLuint programID, const glm::mat4 &M) {
+void DrawObject::sent_model_veiw_uniform(GLuint programID, const glm::mat4 &M) {
 	glUniformMatrix4fv(glGetUniformLocation(programID, "M"), 1, GL_FALSE,
 			&(M[0][0]));
-}
-void DrawObject::clear_drawdata() {
-	for (unsigned i = 0; i < datas.size(); i++) {
-		delete datas.at(i);
-	}
-	datas.clear();
 }
 unsigned DrawObject::temp_pos_num() const {
 	return temp_datas.size();
@@ -93,9 +86,6 @@ void DrawObject::clear_temp_drawdata() {
 	}
 	temp_datas.clear();
 }
-void DrawObject::push_drawdata(DrawDataObj* p) {
-	datas.push_back(p);
-}
 void DrawObject::push_temp_drawdata(DrawDataObj* p) {
 	temp_datas.push_back(p);
 }
@@ -105,8 +95,8 @@ void DrawObject::draw_shadow_vec(Shader *shader,
 	for (unsigned i = 0; i < data_v.size(); i++) {
 		data = data_v.at(i);
 		if (data->draw_shadow) {
-			Model_veiw(shader->programID, data->pos->PosMat());
-			obj->draw(shader->programID);
+			sent_model_veiw_uniform(shader->programID, data->pos->PosMat());
+			model_buffer->draw(shader->programID);
 		}
 	}
 }
@@ -115,23 +105,23 @@ void DrawObject::draw_vec(Shader *shader, std::vector<DrawDataObj*> &data_v) {
 	for (unsigned i = 0; i < data_v.size(); i++) {
 		data = data_v.at(i);
 		data->prepare_to_draw(shader);
-		Model_veiw(shader->programID, data->pos->PosMat());
-		obj->draw(shader->programID);
+		sent_model_veiw_uniform(shader->programID, data->pos->PosMat());
+		model_buffer->draw(shader->programID);
 		data->draw_end(shader);
 	}
 }
 void DrawObject::draw_shadow_map(Shader *shader) {
-
 	if (!draw_shadow)
 		return;
-	obj->vtbuffer->bind_buffer();
-	draw_shadow_vec(shader, datas);
+	if(temp_datas.empty())return;
+	model_buffer->vtbuffer->bind_buffer();
 	draw_shadow_vec(shader, temp_datas);
-	obj->vtbuffer->unbind_buffer();
+	model_buffer->vtbuffer->unbind_buffer();
 }
 void DrawObject::draw_object(Shader *shader) {
+	if(temp_datas.empty())return;
 	shader->active_shader();
-	obj->bind_buffer(shader);
+	model_buffer->bind_buffer(shader);
 	glUniform4f(glGetUniformLocation(shader->programID, "mat"), mat.x, mat.y,
 			mat.z, mat.w);
 	if (texture) {
@@ -149,9 +139,8 @@ void DrawObject::draw_object(Shader *shader) {
 			NormalMap->sent_uniform(shader, 3, "NormalTextureArr");
 		}
 	}
-	draw_vec(shader, datas);
 	draw_vec(shader, temp_datas);
-	obj->unbind_buffer(shader);
+	model_buffer->unbind_buffer(shader);
 	shader->DisableNormapping();
 	//Buffer::disable_all_buffer();
 }

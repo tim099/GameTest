@@ -8,11 +8,28 @@ public:
 	virtual ~MapDrawObject();
 	virtual void init(std::string tex_str = "",
 			std::string NormalTex_str = "");
+	//inherited update function ,will be call per frame
 	virtual void update();
+
+
+
+	//mark the model as updated
 	void update_model();
+
+
+	//if model_buffer not exist,create the model buffer,else update the model_buffer
+	void update_model_buffer();
 	Model *mapmodel;
+	bool map_updated;
+
+	//draw_map==true if this MapDrawObje should be draw in this frame
+	bool draw_map;
 protected:
-	bool updated;
+	//clear the model_buffer
+	void clear_model_buffer();
+
+	//if model is updated,then model_buffer should update before render
+	bool model_updated;
 };
 
 #endif /* MAPDRAWOBJECT_H_ */

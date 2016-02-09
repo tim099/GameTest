@@ -9,7 +9,7 @@
 #include <cstdio>
 LightControl::LightControl(float _draw_dis) {
 	draw_dis=_draw_dis;
-	shadowData=new ShadowData(10,4);
+	shadowData=new ShadowData(3,4);
 	shadow_dis=1.0;
 }
 LightControl::~LightControl() {

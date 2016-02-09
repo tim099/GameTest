@@ -67,7 +67,6 @@ void Draw::draw3D(Shader *shader,FrameBuffer *FBO){
 
 	camera->sent_uniform(shader->programID, FBO->aspect());
 	sent_shadow_uniform(shader);
-
     for(unsigned i=0;i<d_objs.size();i++){
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }

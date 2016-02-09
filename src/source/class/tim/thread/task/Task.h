@@ -11,7 +11,7 @@ public:
 	void Execute();
 	bool Done()const;
 	bool AutoTerminate()const;
-	void wait_for_this(DWORD time=INFINITE);
+	void join(DWORD time=INFINITE);
 protected:
 	virtual void TaskDone();
 	virtual void ExecuteTask()=0;

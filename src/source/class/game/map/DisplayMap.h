@@ -21,16 +21,22 @@ public:
 
 	void create_map_object(int px,int pz);
 
-	void gen_map_obj(Tim::ThreadPool* threadpool);
+	//generate the whole map's display model
 	void gen_map_obj();
-	void draw_map(Camera *camera);
+
+	//generate the map's display model in update_maps vectors
+	void gen_map_model(Tim::ThreadPool* threadpool,std::vector<glm::ivec2> &update_maps);
+
+	//update the whole maps model
+	void update_whole_map();
+
+	void draw_map(Camera *camera,Tim::ThreadPool* threadpool);
 
 	void max_y_alter(int val,Tim::ThreadPool* threadpool);
 	void update_map(glm::ivec3 pos);
 	Tim::Mutex* createMapObjectMutex;
 	int range,max_y;
 protected:
-	//MapDrawObject* dmaps[SEG][SEG];
 	glm::ivec3 seg;
 	Tim::Array2D<MapDrawObject*>*dmaps;
 	CubeModel *cube;

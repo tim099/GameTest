@@ -26,14 +26,13 @@ Test::Test() {
 	end = false;
 	stop = false;
 	display_time = false;
-
 	position_pool = new Tim::ObjPool<Position>(100);
 	controller_system = new ControllerSystem();
 	controller_system->push(new SelectableControl());
 
 	map = new Map();
-	//map->gen_map(glm::ivec3(15,30,15),time(NULL));
-	map->load_map("files/maps/map011");
+	map->gen_map(glm::ivec3(400,250,400),time(NULL));
+	//map->load_map("files/maps/map011");
 
 	window = new Window(glm::ivec2(1366, 733), "Age of Cube", false); //must before any draw obj
 	//window = new Window(glm::ivec2(1920, 1080), "Age of Cube", true); //must before any draw obj
@@ -78,16 +77,16 @@ Test::Test() {
 	thread_pool = new Tim::ThreadPool(8);
 	render_task = new RenderTask(renderer);
 
-	//dmap->gen_map_obj();
 	dmap = new DisplayMap(map);
-	dmap->gen_map_obj(thread_pool);
-	window->render_off(); //release window for other thread
+	dmap->update_whole_map();
+
+	//window->render_off(); //release window for other thread
 
 	UI = new UI::UI();
 	UI->Load_script("files/script/UIscript/saveUI.txt");
 }
 Test::~Test() {
-	window->render_on();
+	//window->render_on();
 	delete render_task;
 	thread_pool->Terminate();
 	render_thread->Terminate();
@@ -134,6 +133,10 @@ void Test::handle_signal() {
 	}
 }
 void Test::handle_input() {
+	if(input->keyboard->get('R')){
+		map->regen_map();
+		dmap->update_whole_map();
+	}
 	if (input->mouse->mid_pressed()) {
 		//std::cout<<"move"<<(int)(mouse->pos.x)<<","<<(int)mouse->prev_pos.x<<std::endl;
 		camera->rotate(glm::vec3(0, 1, 0), -0.15 * input->mouse->pos_delta().x);
@@ -143,7 +146,7 @@ void Test::handle_input() {
 		Position *pos = Tim::ObjPool<Position>::mycreate();
 		if (pos)
 			pos->initialize(input->mouse->world_pos, glm::vec3());
-		drawObjects->get("test/ico")->push_drawdata(new DrawDataObj(pos));
+		//drawObjects->get("test/ico")->push_drawdata(new DrawDataObj(pos));
 	}
 	if (input->keyboard->get('E')) {
 		if(!UI->check_mode(UI::Mode::EDIT))UI->Enable_Mode(UI::Mode::EDIT);
@@ -200,7 +203,7 @@ void Test::handle_input() {
 	if (input->keyboard->pressed('B')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
 		if (!map->get_cube_type(pos.x, pos.y, pos.z)) {
-			if (map->set_cube_type(pos.x, pos.y, pos.z, 1)) {
+			if (map->set_cube_type(pos.x, pos.y, pos.z, 2)) {
 				dmap->update_map(pos);
 			}
 		}
@@ -237,7 +240,7 @@ void Test::handle_input() {
 		if (pos)
 			pos->initialize(camera->look_at + glm::vec3(0, 0.1, 0),
 					glm::vec3(0, camera->look_ry(), 0));
-		drawObjects->get("test/look_at")->push_drawdata(new DrawDataObj(pos));
+		//drawObjects->get("test/look_at")->push_drawdata(new DrawDataObj(pos));
 		lightControl->push_light(
 				new PointLight(camera->look_at, camlight->color,
 						camlight->shadow));
@@ -344,15 +347,16 @@ void Test::update_obj_pos(Camera *camera) {
 
 }
 void Test::update_map(Camera *camera) {
-	dmap->draw_map(camera); //push position
+	dmap->draw_map(camera,thread_pool); //push position
+
 	camlight->pos = camera->look_at;
 	update_obj_pos(camera);
 }
 void Test::prepare_draw_obj() {
-	DrawObject *dobj=drawObjects->get("test/doge");
-	Position* doge_pos = position_pool->create();
-	doge_pos->initialize(glm::vec3(0, 0, 0), glm::vec3());
-	dobj->push_drawdata(new DrawDataObj(doge_pos));
+	//DrawObject *dobj=drawObjects->get("test/doge");
+	//Position* doge_pos = position_pool->create();
+	//doge_pos->initialize(glm::vec3(0, 0, 0), glm::vec3());
+	//dobj->push_drawdata(new DrawDataObj(doge_pos));
 }
 void Test::creat_light() {
 	camlight = new PointLight(glm::vec3(5.1, 2.6, 0.1),
@@ -380,6 +384,8 @@ void Test::update() {
 	input->update();	//world space pos update by renderer
 	controller_system->update();
 
+
+
 	//=======================render data update=======================================
 	//glm::vec2 pos = Tim::Math::convert_to_texcoord(input->mouse->screen_pos);
 	//DrawData* data = new DrawData2D(1.0, pos, 0.03);
@@ -389,6 +395,7 @@ void Test::update() {
 
 	char fpsbuff[20];
 	sprintf(fpsbuff, "fps=%.2lf\n", fps);
+	std::cout<<"fps="<<fps<<std::endl;
 	draw->push(new RenderString(fpsbuff, 0.015, glm::vec2(0.0, 1.0)));
 
 
@@ -429,9 +436,9 @@ void Test::swap_buffer() {
 
 	//std::cout << "fps=" <<  << std::endl;
 	start_time = glfwGetTime();
-	window->render_on();
+	//window->render_on();
 	window->swap_buffer();
-	window->render_off();    //release thread using this window
+	//window->render_off();    //release thread using this window
 }
 void Test::Mainloop() {
 	//wglSwapIntervalEXT(1);

@@ -63,7 +63,6 @@ void TextureMap::Parse_texture2DArr(std::istream &is) {
 	std::string line;
 	std::string name, path;
 	std::vector<std::string> paths;
-	unsigned texnum;
 	Tim::String::get_line(is, line, true, true);
 	glm::ivec2 size;
 	if (line == "TextureName:") {
@@ -72,13 +71,7 @@ void TextureMap::Parse_texture2DArr(std::istream &is) {
 		std::cerr << "Load_texture2DArr no Texture Name!!" << line << std::endl;
 		return;
 	}
-	Tim::String::get_line(is, line, true, true);
-	if (line == "TextureNum:") {
-		Tim::String::get_line(is, line, true, true);
-		sscanf(line.c_str(), "%d", &texnum);
-	} else {
-		std::cerr << "Load_texture2DArr no TextureNum!!" << line << std::endl;
-	}
+
 	Tim::String::get_line(is, line, true, true);
 	if (line == "TextureSize:") {
 		is >> size.x;
@@ -86,17 +79,13 @@ void TextureMap::Parse_texture2DArr(std::istream &is) {
 	} else {
 		std::cerr << "Load_texture2DArr no TextureSize:!!" << line << std::endl;
 	}
+	Tim::String::get_line(is, line, true, true);
 
-	for (unsigned i = 0; i < texnum; i++) {
-		Tim::String::get_line(is, line, true, true);
+	while(Tim::String::get_line(is, line, true, true)&&line!="#Load_texture2DArr_END"){
 		if (line == "TexturePath:") {
 			Tim::String::get_line(is, line, true, true);
 			path = folder_path + line;
 			paths.push_back(path);
-		} else {
-			std::cerr << "Load_texture2DArr no TexturePath!!" << line
-					<< std::endl;
-			return;
 		}
 	}
 	Texture2DArr *texarr = Texture2DArr::gen_texture2DArr(paths,

@@ -3,7 +3,7 @@
 #HEADER
 
 FolderPath:
-	files/texture/
+	files/texture/cube/
 Name:
 	cube
 #HEADER_END
@@ -11,39 +11,44 @@ Name:
 Texture2DArr:
 	TextureName:
 		cube_textures
-	TextureNum:
-		5
 	TextureSize:
 		256
 		256
 	TexturePath:
-		cube/tex1.bmp
+		null.bmp
 	TexturePath:
-		cube/tex2.bmp
+		stone.bmp
 	TexturePath:
-		cube/tex3.bmp
+		dirt.bmp
 	TexturePath:
-		cube/tex4.bmp
+		sand.bmp
 	TexturePath:
-		cube/tex5.bmp
+		grass.bmp
+	TexturePath:
+		coal.bmp
+	TexturePath:
+		tex6.bmp
+	#Load_texture2DArr_END
 Texture2DArr:
 	TextureName:
 		cube_normals
-	TextureNum:
-		5
 	TextureSize:
 		256
 		256
 	TexturePath:
-		cube/cube1.bmp
+		nullNor.bmp
 	TexturePath:
-		cube/cube2.bmp
+		stoneNor.bmp
 	TexturePath:
-		cube/cube3.bmp
+		dirtNor.bmp
 	TexturePath:
-		cube/cube4.bmp
+		sandNor.bmp
 	TexturePath:
-		cube/cube5.bmp
-
+		grassNor.bmp
+	TexturePath:
+		cube5.bmp
+	TexturePath:
+		cube6.bmp
+	#Load_texture2DArr_END
 
 #END	

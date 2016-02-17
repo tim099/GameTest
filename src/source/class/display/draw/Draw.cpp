@@ -43,20 +43,20 @@ void Draw::sent_shadow_uniform(Shader *shader){
 	}
 	lightControl->sent_uniform(shader,camera->pos);
 }
-void Draw::gen_shadow(){
+void Draw::gen_shadow(Shader *shaderShadowMapping){
 	if(!lightControl){
 		std::cerr<<"Draw::gen_shadow fail no lightControl"<<std::endl;
 	}
-	lightControl->gen_shadow(camera,this);
+	lightControl->gen_shadow(shaderShadowMapping,camera,this);
 }
-void Draw::draw3D(Shader *shader,FrameBuffer *FBO){
+void Draw::draw3D(Shader *shader,Shader *shaderShadowMapping,FrameBuffer *FBO){
 	if(!Enable3D){
 		shader->active_shader();
 		FBO->bind_buffer();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 		return;
 	}
-	gen_shadow();
+	gen_shadow(shaderShadowMapping);
 
 	shader->active_shader();
 	//return;

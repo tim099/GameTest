@@ -25,7 +25,7 @@ static const int MAX_POINT_LIGHT=100;
 	LightControl(float draw_distance);
 	virtual ~LightControl();
 	void sent_uniform(Shader *shader,glm::vec3 camera_pos);
-	void gen_shadow(Camera *camera,Draw *d_obj);
+	void gen_shadow(Shader *shaderShadowMapping,Camera *camera,Draw *d_obj);
 
 
 	unsigned parallel_light_size()const;

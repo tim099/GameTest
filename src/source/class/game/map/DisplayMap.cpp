@@ -4,6 +4,7 @@
 #include "class/game/map/TaskCreateMapModel.h"
 #include "class/tim/thread/ThreadPool.h"
 #include "class/game/map/Map.h"
+#include "class/game/map/MapSeg.h"
 #include <iostream>
 DisplayMap::DisplayMap(Map *_map) {
 	map = _map;
@@ -12,30 +13,15 @@ DisplayMap::DisplayMap(Map *_map) {
 	createMapObjectMutex = new Tim::Mutex();
 	cube = new CubeModel(0.5 * Map::CUBE_SIZE);
 
-	//SEG.x=15;
-	static const int Max_seg=25;
-	static const int size_per_sig=15;
-	seg.x=((double)map->get_size().x/size_per_sig)+0.5;
-	seg.y=15;
-	seg.z=((double)map->get_size().z/size_per_sig)+0.5;
-	if(seg.x<1)seg.x=1;
-	if(seg.y<1)seg.y=1;
-	if(seg.z<1)seg.z=1;
-	if(seg.x>Max_seg)seg.x=Max_seg;
-	if(seg.y>Max_seg)seg.y=Max_seg;
-	if(seg.z>Max_seg)seg.z=Max_seg;
-	segsize.x = ceil((double)map->get_size().x / (double)seg.x);
-	segsize.y = map->get_size().y;
-	segsize.z = ceil((double)map->get_size().z / (double)seg.z);
+	gen_display_map_seg();
 
-	//std::cout<<"Segsize="<<segsize.x<<","<<segsize.y<<","<<segsize.z<<std::endl;
 	pos = new Position(glm::vec3(0, 0, 0), glm::vec3());
 	dmaps=new Tim::Array2D<MapDrawObject*>(seg.x,seg.z);
 	MapDrawObject *d_map;
 	for (int i = 0; i < seg.x; i++) {
 		for (int j = 0; j < seg.z; j++) {
 			d_map = new MapDrawObject("cube/cube_textures","cube/cube_normals");
-			dmaps->get(i,j)= d_map;
+			dmaps->get(i,j)=d_map;
 		}
 	}
 }
@@ -48,6 +34,14 @@ DisplayMap::~DisplayMap() {
 		}
 	}
 	delete dmaps;
+}
+void DisplayMap::gen_display_map_seg(){
+	seg=map->seg;
+	segsize=map->segsize;
+	std::cout<<"map_size="<<map->get_size().x<<","<<map->get_size().y<<","
+			<<map->get_size().z<<std::endl;
+	std::cout<<"Seg="<<seg.x<<","<<seg.y<<","<<seg.z<<std::endl;
+	std::cout<<"Segsize="<<segsize.x<<","<<segsize.y<<","<<segsize.z<<std::endl;
 }
 void DisplayMap::gen_map_model(Tim::ThreadPool* threadpool,
 		std::vector<glm::ivec2> &update_maps){
@@ -136,54 +130,55 @@ void DisplayMap::create_map_object(int px, int pz) {
 	int sz=pz * segsize.z;
 	int ez=(pz + 1) * segsize.z;
 	unsigned char cube_exist=0;
+	int tex_layer;
 	if(ez>map->get_size().z)ez=map->get_size().z;
 	for (int i = sx; i < ex; i++) {
 		for (int j = 0; j < max_y; j++) {
 			for (int k = sz; k < ez; k++) {
 				int type = map->get_cube_type(i, j, k);
 
-				if (type) {
-					type--; //convert to layer of texture
+				if (type>=Cube::startcube) {
+					tex_layer=type-Cube::startcube;
 					cube_exist=0;
 					glm::vec3 pos = glm::vec3((i + 0.5) * Map::CUBE_SIZE,
 							(j + 0.5) * Map::CUBE_SIZE,
 							(k + 0.5) * Map::CUBE_SIZE);
 
-					if((map->get_cube_type(i,j+1,k)>0))cube_exist|=up;
-					if((map->get_cube_type(i,j-1,k)>0))cube_exist|=down;
-					if((map->get_cube_type(i+1,j,k)>0))cube_exist|=left;
-					if((map->get_cube_type(i-1,j,k)>0))cube_exist|=right;
-					if((map->get_cube_type(i,j,k+1)>0))cube_exist|=front;
-					if((map->get_cube_type(i,j,k-1)>0))cube_exist|=back;
+					if((map->get_cube_type(i,j+1,k)>=Cube::startcube))cube_exist|=up;
+					if((map->get_cube_type(i,j-1,k)>=Cube::startcube))cube_exist|=down;
+					if((map->get_cube_type(i+1,j,k)>=Cube::startcube))cube_exist|=left;
+					if((map->get_cube_type(i-1,j,k)>=Cube::startcube))cube_exist|=right;
+					if((map->get_cube_type(i,j,k+1)>=Cube::startcube))cube_exist|=front;
+					if((map->get_cube_type(i,j,k-1)>=Cube::startcube))cube_exist|=back;
 
 					//if((cube_exist&up)&&(cube_exist&left)&&(cube_exist&right)
 							//&&(cube_exist&front)&&(cube_exist&back)){
 						//type=0;
 					//}
 					if (j + 1 >= max_y || !(cube_exist&up)){
-						mapmodel->merge(cube->cube[0], pos, type);
+						mapmodel->merge(cube->cube[0], pos, tex_layer);
 					}
 
 					if (j - 1 < 0 || !(cube_exist&down)){
-						mapmodel->merge(cube->cube[1], pos, type);
+						mapmodel->merge(cube->cube[1], pos, tex_layer);
 					}
 
 
 					if (i + 1 >= map->get_size().x ||!(cube_exist&left)){
-						mapmodel->merge(cube->cube[2], pos, type);
+						mapmodel->merge(cube->cube[2], pos, tex_layer);
 					}
 
 					if (i - 1 < 0 ||!(cube_exist&right)){
-						mapmodel->merge(cube->cube[3], pos, type);
+						mapmodel->merge(cube->cube[3], pos, tex_layer);
 					}
 
 
 					if (k + 1 >= map->get_size().z || !(cube_exist&front)){
-						mapmodel->merge(cube->cube[4], pos, type);
+						mapmodel->merge(cube->cube[4], pos, tex_layer);
 					}
 
 					if (k - 1 < 0 || !(cube_exist&back)){
-						mapmodel->merge(cube->cube[5], pos, type);
+						mapmodel->merge(cube->cube[5], pos, tex_layer);
 					}
 
 				}
@@ -227,6 +222,7 @@ void DisplayMap::draw_map(Camera *camera,Tim::ThreadPool* threadpool) {
 			}
 			dmap->draw_map=true;
 			dmap->push_temp_drawdata(new DrawDataObj(pos,true));
+			map->get_map_seg(i,j)->draw();
 		}
 	}
 

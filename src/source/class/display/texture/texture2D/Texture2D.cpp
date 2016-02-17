@@ -27,7 +27,7 @@ Texture2D* Texture2D::gen_texture2D(Image<unsigned char>* image,GLint internalfo
 		GLenum type,int Parameteri){
 	return gen_texture2D(image->data,image->size,internalformat,image->format,type,Parameteri);
 }
-Texture2D* Texture2D::gen_texture2D(const void *pixels,glm::ivec2 size,GLint internalformat,GLenum format,GLenum type,int Parameteri){
+Texture2D* Texture2D::gen_texture2D(unsigned char *pixels,glm::ivec2 size,GLint internalformat,GLenum format,GLenum type,int Parameteri){
 	GLuint textureID;
 	glGenTextures(1,&textureID);
 	glBindTexture(GL_TEXTURE_2D,textureID);

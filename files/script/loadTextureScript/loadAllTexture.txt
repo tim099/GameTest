@@ -19,7 +19,9 @@ TextureMap:
 TextureMap:
 	ScriptPath:
 		loadCubeTexture/loadCubeTexMap.txt	
-
+TextureMap:
+	ScriptPath:
+		loadLandscapeTexture/loadLandscapeTexture.txt	
 
 //load a new dir script(load a #LOAD_ALL_TEXTURES_SCRIPT as directory under this)
 TextureDir:

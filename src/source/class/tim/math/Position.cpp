@@ -4,13 +4,13 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
 Position::Position() {
-	initialize(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 0);
+	init(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 0);
 }
 Position::Position(const Position &p) {
-	initialize(p.pos, p.r, p.parent_pos);
+	init(p.pos, p.r, p.parent_pos);
 }
 Position::Position(glm::vec3 _pos, glm::vec3 _r, Position *_parent_pos) {
-	initialize(_pos, _r, _parent_pos);
+	init(_pos, _r, _parent_pos);
 }
 Position::~Position() {
 
@@ -38,10 +38,10 @@ glm::vec3 Position::get_r() const {
 glm::vec3 Position::get_pos() const {
 	return pos;
 }
-void Position::initialize(const Position &p) {
-	initialize(p.pos, p.r, p.parent_pos);
+void Position::init(const Position &p) {
+	init(p.pos, p.r, p.parent_pos);
 }
-void Position::initialize(glm::vec3 _pos, glm::vec3 _r, Position *_parent_pos) {
+void Position::init(glm::vec3 _pos, glm::vec3 _r, Position *_parent_pos) {
 	pos = _pos;
 	r = _r;
 	parent_pos = _parent_pos;

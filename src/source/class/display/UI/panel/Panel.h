@@ -11,7 +11,7 @@ public:
 	static const float AutoHeight = 0.0f;
 	Panel();
 	Panel(glm::vec2 pos,std::string tex_path,float width,float height=AutoHeight);
-	void initialize(glm::vec2 pos,std::string tex_path,float width,float height=AutoHeight);
+	void init(glm::vec2 pos,std::string tex_path,float width,float height=AutoHeight);
 	void set_texture(std::string tex_path,float width,float height=AutoHeight);
 	virtual ~Panel();
 

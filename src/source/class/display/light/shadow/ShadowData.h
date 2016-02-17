@@ -14,17 +14,24 @@
  * because this class create shadow mapping shader itself
  */
 class Shader;
+
+static const unsigned ShadowHighQuality=4096;
 class ShadowData{
 public:
-	ShadowData(unsigned max_l_shadow,unsigned max_pl_shadow);
+	/*max_l_shadow=max shadows number for the parallel lights
+	 * max_pl_shadow=max shadows number for the point lights
+	 * shadow_quality si the quality of the shadow
+	 */
+	ShadowData(unsigned max_l_shadow,unsigned max_pl_shadow,
+			unsigned shadow_quality=ShadowHighQuality);
 	virtual ~ShadowData();
 	void sent_uniform(Shader *shader);
-	void gen_shadow_map(std::vector<PointLight*>&point_lights,
+	void gen_shadow_map(Shader *shaderShadowMapping,std::vector<PointLight*>&point_lights,
 			std::vector<ParallelLight*>&lights,Camera *camera,
 			double shadow_dis,Draw *d_obj);
 	void gen_parallelLights_LVP(std::vector<ParallelLight*>&lights,Camera *camera,double shadow_dis);
 	void gen_pointLight_LVP(std::vector<PointLight*>&point_lights);
-	void gen_shadows(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int num,Draw *d_obj,int depth_tex=0
+	void gen_shadows_texture(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int num,Draw *d_obj,int depth_tex=0
 			,int start_layer=0);
 
 	glm::mat4 *LVP;
@@ -35,10 +42,10 @@ public:
 
 	int s_num;
 	int ps_num;
+	unsigned shadow_quality;
 	unsigned max_l_shadow;
 	unsigned max_pl_shadow;
-	Shader *shaderMultiShadowMapping;
-	Shader *shaderCubeShadowMapping;
+
 };
 
 #endif /* SHADOWDATA_H_ */

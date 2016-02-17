@@ -97,4 +97,23 @@ DrawObject:
 		test/test3
 
 #load_end
+
+DrawObject:
+	Name:
+		pinetree
+	ModelBuffer:
+		landscape/pinetree
+	Texture:
+		landscape/pinetree
+
+#load_end
+DrawObject:
+	Name:
+		broadleaftree
+	ModelBuffer:
+		landscape/broadleaftree
+	Texture:
+		landscape/pinetree
+
+#load_end
 #END

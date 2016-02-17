@@ -37,11 +37,13 @@ public:
 	Tim::Mutex* createMapObjectMutex;
 	int range,max_y;
 protected:
-	glm::ivec3 seg;
+	void gen_display_map_seg();
 	Tim::Array2D<MapDrawObject*>*dmaps;
 	CubeModel *cube;
 	Map *map;
 	Position *pos;
+
+	glm::ivec3 seg;
 	glm::ivec3 segsize;
 };
 

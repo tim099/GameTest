@@ -7,6 +7,7 @@
 
 const int NormalMapping=1<<0;
 const int LayerTexture=1<<1;
+const int AlphaTexture=1<<2;
 class Shader {
 public:
 	Shader(std::string name=std::string("default"));

@@ -11,6 +11,9 @@ Map:
 	ScriptPath:
 		files/script/drawObjectScript/test/testDrawObjectMap.txt
 
+Map:
+	ScriptPath:
+		files/script/drawObjectScript/landscape/landscapeMap.txt
 
 
 #END

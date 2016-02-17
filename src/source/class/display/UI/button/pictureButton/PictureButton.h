@@ -15,7 +15,7 @@ public:
 	 */
 	PictureButton(glm::vec2 pos,std::string tex_path,float width,float height=AutoHeight);
 	PictureButton();
-	void initialize(glm::vec2 pos,std::string tex_path,float width,float height=AutoHeight);
+	void init(glm::vec2 pos,std::string tex_path,float width,float height=AutoHeight);
 
 	void set_texture(std::string tex_path,float width,float height=AutoHeight);
 

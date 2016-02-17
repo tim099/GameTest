@@ -1,11 +1,14 @@
 #ifndef MAP_H_
 #define MAP_H_
 #include "class/game/map/cube/Cube.h"
+#include "class/game/map/cube/CubeEX.h"
 #include "class/tim/array/Array3D.h"
+#include "class/tim/array/Array2D.h"
 #include <glm/glm.hpp>
 #include <string>
 #include <cmath>
 #include "class/tim/math/PerlinNoise.h"
+class MapSeg;
 class Map {
 
 public:
@@ -20,14 +23,24 @@ public:
 	static glm::ivec3 convert_position(glm::vec3 pos);
 	void save_map(std::string path);
 	void load_map(std::string path);
+	void push_CubeEX(int x,int y,int z,CubeEX *cube);
+
 	bool set_cube_type(int x,int y,int z,int val);
 	int get_cube_type(const int &x,const int &y,const int &z)const;
+	//get map_seg by position x and z
+	MapSeg* get_map_seg_by_pos(int x,int z);
+	MapSeg* get_map_seg(int x,int z);
 	void update();
 	glm::ivec3 get_size()const;
 
 	inline double get_wetness(const int &i,const int &k,const double &height){
 		return 0.6*height+0.4*noise.noise(((double)i/map_size.x),
 				0.5,((double)k/map_size.z),0.01);
+	}
+	inline double get_temperature(const int &i,const int &j,const int &k){
+		return 0.5*(1.0-(double)j/map_size.y)+
+				0.2*(1.0-(double)k/map_size.z)+
+				0.3*noise.noise(((double)i/map_size.x),0.5,((double)k/map_size.z),0.01);
 	}
 	double get_height(const int &i,const int &k){
 		double h1,h2,h3,h4,del_val,del_val2;
@@ -48,19 +61,34 @@ public:
 		temperature+=-0.5*height;
 		return temperature;
 	}
+	glm::ivec3 seg;
+	glm::ivec3 segsize;
+
 protected:
 	//generate the shape of the map(only generate the cube type=1,and empty space type=0
-	void gen_map_shape();
+	void gen_map_seg();
 
+	void gen_map_shape();
+	void gen_map_cube_type();
+	void gen_map_land_scape();
 
 	void gen_cube_type(int i,int j,int k,
 			const double &stone_height,const double &height,
 			const double &wetness);
+	void gen_land_scape(int i,int j,int k,
+			const double &stone_height,const double &height,
+			const double &wetness);
+
 	void gen_dirt(unsigned char &type,const int &i,const int &j,const int &k);
-	void gen_stone(unsigned char &type,const double &x,const double &y,
-			const double &z);
+	void gen_stone(unsigned char &type,const double &x,const double &y,const double &z);
+	void gen_sand(unsigned char &type,const double &x,const double &y,const double &z);
 	Tim::Array3D<Cube> *map;
+	Tim::Array2D<MapSeg>* map_segs;
+
+
+
 	glm::ivec3 map_size;
+
 	int times;
 	int ground_height;
 	unsigned seed;

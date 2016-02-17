@@ -46,7 +46,7 @@ CreateUIObject:
 	Position:
 		0 0
 	ScriptPath:
-		files/AgeOfCube/startScene/UI/createNewMapPage.txt
+		files/AgeOfCube/startScene/UI/createNewMap/createNewMap.txt
 	Parent:
 		pageControl
 #create_end

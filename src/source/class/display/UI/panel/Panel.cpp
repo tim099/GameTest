@@ -12,7 +12,7 @@ Panel::Panel() {
 	height = 0;
 }
 Panel::Panel(glm::vec2 _pos,std::string _tex_path, float _width, float _height) {
-	initialize(_pos, _tex_path, _width, _height);
+	init(_pos, _tex_path, _width, _height);
 }
 void Panel::set_texture(std::string _tex_path, float width, float _height) {
 	tex_path=_tex_path;
@@ -26,7 +26,7 @@ void Panel::set_texture(std::string _tex_path, float width, float _height) {
 	}
 	size = _size;
 }
-void Panel::initialize(glm::vec2 _pos,std::string _tex_path, float width,
+void Panel::init(glm::vec2 _pos,std::string _tex_path, float width,
 		float _height) {
 	set_pos(_pos);
 	set_texture(_tex_path, width, _height);

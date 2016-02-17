@@ -14,10 +14,10 @@ namespace UI {
 
 PictureButton::PictureButton(glm::vec2 _pos, std::string _tex_path, float width,
 		float _height) {
-	initialize(_pos, _tex_path, width, _height);
+	init(_pos, _tex_path, width, _height);
 
 }
-void PictureButton::initialize(glm::vec2 _pos, std::string _tex_path,
+void PictureButton::init(glm::vec2 _pos, std::string _tex_path,
 		float width, float _height) {
 	set_pos(_pos);
 	set_texture(_tex_path, width, _height);
@@ -45,7 +45,7 @@ PictureButton::~PictureButton() {
 
 UIObject* PictureButton::copy_UIObject() {
 	PictureButton *copy = new PictureButton();
-	copy->initialize(get_pos(), tex_path, size.x, height);
+	copy->init(get_pos(), tex_path, size.x, height);
 	if (get_parent())
 		get_parent()->push_child(copy);
 	//if(str)copy->set_string(new std::string(*str),font_size);

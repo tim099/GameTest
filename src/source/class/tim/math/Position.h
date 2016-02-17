@@ -9,12 +9,12 @@ class Position {
 public:
 	Position();
 	Position(const Position &p);
-	Position(glm::vec3 pos,glm::vec3 r,Position *parent_pos=0);
+	Position(glm::vec3 pos,glm::vec3 r=glm::vec3(0,0,0),Position *parent_pos=0);
 	virtual ~Position();
 
 
-	void initialize(const Position &p);
-	void initialize(glm::vec3 pos,glm::vec3 r,Position *parent_pos=0);
+	void init(const Position &p);
+	void init(glm::vec3 pos,glm::vec3 r,Position *parent_pos=0);
 	glm::mat4 PosMat();
 
 	void set_ry(float ry);

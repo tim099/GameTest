@@ -32,7 +32,16 @@ vec3 get_tex_color(){
 	if((shaderData&LayerTexture)==0){//not active LayerTexture
 		return (texture(Texture,vert.UV).rgb);
 	}
-	return texture(TextureArr,vec3(vert.UV,vert.UVlayer)).rgb;//+vec3(0.3*vert.UVlayer,0.0,0.0)
+	return texture(TextureArr,vec3(vert.UV,vert.UVlayer)).rgb;
+}
+float get_tex_alpha(){
+	if((shaderData&AlphaTexture)==0){
+		return 1.0f;
+	}
+	if((shaderData&LayerTexture)==0){//not active LayerTexture
+		return (texture(Texture,vert.UV).a);
+	}
+	return texture(TextureArr,vec3(vert.UV,vert.UVlayer)).a;
 }
 vec3 get_reflect(vec3 Normal){
     vec3 look_vec=(vert.position.xyz-camera_pos);

@@ -19,11 +19,11 @@ public:
 	virtual ~Draw();
 
 	void sent_shadow_uniform(Shader *shader);
-	void gen_shadow();
+	void gen_shadow(Shader *shaderShadowMapping);
 
 
 	//render all object(3D Models)
-	void draw3D(Shader *shader,FrameBuffer *FBO);
+	void draw3D(Shader *shader,Shader *shaderShadowMapping,FrameBuffer *FBO);
 	/*
 	 * draw all 2D object(texture,font...etc)
 	 */

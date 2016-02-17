@@ -2,13 +2,14 @@
 #define SOURCE_CLASS_TIM_OBJECTPOOL_OBJPOOL_H_
 #include <vector>
 #include <queue>
+#include "class/tim/globalObject/GlobalObject.h"
 /*
  * another version of ObjectPool provide better efficiency but require to free obj after used
  * please keep only one copy if want to use static free and create
  */
 namespace Tim {
 template <class Type>
-class ObjPool {
+class ObjPool : public GlobalObject<ObjPool<Type> >{
 	static ObjPool<Type>* cur_pool;
 public:
 	ObjPool(unsigned size);

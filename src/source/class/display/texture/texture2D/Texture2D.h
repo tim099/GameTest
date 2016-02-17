@@ -13,7 +13,7 @@ public:
 	static Texture2D* loadPNG(const char * imagepath,int Parameteri=P_MipMap);
 	static Texture2D* loadImage(const char * imagepath,int Parameteri=P_MipMap);
 
-	static Texture2D* gen_texture2D(const void *pixels,glm::ivec2 size,GLint internalformat,GLenum format
+	static Texture2D* gen_texture2D(unsigned char *pixels,glm::ivec2 size,GLint internalformat,GLenum format
 			,GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_MipMap);
 	static Texture2D* gen_texture2D(Image<unsigned char>* image,GLint internalformat,
 			GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_MipMap);

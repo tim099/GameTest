@@ -124,7 +124,13 @@ void DrawObject::draw_object(Shader *shader) {
 	model_buffer->bind_buffer(shader);
 	glUniform4f(glGetUniformLocation(shader->programID, "mat"), mat.x, mat.y,
 			mat.z, mat.w);
+
 	if (texture) {
+		if(texture->format==GL_RGBA){
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+			shader->Enable(AlphaTexture);
+		}
 		if (!layer_texture) { //simple texture
 			texture->sent_uniform(shader, 0, "Texture");
 		} else {
@@ -141,6 +147,9 @@ void DrawObject::draw_object(Shader *shader) {
 	}
 	draw_vec(shader, temp_datas);
 	model_buffer->unbind_buffer(shader);
-	shader->DisableNormapping();
+	shader->Disable(NormalMapping);
+
+	shader->Disable(AlphaTexture);
+	glDisable(GL_BLEND);
 	//Buffer::disable_all_buffer();
 }

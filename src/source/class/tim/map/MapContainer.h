@@ -2,7 +2,7 @@
 #define SOURCE_CLASS_TIM_MAP_MAPCONTAINER_H_
 #include <map>
 /*
- * auto delete object in this map
+ * auto delete object in this map when this object being deleted
  */
 namespace Tim {
 template<class Key,class Type>
@@ -17,6 +17,9 @@ public:
 	Type* get(Key key);
 	void push(Key key,Type *type);
 	void remove(Key key);
+	std::map<Key,Type*>* get_map(){
+		return &map;
+	}
 protected:
 	std::map<Key,Type*>map;
 };

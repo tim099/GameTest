@@ -8,6 +8,7 @@
 #include "class/test/TestTask.h"
 #include "class/input/mouse/selectable/SelectableControl.h"
 #include "class/display/UI/button/pictureButton/PictureButton.h"
+#include "class/game/map/TaskGenMap.h"
 #include <iostream>
 #include <cstdio>
 #include <cmath>
@@ -27,6 +28,7 @@ Test::Test() {
 	stop = false;
 	display_time = false;
 	position_pool = new Tim::ObjPool<Position>(100);
+	position_pool->register_cur();
 	controller_system = new ControllerSystem();
 	controller_system->push(new SelectableControl());
 
@@ -76,6 +78,8 @@ Test::Test() {
 	render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 	thread_pool = new Tim::ThreadPool(8);
 	render_task = new RenderTask(renderer);
+
+	//thread_pool->push_task(new TaskGenMap(map,glm::ivec3(400,250,400),time(NULL)));
 
 	dmap = new DisplayMap(map);
 	dmap->update_whole_map();
@@ -145,7 +149,7 @@ void Test::handle_input() {
 	if (input->keyboard->pressed('Q')) {
 		Position *pos = Tim::ObjPool<Position>::mycreate();
 		if (pos)
-			pos->initialize(input->mouse->world_pos, glm::vec3());
+			pos->init(input->mouse->world_pos, glm::vec3());
 		//drawObjects->get("test/ico")->push_drawdata(new DrawDataObj(pos));
 	}
 	if (input->keyboard->get('E')) {
@@ -238,7 +242,7 @@ void Test::handle_input() {
 	if (input->keyboard->get('C')) {
 		Position *pos = position_pool->create();
 		if (pos)
-			pos->initialize(camera->look_at + glm::vec3(0, 0.1, 0),
+			pos->init(camera->look_at + glm::vec3(0, 0.1, 0),
 					glm::vec3(0, camera->look_ry(), 0));
 		//drawObjects->get("test/look_at")->push_drawdata(new DrawDataObj(pos));
 		lightControl->push_light(
@@ -330,12 +334,12 @@ void Test::update_obj_pos(Camera *camera) {
 	float tiger_ry = 360.0f * ((float) timeloop / loop_time);
 
 	static Position tiger_pos;
-	tiger_pos.initialize(glm::vec3(33.0, 21.47, 26.0),
+	tiger_pos.init(glm::vec3(33.0, 101.47, 26.0),
 			glm::vec3(0, tiger_ry, 0));
 	drawObjects->get("test/tiger")->push_temp_drawdata(
 			new DrawDataObj(&tiger_pos));
 	static Position cam_look_at;
-	cam_look_at.initialize(camera->look_at, glm::vec3(0, camera->look_ry(), 0));
+	cam_look_at.init(camera->look_at, glm::vec3(0, camera->look_ry(), 0));
 	drawObjects->get("test/look_at")->push_temp_drawdata(
 			new DrawDataObj(&cam_look_at));
 
@@ -360,7 +364,7 @@ void Test::prepare_draw_obj() {
 }
 void Test::creat_light() {
 	camlight = new PointLight(glm::vec3(5.1, 2.6, 0.1),
-			glm::vec3(3.2, 3.2, 3.2), true);
+			glm::vec3(3.2, 3.2, 3.2), false);
 	lightControl->push_light(camlight);
 
 	s_light = new ParallelLight(glm::vec3(-300, 0, -500), sun_col1, true);
@@ -395,7 +399,7 @@ void Test::update() {
 
 	char fpsbuff[20];
 	sprintf(fpsbuff, "fps=%.2lf\n", fps);
-	std::cout<<"fps="<<fps<<std::endl;
+	//std::cout<<"fps="<<fps<<std::endl;
 	draw->push(new RenderString(fpsbuff, 0.015, glm::vec2(0.0, 1.0)));
 
 

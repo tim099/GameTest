@@ -19,7 +19,7 @@ void main(){
     //vec3 reflect_color=texture(cubetex,normalize(vect)).xyz;
 
  	//color=vec4(cross(normalize(camera_pos-vert.position.xyz),Normal),1.0);//+reflect_color
-	color=vec4((total_light)*tex_color,1.0);//+reflect_color
+	color=vec4((total_light)*tex_color,get_tex_alpha());//+reflect_color
 	
 	
 

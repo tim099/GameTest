@@ -22,8 +22,9 @@ LightControl::~LightControl() {
 
 	delete shadowData;
 }
-void LightControl::gen_shadow(Camera *camera,Draw *d_obj){
-	shadowData->gen_shadow_map(point_lights,parallel_lights,camera,shadow_dis,d_obj);
+void LightControl::gen_shadow(Shader *shaderShadowMapping,Camera *camera,Draw *d_obj){
+	shadowData->gen_shadow_map(shaderShadowMapping,
+			point_lights,parallel_lights,camera,shadow_dis,d_obj);
 }
 PointLight* LightControl::get_point_light(int i)const{
 	return point_lights.at(i);

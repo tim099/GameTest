@@ -1,5 +1,5 @@
-#include "class/game/map/cube/Cube.h"
 #include "class/game/map/DisplayMap.h"
+#include "class/game/map/cube/Cube.h"
 #include "class/display/draw/Draw.h"
 #include "class/display/camera/Camera.h"
 #include "class/game/map/TaskCreateMapModel.h"
@@ -186,7 +186,7 @@ void DisplayMap::create_map_object(int px, int pz) {
 					cube_exist=0;
 					bool surface=false;
 
-					if(map->get_cube_type(i,j+1,k)==Cube::cubeNull){
+					if(map->get_cube_type(i,j+1,k)!=Cube::water){
 						surface=true;
 					}
 					if(map->get_cube_type(i,j+1,k)==Cube::water)cube_exist|=up;

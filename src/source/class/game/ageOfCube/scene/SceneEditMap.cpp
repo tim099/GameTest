@@ -5,7 +5,6 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	map_name = _map_name;
 	map_size = _map_size;
 	map = 0;
-	dmap = 0;
 	camera = 0;
 	lightControl = 0;
 	UI = 0;
@@ -14,8 +13,6 @@ void SceneEditMap::scene_initialize() {
 	map = new Map();
 	map->gen_map(map_size,time(NULL));
 	//map->load_map("files/maps/map011");
-	dmap = new DisplayMap(map);
-	dmap->update_whole_map();
 	glm::vec3 pos(0,map->get_size().y+10,0);
 	camera = new Camera(pos,
 			pos+glm::vec3(1,-10,1), glm::vec3(0, 1, 0), 60.0, 0.1f,
@@ -34,7 +31,6 @@ void SceneEditMap::scene_initialize() {
 void SceneEditMap::scene_terminate() {
 	delete lightControl;
 	delete camera;
-	delete dmap;
 	delete map;
 	if (UI) {
 		delete UI;
@@ -69,35 +65,38 @@ void SceneEditMap::handle_input() {
 				* (0.05 * input->mouse->scroll);
 	}
 	if (input->keyboard->pressed_char('w')) {
-		dmap->display_height_alter(1, thread_pool);
+		map->dp_map->display_height_alter(1, thread_pool);
 	}
 	if (input->keyboard->pressed_char('s')) {
-		dmap->display_height_alter(-1, thread_pool);
+		map->dp_map->display_height_alter(-1, thread_pool);
 	}
 	if (input->keyboard->get('I')) {
-		dmap->range += 1;
+		map->dp_map->range += 1;
 	}
 	if (input->keyboard->get('K')) {
-		if (dmap->range > 1)
-			dmap->range -= 1;
+		if (map->dp_map->range > 1)
+			map->dp_map->range -= 1;
 		else
-			dmap->range = 0;
+			map->dp_map->range = 0;
 	}
 	if (input->keyboard->pressed('B')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
 		if (!map->get_cube_type(pos.x, pos.y, pos.z)) {
-			if (map->set_cube_type(pos.x, pos.y, pos.z, 1)) {
-				dmap->update_map(pos);
+			if (map->set_cube_type(pos.x, pos.y, pos.z, Cube::stone)) {
+				//dmap->update_map(pos);
 			}
 		}
 	}
 	if (input->keyboard->pressed('V')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
 		if (map->get_cube_type(pos.x, pos.y, pos.z)) {
+			Cube *cube=map->get_cube(pos.x,pos.y,pos.z);
+			std::cout<<"cube name="<<cube->get_name()<<std::endl;
 			if (map->set_cube_type(pos.x, pos.y, pos.z, 0)) {
-				dmap->update_map(pos);
+				//dmap->update_map(pos);
 			}
 		}
+
 	}
 	if (input->keyboard->pressed(GLFW_KEY_UP)) {
 		if (lightControl->shadow_dis > 0.01)
@@ -117,7 +116,7 @@ void SceneEditMap::scene_update() {
 	//dmap->update_whole_map();
 }
 void SceneEditMap::scene_draw() {
-	dmap->draw_map(camera,thread_pool); //push position
+	map->dp_map->draw_map(camera,thread_pool); //push position
 	//UI->draw_UIObject(draw);
 }
 void SceneEditMap::pause() {

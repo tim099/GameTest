@@ -1,5 +1,6 @@
 #include "class/game/map/Map.h"
 #include "class/game/map/MapSeg.h"
+#include "class/game/map/DisplayMap.h"
 
 #include "class/game/map/cube/Cube.h"
 #include "class/game/map/cube/CubeEX.h"
@@ -16,6 +17,7 @@
 #include <iostream>
 
 Map::Map() {
+	dp_map=0;
 	map=0;
 	map_segs=0;
 	seed=0;
@@ -28,12 +30,21 @@ Map::Map() {
 	register_cur();
 }
 Map::~Map() {
+	if(dp_map)delete dp_map;
 	if(map)delete map;
 	if(map_segs)delete map_segs;
 	delete cube_out_of_edge;
 	delete cube_null;
 	delete all_cubes;
 	delete landscapeCreator;
+}
+void Map::init(){
+	if(map)delete map;
+	if(dp_map)delete dp_map;
+
+	map=new Tim::Array3D<unsigned char>(map_size.x,map_size.y,map_size.z);
+	gen_map_seg();
+	dp_map=new DisplayMap(this);
 }
 void Map::gen_map_seg(){
 	static const int size_per_sig=15;
@@ -205,16 +216,15 @@ void Map::gen_map(glm::ivec3 _map_size,unsigned _seed,int _ground_height){
 		std::cerr<<"Map::gen_map error Map size too large"<<std::endl;
 		return;
 	}
-	if(map)delete map;
+
 	//map=new Tim::Array3D<Cube>(map_size.x,map_size.y,map_size.z);
-	map=new Tim::Array3D<unsigned char>(map_size.x,map_size.y,map_size.z);
-	gen_map_seg();
+	init();
 
 	noise.init(seed);
 	//srand(seed);
 
 	regen_map();
-
+	dp_map->update_whole_map();
 }
 glm::ivec3 Map::get_size()const{
 	return map_size;
@@ -233,11 +243,7 @@ void Map::load_map(std::string path){
 		std::cerr<<"load map error Map size too large"<<std::endl;
 		return;
 	}
-	srand(time(NULL));
-	if(map)delete map;
-	//map=new Tim::Array3D<Cube>(map_size.x,map_size.y,map_size.z);
-	map=new Tim::Array3D<unsigned char>(map_size.x,map_size.y,map_size.z);
-	gen_map_seg();
+	init();
 	int type;
 	for(int i=0;i<map_size.x;i++){
 		for(int j=0;j<map_size.y;j++){
@@ -247,6 +253,7 @@ void Map::load_map(std::string path){
 			}
 		}
 	}
+	dp_map->update_whole_map();
 }
 MapSeg* Map::get_map_seg_by_pos(int x,int z){
 	return &(map_segs->get((x/segsize.x),(z/segsize.z)));
@@ -272,6 +279,7 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 		get_map_seg_by_pos(x,z)->remove_cube(glm::ivec3(x,y,z));
 	}
 	map->get(x,y,z)=type;//.set(type);
+	dp_map->update_map(glm::ivec3(x,y,z));
 	return true;
 }
 Cube* Map::get_cube(int x,int y,int z){

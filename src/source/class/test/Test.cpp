@@ -77,12 +77,10 @@ Test::Test() {
 
 	map = new Map();
 	map->gen_map(glm::ivec3(200,150,200),0);//0time(NULL)
-	dmap = new DisplayMap(map);
-	dmap->update_whole_map();
+
+
 
 	//prepare_draw_obj();
-
-
 
 	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 
@@ -109,7 +107,7 @@ Test::~Test() {
 	delete input;
 	delete lightControl;
 
-	delete dmap;
+	//delete dmap;
 
 	delete map;
 
@@ -147,10 +145,6 @@ void Test::handle_signal() {
 	}
 }
 void Test::handle_input() {
-	if(input->keyboard->get('R')){
-		map->regen_map();
-		dmap->update_whole_map();
-	}
 	if (input->mouse->mid_pressed()) {
 		//std::cout<<"move"<<(int)(mouse->pos.x)<<","<<(int)mouse->prev_pos.x<<std::endl;
 		camera->rotate(glm::vec3(0, 1, 0), -0.15 * input->mouse->pos_delta().x);
@@ -217,8 +211,8 @@ void Test::handle_input() {
 	if (input->keyboard->pressed('B')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
 		if (!map->get_cube_type(pos.x, pos.y, pos.z)) {
-			if (map->set_cube_type(pos.x, pos.y, pos.z, 2)) {
-				dmap->update_map(pos);
+			if (map->set_cube_type(pos.x, pos.y, pos.z, Cube::stone)) {
+				//dmap->update_map(pos);
 			}
 		}
 	}
@@ -227,14 +221,8 @@ void Test::handle_input() {
 		if (map->get_cube_type(pos.x, pos.y, pos.z)) {
 			Cube *cube=map->get_cube(pos.x,pos.y,pos.z);
 			std::cout<<"cube name="<<cube->get_name()<<std::endl;
-			if(cube){
-				CubeEX* cubeEX=cube->get_cubeEX();
-				if(cubeEX){
-					std::cout<<"cubeEX name="<<cubeEX->get_name()<<std::endl;
-				}
-			}
 			if (map->set_cube_type(pos.x, pos.y, pos.z, 0)) {
-				dmap->update_map(pos);
+				//dmap->update_map(pos);
 			}
 		}
 
@@ -300,13 +288,13 @@ void Test::handle_input() {
 				((rand() % 10000) / 4000.0), ((rand() % 10000) / 4000.0));
 	}
 	if (input->keyboard->get('I')) {
-		dmap->range += 1;
+		map->dp_map->range += 1;
 	}
 	if (input->keyboard->get('K')) {
-		if (dmap->range > 1)
-			dmap->range -= 1;
+		if (map->dp_map->range > 1)
+			map->dp_map->range -= 1;
 		else
-			dmap->range = 0;
+			map->dp_map->range = 0;
 	}
 
 	if (input->keyboard->pressed('T')) {
@@ -322,10 +310,10 @@ void Test::handle_input() {
 		camera->move(glm::vec3(0, -0.03, 0));
 	}
 	if (input->keyboard->pressed_char('w')) {
-		dmap->display_height_alter(1, thread_pool);
+		map->dp_map->display_height_alter(1, thread_pool);
 	}
 	if (input->keyboard->pressed_char('s')) {
-		dmap->display_height_alter(-1, thread_pool);
+		map->dp_map->display_height_alter(-1, thread_pool);
 	}
 	if (input->keyboard->pressed('A')) {
 		camera->move_side(0.04f);
@@ -371,7 +359,7 @@ void Test::update_obj_pos(Camera *camera) {
 
 }
 void Test::update_map(Camera *camera) {
-	dmap->draw_map(camera,thread_pool); //push position
+	map->dp_map->draw_map(camera,thread_pool); //push position
 
 	camlight->pos = camera->look_at;
 	update_obj_pos(camera);

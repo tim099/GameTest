@@ -65,7 +65,7 @@ private:
 	Camera *camera;
 
 	Renderer *renderer;
-	DisplayMap *dmap;
+	//DisplayMap *dmap;
 	//RenderTask *render_task;
 
 	Map *map;

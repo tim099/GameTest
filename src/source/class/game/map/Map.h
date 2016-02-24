@@ -8,14 +8,14 @@
 #include <cmath>
 #include "class/tim/math/PerlinNoise.h"
 #include "class/tim/globalObject/GlobalObject.h"
+#include "class/game/map/cube/Cube.h"
 class CubeEX;
-class Cube;
 class CubeOutOfEdge;
 class CubeNull;
 class MapSeg;
 class AllCubes;
 class LandscapeCreator;
-
+class DisplayMap;
 class Map : public Tim::GlobalObject<Map>{
 
 public:
@@ -23,6 +23,7 @@ public:
 	static const double CUBE_SIZE=1.0;
 	Map();
 	virtual ~Map();
+	void init();
 	void gen_map(glm::ivec3 map_size,unsigned seed,int ground_height=150);
 
 	//ground height limited the max height of the ground
@@ -75,7 +76,7 @@ public:
 	}
 	glm::ivec3 seg;
 	glm::ivec3 segsize;
-
+	DisplayMap* dp_map;
 protected:
 	//generate the shape of the map(only generate the cube type=1,and empty space type=0
 	void gen_map_seg();
@@ -106,6 +107,7 @@ protected:
 	int times;
 	int ground_height;
 	unsigned seed;
+
 	CubeOutOfEdge *cube_out_of_edge;
 	CubeNull *cube_null;
 

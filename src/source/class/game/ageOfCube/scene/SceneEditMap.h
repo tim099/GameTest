@@ -24,7 +24,6 @@ protected:
 
 	void handle_input();
 	Map *map;
-	DisplayMap *dmap;
 	Camera *camera;
 	LightControl* lightControl;
 

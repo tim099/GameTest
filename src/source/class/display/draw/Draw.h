@@ -6,8 +6,9 @@
 #include "class/display/draw/texture/DrawTexture.h"
 #include "class/tim/thread/mutex/Mutex.h"
 #include "class/tim/globalObject/GlobalObject.h"
+#include "class/display/font/RenderString.h"
+
 class DrawData;
-class RenderString;
 class StringRenderer;
 class LightControl;
 class Shader;
@@ -23,7 +24,7 @@ public:
 
 
 	//render all object(3D Models)
-	void draw3D(Shader *shader,Shader *shaderShadowMapping,FrameBuffer *FBO);
+	void draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,FrameBuffer *FBO);
 	/*
 	 * draw all 2D object(texture,font...etc)
 	 */

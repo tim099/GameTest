@@ -29,7 +29,7 @@ void KeyBoard::character_callback(GLFWwindow* window, unsigned int codepoint,
 }
 void KeyBoard::character_input(GLFWwindow* window, unsigned int codepoint,
 		int mods) {
-	std::cout<<"key press:"<<codepoint<<","<<(char)codepoint<<",mods:"<<mods<<std::endl;
+	//std::cout<<"key press:"<<codepoint<<","<<(char)codepoint<<",mods:"<<mods<<std::endl;
 	cur_char = codepoint;
 	chars.insert(codepoint);
 }

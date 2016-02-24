@@ -69,15 +69,15 @@ void SceneEditMap::handle_input() {
 				* (0.05 * input->mouse->scroll);
 	}
 	if (input->keyboard->pressed_char('w')) {
-		dmap->max_y_alter(1, thread_pool);
+		dmap->display_height_alter(1, thread_pool);
 	}
 	if (input->keyboard->pressed_char('s')) {
-		dmap->max_y_alter(-1, thread_pool);
+		dmap->display_height_alter(-1, thread_pool);
 	}
-	if (input->keyboard->pressed('I')) {
+	if (input->keyboard->get('I')) {
 		dmap->range += 1;
 	}
-	if (input->keyboard->pressed('K')) {
+	if (input->keyboard->get('K')) {
 		if (dmap->range > 1)
 			dmap->range -= 1;
 		else

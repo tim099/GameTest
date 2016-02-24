@@ -7,17 +7,6 @@ mat4 biasMat=mat4(
 	0.0, 0.0, 0.5, 0.0,
 	0.5, 0.5, 0.5, 1.0
 );
-vec4 PD[9] = vec4[](
-  	vec4(0,0,0.4,0.0),//x,y is PD value,z is weight,w is bias alter
-  	vec4(0,0.0006,0.1,0.0003),
-  	vec4(0,-0.0006,0.1,0.0003),
-  	vec4(0.0006,0,0.1,0.0003),
-  	vec4(-0.0006,0,0.1,0.0003),
-  	vec4(0.0006,0.0006,0.05,0.0003),
-  	vec4(0.0006,-0.0006,0.05,0.0003),
-  	vec4(-0.0006,0.0006,0.05,0.0003),
-  	vec4(-0.0006,-0.0006,0.05,0.0003)
-);
 struct paralight{
 	vec3 vec;
 };
@@ -61,6 +50,35 @@ int check_vec(vec3 v){
 float specular_value(float specular_val){
 	return mat.y*pow(specular_val,100*mat.y);//mat.w
 }
+float linstep(float low, float high, float v){
+    return clamp((v-low)/(high-low), 0.0, 1.0);
+}
+
+float parallellight_visibility(vec3 N,vec4 pos,vec3 light_v,int i){
+
+	vec4 LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]*pos;
+	LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0	
+	float visibility=0.0;
+	if(LVP_pos.x<=1.0&&LVP_pos.x>=0.0&&
+		LVP_pos.y<=1.0&&LVP_pos.y>=0.0){//within the shadow texture	
+
+		float depth=texture(depthMaps,vec3(LVP_pos.xy,parallellight_shadow[i]-1)).x;
+			
+		float del=depth-LVP_pos.z;	
+		float bias=0.0002*tan(acos(dot(N,light_v)));
+		bias=-clamp(bias,0.0,0.0002);
+
+		if(del>bias){	
+			visibility=1.0;
+		}else{
+			visibility=0.1;
+		}
+	}else{
+		visibility=1.0;
+	}
+	
+	return visibility;
+}
 vec3 point_light(vec3 N,vec4 pos){
 	vec3 total_light=vec3(0,0,0);
     vec3 light_v,reflect_v;
@@ -96,7 +114,6 @@ vec3 point_light(vec3 N,vec4 pos){
 				visibility=0.0;
 
    	 			z_val=texture(pointdepthMaps,vec3(LVP_pos.xy,6*(pointlight_shadow[i]-1)+n)).x;//shadowMapDepth
-   	 			//z_val=texture(cubedepthMap[pointlight_shadow[i]],-normalize(light_v)).x;
 
 				del=z_val-LVP_pos.z;	
 				bias=biasval;//*tan(acos(dot(N,light_v)))
@@ -125,10 +142,6 @@ vec3 parallel_light(vec3 N,vec4 pos){
     float light_val;
     float specular_val;
     
-    vec4 LVP_pos;
-    vec2 t;	
-    float z_val;
-	float bias,del;
 	float visibility;
     for(int i=0;i<parallellight_num;i++){   	 	
 		//diffuse
@@ -144,30 +157,10 @@ vec3 parallel_light(vec3 N,vec4 pos){
 		
 		if(light_val<0.0)light_val=0.0;
 		if(parallellight_shadow[i]>0){
-			if(((dot(vert.Normal,light_v)/(length(vert.Normal)*length(light_v)))<0.03)){
+			if(((dot(vert.Normal,light_v)/(length(vert.Normal)*length(light_v)))<0.05)){
 				visibility=0.1;
 			}else{
-				LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]*pos;
-   				LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0
-   				visibility=0.0;
-   				if(LVP_pos.x<=1.0&&LVP_pos.x>=0.0&&LVP_pos.y<=1.0&&LVP_pos.y>=0.0){//within the 
-   					for(int j=0;j<9;j++){//                                     shadow texture
-   	 					t=LVP_pos.xy+PD[j].xy;//LVP_pos.w 	
-   	 					z_val=texture(depthMaps,vec3(t,parallellight_shadow[i]-1)).x;
-   	 			
-						del=z_val-LVP_pos.z;	
-						bias=0.0002*tan(acos(dot(N,light_v)));
-						bias=-clamp(bias,0.0,0.0002);
-						bias-=PD[j].w;
-						if((t.x<=1.0&&t.y<=1.0&&t.x>=0.0&&t.y>=0.0)){//in depth map
-							if((del>bias)){				
-				 				visibility+=PD[j].z;
-    						}
-						}		
-					}
-				}else{
-					visibility=1.0;
-				}
+				visibility=parallellight_visibility(N,pos,light_v,i);
 			}
 		}else{
 			visibility=1.0;		
@@ -186,11 +179,13 @@ vec3 light_scattering(vec4 pos){
 	float scatter_value;
 	float per_scatter;
 	int sample_num;
+	
+	vec3 interpolated_sample;
+	vec3 delvec;
 	for(int i=0;i<parallellight_num;i++){ 	
 		if(parallellight_shadow[i]>0){
-			scatter_value=0.0;
-			vec3 interpolated_sample;	
-			vec3 delvec=pos.xyz-camera_pos;
+			scatter_value=0.0;		
+			delvec=pos.xyz-camera_pos;
 			float len=length(delvec);
 			if(len>100)len=100;
 			delvec=normalize(delvec);
@@ -198,13 +193,13 @@ vec3 light_scattering(vec4 pos){
 			per_scatter=0.2/sample_num;
 			for(int j=0;j<sample_num;j++){
 				interpolated_sample=camera_pos+(len*delvec)/100*(sample_num+j);
+				
 				LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]
 					*vec4(interpolated_sample,1.0);
 				LVP_pos/=LVP_pos.w;
 			
 				t=LVP_pos.xy;	
-   	 			//z_val=(texture(depthMaps,vec3(t,parallellight_shadow[i]-1)).x);//shadowMapDepth/LVP_pos.w
-   	 			z_val=(texture(depthMaps,vec3(t,parallellight_shadow[i]-1)).x);//shadowMapDepth/LVP_pos.w
+   	 			z_val=(texture(depthMaps,vec3(t,parallellight_shadow[i]-1)).x);
 				del=z_val-LVP_pos.z;	
 		
 				if((t.x<=1.0&&t.y<=1.0&&t.x>=0.0&&t.y>=0.0)){//in depth map

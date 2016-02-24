@@ -48,9 +48,6 @@ void UI::Parse_Header(std::ostream &os){
 	os<<"	"<<"Name:"<<std::endl;
 	os<<"		"<<get_name()<<std::endl;
 }
-UIObject* UI::create_UIObject() {
-	return new UI();
-}
 void UI::update() {
 
 }

@@ -16,7 +16,9 @@ public:
 	UI(std::string script_path);
 	virtual ~UI();
 
-	virtual UIObject* create_UIObject();
+	virtual UIObject* create_UIObject(){
+		return new UI();
+	}
 	virtual std::string get_type()const{
 		return "UI";
 	}

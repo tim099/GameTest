@@ -4,8 +4,10 @@
 class CubeModel{
 public:
 	CubeModel(double size=0.5);
+	CubeModel(double sx,double sy,double sz);
 	virtual ~CubeModel();
 	static Model *CubeSide(int i,double size);
+	static Model *CubeSide(int i,double sx,double sy,double sz);
 	Model* cube[6];
 protected:
 

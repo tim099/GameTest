@@ -8,7 +8,7 @@ CreateUIObject:
 	Name:
 		ButPanel
 	Position:
-		0.112447 0.993175
+		0.0941455 0.998632
 	Texture:
 		UI/UI/panel1
 	Width:

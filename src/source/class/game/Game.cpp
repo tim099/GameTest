@@ -28,7 +28,7 @@ Game::~Game() {
 }
 void Game::initialize(){
 	window=create_window();
-	window->render_on();
+	//window->render_on();
 	draw = new Draw();
 	draw->register_cur();
 	UIObj_Creator=new UI::UIObjectCreator();

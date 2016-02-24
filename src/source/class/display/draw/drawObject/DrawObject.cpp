@@ -128,6 +128,8 @@ void DrawObject::draw_object(Shader *shader) {
 	if (texture) {
 		if(texture->format==GL_RGBA){
 			glEnable(GL_BLEND);
+			//glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
+			//glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_SRC_ALPHA);
 			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 			shader->Enable(AlphaTexture);
 		}

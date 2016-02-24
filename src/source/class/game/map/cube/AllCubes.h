@@ -1,0 +1,15 @@
+#ifndef SOURCE_CLASS_GAME_MAP_CUBE_ALLCUBES_H_
+#define SOURCE_CLASS_GAME_MAP_CUBE_ALLCUBES_H_
+#include "class/tim/map/MapContainer.h"
+class Cube;
+class AllCubes {
+public:
+	AllCubes();
+	virtual ~AllCubes();
+	Cube* get_cube(unsigned char type);
+protected:
+	void push(Cube* cube);
+	Tim::MapContainer<unsigned char,Cube>cubes;
+};
+
+#endif /* SOURCE_CLASS_GAME_MAP_CUBE_ALLCUBES_H_ */

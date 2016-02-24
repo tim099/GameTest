@@ -49,7 +49,7 @@ void Draw::gen_shadow(Shader *shaderShadowMapping){
 	}
 	lightControl->gen_shadow(shaderShadowMapping,camera,this);
 }
-void Draw::draw3D(Shader *shader,Shader *shaderShadowMapping,FrameBuffer *FBO){
+void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,FrameBuffer *FBO){
 	if(!Enable3D){
 		shader->active_shader();
 		FBO->bind_buffer();
@@ -57,9 +57,8 @@ void Draw::draw3D(Shader *shader,Shader *shaderShadowMapping,FrameBuffer *FBO){
 		return;
 	}
 	gen_shadow(shaderShadowMapping);
-
+	///*
 	shader->active_shader();
-	//return;
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 	//sent uniform
@@ -67,9 +66,21 @@ void Draw::draw3D(Shader *shader,Shader *shaderShadowMapping,FrameBuffer *FBO){
 
 	camera->sent_uniform(shader->programID, FBO->aspect());
 	sent_shadow_uniform(shader);
-    for(unsigned i=0;i<d_objs.size();i++){
+    for(unsigned i=0;i<d_objs.size();i++){//100
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
+	//*/
+	shaderWater->active_shader();
+	//sent uniform
+	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shaderWater, 30, "skybox");
+
+	camera->sent_uniform(shaderWater->programID, FBO->aspect());
+	sent_shadow_uniform(shaderWater);
+
+    //for(unsigned i=10;i<d_objs.size();i++){
+    	//d_objs.at(i)->draw_object(shaderWater);//draw all obj
+    //}
+
 	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
 			glm::inverse(camera->view_matrix(ViewPort::get_cur_window_aspect())));
 }

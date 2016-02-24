@@ -26,6 +26,8 @@ public:
 
 	void set_pos(glm::vec3 pos);
 	glm::vec3 get_pos()const;
+
+	void set_scale(glm::vec3 scale);
 protected:
 	/*
 	 * need a normalize axis
@@ -36,12 +38,17 @@ protected:
 
 	glm::vec3 pos;
 	glm::vec3 r;
+	glm::vec3 scale;
+
 	//for performance improvement(but take more space
 	bool updated;
 	bool rotated_x,rotated_y,rotated_z;
+
 	glm::quat quat_x,quat_y,quat_z;
+
 	glm::mat4 r_mat;
 	glm::mat4 pos_matrix;
+
 };
 
 #endif /* POSITION_H_ */

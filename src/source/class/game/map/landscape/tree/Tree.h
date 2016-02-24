@@ -11,6 +11,16 @@ class Tree : public Landscape{
 public:
 	Tree();
 	virtual ~Tree();
+	virtual void landscape_pre_init();
+	virtual Landscape* create_landscape(){
+		return new Tree();
+	}
+	virtual std::string get_name()const{
+		return "Tree";
+	}
+	virtual bool draw_cube(){
+		return true;
+	}
 	virtual void draw();
 	Position *pos;
 	unsigned char tree_type;

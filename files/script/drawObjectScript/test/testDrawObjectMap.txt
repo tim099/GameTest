@@ -100,20 +100,13 @@ DrawObject:
 
 DrawObject:
 	Name:
-		pinetree
+		plane
 	ModelBuffer:
-		landscape/pinetree
+		test/plane
 	Texture:
-		landscape/pinetree
-
-#load_end
-DrawObject:
-	Name:
-		broadleaftree
-	ModelBuffer:
-		landscape/broadleaftree
-	Texture:
-		landscape/pinetree
+		test/doge
+	NormalMap:	
+		test/NormalTexture
 
 #load_end
 #END

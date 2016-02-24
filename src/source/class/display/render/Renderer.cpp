@@ -42,6 +42,7 @@ Renderer::~Renderer() {
 	delete FBO2;
 	delete shader2D;
 	delete shaderShadowMapping;
+	delete shaderWater;
 	for (unsigned i = 0; i < shaders.size(); i++) {
 		delete shaders.at(i);
 	}
@@ -59,6 +60,11 @@ void Renderer::creat_shaders() {
 	shaderShadowMapping->LoadShader("files/shader/shadow/MultiShadowCommon.vert",
 			"files/shader/shadow/multiShadowMapping/MultiShadowMapping.geo",
 			"files/shader/shadow/MultiShadowCommon.frag");
+
+	shaderWater=new Shader();
+	shaderWater->LoadShader("files/shader/water/water.vert",
+				"files/shader/water/water.geo",
+				"files/shader/water/water.frag");
 
 	shader = new Shader("Basic");
 	shader->LoadShader("files/shader/basic/Basic.vert",
@@ -96,7 +102,7 @@ void Renderer::render() {
 
 	draw->update();
 
-	draw->draw3D(shader,shaderShadowMapping,FBO);
+	draw->draw3D(shader,shaderWater,shaderShadowMapping,FBO);
 
 	draw->draw2D(shader2D,FBO2);
 

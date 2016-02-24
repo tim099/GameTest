@@ -32,14 +32,16 @@ public:
 
 	void draw_map(Camera *camera,Tim::ThreadPool* threadpool);
 
-	void max_y_alter(int val,Tim::ThreadPool* threadpool);
+	void display_height_alter(int val,Tim::ThreadPool* threadpool);
 	void update_map(glm::ivec3 pos);
 	Tim::Mutex* createMapObjectMutex;
-	int range,max_y;
+	int range,display_height;
 protected:
 	void gen_display_map_seg();
 	Tim::Array2D<MapDrawObject*>*dmaps;
+
 	CubeModel *cube;
+	CubeModel *water_cube;
 	Map *map;
 	Position *pos;
 

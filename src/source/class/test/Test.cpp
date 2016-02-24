@@ -4,11 +4,11 @@
 #include "class/display/draw/texture/DrawTexture.h"
 #include "class/display/texture/texture2D/drawDataEX/SobelData.h"
 #include "class/display/texture/texture2D/drawDataEX/ColorAlter.h"
-#include "class/display/font/RenderString.h"
 #include "class/test/TestTask.h"
 #include "class/input/mouse/selectable/SelectableControl.h"
 #include "class/display/UI/button/pictureButton/PictureButton.h"
 #include "class/game/map/TaskGenMap.h"
+#include "class/game/map/cube/CubeEX.h"
 #include <iostream>
 #include <cstdio>
 #include <cmath>
@@ -27,13 +27,15 @@ Test::Test() {
 	end = false;
 	stop = false;
 	display_time = false;
+
+	thread_pool = new Tim::ThreadPool(8);
 	position_pool = new Tim::ObjPool<Position>(100);
 	position_pool->register_cur();
 	controller_system = new ControllerSystem();
 	controller_system->push(new SelectableControl());
 
-	map = new Map();
-	map->gen_map(glm::ivec3(400,250,400),time(NULL));
+
+
 	//map->load_map("files/maps/map011");
 
 	window = new Window(glm::ivec2(1366, 733), "Age of Cube", false); //must before any draw obj
@@ -45,6 +47,7 @@ Test::Test() {
 	UIObj_Creator->register_cur();
 	textures = new AllTextures("files/script/loadTextureScript/loadAllTexture.txt");
 	textures->register_cur();	//set as cur using textures
+
 	modelBuffers = new AllModelBuffers(
 			"files/script/modelBufferScript/loadAllModelBuffers.txt");
 	modelBuffers->register_cur();
@@ -71,18 +74,23 @@ Test::Test() {
 	draw->set_camera(camera);
 	draw->set_lightControl(lightControl);
 	creat_light();
+
+	map = new Map();
+	map->gen_map(glm::ivec3(200,150,200),0);//0time(NULL)
+	dmap = new DisplayMap(map);
+	dmap->update_whole_map();
+
 	//prepare_draw_obj();
 
 
 
-	render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
-	thread_pool = new Tim::ThreadPool(8);
-	render_task = new RenderTask(renderer);
+	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
+
+	//render_task = new RenderTask(renderer);
 
 	//thread_pool->push_task(new TaskGenMap(map,glm::ivec3(400,250,400),time(NULL)));
 
-	dmap = new DisplayMap(map);
-	dmap->update_whole_map();
+
 
 	//window->render_off(); //release window for other thread
 
@@ -91,9 +99,10 @@ Test::Test() {
 }
 Test::~Test() {
 	//window->render_on();
-	delete render_task;
-	thread_pool->Terminate();
-	render_thread->Terminate();
+
+	//delete render_task;
+
+	//render_thread->Terminate();
 	delete UI;
 	delete renderer;
 	delete camera;
@@ -113,6 +122,7 @@ Test::~Test() {
 	delete window;
 	delete controller_system;
 	delete position_pool;
+	thread_pool->Terminate();
 
 }
 void Test::handle_signal() {
@@ -215,10 +225,19 @@ void Test::handle_input() {
 	if (input->keyboard->pressed('V')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
 		if (map->get_cube_type(pos.x, pos.y, pos.z)) {
+			Cube *cube=map->get_cube(pos.x,pos.y,pos.z);
+			std::cout<<"cube name="<<cube->get_name()<<std::endl;
+			if(cube){
+				CubeEX* cubeEX=cube->get_cubeEX();
+				if(cubeEX){
+					std::cout<<"cubeEX name="<<cubeEX->get_name()<<std::endl;
+				}
+			}
 			if (map->set_cube_type(pos.x, pos.y, pos.z, 0)) {
 				dmap->update_map(pos);
 			}
 		}
+
 	}
 
 	if (input->keyboard->get(GLFW_KEY_LEFT)) {
@@ -280,10 +299,10 @@ void Test::handle_input() {
 		camlight->color = glm::vec3(((rand() % 10000) / 4000.0),
 				((rand() % 10000) / 4000.0), ((rand() % 10000) / 4000.0));
 	}
-	if (input->keyboard->pressed('I')) {
+	if (input->keyboard->get('I')) {
 		dmap->range += 1;
 	}
-	if (input->keyboard->pressed('K')) {
+	if (input->keyboard->get('K')) {
 		if (dmap->range > 1)
 			dmap->range -= 1;
 		else
@@ -303,10 +322,10 @@ void Test::handle_input() {
 		camera->move(glm::vec3(0, -0.03, 0));
 	}
 	if (input->keyboard->pressed_char('w')) {
-		dmap->max_y_alter(1, thread_pool);
+		dmap->display_height_alter(1, thread_pool);
 	}
 	if (input->keyboard->pressed_char('s')) {
-		dmap->max_y_alter(-1, thread_pool);
+		dmap->display_height_alter(-1, thread_pool);
 	}
 	if (input->keyboard->pressed('A')) {
 		camera->move_side(0.04f);
@@ -331,13 +350,14 @@ void Test::update_obj_pos(Camera *camera) {
 
 	sunpos.set_pos(sun_pos);
 	drawObjects->get("test/sun")->push_temp_drawdata(new DrawDataObj(&sunpos));
-	float tiger_ry = 360.0f * ((float) timeloop / loop_time);
 
-	static Position tiger_pos;
-	tiger_pos.init(glm::vec3(33.0, 101.47, 26.0),
-			glm::vec3(0, tiger_ry, 0));
-	drawObjects->get("test/tiger")->push_temp_drawdata(
-			new DrawDataObj(&tiger_pos));
+	//float tiger_ry = 360.0f * ((float) timeloop / loop_time);
+	//static Position tiger_pos;
+	//tiger_pos.init(glm::vec3(33.0, 101.47, 26.0),
+			//glm::vec3(0, tiger_ry, 0));
+	//tiger_pos.set_pos(camera->look_at);
+	//drawObjects->get("test/tiger")->push_temp_drawdata(
+			//new DrawDataObj(&tiger_pos));
 	static Position cam_look_at;
 	cam_look_at.init(camera->look_at, glm::vec3(0, camera->look_ry(), 0));
 	drawObjects->get("test/look_at")->push_temp_drawdata(
@@ -373,8 +393,8 @@ void Test::creat_light() {
 
 }
 void Test::draw_start() {
-	render_thread->push_task(render_task);
-	render_thread->start();
+	//render_thread->push_task(render_task);
+	//render_thread->start();
 }
 void Test::update() {
 	//=======================logical operation and input part==========================
@@ -454,7 +474,7 @@ void Test::Mainloop() {
 	while (!window->WindowShouldClose() && !end) {
 		update();
 	}
-	UI->Save_script("files/script/UIscript/saveUI.txt");
+	//UI->Save_script("files/script/UIscript/saveUI.txt");
 	//terminate();
 
 }

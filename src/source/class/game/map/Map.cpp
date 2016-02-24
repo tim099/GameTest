@@ -1,7 +1,14 @@
 #include "class/game/map/Map.h"
 #include "class/game/map/MapSeg.h"
-#include "class/game/map/landscape/Landscape.h"
-#include "class/game/map/landscape/tree/Tree.h"
+
+#include "class/game/map/cube/Cube.h"
+#include "class/game/map/cube/CubeEX.h"
+#include "class/game/map/cube/CubeOutOfEdge.h"
+#include "class/game/map/cube/CubeNull.h"
+
+#include "class/game/map/cube/AllCubes.h"
+#include "class/game/map/landscape/LandscapeCreator.h"
+#include "class/game/map/cube/water/Water.h"
 
 #include <cstdio>
 #include <ctime>
@@ -14,11 +21,19 @@ Map::Map() {
 	seed=0;
 	times=0;
 	ground_height=150;
-	Cube::Cube_init();
+	cube_out_of_edge=new CubeOutOfEdge();
+	cube_null=new CubeNull();
+	all_cubes=new AllCubes();
+	landscapeCreator=new LandscapeCreator();
+	register_cur();
 }
 Map::~Map() {
 	if(map)delete map;
 	if(map_segs)delete map_segs;
+	delete cube_out_of_edge;
+	delete cube_null;
+	delete all_cubes;
+	delete landscapeCreator;
 }
 void Map::gen_map_seg(){
 	static const int size_per_sig=15;
@@ -70,7 +85,9 @@ void Map::gen_cube_type(int i,int j,int k,
 	if(j<stone_height*ground_height){
 		type=Cube::stone;
 	}else{
-		if(wetness<0.45&&
+		if(noise.noise(x,y,z,0.01)<0.2){
+			type=Cube::stone;
+		}else if(wetness<0.45&&
 				y>stone_height+0.05*wetness){//0.1*type_val+
 			type=Cube::sand;
 		}else{
@@ -86,7 +103,8 @@ void Map::gen_cube_type(int i,int j,int k,
 	}else if(type==Cube::sand){
 		gen_sand(type,i,j,k);
 	}
-	map->get(i,j,k).set(type);
+	//map->get(i,j,k).set(type);
+	map->get(i,j,k)=type;
 }
 void Map::gen_land_scape(int i,int j,int k,
 		const double &stone_height,const double &height,
@@ -99,7 +117,7 @@ void Map::gen_land_scape(int i,int j,int k,
 		type_val+=0.2*noise.noise(x,y,z,0.6);
 		type_val+=0.1*noise.noise(x,y,z,1.0);
 		type_val+=0.1*get_wetness(i,k,height);
-		if(type_val>0.65)push_CubeEX(i,j,k,new Tree());
+		if(type_val>0.65)push_CubeEX(i,j,k,landscapeCreator->create("Tree"));
 	}
 
 }
@@ -110,7 +128,8 @@ void Map::gen_map_shape(){
 			height=get_height(i,k);
 			for (int j = 0; j < map_size.y; j++) {
 				if (j < ground_height * height) {
-					map->get(i, j, k).set(Cube::startcube);
+					//map->get(i, j, k).set(Cube::startcube);
+					map->get(i,j,k)=Cube::startcube;
 				}
 			}
 		}
@@ -128,12 +147,28 @@ void Map::gen_map_cube_type(){
 			wetness=get_wetness(i,k,height);
 
 			for(int j=0;j<map_size.y;j++){
-				if(map->get(i,j,k).type>=Cube::startcube){
+				if(map->get(i,j,k)>=Cube::startcube){//.type
 					gen_cube_type(i,j,k,stone_height,height,wetness);
 				}
 			}
 		}
 	}
+}
+void Map::gen_map_water(){
+	///*
+	int water_height=ground_height*0.5;
+	//double type_val;
+	//double height;
+	for(int i=0;i<map_size.x;i++){
+		for(int k=0;k<map_size.z;k++){
+			for(int j=0;j<map_size.y;j++){
+				if(j<water_height&&!map->get(i,j,k)){
+					push_CubeEX(i,j,k,new Water());
+				}
+			}
+		}
+	}
+	//*/
 }
 void Map::gen_map_land_scape(){
 	double stone_height;
@@ -155,6 +190,7 @@ void Map::gen_map_land_scape(){
 void Map::regen_map(){
 	gen_map_shape();
 	gen_map_cube_type();
+	gen_map_water();
 	gen_map_land_scape();
 	times++;
 }
@@ -170,7 +206,8 @@ void Map::gen_map(glm::ivec3 _map_size,unsigned _seed,int _ground_height){
 		return;
 	}
 	if(map)delete map;
-	map=new Tim::Array3D<Cube>(map_size.x,map_size.y,map_size.z);
+	//map=new Tim::Array3D<Cube>(map_size.x,map_size.y,map_size.z);
+	map=new Tim::Array3D<unsigned char>(map_size.x,map_size.y,map_size.z);
 	gen_map_seg();
 
 	noise.init(seed);
@@ -198,19 +235,15 @@ void Map::load_map(std::string path){
 	}
 	srand(time(NULL));
 	if(map)delete map;
-	map=new Tim::Array3D<Cube>(map_size.x,map_size.y,map_size.z);
+	//map=new Tim::Array3D<Cube>(map_size.x,map_size.y,map_size.z);
+	map=new Tim::Array3D<unsigned char>(map_size.x,map_size.y,map_size.z);
 	gen_map_seg();
 	int type;
 	for(int i=0;i<map_size.x;i++){
 		for(int j=0;j<map_size.y;j++){
 			for(int k=0;k<map_size.z;k++){
 				fscanf(fop,"%d",&type);
-				if(type){
-					type=rand()%3+1;
-					map->get(i,j,k).set(type);
-				}else{
-					map->get(i,j,k).set(type);
-				}
+				map->get(i,j,k)=type;
 			}
 		}
 	}
@@ -222,23 +255,46 @@ MapSeg* Map::get_map_seg(int x,int z){
 	return &(map_segs->get(x,z));
 }
 void Map::push_CubeEX(int x,int y,int z,CubeEX *cube){
-	map->get(x,y,z).set(Cube::CubeEX);
+	if(map->get(x,y,z)!=Cube::cubeNull){
+		std::cerr<<"Map::push_CubeEX fail ,cube already exist"<<std::endl;
+		delete cube;
+		return;
+	}
+	map->get(x,y,z)=cube->get_type();//.set(Cube::CubeEX);
 	get_map_seg_by_pos(x,z)->push_cube(glm::ivec3(x,y,z),cube);
 }
-bool Map::set_cube_type(int x,int y,int z,int val){
+bool Map::set_cube_type(int x,int y,int z,int type){
 	if(x<0||x>=map_size.x||y<0||y>=map_size.y||z<0||z>=map_size.z){
 		std::cout<<"Map::set_cube_type out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return false;
 	}
-	map->get(x,y,z).set(val);
+	if(map->get(x,y,z)==Cube::cubeEX){//.type
+		get_map_seg_by_pos(x,z)->remove_cube(glm::ivec3(x,y,z));
+	}
+	map->get(x,y,z)=type;//.set(type);
 	return true;
+}
+Cube* Map::get_cube(int x,int y,int z){
+	int type=get_cube_type(x,y,z);
+	if(type==-1){
+		return cube_out_of_edge;
+	}else if(type==Cube::cubeNull){
+		return cube_null;
+	}
+	Cube *cube=0;
+	if(type>=Cube::startcube){
+		cube=all_cubes->get_cube(type);
+	}else{
+		cube=get_map_seg_by_pos(x,z)->get_cube(x,y,z);
+	}
+	return cube;
 }
 int Map::get_cube_type(const int &x,const int &y,const int &z)const{
 	if(x<0||x>=map_size.x||y<0||y>=map_size.y||z<0||z>=map_size.z){
 		//std::cout<<"get out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return -1;
 	}
-	return map->get(x,y,z).type;
+	return map->get(x,y,z);//.type
 	//return map->arr[map->size.y*map->size.z*pos.x+map->size.z*pos.y+pos.z].type;//for better performance
 }
 void Map::update(){

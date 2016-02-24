@@ -67,17 +67,17 @@ double PerlinNoise::noise(double x, double y, double z,double sample_range) {
 		//std::cout<<"error:"<<A<<","<<AA<<","<<AB<<","<<B<<","<<BA<<","<<B<<","<<BB<<std::endl;
 	//}
 	// Add blended results from 8 corners of cube
-	double a = lerp(v, lerp(u, grad(p[AA], x, y, z),  // AND ADD
-	grad(p[BA], x - 1, y, z)), // BLENDED
-	lerp(u, grad(p[AB], x, y - 1, z),  // RESULTS
-	grad(p[BB], x - 1, y - 1, z)));
+	double a = lerp(v,
+			lerp(u, grad(p[AA], x, y, z), grad(p[BA], x - 1, y, z)),
+			lerp(u, grad(p[AB], x, y - 1, z), grad(p[BB], x - 1, y - 1, z))
+	);
 
-	double b = lerp(v, lerp(u, grad(p[AA + 1], x, y, z - 1),  // CORNERS
-	grad(p[BA + 1], x - 1, y, z - 1)), // OF CUBE
-			lerp(u, grad(p[AB + 1], x, y - 1, z - 1),
-					grad(p[BB + 1], x - 1, y - 1, z - 1)));
+	double b = lerp(v,
+			lerp(u, grad(p[AA + 1], x, y, z - 1), grad(p[BA + 1], x - 1, y, z - 1)),
+			lerp(u, grad(p[AB + 1], x, y - 1, z - 1), grad(p[BB + 1], x - 1, y - 1, z - 1))
+	);
 	double result=lerp(w,a,b);
-	return (result+1.0)/2.0;//convert to positive space
+	return (result+1.0)/2.0;//convert to range 0.0~1.0
 }
 
 double PerlinNoise::fade(double t) {
@@ -91,6 +91,7 @@ double PerlinNoise::lerp(double t, double a, double b) {
 double PerlinNoise::grad(int hash, double x, double y, double z) {
 	int h = hash & 15;
 	// Convert lower 4 bits of hash inot 12 gradient directions
-	double u = h < 8 ? x : y, v = h < 4 ? y : h == 12 || h == 14 ? x : z;
+	double u = h < 8 ? x : y;
+	double v = h < 4 ? y : ((h == 12 || h == 14) ? x : z);
 	return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }

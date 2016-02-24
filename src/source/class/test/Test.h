@@ -66,10 +66,11 @@ private:
 
 	Renderer *renderer;
 	DisplayMap *dmap;
-	RenderTask *render_task;
+	//RenderTask *render_task;
+
 	Map *map;
 	UI::UI *UI;
-	Tim::Thread *render_thread;
+	//Tim::Thread *render_thread;
 	Tim::ThreadPool *thread_pool;
 	ControllerSystem *controller_system;
 	UI::UIObjectCreator *UIObj_Creator;

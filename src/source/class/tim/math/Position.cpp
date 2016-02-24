@@ -38,6 +38,10 @@ glm::vec3 Position::get_r() const {
 glm::vec3 Position::get_pos() const {
 	return pos;
 }
+void Position::set_scale(glm::vec3 _scale){
+	scale=_scale;
+	updated = true;
+}
 void Position::init(const Position &p) {
 	init(p.pos, p.r, p.parent_pos);
 }
@@ -64,7 +68,7 @@ void Position::init(glm::vec3 _pos, glm::vec3 _r, Position *_parent_pos) {
 	}else{
 		rotated_z=false;
 	}
-
+	scale=glm::vec3(1,1,1);
 }
 glm::quat Position::get_quaternion(glm::vec3 axis, float angle) {
 	//glm::vec3 axis=glm::normalize(_axis);
@@ -84,11 +88,14 @@ glm::mat4 Position::PosMat() {
 		return pos_matrix;
 
 	pos_matrix = glm::mat4(1.0f);
+
 	if (parent_pos) {
 		pos_matrix *= parent_pos->PosMat();
 	}
+	if(pos!=glm::vec3(0,0,0)){
+		pos_matrix *= glm::translate(pos);
+	}
 
-	pos_matrix *= glm::translate(pos);
 	if(rotated_x||rotated_y||rotated_z){
 		glm::quat total;
 		if (rotated_x) {
@@ -109,7 +116,9 @@ glm::mat4 Position::PosMat() {
 	if(r.x!=0.0||r.y!=0.0||r.z!=0.0){
 		pos_matrix *= r_mat;
 	}
-
+	if(scale!=glm::vec3(1,1,1)){
+		pos_matrix *=glm::scale(scale);
+	}
 
 	updated = false;
 	return pos_matrix;

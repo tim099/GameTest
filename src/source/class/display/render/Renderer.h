@@ -29,6 +29,7 @@ protected:
 	 * use FBO depth buffer data to get mouse position in world position
 	 */
 	Shader *shader;
+	Shader *shaderWater;
 	Shader *shaderShadowMapping;
 
 	Shader2D *shader2D;

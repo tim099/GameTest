@@ -1,3 +1,12 @@
+/*
+ * Age Of Cube version -1.0
+ * Copyright (C) 2016, Tim Yeh<tim11251994@gmail.com>
+ *
+ * This program is free software;
+ * you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation;
+ */
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBES_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBES_H_
 #include "class/game/Game.h"

@@ -71,7 +71,7 @@ float parallellight_visibility(vec3 N,vec4 pos,vec3 light_v,int i){
 		if(del>bias){	
 			visibility=1.0;
 		}else{
-			visibility=0.1;
+			visibility=0.4;
 		}
 	}else{
 		visibility=1.0;

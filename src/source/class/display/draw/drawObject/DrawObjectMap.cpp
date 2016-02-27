@@ -8,7 +8,18 @@ DrawObjectMap::DrawObjectMap(std::string script_path) {
 	Load_script(script_path);
 }
 DrawObjectMap::~DrawObjectMap() {
+	Draw* cur_draw=Draw::get_cur_object();
 
+	if(!cur_draw){
+		std::cerr<<"DrawObjectMap::~DrawObjectMap(), cur Draw is not exist!!"<<std::endl;
+		return;
+	}
+	std::map<std::string, DrawObject*> *map=objs.get_map();
+	std::map<std::string, DrawObject*>::iterator it = map->begin();
+	while (it != map->end()) {
+		cur_draw->remove((it->second));
+		it++;
+	}
 }
 std::string DrawObjectMap::get_name()const{
 	return name;
@@ -44,12 +55,20 @@ void DrawObjectMap::Parse_DrawObject(std::istream &is){
 	bool have_mat=false;
 	bool draw_shadow=true;
 	glm::vec4 mat;
+	Draw* cur_draw=Draw::get_cur_object();
+
+	if(!cur_draw){
+		std::cerr<<"DrawObjectMap::Parse_DrawObject cur Draw is not exist!!"<<std::endl;
+		return;
+	}
 	while(Tim::String::get_line(is, line, true, true)){
 		if(line=="#load_end"){
 			DrawObject* d_obj=new DrawObject(modelbuffer,texture,normalmap);
 			if(have_mat)d_obj->mat=mat;
 			d_obj->draw_shadow=draw_shadow;
 			push(name,d_obj);
+
+			cur_draw->push(d_obj);
 			//create
 			break;
 		}else if(line=="Name:"){

@@ -11,7 +11,9 @@ FolderPath:
 Map:
 	ScriptPath:
 		test/TestModelBufferMap.txt
-
+Map:
+	ScriptPath:
+		landscape/landscapeMap.txt
 
 
 

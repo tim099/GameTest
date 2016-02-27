@@ -97,4 +97,16 @@ DrawObject:
 		test/test3
 
 #load_end
+
+DrawObject:
+	Name:
+		plane
+	ModelBuffer:
+		test/plane
+	Texture:
+		test/doge
+	NormalMap:	
+		test/NormalTexture
+
+#load_end
 #END

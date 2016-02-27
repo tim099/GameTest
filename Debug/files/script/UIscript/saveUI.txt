@@ -8,7 +8,7 @@ CreateUIObject:
 	Name:
 		ButPanel
 	Position:
-		0.0978059 0.991811
+		0.0941455 0.998632
 	Texture:
 		UI/UI/panel1
 	Width:
@@ -24,7 +24,7 @@ CreateUIObject:
 	Name:
 		default
 	Position:
-		0.0106881 -0.00863576
+		0.00995605 -0.0113643
 	Texture:
 		UI/UI/button2
 	Width:
@@ -76,7 +76,7 @@ CreateUIObject:
 	Name:
 		Basic
 	Position:
-		0.301171 -0.00317878
+		0.304099 -0.00727153
 	Texture:
 		UI/UI/button2
 	Width:
@@ -102,7 +102,7 @@ CreateUIObject:
 	Name:
 		default
 	Position:
-		0.149781 -0.0095498
+		0.16369 -0.0109142
 	Texture:
 		UI/UI/button2
 	Width:

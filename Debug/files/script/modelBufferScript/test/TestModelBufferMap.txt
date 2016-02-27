@@ -35,7 +35,7 @@ ModelBuffer:
 	Path:
 		ico.obj
 	Size:
-		0.05	
+		0.5	
 #load_end
 
 ModelBuffer:
@@ -72,6 +72,15 @@ ModelBuffer:
 		celestialSphere.obj
 	Size:
 		15.0
+#load_end
+
+ModelBuffer:
+	Name:
+		plane
+	Path:
+		plane.obj
+	Size:
+		1.0
 #load_end
 
 #END

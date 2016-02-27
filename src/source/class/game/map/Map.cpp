@@ -278,7 +278,11 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 	if(map->get(x,y,z)==Cube::cubeEX){//.type
 		get_map_seg_by_pos(x,z)->remove_cube(glm::ivec3(x,y,z));
 	}
-	map->get(x,y,z)=type;//.set(type);
+	//unsigned char perv_type=map->get(x,y,z);
+	map->get(x,y,z)=type;
+	//if(Water::is_water(type)||Water::is_water(perv_type)){
+		dp_map->update_water_map(glm::ivec3(x,y,z));
+	//}
 	dp_map->update_map(glm::ivec3(x,y,z));
 	return true;
 }

@@ -26,7 +26,7 @@ uniform vec4 mat;
 uniform mat4 VP;
 
 #include <files/shader/header/light/light>
-#include <files/shader/header/normalMapping>
+#include <files/shader/header/normalMapping.fragh>
 
 vec3 get_tex_color(){
 	if((shaderData&LayerTexture)==0){//not active LayerTexture

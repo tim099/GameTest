@@ -7,7 +7,7 @@ MapDrawObject::MapDrawObject(std::string tex_str,std::string Nor_str){
 }
 MapDrawObject::~MapDrawObject() {
 	delete mapmodel;
-	delete model_buffer;
+	if(model_buffer)delete model_buffer;
 }
 void MapDrawObject::init(std::string tex_str,std::string Nor_str){
 	init_drawObject("",tex_str,Nor_str,true);
@@ -39,10 +39,6 @@ void MapDrawObject::update(){
 	}else{
 		clear_model_buffer();
 	}
-
-
 	draw_map=false;
 }
-void MapDrawObject::update_model(){
-	model_updated=true;
-}
+

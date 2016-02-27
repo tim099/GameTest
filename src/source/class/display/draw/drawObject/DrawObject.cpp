@@ -21,6 +21,7 @@ DrawObject::DrawObject(){
 	NormalMap = 0;
 	draw_shadow = false;
 	layer_texture = 0;
+	alpha_drawobject=false;
 }
 void DrawObject::init_drawObject(std::string _obj_str, std::string _tex_str,
 		std::string _normalTex_str, bool _layer_texture) {
@@ -49,23 +50,26 @@ void DrawObject::init_drawObject(ModelBuffer* _obj, Texture* _texture,
 	draw_shadow = true;
 	layer_texture = _layer_texture;
 	mat = glm::vec4(0.3, 0.4, 0.01, 0.15); //x=diffuse,y=specular_value,z=ambient,w=emissive
-
+	/*
 	Draw* cur_draw=Draw::get_cur_object();
 	if(cur_draw){
 		cur_draw->push(this);
 	}else{
 		std::cerr<<"cur Draw is not exist!!can't initialize DrawObject"<<std::endl;
 	}
+	*/
 }
 DrawObject::~DrawObject() {
 	//std::cout << "delete draw object" << std::endl;
 	clear_temp_drawdata();
+	/*
 	Draw* cur_draw=Draw::get_cur_object();
 	if(cur_draw){
-		Draw::get_cur_object()->remove(this);
+		cur_draw->remove(this);
 	}else{
 		std::cerr<<"cur \"Draw\" object is not exist!!can't remove DrawObject"<<std::endl;
 	}
+	*/
 }
 void DrawObject::update() {
 
@@ -111,8 +115,7 @@ void DrawObject::draw_vec(Shader *shader, std::vector<DrawDataObj*> &data_v) {
 	}
 }
 void DrawObject::draw_shadow_map(Shader *shader) {
-	if (!draw_shadow)
-		return;
+	if (!draw_shadow)return;
 	if(temp_datas.empty())return;
 	model_buffer->vtbuffer->bind_buffer();
 	draw_shadow_vec(shader, temp_datas);
@@ -120,17 +123,17 @@ void DrawObject::draw_shadow_map(Shader *shader) {
 }
 void DrawObject::draw_object(Shader *shader) {
 	if(temp_datas.empty())return;
-	shader->active_shader();
+	//shader->active_shader();
 	model_buffer->bind_buffer(shader);
 	glUniform4f(glGetUniformLocation(shader->programID, "mat"), mat.x, mat.y,
 			mat.z, mat.w);
-
+	if(alpha_drawobject){
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+		//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_DST_ALPHA);
+	}
 	if (texture) {
 		if(texture->format==GL_RGBA){
-			glEnable(GL_BLEND);
-			//glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_DST_ALPHA);
-			//glBlendFunc(GL_ONE_MINUS_DST_ALPHA,GL_SRC_ALPHA);
-			glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 			shader->Enable(AlphaTexture);
 		}
 		if (!layer_texture) { //simple texture
@@ -152,6 +155,9 @@ void DrawObject::draw_object(Shader *shader) {
 	shader->Disable(NormalMapping);
 
 	shader->Disable(AlphaTexture);
-	glDisable(GL_BLEND);
+	if (alpha_drawobject){
+		glDisable(GL_BLEND);
+	}
+
 	//Buffer::disable_all_buffer();
 }

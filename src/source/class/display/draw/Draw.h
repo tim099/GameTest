@@ -36,6 +36,7 @@ public:
 	//update all draw object
 
 	void remove(DrawObject* obj);
+
 	void push(DrawObject* obj);
 	void push(DrawTexture* tex);
 	void push(RenderString* renderStr);
@@ -54,6 +55,7 @@ protected:
 	LightControl* lightControl;
 
 	std::vector<DrawObject*> d_objs;
+	std::vector<DrawObject*> water_d_objs;
 	std::vector<DrawTexture*> d_texs;
 
 	StringRenderer* strRenderer;

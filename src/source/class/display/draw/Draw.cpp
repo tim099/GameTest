@@ -69,18 +69,23 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
     for(unsigned i=0;i<d_objs.size();i++){//100
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
+
+
 	//*/
 	shaderWater->active_shader();
+	float time=glfwGetTime();
+	shaderWater->sent_Uniform("waveTime",time);
+
 	//sent uniform
 	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shaderWater, 30, "skybox");
 
 	camera->sent_uniform(shaderWater->programID, FBO->aspect());
 	sent_shadow_uniform(shaderWater);
-
-    //for(unsigned i=10;i<d_objs.size();i++){
-    	//d_objs.at(i)->draw_object(shaderWater);//draw all obj
-    //}
-
+    for(unsigned i=0;i<water_d_objs.size();i++){//100
+    	//std::cout<<"draw water"<<std::endl;
+    	water_d_objs.at(i)->draw_object(shaderWater);//draw all obj
+    }
+    //glDisable(GL_BLEND);
 	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
 			glm::inverse(camera->view_matrix(ViewPort::get_cur_window_aspect())));
 }
@@ -97,9 +102,36 @@ void Draw::draw_shadow(Shader *shader){
     	d_objs.at(i)->draw_shadow_map(shader);//draw all obj
     }
 }
+void Draw::remove(DrawObject* obj){
+	if(obj->get_type()=="DrawObjectAlpha"){
+		for(unsigned i=0;i<water_d_objs.size();i++){
+			if(water_d_objs.at(i)==obj){
+				water_d_objs.at(i)=water_d_objs.back();
+				water_d_objs.pop_back();
+				return;
+			}
+		}
+	}else{
+		for(unsigned i=0;i<d_objs.size();i++){
+			if(d_objs.at(i)==obj){
+				d_objs.at(i)=d_objs.back();
+				d_objs.pop_back();
+				return;
+			}
+		}
+	}
+
+	std::cerr<<"Draw::remove(DrawObject* obj) fail,can't find obj:"<<obj<<std::endl;
+}
 void Draw::push(DrawObject* obj){
 	d_objsMutex->wait_for_this();
-	d_objs.push_back(obj);
+	if(obj->get_type()=="DrawObjectAlpha"){
+		//std::cout<<"push draw object alpha"<<std::endl;
+		water_d_objs.push_back(obj);
+	}else{
+		d_objs.push_back(obj);
+	}
+
 	d_objsMutex->release();
 }
 void Draw::push(DrawTexture* tex){
@@ -131,10 +163,16 @@ void Draw::update(){
     for(unsigned i=0;i<d_objs.size();i++){
     	d_objs.at(i)->update();
     }
+    for(unsigned i=0;i<water_d_objs.size();i++){
+    	water_d_objs.at(i)->update();
+    }
 }
 void Draw::clear_tmp_data(){
     for(unsigned i=0;i<d_objs.size();i++){
     	d_objs.at(i)->clear_temp_drawdata();
+    }
+    for(unsigned i=0;i<water_d_objs.size();i++){
+    	water_d_objs.at(i)->clear_temp_drawdata();
     }
     while(!d_texs.empty()){
     	delete d_texs.back();
@@ -142,14 +180,4 @@ void Draw::clear_tmp_data(){
     }
     strRenderer->clear();
 }
-void Draw::remove(DrawObject* obj){
-	for(unsigned i=0;i<d_objs.size();i++){
-		if(d_objs.at(i)==obj){
-			d_objs.at(i)=d_objs.back();
-			d_objs.pop_back();
-			return;
-			//delete obj; handle by DrawObjects
-		}
-	}
-	std::cerr<<"Draw::remove(DrawObject* obj) fail,can't find obj:"<<obj<<std::endl;
-}
+

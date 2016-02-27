@@ -15,7 +15,9 @@ public:
 			std::string NormalTex_str = "", bool layer_texture = false);
 	DrawObject();
 	virtual ~DrawObject();
-
+	virtual std::string get_type()const{
+		return "DrawObject";
+	}
 
 	void init_drawObject(std::string obj, std::string tex_str,
 			std::string NormalTex_str, bool layer_texture);
@@ -37,6 +39,7 @@ public:
 	glm::vec4 mat;
 protected:
 	bool layer_texture;
+	bool alpha_drawobject;
 	ModelBuffer *model_buffer;
 	Texture* texture;
 	Texture* NormalMap;

@@ -1,0 +1,30 @@
+#LOAD_DRAWOBJECTMAP_SCRIPT
+
+#HEADER
+
+Name:
+	landscape
+	
+#HEADER_END
+
+DrawObject:
+	Name:
+		pinetree
+	ModelBuffer:
+		landscape/pinetree
+	Texture:
+		landscape/pinetree
+
+#load_end
+
+DrawObject:
+	Name:
+		broadleaftree
+	ModelBuffer:
+		landscape/broadleaftree
+	Texture:
+		landscape/pinetree
+
+#load_end
+
+#END

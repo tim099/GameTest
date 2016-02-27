@@ -14,7 +14,9 @@ public:
 
 
 	//mark the model as updated
-	void update_model();
+	inline void update_model(){
+		model_updated=true;
+	}
 
 
 	//if model_buffer not exist,create the model buffer,else update the model_buffer

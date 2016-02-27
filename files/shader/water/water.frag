@@ -5,10 +5,10 @@
 
 
 void main(){ 
-	vec3 tex_color=vec3(0.5,1,1);//get_tex_color()
+	vec3 tex_color=vec3(0.5,0.75,1);//get_tex_color()
 	vec3 Normal=vert.Normal;//get_normal()vec3(0,1,0)
 	
     vec3 total_light=compute_total_light(Normal,vert.position);
-    float water_alpha=0.8f;
-	color=vec4((total_light)*(0.4*tex_color+0.4f*get_reflect(Normal)),water_alpha);//+reflect_color
+    float water_alpha=0.85f;
+	color=vec4((total_light)*(0.4*tex_color+0.6f*get_reflect(Normal)),water_alpha);//+reflect_color
 }

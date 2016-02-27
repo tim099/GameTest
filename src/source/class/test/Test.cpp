@@ -76,7 +76,7 @@ Test::Test() {
 	creat_light();
 
 	map = new Map();
-	map->gen_map(glm::ivec3(500,150,500),0);//0time(NULL)
+	map->gen_map(glm::ivec3(200,150,200),0);//0time(NULL)
 
 
 

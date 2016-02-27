@@ -158,7 +158,7 @@ vec3 parallel_light(vec3 N,vec4 pos){
 		if(light_val<0.0)light_val=0.0;
 		if(parallellight_shadow[i]>0){
 			if(((dot(vert.Normal,light_v)/(length(vert.Normal)*length(light_v)))<0.05)){
-				visibility=0.1;
+				visibility=0.4;
 			}else{
 				visibility=parallellight_visibility(N,pos,light_v,i);
 			}

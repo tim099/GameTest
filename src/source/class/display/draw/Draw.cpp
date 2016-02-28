@@ -75,7 +75,7 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 	shaderWater->active_shader();
 	float time=glfwGetTime();
 	shaderWater->sent_Uniform("waveTime",time);
-
+	FBO->color_textures.at(0)->sent_uniform(shaderWater,31,"scenedepthtex");
 	//sent uniform
 	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shaderWater, 30, "skybox");
 

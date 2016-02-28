@@ -16,7 +16,7 @@ DisplayMap::DisplayMap(Map *_map) {
 	range = 3;
 	createMapObjectMutex = new Tim::Mutex();
 	cube = new CubeModel(0.5 * Map::CUBE_SIZE);
-	water_cube = new CubeModel(0.5*Map::CUBE_SIZE,0.3*Map::CUBE_SIZE,0.5*Map::CUBE_SIZE);
+	water_cube = new CubeModel(0.5*Map::CUBE_SIZE,0.5*Map::CUBE_SIZE,0.5*Map::CUBE_SIZE);
 	gen_display_map_seg();
 
 	pos = new Position(glm::vec3(0, 0, 0), glm::vec3());
@@ -262,14 +262,13 @@ void DisplayMap::create_water_object(int px, int pz) {
 	int sz=pz * segsize.z;
 	int ez=(pz + 1) * segsize.z;
 	unsigned char cube_exist=0;
-	int tex_layer;
+
 	if(ez>map->get_size().z)ez=map->get_size().z;
 	for (int i = sx; i < ex; i++) {
 		for (int j = 0; j < display_height; j++) {
 			for (int k = sz; k < ez; k++) {
 				int type = map->get_cube_type(i, j, k);
 				if(Water::is_water(type)){
-					tex_layer=0;
 					cube_exist=0;
 					bool surface=false;
 
@@ -295,35 +294,35 @@ void DisplayMap::create_water_object(int px, int pz) {
 					glm::vec3 pos = glm::vec3((i + 0.5) * Map::CUBE_SIZE,
 							(j + 0.5) * Map::CUBE_SIZE,
 							(k + 0.5) * Map::CUBE_SIZE);
-					if(surface)pos.y=(j + 0.3) * Map::CUBE_SIZE;
+					if(surface)pos.y=(j + 0.5) * Map::CUBE_SIZE;
 					if (j + 1 >= display_height || !(cube_exist&up)){
-						if(surface)watermodel->merge(water_cube->cube[0], pos, tex_layer);
-						else watermodel->merge(cube->cube[0], pos, tex_layer);
+						if(surface)watermodel->merge(water_cube->cube[0], pos);
+						else watermodel->merge(cube->cube[0], pos);
 					}
 
 					if (j - 1 < 0 || !(cube_exist&down)){
-						if(surface)watermodel->merge(water_cube->cube[1], pos, tex_layer);
-						else watermodel->merge(cube->cube[1], pos, tex_layer);
+						if(surface)watermodel->merge(water_cube->cube[1], pos);
+						else watermodel->merge(cube->cube[1], pos);
 					}
 
 
 					if (i + 1 >= map->get_size().x ||!(cube_exist&left)){
-						if(surface)watermodel->merge(water_cube->cube[2], pos, tex_layer);
-						else watermodel->merge(cube->cube[2], pos, tex_layer);
+						if(surface)watermodel->merge(water_cube->cube[2], pos);
+						else watermodel->merge(cube->cube[2], pos);
 					}
 
 					if (i - 1 < 0 ||!(cube_exist&right)){
-						if(surface)watermodel->merge(water_cube->cube[3], pos, tex_layer);
-						else watermodel->merge(cube->cube[3], pos, tex_layer);
+						if(surface)watermodel->merge(water_cube->cube[3], pos);
+						else watermodel->merge(cube->cube[3], pos);
 					}
 					if (k + 1 >= map->get_size().z || !(cube_exist&front)){
-						if(surface)watermodel->merge(water_cube->cube[4], pos, tex_layer);
-						else watermodel->merge(cube->cube[4], pos, tex_layer);
+						if(surface)watermodel->merge(water_cube->cube[4], pos);
+						else watermodel->merge(cube->cube[4], pos);
 					}
 
 					if (k - 1 < 0 || !(cube_exist&back)){
-						if(surface)watermodel->merge(water_cube->cube[5], pos, tex_layer);
-						else watermodel->merge(cube->cube[5], pos, tex_layer);
+						if(surface)watermodel->merge(water_cube->cube[5], pos);
+						else watermodel->merge(cube->cube[5], pos);
 					}
 				}
 			}

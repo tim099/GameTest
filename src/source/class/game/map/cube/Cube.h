@@ -34,6 +34,7 @@ public:
 	virtual unsigned char get_type(){
 		return 0;
 	}
+	virtual void update(int x,int y,int z);
 private:
 	static void create_basic_cubes();
 };

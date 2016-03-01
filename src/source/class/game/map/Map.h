@@ -9,8 +9,10 @@
 #include "class/tim/math/PerlinNoise.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/game/map/cube/Cube.h"
+
 class CubeEX;
 class CubeOutOfEdge;
+class Water;
 class CubeNull;
 class MapSeg;
 class AllCubes;
@@ -110,6 +112,7 @@ protected:
 
 	CubeOutOfEdge *cube_out_of_edge;
 	CubeNull *cube_null;
+	Water *cube_water;
 
 	AllCubes *all_cubes;
 	LandscapeCreator *landscapeCreator;

@@ -21,6 +21,7 @@ public:
 	virtual bool draw_cube(){
 		return true;
 	}
+	virtual void set_pos(int x,int y,int z);
 	virtual void draw();
 	Position *pos;
 	unsigned char tree_type;

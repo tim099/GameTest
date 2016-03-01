@@ -5,10 +5,6 @@
 
 class Water: public CubeLiquid {
 public:
-	virtual bool draw_cube(){
-		return false;
-	}
-	virtual void draw();
 	virtual std::string get_name()const{
 		return "Water";
 	}

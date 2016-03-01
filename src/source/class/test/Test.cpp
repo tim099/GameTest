@@ -45,6 +45,7 @@ Test::Test() {
 	draw->register_cur();
 	UIObj_Creator=new UI::UIObjectCreator();
 	UIObj_Creator->register_cur();
+
 	textures = new AllTextures("files/script/loadTextureScript/loadAllTexture.txt");
 	textures->register_cur();	//set as cur using textures
 
@@ -76,7 +77,7 @@ Test::Test() {
 	creat_light();
 
 	map = new Map();
-	map->gen_map(glm::ivec3(200,150,200),0);//time(NULL)
+	map->gen_map(glm::ivec3(200,150,200),time(NULL));//0
 
 
 
@@ -324,13 +325,13 @@ void Test::handle_input() {
 }
 void Test::update_obj_pos(Camera *camera) {
 	static Position starpos(glm::vec3(0, 0, 0), glm::vec3());
-	static Position sunpos(glm::vec3(5.1, 80.6, 0.1), glm::vec3());
+	static Position sunpos(glm::vec3(50.1, 800.6, 0.1), glm::vec3());
 	//obj move
 	starpos.set_ry(360.0f * ((float) timeloop / loop_time));
 	glm::vec3 sun_pos = glm::vec3(
 			glm::rotate(360.0f * ((float) timeloop / loop_time),
 					glm::vec3(-1, 0, 1))
-					* glm::vec4(glm::vec3(300, 0, 500), 1));
+					* glm::vec4(glm::vec3(600, 0, 1000), 1));
 	s_light->vec = -sun_pos;
 
 	s_light->color = (1.0f - ((float) timeloop / loop_time)) * sun_col1

@@ -1,3 +1,4 @@
+
 #include "class/game/map/Map.h"
 #include "class/game/map/MapSeg.h"
 #include "class/game/map/DisplayMap.h"
@@ -25,6 +26,7 @@ Map::Map() {
 	ground_height=150;
 	cube_out_of_edge=new CubeOutOfEdge();
 	cube_null=new CubeNull();
+	cube_water=new Water();
 	all_cubes=new AllCubes();
 	landscapeCreator=new LandscapeCreator();
 	register_cur();
@@ -35,6 +37,7 @@ Map::~Map() {
 	if(map_segs)delete map_segs;
 	delete cube_out_of_edge;
 	delete cube_null;
+	delete cube_water;
 	delete all_cubes;
 	delete landscapeCreator;
 }
@@ -174,7 +177,8 @@ void Map::gen_map_water(){
 		for(int k=0;k<map_size.z;k++){
 			for(int j=0;j<map_size.y;j++){
 				if(j<water_height&&!map->get(i,j,k)){
-					push_CubeEX(i,j,k,new Water());
+					//push_CubeEX(i,j,k,new Water());
+					set_cube_type(i,j,k,Cube::water);
 				}
 			}
 		}
@@ -280,9 +284,8 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 	}
 	//unsigned char perv_type=map->get(x,y,z);
 	map->get(x,y,z)=type;
-	//if(Water::is_water(type)||Water::is_water(perv_type)){
-		dp_map->update_water_map(glm::ivec3(x,y,z));
-	//}
+
+	dp_map->update_water_map(glm::ivec3(x,y,z));
 	dp_map->update_map(glm::ivec3(x,y,z));
 	return true;
 }
@@ -292,12 +295,16 @@ Cube* Map::get_cube(int x,int y,int z){
 		return cube_out_of_edge;
 	}else if(type==Cube::cubeNull){
 		return cube_null;
+	}else if(type==Cube::water){
+		return cube_water;//get_map_seg_by_pos(x,z)->get_cube(x,y,z);
 	}
 	Cube *cube=0;
 	if(type>=Cube::startcube){
 		cube=all_cubes->get_cube(type);
-	}else{
+	}else if(type==Cube::cubeEX){
 		cube=get_map_seg_by_pos(x,z)->get_cube(x,y,z);
+	}else{
+		std::cout<<"Map::get_cube unknown cube type:"<<type<<std::endl;
 	}
 	return cube;
 }

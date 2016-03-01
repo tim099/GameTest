@@ -17,11 +17,9 @@ public:
 	CubeEX* get_cube(int x,int y,int z);
 	glm::ivec2 seg_at;//start position's x and z
 protected:
-	void push_cube_to_draw(CubeEX *cube);
-	void remove_cube_to_draw(CubeEX *cube);
 	unsigned convert_pos(const glm::ivec3 &pos);
+	glm::ivec3 convert_pos(unsigned p);
 	Tim::MapContainer<unsigned,CubeEX>cubes;
-	std::vector<CubeEX*>cubes_to_draw;
 	Map* map;
 	glm::ivec3 segsize;
 };

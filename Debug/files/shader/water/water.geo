@@ -2,7 +2,7 @@
 
 #include <files/shader/header/commondata.geoh>
 
-
+in float height[3];
 void main(){
 	vec3 dPos1=(vertin[1].position.xyz)-(vertin[0].position.xyz);
     vec3 dPos2=(vertin[2].position.xyz)-(vertin[0].position.xyz);

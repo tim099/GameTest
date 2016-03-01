@@ -23,13 +23,13 @@ public:
 	}
 	//this function will be called by out side when needed to draw this cube
 	virtual void draw();
-	void set_pos(int x,int y,int z);
+	virtual void set_pos(int x,int y,int z);
 	inline int get_y()const{
 		return y;
 	}
-	int type;
-protected:
 	int x,y,z;
+protected:
+
 };
 
 #endif /* SOURCE_CLASS_GAME_MAP_CUBE_CUBEEX_H_ */

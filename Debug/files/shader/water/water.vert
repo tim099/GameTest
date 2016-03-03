@@ -28,7 +28,7 @@ void main(){
 	vertout.vertexPosition=vertexPosition;
 
 	vertout.position=M*vec4(vertout.vertexPosition,1);//real world position
-	height=gen_water_height(3.0f,0.5f);
+	height=gen_water_height(3.0f,0.2f);
 	vertout.position.y+=height;
 	vertout.MVP_pos=VP*vertout.position; 
  	vertout.Normal=(M*vec4(vertexNormal,0)).xyz;

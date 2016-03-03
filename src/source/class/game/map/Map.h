@@ -101,6 +101,8 @@ protected:
 	void gen_sand(unsigned char &type,const double &x,const double &y,const double &z);
 	void swap_update_pos();
 	void update_map(int x,int y,int z);
+
+	void push_update_cube(int x,int y,int z);
 	//Tim::Array3D<Cube> *map;
 	Tim::Array3D<unsigned char> *map;
 	Tim::Array2D<MapSeg>* map_segs;

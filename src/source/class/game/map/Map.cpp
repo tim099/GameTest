@@ -105,9 +105,9 @@ void Map::gen_cube_type(int i,int j,int k,
 		type=Cube::stone;
 	}else{
 		double type_val=0.8*noise.noise(x,y,z,0.01)+0.2*noise.noise(x,y,z,0.03);
-		if(type_val<0.3){
+		if(type_val<0.2){
 			type=Cube::cubeNull;
-		}else if(noise.noise(x,y,z,0.01)<0.4){
+		}else if(type_val<0.3){
 			type=Cube::stone;
 		}else if(wetness<0.45&&
 				y>stone_height+0.05*wetness){//0.1*type_val+
@@ -299,10 +299,16 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 		return false;
 	}
 	map->get(x,y,z)=type;
-	prev_update_pos->push_back(glm::ivec3(x,y,z));
+	push_update_cube(x,y,z);
 	dp_map->update_water_map(glm::ivec3(x,y,z));
 	dp_map->update_map(glm::ivec3(x,y,z));
 	return true;
+}
+void Map::push_update_cube(int x,int y,int z){
+	//for(unsigned i=0;i<prev_update_pos->size();i++){
+		//if(glm::ivec3(x,y,z)==prev_update_pos->at(i))return;
+	//}
+	prev_update_pos->push_back(glm::ivec3(x,y,z));
 }
 Cube* Map::get_cube(int x,int y,int z){
 	int type=get_cube_type(x,y,z);

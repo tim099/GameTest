@@ -20,7 +20,7 @@ void main(){
 
  	//color=vec4(cross(normalize(camera_pos-vert.position.xyz),Normal),1.0);//+reflect_color
 	color=vec4((total_light)*tex_color,get_tex_alpha());//+reflect_color
-	
+	//color=vec4(vert.position.xyz/100.0,get_tex_alpha());//+reflect_color
 	
 
 }

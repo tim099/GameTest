@@ -36,6 +36,7 @@ public:
 	void push_CubeEX(int x,int y,int z,CubeEX *cube);
 
 	bool set_cube_type(int x,int y,int z,int val);
+	bool remove_cube(int x,int y,int z);
 	int get_cube_type(const int &x,const int &y,const int &z)const;
 	Cube *get_cube(int x,int y,int z);
 
@@ -98,12 +99,15 @@ protected:
 	void gen_dirt(unsigned char &type,const int &i,const int &j,const int &k);
 	void gen_stone(unsigned char &type,const double &x,const double &y,const double &z);
 	void gen_sand(unsigned char &type,const double &x,const double &y,const double &z);
+	void swap_update_pos();
+	void update_map(int x,int y,int z);
 	//Tim::Array3D<Cube> *map;
 	Tim::Array3D<unsigned char> *map;
 	Tim::Array2D<MapSeg>* map_segs;
-
-
-
+	std::vector<glm::ivec3>* cur_update_pos;
+	std::vector<glm::ivec3>* prev_update_pos;
+	std::vector<glm::ivec3> update_pos1;
+	std::vector<glm::ivec3> update_pos2;
 	glm::ivec3 map_size;
 
 	int times;

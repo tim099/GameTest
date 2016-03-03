@@ -18,6 +18,7 @@ public:
 		if(type==Cube::water)return true;
 		return false;
 	}
+	virtual void update(int x,int y,int z,int ux,int uy,int uz);
 	Water();
 	virtual ~Water();
 protected:

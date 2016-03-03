@@ -57,6 +57,7 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 		return;
 	}
 	gen_shadow(shaderShadowMapping);
+
 	///*
 	shader->active_shader();
 	FBO->bind_buffer();
@@ -71,7 +72,7 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
     }
 
 
-	//*/
+
 	shaderWater->active_shader();
 	float time=glfwGetTime();
 	shaderWater->sent_Uniform("waveTime",time);
@@ -88,6 +89,7 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
     //glDisable(GL_BLEND);
 	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
 			glm::inverse(camera->view_matrix(ViewPort::get_cur_window_aspect())));
+	//*/
 }
 void Draw::draw2D(Shader2D *shader2D,FrameBuffer *FBO){
 	FBO->bind_buffer();
@@ -103,7 +105,7 @@ void Draw::draw_shadow(Shader *shader){
     }
 }
 void Draw::remove(DrawObject* obj){
-	if(obj->get_type()=="DrawObjectAlpha"){
+	if(obj->get_type()=="WaterDrawObject"){
 		for(unsigned i=0;i<water_d_objs.size();i++){
 			if(water_d_objs.at(i)==obj){
 				water_d_objs.at(i)=water_d_objs.back();
@@ -125,7 +127,7 @@ void Draw::remove(DrawObject* obj){
 }
 void Draw::push(DrawObject* obj){
 	d_objsMutex->wait_for_this();
-	if(obj->get_type()=="DrawObjectAlpha"){
+	if(obj->get_type()=="WaterDrawObject"){
 		//std::cout<<"push draw object alpha"<<std::endl;
 		water_d_objs.push_back(obj);
 	}else{

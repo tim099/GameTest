@@ -16,7 +16,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <iostream>
-
+#include <algorithm>
 Map::Map() {
 	dp_map=0;
 	map=0;
@@ -29,6 +29,8 @@ Map::Map() {
 	cube_water=new Water();
 	all_cubes=new AllCubes();
 	landscapeCreator=new LandscapeCreator();
+	cur_update_pos=&update_pos1;
+	prev_update_pos=&update_pos2;
 	register_cur();
 }
 Map::~Map() {
@@ -40,6 +42,9 @@ Map::~Map() {
 	delete cube_water;
 	delete all_cubes;
 	delete landscapeCreator;
+}
+void Map::swap_update_pos(){
+	std::swap(update_pos1,update_pos2);
 }
 void Map::init(){
 	if(map)delete map;
@@ -92,14 +97,17 @@ void Map::gen_cube_type(int i,int j,int k,
 		const double &stone_height,
 		const double &height,const double &wetness){
 	unsigned char type;
-	double x=((double)i/map_size.x);
+	double x=((double)i/300);
 	double y=((double)j/map_size.y);
-	double z=((double)k/map_size.z);
+	double z=((double)k/300);
 
 	if(j<stone_height*ground_height){
 		type=Cube::stone;
 	}else{
-		if(noise.noise(x,y,z,0.01)<0.2){
+		double type_val=0.8*noise.noise(x,y,z,0.01)+0.2*noise.noise(x,y,z,0.03);
+		if(type_val<0.3){
+			type=Cube::cubeNull;
+		}else if(noise.noise(x,y,z,0.01)<0.4){
 			type=Cube::stone;
 		}else if(wetness<0.45&&
 				y>stone_height+0.05*wetness){//0.1*type_val+
@@ -176,7 +184,7 @@ void Map::gen_map_water(){
 	for(int i=0;i<map_size.x;i++){
 		for(int k=0;k<map_size.z;k++){
 			for(int j=0;j<map_size.y;j++){
-				if(j<water_height&&!map->get(i,j,k)){
+				if(!map->get(i,j,k)&&j<water_height){//&&j>=water_height-20
 					//push_CubeEX(i,j,k,new Water());
 					set_cube_type(i,j,k,Cube::water);
 				}
@@ -204,8 +212,9 @@ void Map::gen_map_land_scape(){
 }
 void Map::regen_map(){
 	gen_map_shape();
-	gen_map_cube_type();
 	gen_map_water();
+	gen_map_cube_type();
+
 	gen_map_land_scape();
 	times++;
 }
@@ -274,17 +283,23 @@ void Map::push_CubeEX(int x,int y,int z,CubeEX *cube){
 	map->get(x,y,z)=cube->get_type();//.set(Cube::CubeEX);
 	get_map_seg_by_pos(x,z)->push_cube(glm::ivec3(x,y,z),cube);
 }
+bool Map::remove_cube(int x,int y,int z){
+	return set_cube_type(x,y,z,Cube::cubeNull);
+}
 bool Map::set_cube_type(int x,int y,int z,int type){
 	if(x<0||x>=map_size.x||y<0||y>=map_size.y||z<0||z>=map_size.z){
 		std::cout<<"Map::set_cube_type out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return false;
 	}
-	if(map->get(x,y,z)==Cube::cubeEX){//.type
+	unsigned char perv_type=map->get(x,y,z);
+	if(perv_type==Cube::cubeEX){//.type
 		get_map_seg_by_pos(x,z)->remove_cube(glm::ivec3(x,y,z));
 	}
-	//unsigned char perv_type=map->get(x,y,z);
+	if(perv_type==type){
+		return false;
+	}
 	map->get(x,y,z)=type;
-
+	prev_update_pos->push_back(glm::ivec3(x,y,z));
 	dp_map->update_water_map(glm::ivec3(x,y,z));
 	dp_map->update_map(glm::ivec3(x,y,z));
 	return true;
@@ -316,6 +331,24 @@ int Map::get_cube_type(const int &x,const int &y,const int &z)const{
 	return map->get(x,y,z);//.type
 	//return map->arr[map->size.y*map->size.z*pos.x+map->size.z*pos.y+pos.z].type;//for better performance
 }
+void Map::update_map(int x,int y,int z){
+	get_cube(x,y,z)->update(x,y,z,x,y,z);
+	get_cube(x+1,y,z)->update(x+1,y,z,x,y,z);
+	get_cube(x-1,y,z)->update(x-1,y,z,x,y,z);
+	get_cube(x,y+1,z)->update(x,y+1,z,x,y,z);
+	get_cube(x,y-1,z)->update(x,y-1,z,x,y,z);
+	get_cube(x,y,z+1)->update(x,y,z+1,x,y,z);
+	get_cube(x,y,z-1)->update(x,y,z-1,x,y,z);
+}
 void Map::update(){
+	int x,y,z;
+	swap_update_pos();
+	for(unsigned i=0;i<cur_update_pos->size();i++){
+		x=cur_update_pos->at(i).x;
+		y=cur_update_pos->at(i).y;
+		z=cur_update_pos->at(i).z;
+		update_map(x,y,z);
+	}
+	cur_update_pos->clear();
 
 }

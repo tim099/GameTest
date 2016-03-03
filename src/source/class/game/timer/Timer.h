@@ -27,6 +27,16 @@ public:
 		return max_year;
 	}
 
+	inline double get_hour()const{
+		return hour+((double)get_minute())/max_minute;
+	}
+	inline double get_minute()const{
+		return minute+get_second()/max_second;
+	}
+	inline double get_second()const{
+		return (double)second;
+	}
+
 protected:
 	void second_tic();
 	void minute_tic();

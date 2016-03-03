@@ -27,6 +27,8 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/model/modelBuffer/AllModelBuffers.h"
 #include "class/display/UI/UIObjectCreator.h"
+
+#include "class/game/timer/Timer.h"
 class Test {
 
 public:
@@ -74,6 +76,7 @@ private:
 	Tim::ThreadPool *thread_pool;
 	ControllerSystem *controller_system;
 	UI::UIObjectCreator *UIObj_Creator;
+	Timer timer;
 	double start_time;
 	double fps;
 	bool stop;

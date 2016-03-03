@@ -39,6 +39,6 @@ Cube::Cube(){
 Cube::~Cube() {
 
 }
-void Cube::update(int x,int y,int z){
+void Cube::update(int x,int y,int z,int ux,int uy,int uz){
 
 }

@@ -34,7 +34,11 @@ public:
 	virtual unsigned char get_type(){
 		return 0;
 	}
-	virtual void update(int x,int y,int z);
+	/*
+	 * x,y,z is the position of this cube and
+	 * ux,uy,uz is the position of the update cube
+	 */
+	virtual void update(int x,int y,int z,int ux,int uy,int uz);
 private:
 	static void create_basic_cubes();
 };

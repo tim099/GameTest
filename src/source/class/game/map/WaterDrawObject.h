@@ -6,7 +6,7 @@
 class WaterDrawObject: public DrawObject {
 public:
 	virtual std::string get_type()const{
-		return "DrawObjectAlpha";
+		return "WaterDrawObject";
 	}
 	void init();
 	WaterDrawObject();

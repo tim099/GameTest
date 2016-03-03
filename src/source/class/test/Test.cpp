@@ -211,21 +211,17 @@ void Test::handle_input() {
 	}
 	if (input->keyboard->pressed('B')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
-		if (!map->get_cube_type(pos.x, pos.y, pos.z)) {
-			if (map->set_cube_type(pos.x, pos.y, pos.z, Cube::stone)) {
-				//dmap->update_map(pos);
-			}
+		int type=map->get_cube_type(pos.x, pos.y, pos.z);
+		if (type==Cube::cubeNull||type==Cube::water) {
+			map->set_cube_type(pos.x, pos.y, pos.z, Cube::stone);
 		}
 	}
 	if (input->keyboard->pressed('V')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
-		if (map->get_cube_type(pos.x, pos.y, pos.z)) {
-			Cube *cube=map->get_cube(pos.x,pos.y,pos.z);
-			std::cout<<"cube name="<<cube->get_name()<<std::endl;
-			if (map->set_cube_type(pos.x, pos.y, pos.z, 0)) {
-				//dmap->update_map(pos);
-			}
-		}
+		Cube *cube=map->get_cube(pos.x,pos.y,pos.z);
+		std::cout<<"cube name="<<cube->get_name()<<std::endl;
+		map->remove_cube(pos.x, pos.y, pos.z);
+
 
 	}
 
@@ -393,10 +389,11 @@ void Test::update() {
 		else
 			timeloop = 0;
 	}
+	timer.tic(1);
+	//std::cout<<"cur minute:"<<timer.get_minute()<<std::endl;
 
 	input->update();	//world space pos update by renderer
 	controller_system->update();
-
 
 
 	//=======================render data update=======================================
@@ -416,7 +413,13 @@ void Test::update() {
 
 	handle_input();
 	handle_signal();
-	map->update();
+	static int t=0;
+	if(t>100){
+		map->update();
+		t=0;
+	}else{
+		t++;
+	}
 	camera->update();
 	//==================logical update render data==============
 	UI->draw_UIObject(draw);

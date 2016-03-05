@@ -1,7 +1,7 @@
 #include "class/game/map/landscape/tree/Tree.h"
 #include "class/game/map/Map.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
-
+#include <cstdio>
 #include <iostream>
 DrawObject *Tree::tree_Drawobj=0;
 
@@ -17,6 +17,12 @@ Tree::Tree() {
 Tree::~Tree() {
 	if(pos)delete pos;
 	//std::cout<<"delete tree"<<std::endl;
+}
+void Tree::save_landscape(FILE * file){
+	fprintf(file,"%c\n",(char)tree_type);
+}
+void Tree::load_landscape(FILE * file){
+	fscanf(file,"%c\n",(char*)&tree_type);
 }
 void Tree::set_pos(int x,int y,int z){
 	if(!pos){

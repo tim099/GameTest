@@ -25,6 +25,9 @@ public:
 	virtual void draw();
 	Position *pos;
 	unsigned char tree_type;
+protected:
+	virtual void save_landscape(FILE * file);
+	virtual void load_landscape(FILE * file);
 };
 
 #endif /* SOURCE_CLASS_GAME_MAP_LANDSCAPE_TREE_H_ */

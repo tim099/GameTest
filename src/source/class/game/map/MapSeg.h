@@ -10,6 +10,9 @@ class MapSeg {
 public:
 	MapSeg();
 	virtual ~MapSeg();
+	void save(FILE * file);
+	void load(FILE * file);
+
 	void init(Map* map,glm::ivec2 seg_at);
 	void draw(int max_y);
 	void push_cube(glm::ivec3 pos,CubeEX *cube);
@@ -17,6 +20,8 @@ public:
 	CubeEX* get_cube(int x,int y,int z);
 	glm::ivec2 seg_at;//start position's x and z
 protected:
+	void save_landscape(FILE * file);
+	void load_landscape(FILE * file);
 	unsigned convert_pos(const glm::ivec3 &pos);
 	glm::ivec3 convert_pos(unsigned p);
 	Tim::MapContainer<unsigned,CubeEX>cubes;

@@ -77,8 +77,9 @@ Test::Test() {
 	creat_light();
 
 	map = new Map();
-	map->gen_map(glm::ivec3(200,150,200),time(NULL));//0
-
+	map->load_map("files/maps/maptest");
+	//map->gen_map(glm::ivec3(250,150,250),time(NULL));//0
+	//map->save_map("files/maps/maptest");
 
 
 	//prepare_draw_obj();
@@ -95,6 +96,7 @@ Test::Test() {
 
 	UI = new UI::UI();
 	UI->Load_script("files/script/UIscript/saveUI.txt");
+	thread_pool->push_task(new TestTask());
 }
 Test::~Test() {
 	//window->render_on();
@@ -312,6 +314,10 @@ void Test::handle_input() {
 	if (input->keyboard->pressed_char('s')) {
 		map->dp_map->display_height_alter(-1, thread_pool);
 	}
+	if (input->keyboard->pressed_char('S')) {
+		map->save_map("files/maps/maptest");
+	}
+
 	if (input->keyboard->pressed('A')) {
 		camera->move_side(0.04f);
 	}

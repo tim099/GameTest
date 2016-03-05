@@ -9,12 +9,12 @@
 #include "class/tim/math/PerlinNoise.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/game/map/cube/Cube.h"
-
+#include "class/game/map/MapSeg.h"
 class CubeEX;
 class CubeOutOfEdge;
 class Water;
 class CubeNull;
-class MapSeg;
+class CubeError;
 class AllCubes;
 class LandscapeCreator;
 class DisplayMap;
@@ -41,10 +41,14 @@ public:
 	Cube *get_cube(int x,int y,int z);
 
 	//get map_seg by position x and z
-	MapSeg* get_map_seg_by_pos(int x,int z);
+	inline MapSeg* get_map_seg_by_pos(int x,int z){
+		return &(map_segs->get((x/segsize.x),(z/segsize.z)));
+	}
 
 	//directly get map_seg
-	MapSeg* get_map_seg(int x,int z);
+	inline MapSeg* get_map_seg(int x,int z){
+		return &(map_segs->get(x,z));
+	}
 
 	void update();
 	glm::ivec3 get_size()const;
@@ -103,6 +107,9 @@ protected:
 	void update_map(int x,int y,int z);
 
 	void push_update_cube(int x,int y,int z);
+
+	void save_update_pos(FILE * file);
+	void load_update_pos(FILE * file);
 	//Tim::Array3D<Cube> *map;
 	Tim::Array3D<unsigned char> *map;
 	Tim::Array2D<MapSeg>* map_segs;
@@ -118,10 +125,11 @@ protected:
 
 	CubeOutOfEdge *cube_out_of_edge;
 	CubeNull *cube_null;
+	CubeError *cube_error;
 	Water *cube_water;
 
 	AllCubes *all_cubes;
-	LandscapeCreator *landscapeCreator;
+	//LandscapeCreator *landscapeCreator;
 	PerlinNoise noise;
 };
 

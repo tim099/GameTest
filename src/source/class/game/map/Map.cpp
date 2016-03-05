@@ -1,12 +1,12 @@
 
 #include "class/game/map/Map.h"
-#include "class/game/map/MapSeg.h"
 #include "class/game/map/DisplayMap.h"
 
 #include "class/game/map/cube/Cube.h"
 #include "class/game/map/cube/CubeEX.h"
 #include "class/game/map/cube/CubeOutOfEdge.h"
 #include "class/game/map/cube/CubeNull.h"
+#include "class/game/map/cube/CubeError.h"
 
 #include "class/game/map/cube/AllCubes.h"
 #include "class/game/map/landscape/LandscapeCreator.h"
@@ -26,9 +26,9 @@ Map::Map() {
 	ground_height=150;
 	cube_out_of_edge=new CubeOutOfEdge();
 	cube_null=new CubeNull();
+	cube_error=new CubeError();
 	cube_water=new Water();
 	all_cubes=new AllCubes();
-	landscapeCreator=new LandscapeCreator();
 	cur_update_pos=&update_pos1;
 	prev_update_pos=&update_pos2;
 	register_cur();
@@ -39,9 +39,9 @@ Map::~Map() {
 	if(map_segs)delete map_segs;
 	delete cube_out_of_edge;
 	delete cube_null;
+	delete cube_error;
 	delete cube_water;
 	delete all_cubes;
-	delete landscapeCreator;
 }
 void Map::swap_update_pos(){
 	std::swap(update_pos1,update_pos2);
@@ -139,7 +139,7 @@ void Map::gen_land_scape(int i,int j,int k,
 		type_val+=0.2*noise.noise(x,y,z,0.6);
 		type_val+=0.1*noise.noise(x,y,z,1.0);
 		type_val+=0.1*get_wetness(i,k,height);
-		if(type_val>0.65)push_CubeEX(i,j,k,landscapeCreator->create("Tree"));
+		if(type_val>0.65)push_CubeEX(i,j,k,LandscapeCreator::get_cur_object()->create("Tree"));
 	}
 
 }
@@ -245,13 +245,68 @@ glm::ivec3 Map::get_size()const{
 glm::ivec3 Map::convert_position(glm::vec3 pos){
 	return glm::ivec3(floor(pos.x/Map::CUBE_SIZE),floor(pos.y/Map::CUBE_SIZE),floor(pos.z/Map::CUBE_SIZE));
 }
-void Map::save_map(std::string path){
+void Map::save_update_pos(FILE * file){
+	unsigned cur_update_pos_size=cur_update_pos->size();
+	fprintf(file,"%u\n",cur_update_pos_size);
+	glm::ivec3 *p;
+	for(unsigned i=0;i<cur_update_pos_size;i++){
+		p=&(cur_update_pos->at(i));
+		fprintf(file,"%d %d %d\n",p->x,p->y,p->z);
+	}
 
+	unsigned prev_update_pos_size=prev_update_pos->size();
+	fprintf(file,"%u\n",prev_update_pos_size);
+	for(unsigned i=0;i<prev_update_pos_size;i++){
+		p=&(prev_update_pos->at(i));
+		fprintf(file,"%d %d %d\n",p->x,p->y,p->z);
+	}
+}
+void Map::load_update_pos(FILE * file){
+	///*
+	cur_update_pos=&update_pos1;
+	prev_update_pos=&update_pos2;
+	unsigned cur_update_pos_size;
+	fscanf(file,"%u\n",&cur_update_pos_size);
+	glm::ivec3 p;
+	for(unsigned i=0;i<cur_update_pos_size;i++){
+		fscanf(file,"%d %d %d\n",&p.x,&p.y,&p.z);
+		cur_update_pos->push_back(p);
+	}
+	unsigned prev_update_pos_size;
+	fscanf(file,"%u\n",&prev_update_pos_size);
+	for(unsigned i=0;i<prev_update_pos_size;i++){
+		fscanf(file,"%d %d %d\n",&p.x,&p.y,&p.z);
+		prev_update_pos->push_back(p);
+	}
+	//*/
+}
+void Map::save_map(std::string path){
+	FILE * file = fopen(path.c_str(),"w+t");
+	fprintf(file,"%d %d %d\n",map_size.x,map_size.y,map_size.z);
+	fprintf(file,"%u\n",seed);
+	unsigned char type;
+	for(int i=0;i<map_size.x;i++){
+		for(int j=0;j<map_size.y;j++){
+			for(int k=0;k<map_size.z;k++){
+				//std::cout<<"save_map "<<map->get(i,j,k)<<std::endl;
+				type=map->get(i,j,k);
+				if(type==Cube::cubeEX)type=Cube::cubeNull;
+				fprintf(file,"%u\n",type);
+			}
+		}
+	}
+	for(int i=0;i<seg.x;i++){
+		for(int j=0;j<seg.z;j++){
+			map_segs->get(i,j).save(file);
+		}
+	}
+	save_update_pos(file);
+	fclose(file);
 }
 void Map::load_map(std::string path){
-	FILE * fop = fopen(path.c_str(),"r");
-	fscanf(fop,"%d %d %d\n",&map_size.x,&map_size.y,&map_size.z);
-	fscanf(fop,"%u\n",&seed);
+	FILE * file = fopen(path.c_str(),"r");
+	fscanf(file,"%d %d %d\n",&map_size.x,&map_size.y,&map_size.z);
+	fscanf(file,"%u\n",&seed);
 	if(map_size.x>MX||map_size.y>MY||map_size.z>MZ){
 		std::cerr<<"load map error Map size too large"<<std::endl;
 		return;
@@ -261,18 +316,19 @@ void Map::load_map(std::string path){
 	for(int i=0;i<map_size.x;i++){
 		for(int j=0;j<map_size.y;j++){
 			for(int k=0;k<map_size.z;k++){
-				fscanf(fop,"%d",&type);
+				fscanf(file,"%d",&type);
 				map->get(i,j,k)=type;
 			}
 		}
 	}
+	for(int i=0;i<seg.x;i++){
+		for(int j=0;j<seg.z;j++){
+			map_segs->get(i,j).load(file);
+		}
+	}
+	load_update_pos(file);
 	dp_map->update_whole_map();
-}
-MapSeg* Map::get_map_seg_by_pos(int x,int z){
-	return &(map_segs->get((x/segsize.x),(z/segsize.z)));
-}
-MapSeg* Map::get_map_seg(int x,int z){
-	return &(map_segs->get(x,z));
+	fclose(file);
 }
 void Map::push_CubeEX(int x,int y,int z,CubeEX *cube){
 	if(map->get(x,y,z)!=Cube::cubeNull){
@@ -319,7 +375,7 @@ Cube* Map::get_cube(int x,int y,int z){
 	}else if(type==Cube::water){
 		return cube_water;//get_map_seg_by_pos(x,z)->get_cube(x,y,z);
 	}
-	Cube *cube=0;
+	Cube *cube;
 	if(type>=Cube::startcube){
 		cube=all_cubes->get_cube(type);
 	}else if(type==Cube::cubeEX){
@@ -327,6 +383,7 @@ Cube* Map::get_cube(int x,int y,int z){
 	}else{
 		std::cout<<"Map::get_cube unknown cube type:"<<type<<std::endl;
 	}
+	if(!cube)cube=cube_error;
 	return cube;
 }
 int Map::get_cube_type(const int &x,const int &y,const int &z)const{

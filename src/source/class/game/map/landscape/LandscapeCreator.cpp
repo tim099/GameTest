@@ -4,7 +4,7 @@ LandscapeCreator::LandscapeCreator() {
 	push(new Tree());
 }
 LandscapeCreator::~LandscapeCreator() {
-
+	//delete handle by Tim::MapContainer
 }
 void LandscapeCreator::push(Landscape* obj){
 	obj->landscape_pre_init();

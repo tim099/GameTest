@@ -2,7 +2,10 @@
 #define WINDOW_H_
 class GLFWwindow;
 #include <glm/glm.hpp>
-#include <windows.h>
+
+
+class HDC__;
+class HGLRC__;
 #include "class/tim/globalObject/GlobalObject.h"
 class Window : public Tim::GlobalObject<Window>{
 	static bool glewinitial;

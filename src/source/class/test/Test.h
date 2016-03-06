@@ -38,6 +38,7 @@ public:
 
 private:
 	void handle_input();
+	void camera_control();
 	void update_obj_pos(Camera *camera);
 	void update_map(Camera *camera);
 	void prepare_draw_obj();
@@ -82,6 +83,7 @@ private:
 	bool stop;
 	bool display_time;
 	bool end;
+	bool destruct_mode;
 	int timeloop,loop_time;
 };
 

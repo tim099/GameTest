@@ -22,6 +22,7 @@ protected:
 	virtual void scene_initialize();
 	virtual	void scene_terminate();
 
+	void camera_control();
 	void handle_input();
 	Map *map;
 	Camera *camera;

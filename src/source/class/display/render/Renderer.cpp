@@ -32,7 +32,7 @@ Renderer::Renderer(Draw *_d_obj, Window *_window) {
 	creat_shaders();
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-
+	//wglSwapIntervalEXT(1);
 	//std::vector<std::string> files=Tim::File::get_all_files("files/texture/");
 	//for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
 }

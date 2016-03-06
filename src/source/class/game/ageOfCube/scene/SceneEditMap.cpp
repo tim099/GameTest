@@ -40,11 +40,27 @@ void SceneEditMap::scene_terminate() {
 SceneEditMap::~SceneEditMap() {
 
 }
-void SceneEditMap::handle_input() {
+void SceneEditMap::camera_control(){
 	if (input->mouse->mid_pressed()) {
 		//std::cout<<"move"<<(int)(mouse->pos.x)<<","<<(int)mouse->prev_pos.x<<std::endl;
 		camera->rotate(glm::vec3(0, 1, 0), -0.15 * input->mouse->pos_delta().x);
 		camera->rotate(camera->yaw_vec(), 0.15 * input->mouse->pos_delta().y);
+	}
+	if(input->mouse->screen_pos.y>0.95){
+		camera->v += (float) (-0.01f * sqrt(camera->look_dis() + 0.001))
+				* camera->look_vec_xz();
+	}
+	if(input->mouse->screen_pos.y<-0.95){
+		camera->v += (float) (0.01f * sqrt(camera->look_dis() + 0.001))
+				* camera->look_vec_xz();
+	}
+	if(input->mouse->screen_pos.x>0.95){
+		camera->v += (float) (-0.01f * sqrt(camera->look_dis() + 0.001))
+		* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
+	}
+	if(input->mouse->screen_pos.x<-0.95){
+		camera->v += (float) (0.01f * sqrt(camera->look_dis() + 0.001))
+		* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
 	}
 	if (input->mouse->right_pressed()) {
 		camera->v += (float) (0.001f * sqrt(camera->look_dis() + 0.001)
@@ -64,6 +80,9 @@ void SceneEditMap::handle_input() {
 		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
 				* (0.05 * input->mouse->scroll);
 	}
+}
+void SceneEditMap::handle_input() {
+	camera_control();
 	if (input->keyboard->pressed_char('w')) {
 		map->dp_map->display_height_alter(1, thread_pool);
 	}

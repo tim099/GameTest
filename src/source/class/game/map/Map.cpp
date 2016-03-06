@@ -1,4 +1,3 @@
-
 #include "class/game/map/Map.h"
 #include "class/game/map/DisplayMap.h"
 
@@ -11,6 +10,8 @@
 #include "class/game/map/cube/AllCubes.h"
 #include "class/game/map/landscape/LandscapeCreator.h"
 #include "class/game/map/cube/water/Water.h"
+#include "class/input/Input.h"
+#include "class/game/timer/Timer.h"
 
 #include <cstdio>
 #include <ctime>
@@ -105,9 +106,9 @@ void Map::gen_cube_type(int i,int j,int k,
 		type=Cube::stone;
 	}else{
 		double type_val=0.8*noise.noise(x,y,z,0.01)+0.2*noise.noise(x,y,z,0.03);
-		if(type_val<0.2){
+		if(type_val<0.3){
 			type=Cube::cubeNull;
-		}else if(type_val<0.3){
+		}else if(type_val<0.35){
 			type=Cube::stone;
 		}else if(wetness<0.45&&
 				y>stone_height+0.05*wetness){//0.1*type_val+
@@ -403,15 +404,166 @@ void Map::update_map(int x,int y,int z){
 	get_cube(x,y,z+1)->update(x,y,z+1,x,y,z);
 	get_cube(x,y,z-1)->update(x,y,z-1,x,y,z);
 }
-void Map::update(){
-	int x,y,z;
-	swap_update_pos();
-	for(unsigned i=0;i<cur_update_pos->size();i++){
-		x=cur_update_pos->at(i).x;
-		y=cur_update_pos->at(i).y;
-		z=cur_update_pos->at(i).z;
-		update_map(x,y,z);
-	}
-	cur_update_pos->clear();
+void Map::find_select_cube(){
+	glm::vec3 pos=Input::get_cur_object()->mouse->world_pos;
+	selected_cube=Map::convert_position(pos);
+	static const unsigned char left=1;
+	static const unsigned char right=2;
+	static const unsigned char front=3;
+	static const unsigned char back=4;
+	static const unsigned char up=5;
+	static const unsigned char down=6;
 
+	pos=glm::vec3((pos.x/Map::CUBE_SIZE),
+			      (pos.y/Map::CUBE_SIZE),
+			      (pos.z/Map::CUBE_SIZE));
+	unsigned char dir=0;
+	float min_val,val;
+	if(get_cube_type((int)pos.x,(int)pos.y,(int)pos.z)<=Cube::cubeNull){//can't be selected
+		//std::cout<<"Map::find_select_cube 1"<<std::endl;
+		selected_on=glm::ivec3(pos.x,pos.y,pos.z);
+		val=pos.y-floor(pos.y);
+		min_val=1.0;
+		if(val<0.5){
+			if(val<min_val){
+				if(get_cube_type((int)pos.x,(int)pos.y-1,(int)pos.z)>Cube::cubeNull){
+					min_val=val;
+					dir=down;
+				}
+			}
+		}else{
+			if((1.0-val)<min_val){
+				if(get_cube_type((int)pos.x,(int)pos.y+1,(int)pos.z)>Cube::cubeNull){
+					min_val=(1.0-val);
+					dir=up;
+				}
+			}
+		}
+
+		val=pos.x-floor(pos.x);
+		if(val<0.5){
+			if(val<min_val){
+				if(get_cube_type((int)pos.x-1,(int)pos.y,(int)pos.z)>Cube::cubeNull){
+					min_val=val;
+					dir=left;
+				}
+			}
+		}else{
+			if((1.0-val)<min_val){
+				if(get_cube_type((int)pos.x+1,(int)pos.y,(int)pos.z)>Cube::cubeNull){
+					min_val=(1.0-val);
+					dir=right;
+				}
+			}
+		}
+		val=pos.z-floor(pos.z);
+		if(val<0.5){
+			if(val<min_val){
+				if(get_cube_type((int)pos.x,(int)pos.y,(int)pos.z-1)>Cube::cubeNull){
+					min_val=val;
+					dir=back;
+				}
+			}
+		}else{
+			if((1.0-val)<min_val){
+				if(get_cube_type((int)pos.x,(int)pos.y,(int)pos.z+1)>Cube::cubeNull){
+					min_val=(1.0-val);
+					dir=front;
+				}
+			}
+		}
+
+		if(dir==down){
+			selected_cube=glm::ivec3(pos.x,pos.y-1,pos.z);
+		}else if(dir==up){
+			selected_cube=glm::ivec3(pos.x,pos.y+1,pos.z);
+		}else if(dir==left){
+			selected_cube=glm::ivec3(pos.x-1,pos.y,pos.z);
+		}else if(dir==right){
+			selected_cube=glm::ivec3(pos.x+1,pos.y,pos.z);
+		}else if(dir==back){
+			selected_cube=glm::ivec3(pos.x,pos.y,pos.z-1);
+		}else if(dir==front){
+			selected_cube=glm::ivec3(pos.x,pos.y,pos.z+1);
+		}
+	}else{
+		min_val=1.0;
+		selected_cube=glm::ivec3(pos.x,pos.y,pos.z);
+		val=pos.y-floor(pos.y);
+		if(val<0.5){
+			if(val<min_val){
+				if(get_cube_type((int)pos.x,(int)pos.y-1,(int)pos.z)==Cube::cubeNull){
+					min_val=val;
+					dir=down;
+				}
+			}
+		}else{
+			if((1.0-val)<min_val){
+				if(get_cube_type((int)pos.x,(int)pos.y+1,(int)pos.z)==Cube::cubeNull){
+					min_val=(1.0-val);
+					dir=up;
+				}
+			}
+		}
+
+		val=pos.x-floor(pos.x);
+		if(val<0.5){
+			if(val<min_val){
+				if(get_cube_type((int)pos.x-1,(int)pos.y,(int)pos.z)==Cube::cubeNull){
+					min_val=val;
+					dir=left;
+				}
+			}
+		}else{
+			if((1.0-val)<min_val){
+				if(get_cube_type((int)pos.x+1,(int)pos.y,(int)pos.z)==Cube::cubeNull){
+					min_val=(1.0-val);
+					dir=right;
+				}
+			}
+		}
+		val=pos.z-floor(pos.z);
+		if(val<0.5){
+			if(val<min_val){
+				if(get_cube_type((int)pos.x,(int)pos.y,(int)pos.z-1)<=Cube::cubeNull){
+					min_val=val;
+					dir=back;
+				}
+			}
+		}else{
+			if((1.0-val)<min_val){
+				if(get_cube_type((int)pos.x,(int)pos.y,(int)pos.z+1)<=Cube::cubeNull){
+					min_val=(1.0-val);
+					dir=front;
+				}
+			}
+		}
+		if(dir==down){
+			selected_on=glm::ivec3(pos.x,pos.y-1,pos.z);
+		}else if(dir==up){
+			selected_on=glm::ivec3(pos.x,pos.y+1,pos.z);
+		}else if(dir==left){
+			selected_on=glm::ivec3(pos.x-1,pos.y,pos.z);
+		}else if(dir==right){
+			selected_on=glm::ivec3(pos.x+1,pos.y,pos.z);
+		}else if(dir==back){
+			selected_on=glm::ivec3(pos.x,pos.y,pos.z-1);
+		}else if(dir==front){
+			selected_on=glm::ivec3(pos.x,pos.y,pos.z+1);
+		}
+	}
+}
+void Map::update(Timer* timer){
+	if(timer->second%29==0){
+		int x,y,z;
+		swap_update_pos();
+		for(unsigned i=0;i<cur_update_pos->size();i++){
+			x=cur_update_pos->at(i).x;
+			y=cur_update_pos->at(i).y;
+			z=cur_update_pos->at(i).z;
+			update_map(x,y,z);
+		}
+		cur_update_pos->clear();
+	}
+	find_select_cube();
 }

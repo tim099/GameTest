@@ -37,8 +37,3 @@ glm::mat4 PointLight::get_LVP(float aspect,int n)const{
 
 	return PLVP;
 }
-glm::mat4 PointLight::sent_uniform(GLuint programID,float aspect,int n){
-	glm::mat4 PLVP=get_LVP(aspect,n);
-	glUniformMatrix4fv(glGetUniformLocation(programID,"LVP"),1,GL_FALSE,&(PLVP[0][0]));
-	return PLVP;
-}

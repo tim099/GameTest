@@ -18,6 +18,7 @@ class CubeError;
 class AllCubes;
 class LandscapeCreator;
 class DisplayMap;
+class Timer;
 class Map : public Tim::GlobalObject<Map>{
 
 public:
@@ -50,7 +51,7 @@ public:
 		return &(map_segs->get(x,z));
 	}
 
-	void update();
+	void update(Timer* timer);
 	glm::ivec3 get_size()const;
 
 	inline double get_wetness(const int &i,const int &k,const double &height){
@@ -81,8 +82,15 @@ public:
 		temperature+=-0.5*height;
 		return temperature;
 	}
+	//cube being selected by mouse
+	glm::ivec3 selected_cube;
+
+	//cube being selected on(may near by the selected cube or equal to selected cube
+	glm::ivec3 selected_on;
+
 	glm::ivec3 seg;
 	glm::ivec3 segsize;
+
 	DisplayMap* dp_map;
 protected:
 	//generate the shape of the map(only generate the cube type=1,and empty space type=0
@@ -110,6 +118,8 @@ protected:
 
 	void save_update_pos(FILE * file);
 	void load_update_pos(FILE * file);
+
+	void find_select_cube();
 	//Tim::Array3D<Cube> *map;
 	Tim::Array3D<unsigned char> *map;
 	Tim::Array2D<MapSeg>* map_segs;

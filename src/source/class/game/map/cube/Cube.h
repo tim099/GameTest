@@ -8,6 +8,7 @@ class Cube {
 	static bool cube_inited;
 public:
 	static std::vector<unsigned char>basic_cubes;
+	static const int cubeOutofEdge=-1;
 	static const unsigned char cubeNull=0;
 	static const unsigned char cubeEX=1;
 	static const unsigned char water=2;

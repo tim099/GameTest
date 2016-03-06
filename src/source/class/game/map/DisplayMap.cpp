@@ -342,10 +342,9 @@ void DisplayMap::draw_map(Camera *camera,Tim::ThreadPool* threadpool) {
 	glm::ivec2 seg_pos=glm::ivec2((dp_pos.x/segsize.x),(dp_pos.y/segsize.z));
 
 	glm::ivec2 s=seg_pos-glm::ivec2(range,range);
-	glm::ivec2 e=seg_pos+glm::ivec2(range+1,range+1);
-
 	if(s.x<0)s.x=0;
 	if(s.y<0)s.y=0;
+	glm::ivec2 e=s+glm::ivec2(2*range+1,2*range+1);
 	if(e.x>seg.x)e.x=seg.x;
 	if(e.y>seg.z)e.y=seg.z;
 	//std::cout<<"range="<<range<<std::endl;

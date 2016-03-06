@@ -19,7 +19,9 @@ LightControl::~LightControl() {
 	for(unsigned i=0;i<parallel_lights.size();i++){
 		delete parallel_lights.at(i);
 	}
-
+	for(unsigned i=0;i<cube_lights.size();i++){
+		delete cube_lights.at(i);
+	}
 	delete shadowData;
 }
 void LightControl::gen_shadow(Shader *shaderShadowMapping,Camera *camera,Draw *d_obj){
@@ -44,6 +46,9 @@ void LightControl::push_light(PointLight* l){
 void LightControl::push_light(ParallelLight* l){
 	parallel_lights.push_back(l);
 }
+void LightControl::push_light(CubeLight* l){
+	cube_lights.push_back(l);
+}
 void LightControl::choose_point_light(glm::vec3 camera_pos){
     selected_point_lights.clear();
     for(unsigned i=0;i<point_lights.size();i++){
@@ -56,9 +61,7 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
 	//try to sort by dis and merge far light!!
 
 	shadowData->sent_uniform(shader);
-    std::vector<glm::vec3>pointlight_pos;
-    std::vector<glm::vec3>pointlight_color;
-    std::vector<GLint>pointlight_shadow;
+
 
     std::vector<glm::vec3>parallellight_vec;
     std::vector<glm::vec3>parallellight_color;
@@ -79,6 +82,9 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
 
     choose_point_light(camera_pos);
 
+    std::vector<glm::vec3>pointlight_pos;
+    std::vector<glm::vec3>pointlight_color;
+    std::vector<GLint>pointlight_shadow;
     PointLight *p_light;
     for(unsigned i=0;i<selected_point_lights.size();i++){
     	p_light=selected_point_lights.at(i);
@@ -91,7 +97,18 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
 		}
     }
 
-    glUniform1i(glGetUniformLocation(shader->programID,"parallellight_num"),parallellight_vec.size());
+    CubeLight *c_light;
+    std::vector<glm::vec3>cubelight_pos;
+    std::vector<glm::vec3>cubelight_color;
+    std::vector<float>cubelight_size;
+    for(unsigned i=0;i<cube_lights.size();i++){
+    	c_light=cube_lights.at(i);
+    	cubelight_pos.push_back(c_light->pos);
+    	cubelight_color.push_back(c_light->color);
+    	cubelight_size.push_back(c_light->size);
+    }
+    glUniform1i(glGetUniformLocation(shader->programID,"parallellight_num"),
+    		parallellight_vec.size());
     glUniform3fv(glGetUniformLocation(shader->programID,"parallellight_vec"),
     		parallellight_vec.size(),(const GLfloat*)(parallellight_vec.data()));
     glUniform3fv(glGetUniformLocation(shader->programID,"parallellight_color"),
@@ -107,4 +124,12 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
     		pointlight_color.size(),(const GLfloat*)(pointlight_color.data()));
     glUniform1iv(glGetUniformLocation(shader->programID,"pointlight_shadow"),
     		pointlight_shadow.size(),(const GLint*)(pointlight_shadow.data()));
+
+    glUniform1i(glGetUniformLocation(shader->programID,"cubelight_num"),cube_lights.size());
+    glUniform3fv(glGetUniformLocation(shader->programID,"cubelight_pos"),
+    		cube_lights.size(),(const GLfloat*)(cubelight_pos.data()));
+    glUniform3fv(glGetUniformLocation(shader->programID,"cubelight_color"),
+    		cube_lights.size(),(const GLfloat*)(cubelight_color.data()));
+    glUniform1fv(glGetUniformLocation(shader->programID,"cubelight_size"),
+    		cube_lights.size(),(const GLfloat*)(cubelight_size.data()));
 }

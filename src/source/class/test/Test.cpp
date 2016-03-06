@@ -24,6 +24,8 @@ Test::Test() {
 	loop_time = 10000;
 	start_time = 0.0;
 	fps = 0.0;
+
+	destruct_mode=false;
 	end = false;
 	stop = false;
 	display_time = false;
@@ -77,8 +79,8 @@ Test::Test() {
 	creat_light();
 
 	map = new Map();
-	map->load_map("files/maps/maptest");
-	//map->gen_map(glm::ivec3(250,150,250),time(NULL));//0
+	//map->load_map("files/maps/maptest");
+	map->gen_map(glm::ivec3(250,150,250),time(NULL),80);//0
 	//map->save_map("files/maps/maptest");
 
 
@@ -147,12 +149,89 @@ void Test::handle_signal() {
 		}
 	}
 }
-void Test::handle_input() {
+void Test::camera_control(){
+	if(input->keyboard->pressed('R')){
+		camera->v.y += 0.01f* sqrt(camera->look_dis() + 0.001);
+	}
+	if(input->keyboard->pressed('F')){
+		camera->v.y -= 0.01f* sqrt(camera->look_dis() + 0.001);
+	}
 	if (input->mouse->mid_pressed()) {
 		//std::cout<<"move"<<(int)(mouse->pos.x)<<","<<(int)mouse->prev_pos.x<<std::endl;
 		camera->rotate(glm::vec3(0, 1, 0), -0.15 * input->mouse->pos_delta().x);
 		camera->rotate(camera->yaw_vec(), 0.15 * input->mouse->pos_delta().y);
 	}
+	//camera->rotate(glm::vec3(0, 1, 0), 1.0f);
+	if(input->mouse->screen_pos.y>0.95){
+		camera->v += (float) (-0.02f * sqrt(camera->look_dis() + 0.001))
+				* camera->look_vec_xz();
+	}
+	if(input->mouse->screen_pos.y<-0.95){
+		camera->v += (float) (0.02f * sqrt(camera->look_dis() + 0.001))
+				* camera->look_vec_xz();
+	}
+	if(input->mouse->screen_pos.x>0.95){
+		camera->v += (float) (-0.02f * sqrt(camera->look_dis() + 0.001))
+		* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
+	}
+	if(input->mouse->screen_pos.x<-0.95){
+		camera->v += (float) (0.02f * sqrt(camera->look_dis() + 0.001))
+		* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
+	}
+	if (input->mouse->right_pressed()) {
+		camera->v += (float) (0.001f * sqrt(camera->look_dis() + 0.001)
+				* input->mouse->pos_delta().y) * camera->look_vec_xz();
+		camera->v += (float) (-0.001f * sqrt(camera->look_dis() + 0.001)
+				* input->mouse->pos_delta().x)
+				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
+	}
+	if (input->mouse->left_clicked()) {
+		/*
+		camera->v += (float) (-0.0005f * sqrt(camera->look_dis() + 0.001)
+				* input->mouse->pos_delta().y) * glm::vec3(0, 1, 0);
+		camera->v += (float) (-0.001f * sqrt(camera->look_dis() + 0.001)
+				* input->mouse->pos_delta().x)
+				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
+		*/
+		if(!destruct_mode){
+			map->set_cube_type(map->selected_on.x,
+							   map->selected_on.y,
+							   map->selected_on.z,
+							   Cube::dirt);
+		}else{
+			map->set_cube_type(map->selected_cube.x,
+							   map->selected_cube.y,
+							   map->selected_cube.z,
+							   Cube::cubeNull);
+		}
+
+	}
+	if (input->mouse->scroll) {
+		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
+				* (0.05 * input->mouse->scroll);
+	}
+	if(camera->look_at.x>1.0f*map->get_size().x){
+		if(camera->v.x>0.0f){
+			camera->v.x*=-0.9f;
+		}
+	}else if(camera->look_at.x<0.0f){
+		if(camera->v.x<0.0f){
+			camera->v.x*=-0.9f;
+		}
+	}
+	if(camera->look_at.z>1.0f*map->get_size().z){
+		if(camera->v.z>0.0f){
+			camera->v.z*=-0.9f;
+		}
+	}else if(camera->look_at.z<0.0f){
+		if(camera->v.z<0.0f){
+			camera->v.z*=-0.9f;
+		}
+	}
+}
+void Test::handle_input() {
+	camera_control();
+
 	if (input->keyboard->pressed('Q')) {
 		Position *pos = Tim::ObjPool<Position>::mycreate();
 		if (pos)
@@ -167,24 +246,6 @@ void Test::handle_input() {
 	if (input->keyboard->get(256)) { //ESC
 		std::cout << "END" << std::endl;
 		end = true;
-	}
-	if (input->mouse->right_pressed()) {
-		camera->v += (float) (0.001f * sqrt(camera->look_dis() + 0.001)
-				* input->mouse->pos_delta().y) * camera->look_vec_xz();
-		camera->v += (float) (-0.001f * sqrt(camera->look_dis() + 0.001)
-				* input->mouse->pos_delta().x)
-				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
-	}
-	if (input->mouse->left_pressed()) {
-		camera->v += (float) (-0.0005f * sqrt(camera->look_dis() + 0.001)
-				* input->mouse->pos_delta().y) * glm::vec3(0, 1, 0);
-		camera->v += (float) (-0.001f * sqrt(camera->look_dis() + 0.001)
-				* input->mouse->pos_delta().x)
-				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
-	}
-	if (input->mouse->scroll) {
-		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
-				* (0.05 * input->mouse->scroll);
 	}
 	if (input->keyboard->pressed('M')) {
 		timeloop++;
@@ -218,13 +279,19 @@ void Test::handle_input() {
 			map->set_cube_type(pos.x, pos.y, pos.z, Cube::stone);
 		}
 	}
-	if (input->keyboard->pressed('V')) {
+	if (input->keyboard->get('V')) {
+		destruct_mode^=1;
+		/*
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
 		Cube *cube=map->get_cube(pos.x,pos.y,pos.z);
 		std::cout<<"cube name="<<cube->get_name()<<std::endl;
 		map->remove_cube(pos.x, pos.y, pos.z);
 
-
+		map->set_cube_type(map->selected_cube.x,
+						   map->selected_cube.y,
+						   map->selected_cube.z,
+						   Cube::cubeNull);
+		 */
 	}
 
 	if (input->keyboard->get(GLFW_KEY_LEFT)) {
@@ -398,6 +465,7 @@ void Test::update() {
 	timer.tic(1);
 	//std::cout<<"cur minute:"<<timer.get_minute()<<std::endl;
 
+
 	input->update();	//world space pos update by renderer
 	controller_system->update();
 
@@ -419,13 +487,37 @@ void Test::update() {
 
 	handle_input();
 	handle_signal();
-	static int t=0;
-	if(t>100){
-		map->update();
-		t=0;
-	}else{
-		t++;
+
+	map->update(&timer);
+
+	static CubeLight* cl=new CubeLight();
+	static CubeLight* cl2=new CubeLight();
+	static bool cl_in=false;
+	if(!cl_in){
+		cl->color=glm::vec3(1,0.5,0);
+		cl2->color=glm::vec3(0,0.5,1);
+		cl2->size=1.01f;
+		cl->size=1.01f;
+		//lightControl->push_light(cl);
+		lightControl->push_light(cl2);
+		cl_in=true;
 	}
+	//glm::ivec3 pos = Map::convert_position(input->mouse->world_pos);
+
+	if(destruct_mode){
+		cl2->color=glm::vec3(1,0,0);
+		cl2->pos=glm::vec3(map->selected_cube.x+0.5f,
+						  map->selected_cube.y+0.5f,
+						  map->selected_cube.z+0.5f);
+	}else{
+		cl2->color=glm::vec3(0,1,0);
+		cl2->pos=glm::vec3(map->selected_on.x+0.5f,
+				  map->selected_on.y+0.5f,
+				  map->selected_on.z+0.5f);
+	}
+
+
+
 	camera->update();
 	//==================logical update render data==============
 	UI->draw_UIObject(draw);
@@ -452,7 +544,7 @@ void Test::update() {
 }
 void Test::swap_buffer() {
 
-	while ((1.0 / (glfwGetTime() - start_time)) > 60.0)
+	while ((1.0 / (glfwGetTime() - start_time)) > 59.0)
 		;
 	fps = 1.0 / (glfwGetTime() - start_time);
 

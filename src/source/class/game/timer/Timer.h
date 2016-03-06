@@ -36,7 +36,12 @@ public:
 	inline double get_second()const{
 		return (double)second;
 	}
-
+	int second;
+	int minute;
+	int hour;
+	int day;
+	int month;
+	int year;
 protected:
 	void second_tic();
 	void minute_tic();
@@ -51,12 +56,12 @@ protected:
 	virtual void day_update();
 	virtual void month_update();
 	virtual void year_update();
-	int second,max_second;
-	int minute,max_minute;
-	int hour,max_hour;
-	int day,max_day;
-	int month,max_month;
-	int year,max_year;
+	int max_second;
+	int max_minute;
+	int max_hour;
+	int max_day;
+	int max_month;
+	int max_year;
 };
 
 #endif /* SOURCE_CLASS_GAME_TIMER_TIMER_H_ */

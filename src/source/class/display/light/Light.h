@@ -1,7 +1,7 @@
 #ifndef LIGHT_H_
 #define LIGHT_H_
-#include <GL/glew.h>
-#include <glm/glm.hpp>
+//#include <GL/glew.h>
+
 class Light {
 public:
 	Light(bool shadow);

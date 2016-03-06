@@ -1,6 +1,7 @@
 #include "class/display/window/Window.h"
 #include "class/display/window/ViewPort.h"
 #include "class/tim/math/Math.h"
+#include <windows.h>
 #include <GL/glew.h>
 #include <GL/glfw3.h>
 #include <iostream>
@@ -22,6 +23,7 @@ void Window::close_window(){
 }
 void Window::swap_buffer()const{
 	glfwSwapBuffers(get_window());
+	glFlush();
 }
 int Window::WindowShouldClose()const{
 	return glfwWindowShouldClose(get_window());

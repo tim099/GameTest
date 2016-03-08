@@ -24,6 +24,7 @@ class Map : public Tim::GlobalObject<Map>{
 public:
 	static const int MX=5000,MY=5000,MZ=5000;
 	static const double CUBE_SIZE=1.0;
+
 	Map();
 	virtual ~Map();
 	void init();
@@ -120,6 +121,8 @@ protected:
 	void load_update_pos(FILE * file);
 
 	void find_select_cube();
+	void find_selected_on(glm::vec3 pos);
+	void find_selected_cube(glm::vec3 pos);
 	//Tim::Array3D<Cube> *map;
 	Tim::Array3D<unsigned char> *map;
 	Tim::Array2D<MapSeg>* map_segs;

@@ -5,7 +5,25 @@
 #include <files/shader/water/water>
 
 uniform sampler2D scenedepthtex;
+uniform sampler2D reflecttex;
 
+vec3 get_water_refract(vec3 Normal,float ratio){
+    vec3 look_vec=(vert.position.xyz-camera_pos); 
+    vec3 refract_vec=refract(look_vec,normalize(Normal),ratio); 
+     
+    return texture(skybox,normalize(refract_vec)).xyz;
+    //return texture(scenecolortex,vec2()).xyz;
+}
+vec3 get_water_reflect(vec3 Normal){
+
+    vec3 look_vec=(vert.position.xyz-camera_pos);
+    vec3 reflect_vec=look_vec-2*(look_vec-dot(look_vec,normalize(Normal))*normalize(Normal));
+    reflect_vec=normalize(reflect_vec);
+    //return texture(reflecttex,vec2(0.5*reflect_vec.x+0.5,-0.5*reflect_vec.y+0.5)).xyz;
+    
+    return texture(reflecttex,vec2(0.5*vert.MVP_pos.x/vert.MVP_pos.w+0.5,
+    0.5*vert.MVP_pos.y/vert.MVP_pos.w+0.5)).xyz;
+}
 in float waveWidth;
 in float waveHeight;
 vec3 get_water_normal(){
@@ -26,6 +44,8 @@ void main(){
     vec3 total_light=compute_total_light(Normal,vert.position);
     float water_alpha=0.85f;
     //color=vec4(Normal,1);
-	color=vec4((total_light)*(0.4*tex_color+0.6f*get_reflect(Normal)),water_alpha);
+    vec3 reflect_col=get_reflect(Normal);
+    //vec3 reflect_col=get_water_reflect(Normal);
+	color=vec4((total_light)*(0.4*tex_color+0.6f*reflect_col),water_alpha);
 	//mix(water_alpha,1.0,z_del)
 }

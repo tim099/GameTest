@@ -12,6 +12,11 @@ Camera::Camera(glm::vec3 _pos,glm::vec3 _look_at,glm::vec3 _up,
 Camera::~Camera() {
 
 }
+Camera::Camera(Camera* camera){
+	pos=camera->pos;look_at=camera->look_at;up=camera->up;fovy=camera->fovy;
+	z_near=camera->z_near;z_far=camera->z_far;
+	dis_alter_v=camera->dis_alter_v;
+}
 glm::mat4 Camera::sent_uniform(GLuint programID,float aspect){
 	 glm::mat4 VP=view_matrix(aspect);
 	 glUniform3f(glGetUniformLocation(programID,"camera_pos"),pos.x,pos.y,pos.z);

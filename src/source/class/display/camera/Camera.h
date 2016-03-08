@@ -5,6 +5,7 @@
 class Camera {
 public:
 	Camera(glm::vec3 pos,glm::vec3 look_at,glm::vec3 up,float fovy,float z_near,float z_far);
+	Camera(Camera* camera);
 	virtual ~Camera();
 
 	glm::mat4 view_matrix(float aspect);

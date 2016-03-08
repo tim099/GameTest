@@ -2,6 +2,7 @@
 #include "class/display/draw/Draw.h"
 #include "class/display/shader/Shader.h"
 #include "class/display/shader/shader2D/Shader2D.h"
+#include "class/display/texture/texture2D/Texture2D.h"
 #include "class/display/font/StringRenderer.h"
 #include "class/display/font/TextureString.h"
 #include "class/display/font/DrawDataStr.h"
@@ -49,7 +50,8 @@ void Draw::gen_shadow(Shader *shaderShadowMapping){
 	}
 	lightControl->gen_shadow(shaderShadowMapping,camera,this);
 }
-void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,FrameBuffer *FBO){
+void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,
+		Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterFBO){
 	if(!Enable3D){
 		shader->active_shader();
 		FBO->bind_buffer();
@@ -70,13 +72,45 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
     for(unsigned i=0;i<d_objs.size();i++){//100
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
+/*
+    waterFBO->bind_buffer();
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    //clear window buffer
+	//FBO->color_textures.at(0)->draw_texture(shader2D,
+			//new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 
+    float water_height=30;
+    //GLdouble h[4]={0,1.0,0,-water_height};
+    //glCullFace(GL_FRONT);
+    //glEnable(GL_CLIP_PLANE0);
+    //glClipPlane(GL_CLIP_PLANE0,h);
 
+	//sent uniform
+	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shader, 30, "skybox");
+	Camera reflect_cam(camera);
+
+	reflect_cam.pos.y-=2.0*(reflect_cam.pos.y-water_height);
+	reflect_cam.look_at.y-=2.0*(reflect_cam.look_at.y-water_height);
+	//reflect_cam.up.y=-1.0;
+	reflect_cam.sent_uniform(shader->programID, waterFBO->aspect());
+	sent_shadow_uniform(shader);
+    for(unsigned i=0;i<d_objs.size();i++){//100
+    	d_objs.at(i)->draw_object(shader);//draw all obj
+    }
+    //glDisable(GL_CLIP_PLANE0);
+    //glCullFace(GL_BACK);
+
+*/
+
+	FBO->bind_buffer();
+	//waterFBO->color_textures.at(0)->draw_texture(shader2D,
+				//new DrawData2D(1.0, glm::vec2(0, 1.0), 0.3));
 
 	shaderWater->active_shader();
 	float time=glfwGetTime();
 	shaderWater->sent_Uniform("waveTime",time);
-	FBO->color_textures.at(0)->sent_uniform(shaderWater,31,"scenedepthtex");
+	FBO->depth_textures.at(0)->sent_uniform(shaderWater,31,"scenedepthtex");
+	waterFBO->color_textures.at(0)->sent_uniform(shaderWater,31,"reflecttex");
 	//sent uniform
 	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shaderWater, 30, "skybox");
 

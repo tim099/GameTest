@@ -22,7 +22,7 @@ public:
 	void set_window(Window *window);
 
 	void switch_shader(std::string name);
-	FrameBuffer *FBO,*FBO2;
+	FrameBuffer *FBO,*FBO2,*waterFBO;
 protected:
 	void creat_shaders();
 	/*

@@ -26,8 +26,5 @@ void common_vert(){
     	vertout.UVlayer=UVlayer;
     }
     gl_Position=vertout.MVP_pos;//;VP*M*vec4(vertexPosition,1)  
-    
-    //if((shaderData&LayerTexture)!=0){
-    	//vertout.UV.x+=test;//fake
-    //}
+    //gl_ClipPlane=vertout.position;
 }

@@ -1,6 +1,6 @@
 #ifndef DRAWDATA_H_
 #define DRAWDATA_H_
-#include "class/display/draw/drawData/DrawDataEX/DrawDataEX.h"
+#include "class/display/draw/drawData/drawDataEX/DrawDataEX.h"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>

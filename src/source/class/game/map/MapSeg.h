@@ -14,7 +14,7 @@ public:
 	void load(FILE * file);
 
 	void init(Map* map,glm::ivec2 seg_at);
-	void draw(int max_y);
+	void draw(int display_height);
 	void push_cube(glm::ivec3 pos,CubeEX *cube);
 	void remove_cube(glm::ivec3 pos);
 	CubeEX* get_cube(int x,int y,int z);

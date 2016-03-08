@@ -28,7 +28,10 @@ Renderer::Renderer(Draw *_d_obj, Window *_window) {
 	FBO2->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
 	FBO2->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
 			P_Linear);
-
+	waterFBO = new FrameBuffer(window->get_size());
+	waterFBO->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
+	waterFBO->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
+			P_Linear);
 	creat_shaders();
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -40,6 +43,7 @@ Renderer::~Renderer() {
 	//delete texarr;
 	delete FBO;
 	delete FBO2;
+	delete waterFBO;
 	delete shader2D;
 	delete shaderShadowMapping;
 	delete shaderWater;
@@ -102,7 +106,7 @@ void Renderer::render() {
 
 	draw->update();
 
-	draw->draw3D(shader,shaderWater,shaderShadowMapping,FBO);
+	draw->draw3D(shader,shaderWater,shaderShadowMapping,shader2D,FBO,waterFBO);
 
 	draw->draw2D(shader2D,FBO2);
 

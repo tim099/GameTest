@@ -24,7 +24,8 @@ public:
 
 
 	//render all object(3D Models)
-	void draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,FrameBuffer *FBO);
+	void draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,
+			Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterFBO);
 	/*
 	 * draw all 2D object(texture,font...etc)
 	 */

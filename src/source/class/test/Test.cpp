@@ -79,8 +79,8 @@ Test::Test() {
 	creat_light();
 
 	map = new Map();
-	//map->load_map("files/maps/maptest");
-	map->gen_map(glm::ivec3(250,150,250),time(NULL),80);//0
+	map->load_map("files/maps/maptest");
+	//map->gen_map(glm::ivec3(250,150,250),time(NULL),80);//0
 	//map->save_map("files/maps/maptest");
 
 
@@ -185,7 +185,28 @@ void Test::camera_control(){
 				* input->mouse->pos_delta().x)
 				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
 	}
-	if (input->mouse->left_clicked()) {
+	if (input->mouse->left_clicked()) {//->left_pressed()
+		/*
+		camera->v += (float) (-0.0005f * sqrt(camera->look_dis() + 0.001)
+				* input->mouse->pos_delta().y) * glm::vec3(0, 1, 0);
+		camera->v += (float) (-0.001f * sqrt(camera->look_dis() + 0.001)
+				* input->mouse->pos_delta().x)
+				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
+		*/
+		if(!destruct_mode){
+			map->set_cube_type(map->selected_on.x,
+							   map->selected_on.y,
+							   map->selected_on.z,
+							   Cube::dirt);
+		}else{
+			map->set_cube_type(map->selected_cube.x,
+							   map->selected_cube.y,
+							   map->selected_cube.z,
+							   Cube::cubeNull);
+		}
+
+	}
+	if (input->keyboard->pressed('Z')) {//->left_pressed()
 		/*
 		camera->v += (float) (-0.0005f * sqrt(camera->look_dis() + 0.001)
 				* input->mouse->pos_delta().y) * glm::vec3(0, 1, 0);
@@ -369,12 +390,6 @@ void Test::handle_input() {
 	if (input->keyboard->pressed('G')) {
 		camera->rotate(camera->yaw_vec(), -1);
 	}
-	if (input->keyboard->pressed('Z')) {
-		camera->move(glm::vec3(0, 0.03, 0));
-	}
-	if (input->keyboard->pressed('X')) {
-		camera->move(glm::vec3(0, -0.03, 0));
-	}
 	if (input->keyboard->pressed_char('w')) {
 		map->dp_map->display_height_alter(1, thread_pool);
 	}
@@ -384,18 +399,12 @@ void Test::handle_input() {
 	if (input->keyboard->pressed_char('S')) {
 		map->save_map("files/maps/maptest");
 	}
-
-	if (input->keyboard->pressed('A')) {
-		camera->move_side(0.04f);
-	}
-	if (input->keyboard->pressed('D')) {
-		camera->move_side(-0.04f);
-	}
 }
 void Test::update_obj_pos(Camera *camera) {
 	static Position starpos(glm::vec3(0, 0, 0), glm::vec3());
 	static Position sunpos(glm::vec3(50.1, 800.6, 0.1), glm::vec3());
 	//obj move
+
 	starpos.set_ry(360.0f * ((float) timeloop / loop_time));
 	glm::vec3 sun_pos = glm::vec3(
 			glm::rotate(360.0f * ((float) timeloop / loop_time),
@@ -461,8 +470,9 @@ void Test::update() {
 			timeloop++;
 		else
 			timeloop = 0;
+		timer.tic(1);
 	}
-	timer.tic(1);
+
 	//std::cout<<"cur minute:"<<timer.get_minute()<<std::endl;
 
 
@@ -496,26 +506,35 @@ void Test::update() {
 	if(!cl_in){
 		cl->color=glm::vec3(1,0.5,0);
 		cl2->color=glm::vec3(0,0.5,1);
-		cl2->size=1.01f;
-		cl->size=1.01f;
+		cl2->size=1.01f*Map::CUBE_SIZE;
+		cl->size=1.01f*Map::CUBE_SIZE;
 		//lightControl->push_light(cl);
 		lightControl->push_light(cl2);
 		cl_in=true;
 	}
 	//glm::ivec3 pos = Map::convert_position(input->mouse->world_pos);
+	//static Position selected_on;
+	//selected_on.set_pos(glm::vec3((map->selected_on.x+0.5f)*Map::CUBE_SIZE,
+				 // (map->selected_on.y+0.5f)*Map::CUBE_SIZE,
+				  //(map->selected_on.z+0.5f)*Map::CUBE_SIZE));
+	//drawObjects->get("test/look_at")->push_temp_drawdata(
+			//new DrawDataObj(&selected_on));
 
 	if(destruct_mode){
 		cl2->color=glm::vec3(1,0,0);
-		cl2->pos=glm::vec3(map->selected_cube.x+0.5f,
-						  map->selected_cube.y+0.5f,
-						  map->selected_cube.z+0.5f);
+		cl2->pos=glm::vec3((map->selected_cube.x+0.5f)*Map::CUBE_SIZE,
+						  (map->selected_cube.y+0.5f)*Map::CUBE_SIZE,
+						  (map->selected_cube.z+0.5f)*Map::CUBE_SIZE);
 	}else{
 		cl2->color=glm::vec3(0,1,0);
-		cl2->pos=glm::vec3(map->selected_on.x+0.5f,
-				  map->selected_on.y+0.5f,
-				  map->selected_on.z+0.5f);
+		cl2->pos=glm::vec3((map->selected_on.x+0.5f)*Map::CUBE_SIZE,
+				  (map->selected_on.y+0.5f)*Map::CUBE_SIZE,
+				  (map->selected_on.z+0.5f)*Map::CUBE_SIZE);
 	}
-
+	//cl->color=glm::vec3(0,0,1);
+	//cl->pos=glm::vec3(map->selected_cube.x+0.5f,
+			 // map->selected_cube.y+0.5f,
+			 // map->selected_cube.z+0.5f);
 
 
 	camera->update();

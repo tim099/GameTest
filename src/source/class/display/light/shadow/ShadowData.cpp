@@ -68,6 +68,9 @@ void ShadowData::gen_parallelLights_LVP(std::vector<ParallelLight*>&para_lights,
 	for(unsigned i=0;i<para_lights.size();i++){
 		if(para_lights.at(i)->shadow&&s_num<(int)max_l_shadow){
 			LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),shadow_size,camera->look_at);
+			//test
+			//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),0.3*shadow_size,camera->look_at);
+			//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),0.1*shadow_size,camera->look_at);
 		}
 	}
 }

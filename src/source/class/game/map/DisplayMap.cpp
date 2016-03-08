@@ -332,7 +332,7 @@ void DisplayMap::create_water_object(int px, int pz) {
 	water_dobj->water_updated=false;
 }
 void DisplayMap::draw_map(Camera *camera,Tim::ThreadPool* threadpool) {
-	glm::ivec2 dp_pos(camera->look_at.x, camera->look_at.z);
+	glm::ivec2 dp_pos(camera->look_at.x/Map::CUBE_SIZE, camera->look_at.z/Map::CUBE_SIZE);
 
 	if (dp_pos.x < 0)dp_pos.x = 0;
 	if (dp_pos.y < 0)dp_pos.y = 0;

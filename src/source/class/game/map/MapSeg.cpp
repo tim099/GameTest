@@ -78,15 +78,14 @@ glm::ivec3 MapSeg::convert_pos(unsigned p){
 CubeEX* MapSeg::get_cube(int x,int y,int z){
 	return cubes.get(convert_pos(glm::ivec3(x,y,z)));
 }
-void MapSeg::draw(int max_y){
+void MapSeg::draw(int display_height){
 	CubeEX* cube;
 	std::map<unsigned,CubeEX*>*map=cubes.get_map();
 	typename std::map<unsigned,CubeEX*>::iterator it = map->begin();
 	while(it!=map->end()){
 		cube=it->second;
 		if(cube->draw_cube()){
-			//glm::ivec3 pos=convert_pos(p);
-			if(convert_pos(it->first).y<=max_y){
+			if(convert_pos(it->first).y<display_height){
 				cube->draw();
 			}
 		}

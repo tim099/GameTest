@@ -63,17 +63,37 @@ float specular_value(float specular_val){
 float linstep(float low, float high, float v){
     return clamp((v-low)/(high-low), 0.0, 1.0);
 }
+#define max_n 0//max_n=shadow map number per light
+float get_shadow_del(vec4 pos,int i){
+	int n=0;
+	
+	vec4 LVP_pos=biasMat*parallelLVP[max_n*(parallellight_shadow[i]-1)]*pos;
+	LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0
+	while(n<max_n){
+		n++;
+		LVP_pos=biasMat*parallelLVP[max_n*(parallellight_shadow[i]-1)+n]*pos;
+		LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0
+		if(LVP_pos.x<=1.0&&LVP_pos.x>=0.0&&
+			LVP_pos.y<=1.0&&LVP_pos.y>=0.0)break;
+	}
+	if((LVP_pos.x>1.0||LVP_pos.x<0.0||
+		LVP_pos.y>1.0||LVP_pos.y<0.0))return -1;
+	float depth=texture(depthMaps,vec3(LVP_pos.xy,max_n*(parallellight_shadow[i]-1)+n)).x;	
+
+	return (depth-LVP_pos.z);
+	
+}
 
 float parallellight_visibility(vec3 N,vec4 pos,vec3 light_v,int i){
 
-	vec4 LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]*pos;
-	LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0	
+	vec4 LVP_pos=biasMat*parallelLVP[(parallellight_shadow[i]-1)]*pos;
+	LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0
+	//float del=get_shadow_del(pos,i);	
 	float visibility=0.0;
 	if(LVP_pos.x<=1.0&&LVP_pos.x>=0.0&&
-		LVP_pos.y<=1.0&&LVP_pos.y>=0.0){//within the shadow texture	
+		LVP_pos.y<=1.0&&LVP_pos.y>=0.0){//del!=-1within the shadow texture	
 
 		float depth=texture(depthMaps,vec3(LVP_pos.xy,parallellight_shadow[i]-1)).x;
-			
 		float del=depth-LVP_pos.z;	
 		float bias=0.0002*tan(acos(dot(N,light_v)));
 		bias=-clamp(bias,0.0,0.0002);

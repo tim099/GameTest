@@ -8,6 +8,7 @@
 #include "class/tim/file/File.h"
 #include "class/display/window/ViewPort.h"
 #include "class/display/camera/Camera.h"
+#include "class/input/mouse/Mouse.h"
 #include <cstdio>
 #include <iostream>
 
@@ -28,9 +29,13 @@ Renderer::Renderer(Draw *_d_obj, Window *_window) {
 	FBO2->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
 	FBO2->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
 			P_Linear);
-	waterFBO = new FrameBuffer(window->get_size());
-	waterFBO->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
-	waterFBO->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
+	waterReflectFBO = new FrameBuffer(window->get_size());
+	waterReflectFBO->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
+	waterReflectFBO->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
+			P_Linear);
+	waterRefractFBO = new FrameBuffer(window->get_size());
+	waterRefractFBO->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
+	waterRefractFBO->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
 			P_Linear);
 	creat_shaders();
 	glEnable(GL_DEPTH_TEST);
@@ -43,7 +48,8 @@ Renderer::~Renderer() {
 	//delete texarr;
 	delete FBO;
 	delete FBO2;
-	delete waterFBO;
+	delete waterReflectFBO;
+	delete waterRefractFBO;
 	delete shader2D;
 	delete shaderShadowMapping;
 	delete shaderWater;
@@ -106,7 +112,12 @@ void Renderer::render() {
 
 	draw->update();
 
-	draw->draw3D(shader,shaderWater,shaderShadowMapping,shader2D,FBO,waterFBO);
+	draw->draw3D(shader,shaderWater,shaderShadowMapping,shader2D,FBO,waterReflectFBO);
+	draw->draw_water(shader2D,shader,shaderWater,FBO,waterReflectFBO,waterRefractFBO);
+	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
+			glm::inverse(draw->camera->view_matrix(FBO->aspect())));
+	//waterRefractFBO->depth_textures.at(0)->draw_texture(shader2D,
+			//new DrawData2D(1.0, glm::vec2(0, 1.0), 0.3));
 
 	draw->draw2D(shader2D,FBO2);
 

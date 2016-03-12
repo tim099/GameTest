@@ -13,11 +13,11 @@ void main(){
     vec3 dPos2=(vertin[2].position.xyz)-(vertin[0].position.xyz);
 
 	//vec3 N=vertin[i].Normal;
-	vec3 N=normalize(cross(dPos1,dPos2));
+	//vec3 N=normalize(cross(dPos1,dPos2));
 	for(int i=0;i<3;i++){
 		gl_Position=gl_in[i].gl_Position;
 		vert.UV=vertin[i].UV;
-		vert.Normal=N;
+		vert.Normal=vertin[i].Normal;
 		vert.position=vertin[i].position;
 		vert.MVP_pos=vertin[i].MVP_pos;
 		vert.UVlayer=vertin[i].UVlayer;

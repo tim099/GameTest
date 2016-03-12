@@ -83,6 +83,9 @@ public:
 		temperature+=-0.5*height;
 		return temperature;
 	}
+	int get_water_height()const{
+		return ground_height*water_height;
+	}
 	//cube being selected by mouse
 	glm::ivec3 selected_cube;
 
@@ -91,6 +94,7 @@ public:
 
 	glm::ivec3 seg;
 	glm::ivec3 segsize;
+
 
 	DisplayMap* dp_map;
 protected:
@@ -135,7 +139,7 @@ protected:
 	int times;
 	int ground_height;
 	unsigned seed;
-
+	double water_height;
 	CubeOutOfEdge *cube_out_of_edge;
 	CubeNull *cube_null;
 	CubeError *cube_error;

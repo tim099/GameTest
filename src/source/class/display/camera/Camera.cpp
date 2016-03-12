@@ -17,10 +17,10 @@ Camera::Camera(Camera* camera){
 	z_near=camera->z_near;z_far=camera->z_far;
 	dis_alter_v=camera->dis_alter_v;
 }
-glm::mat4 Camera::sent_uniform(GLuint programID,float aspect){
+glm::mat4 Camera::sent_uniform(GLuint programID,float aspect,std::string name){
 	 glm::mat4 VP=view_matrix(aspect);
 	 glUniform3f(glGetUniformLocation(programID,"camera_pos"),pos.x,pos.y,pos.z);
-	 glUniformMatrix4fv(glGetUniformLocation(programID,"VP"),1,GL_FALSE,&(VP[0][0]));
+	 glUniformMatrix4fv(glGetUniformLocation(programID,name.c_str()),1,GL_FALSE,&(VP[0][0]));
 	 return VP;
 }
 glm::mat4 Camera::view_matrix(float aspect){

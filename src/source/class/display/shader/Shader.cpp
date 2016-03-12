@@ -36,6 +36,9 @@ void Shader::Disable(int flag){
 void Shader::sent_Uniform(std::string name,int i){
 	glUniform1i(glGetUniformLocation(programID,name.c_str()),i);
 }
+void Shader::sent_Uniform(std::string name,glm::vec4 pos){
+	glUniform4f(glGetUniformLocation(programID,name.c_str()),pos.x,pos.y,pos.z,pos.w);
+}
 void Shader::sent_Uniform(std::string name,glm::vec3 pos){
 	glUniform3f(glGetUniformLocation(programID,name.c_str()),pos.x,pos.y,pos.z);
 }

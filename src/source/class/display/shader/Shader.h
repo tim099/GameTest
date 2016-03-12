@@ -8,6 +8,7 @@
 const int NormalMapping=1<<0;
 const int LayerTexture=1<<1;
 const int AlphaTexture=1<<2;
+const int Clipping=1<<3;
 class Shader {
 public:
 	Shader(std::string name=std::string("default"));
@@ -21,6 +22,7 @@ public:
 	void DisableNormapping();
 
 	void sent_Uniform(std::string name,int i);
+	void sent_Uniform(std::string name,glm::vec4 pos);
 	void sent_Uniform(std::string name,glm::vec3 pos);
 	void sent_Uniform(std::string name,glm::vec2 pos);
 	void sent_Uniform(std::string name,GLfloat val);

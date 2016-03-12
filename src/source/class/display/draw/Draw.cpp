@@ -11,6 +11,7 @@
 #include "class/display/texture/AllTextures.h"
 #include "class/input/mouse/Mouse.h"
 #include "class/display/window/ViewPort.h"
+#include "class/game/map/Map.h"
 #include <iostream>
 
 Draw::Draw() {
@@ -21,6 +22,9 @@ Draw::Draw() {
 	lightControl=0;
 	camera=0;
 	Enable3D=true;
+	real_water=false;
+	wave_height=0.1f;
+	wave_width=3.0f;
 }
 Draw::~Draw() {
 	delete d_objsMutex;
@@ -51,7 +55,7 @@ void Draw::gen_shadow(Shader *shaderShadowMapping){
 	lightControl->gen_shadow(shaderShadowMapping,camera,this);
 }
 void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,
-		Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterFBO){
+		Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterReflectFBO){
 	if(!Enable3D){
 		shader->active_shader();
 		FBO->bind_buffer();
@@ -60,7 +64,6 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 	}
 	gen_shadow(shaderShadowMapping);
 
-	///*
 	shader->active_shader();
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
@@ -72,45 +75,92 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
     for(unsigned i=0;i<d_objs.size();i++){//100
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
-/*
-    waterFBO->bind_buffer();
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    //clear window buffer
-	//FBO->color_textures.at(0)->draw_texture(shader2D,
-			//new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
-
-    float water_height=30;
-    //GLdouble h[4]={0,1.0,0,-water_height};
-    //glCullFace(GL_FRONT);
-    //glEnable(GL_CLIP_PLANE0);
-    //glClipPlane(GL_CLIP_PLANE0,h);
-
-	//sent uniform
-	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shader, 30, "skybox");
+}
+void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
+		FrameBuffer *waterReflectFBO,FrameBuffer *waterRefractFBO){
 	Camera reflect_cam(camera);
+	Camera refract_cam(camera);
+	if(real_water){
+	    waterReflectFBO->bind_buffer();
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    //clear window buffer
+		//FBO->color_textures.at(0)->draw_texture(shader2D,
+				//new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
+	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 
-	reflect_cam.pos.y-=2.0*(reflect_cam.pos.y-water_height);
-	reflect_cam.look_at.y-=2.0*(reflect_cam.look_at.y-water_height);
-	//reflect_cam.up.y=-1.0;
-	reflect_cam.sent_uniform(shader->programID, waterFBO->aspect());
-	sent_shadow_uniform(shader);
-    for(unsigned i=0;i<d_objs.size();i++){//100
-    	d_objs.at(i)->draw_object(shader);//draw all obj
-    }
-    //glDisable(GL_CLIP_PLANE0);
-    //glCullFace(GL_BACK);
+	    float water_height=Map::get_cur_object()->get_water_height()*Map::CUBE_SIZE;
+	    shader->Enable(Clipping);
+	    glm::vec4 clip_plane(0,1.0,0,-water_height);
+	    shader->sent_Uniform("clipping_plane",clip_plane);
+	    //glCullFace(GL_FRONT);
+	    //glEnable(GL_CLIP_PLANE0);
+	    //glClipPlane(GL_CLIP_PLANE0,h);
 
-*/
+		//sent uniform
+
+
+		reflect_cam.pos.y-=2.0*(reflect_cam.pos.y-water_height);
+		reflect_cam.look_at.y-=2.0*(reflect_cam.look_at.y-water_height);
+		reflect_cam.fovy+=60;
+
+		//reflect_cam.up.y=-1.0;
+		reflect_cam.sent_uniform(shader->programID, waterReflectFBO->aspect());
+		sent_shadow_uniform(shader);
+	    for(unsigned i=0;i<d_objs.size();i++){//100
+	    	d_objs.at(i)->draw_object(shader);//draw all obj
+	    }
+	    shader->Disable(Clipping);
+	    //glDisable(GL_CLIP_PLANE0);
+	    //glCullFace(GL_BACK);
+
+
+	    waterRefractFBO->bind_buffer();
+	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
+	    //FBO->color_textures.at(0)->draw_texture(shader2D,
+				//new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
+
+	    shader->Enable(Clipping);
+	    clip_plane=glm::vec4(0,-1.0,0,water_height-0.01);
+	    shader->sent_Uniform("clipping_plane",clip_plane);
+		//sent uniform
+
+		refract_cam.dis_alter(1.0);
+		//refract_cam.fovy+=10;
+
+		refract_cam.sent_uniform(shader->programID, waterRefractFBO->aspect());
+		sent_shadow_uniform(shader);
+	    for(unsigned i=0;i<d_objs.size();i++){//100
+	    	d_objs.at(i)->draw_object(shader);//draw all obj
+	    }
+	    shader->Disable(Clipping);
+	}
+
+
 
 	FBO->bind_buffer();
-	//waterFBO->color_textures.at(0)->draw_texture(shader2D,
-				//new DrawData2D(1.0, glm::vec2(0, 1.0), 0.3));
 
+	//waterFBO->depth_textures.at(0)->draw_texture(shader2D,
+				//new DrawData2D(1.0, glm::vec2(0, 1.0), 0.3));
 	shaderWater->active_shader();
+
+
 	float time=glfwGetTime();
+
 	shaderWater->sent_Uniform("waveTime",time);
-	FBO->depth_textures.at(0)->sent_uniform(shaderWater,31,"scenedepthtex");
-	waterFBO->color_textures.at(0)->sent_uniform(shaderWater,31,"reflecttex");
+	shaderWater->sent_Uniform("waveHeight",wave_height);
+	shaderWater->sent_Uniform("waveWidth",wave_width);
+	if(real_water){
+		shaderWater->sent_Uniform("real_water",1);
+		reflect_cam.sent_uniform(shaderWater->programID, waterReflectFBO->aspect(),"reflectWVP");
+		refract_cam.sent_uniform(shaderWater->programID, waterRefractFBO->aspect(),"refractWVP");
+		waterReflectFBO->depth_textures.at(0)->sent_uniform(shaderWater,31,"reflectdepthtex");
+		waterReflectFBO->color_textures.at(0)->sent_uniform(shaderWater,32,"reflecttex");
+		waterRefractFBO->depth_textures.at(0)->sent_uniform(shaderWater,34,"refractdepthtex");
+		waterRefractFBO->color_textures.at(0)->sent_uniform(shaderWater,35,"refracttex");
+	}else{
+		shaderWater->sent_Uniform("real_water",0);
+	}
+
+
 	//sent uniform
 	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shaderWater, 30, "skybox");
 
@@ -120,10 +170,6 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
     	//std::cout<<"draw water"<<std::endl;
     	water_d_objs.at(i)->draw_object(shaderWater);//draw all obj
     }
-    //glDisable(GL_BLEND);
-	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
-			glm::inverse(camera->view_matrix(ViewPort::get_cur_window_aspect())));
-	//*/
 }
 void Draw::draw2D(Shader2D *shader2D,FrameBuffer *FBO){
 	FBO->bind_buffer();

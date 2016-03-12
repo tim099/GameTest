@@ -2,6 +2,7 @@
 #define CAMERA_H_
 #include <glm/glm.hpp>
 #include <GL/glew.h>
+#include <string>
 class Camera {
 public:
 	Camera(glm::vec3 pos,glm::vec3 look_at,glm::vec3 up,float fovy,float z_near,float z_far);
@@ -27,7 +28,8 @@ public:
 	void rotate(glm::vec3 v,float degrees);
 	void dis_alter(float dis);
 
-	glm::mat4 sent_uniform(GLuint programID,float aspect);
+	glm::mat4 sent_uniform(GLuint programID,float aspect,
+			std::string name=std::string("VP"));
 
 	void update();
 	glm::vec3 pos;

@@ -8,7 +8,7 @@
 #include "class/tim/thread/ThreadPool.h"
 #include "class/game/map/Map.h"
 #include "class/game/map/MapSeg.h"
-
+#include "class/display/model/modelBuffer/AllModelBuffers.h"
 #include <iostream>
 DisplayMap::DisplayMap(Map *_map) {
 	map = _map;
@@ -85,6 +85,7 @@ void DisplayMap::gen_water_model(Tim::ThreadPool* threadpool
 		,std::vector<glm::ivec2> &update_waters){
 	std::vector<TaskCreateWaterModel*> tasks;
 	TaskCreateWaterModel *task;
+
 	for (unsigned i = 0; i < update_waters.size(); i++) {
 			task = new TaskCreateWaterModel(this,update_waters[i].x,update_waters[i].y);
 			tasks.push_back(task);
@@ -246,6 +247,7 @@ void DisplayMap::create_map_object(int px, int pz) {
 }
 void DisplayMap::create_water_object(int px, int pz) {
 	//Model *watermodel = dmaps[px][pz]->watermodel;
+
 	static const unsigned char up=1<<0;
 	static const unsigned char down=1<<1;
 	static const unsigned char left=1<<2;
@@ -328,6 +330,12 @@ void DisplayMap::create_water_object(int px, int pz) {
 			}
 		}
 	}
+	//glm::vec3 pos = glm::vec3((sx + 0.5) * Map::CUBE_SIZE,
+			//(17) * Map::CUBE_SIZE,
+			//(sz + 0.5) * Map::CUBE_SIZE);
+	//static Model *waterball=Model::load_obj("files/obj/celestialSphere.obj",50,true);
+	//watermodel->merge(waterball,pos);
+
 	water_dobj->update_model();
 	water_dobj->water_updated=false;
 }

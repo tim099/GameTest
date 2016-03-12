@@ -66,9 +66,9 @@ void ModelBuffer::bind_buffer(Shader *shader) {
 	vtbuffer->bind_buffer();
 	uvbuffer->bind_buffer();
 	vnbuffer->bind_buffer();
-	if (lybuffer)
-		lybuffer->bind_buffer();
+
 	if (lybuffer) {
+		lybuffer->bind_buffer();
 		shader->Enable(LayerTexture); //enable lybuffer
 	} else {
 		shader->Disable(LayerTexture); //disable lybuffer

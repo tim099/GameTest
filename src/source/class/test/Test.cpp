@@ -68,8 +68,8 @@ Test::Test() {
 	receiver = new Receiver("test");
 	input->push_receiver(receiver);
 
-	camera = new Camera(glm::vec3(36.0, 24.0, 24.0),
-			glm::vec3(34.0, 22.0, 27.0), glm::vec3(0, 1, 0), 60.0, 0.1f,
+	camera = new Camera(glm::vec3(106.0, 54.0, 124.0),
+			glm::vec3(104.0, 52.0, 127.0), glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 
 	renderer = new Renderer(draw, window);
@@ -156,7 +156,7 @@ void Test::camera_control(){
 	if(input->keyboard->pressed('F')){
 		camera->v.y -= 0.01f* sqrt(camera->look_dis() + 0.001);
 	}
-	if (input->mouse->mid_pressed()) {
+	if (input->mouse->mid_pressed()||input->keyboard->pressed('Z')) {
 		//std::cout<<"move"<<(int)(mouse->pos.x)<<","<<(int)mouse->prev_pos.x<<std::endl;
 		camera->rotate(glm::vec3(0, 1, 0), -0.15 * input->mouse->pos_delta().x);
 		camera->rotate(camera->yaw_vec(), 0.15 * input->mouse->pos_delta().y);
@@ -206,14 +206,8 @@ void Test::camera_control(){
 		}
 
 	}
+	/*
 	if (input->keyboard->pressed('Z')) {//->left_pressed()
-		/*
-		camera->v += (float) (-0.0005f * sqrt(camera->look_dis() + 0.001)
-				* input->mouse->pos_delta().y) * glm::vec3(0, 1, 0);
-		camera->v += (float) (-0.001f * sqrt(camera->look_dis() + 0.001)
-				* input->mouse->pos_delta().x)
-				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
-		*/
 		if(!destruct_mode){
 			map->set_cube_type(map->selected_on.x,
 							   map->selected_on.y,
@@ -227,6 +221,7 @@ void Test::camera_control(){
 		}
 
 	}
+	*/
 	if (input->mouse->scroll) {
 		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
 				* (0.05 * input->mouse->scroll);
@@ -268,6 +263,9 @@ void Test::handle_input() {
 		std::cout << "END" << std::endl;
 		end = true;
 	}
+	if (input->keyboard->get('P')) { //ESC
+		draw->real_water^=1;
+	}
 	if (input->keyboard->pressed('M')) {
 		timeloop++;
 		if (timeloop >= loop_time)
@@ -302,36 +300,35 @@ void Test::handle_input() {
 	}
 	if (input->keyboard->get('V')) {
 		destruct_mode^=1;
-		/*
-		glm::ivec3 pos = Map::convert_position(camera->look_at);
-		Cube *cube=map->get_cube(pos.x,pos.y,pos.z);
-		std::cout<<"cube name="<<cube->get_name()<<std::endl;
-		map->remove_cube(pos.x, pos.y, pos.z);
-
-		map->set_cube_type(map->selected_cube.x,
-						   map->selected_cube.y,
-						   map->selected_cube.z,
-						   Cube::cubeNull);
-		 */
 	}
 
-	if (input->keyboard->get(GLFW_KEY_LEFT)) {
+	//if (input->keyboard->get(GLFW_KEY_LEFT)) {
+		/*
 		UI::PictureButton* but;
 		but = new UI::PictureButton(glm::vec2(0.35, 1.0), "UI/button2", 0.14);
 		but->set_signal(new Signal("P", "test"));
 		but->set_string(new std::string(input->keyboard->get_str()));
 		UI->push_child(but);
+		*/
+	//}
+	//if (input->keyboard->get(GLFW_KEY_RIGHT)) {
+		//draw->Enable3D^=1;
+	//}
+	if (input->keyboard->pressed(GLFW_KEY_LEFT)) {
+		draw->wave_width*=1.01f;
 	}
-	if (input->keyboard->get(GLFW_KEY_RIGHT)) {
-		draw->Enable3D^=1;
+	if (input->keyboard->pressed(GLFW_KEY_RIGHT)) {
+		draw->wave_width*=0.99f;
 	}
 	if (input->keyboard->pressed(GLFW_KEY_UP)) {
-		if (lightControl->shadow_dis > 0.01)
-			lightControl->shadow_dis *= 0.98;
+		draw->wave_height*=1.015f;
+		//if (lightControl->shadow_dis > 0.01)
+			//lightControl->shadow_dis *= 0.98;
 	}
 	if (input->keyboard->pressed(GLFW_KEY_DOWN)) {
-		if (lightControl->shadow_dis < 30.0)
-			lightControl->shadow_dis *= 1.01;
+		draw->wave_height*=0.985f;
+		//if (lightControl->shadow_dis < 30.0)
+			//lightControl->shadow_dis *= 1.01;
 	}
 	if (input->keyboard->get('C')) {
 		Position *pos = position_pool->create();

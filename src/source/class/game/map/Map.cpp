@@ -25,7 +25,8 @@ Map::Map() {
 	map_segs=0;
 	seed=0;
 	times=0;
-	ground_height=150;
+	water_height=0.5;
+	ground_height=80;
 	cube_out_of_edge=new CubeOutOfEdge();
 	cube_null=new CubeNull();
 	cube_error=new CubeError();
@@ -180,7 +181,7 @@ void Map::gen_map_cube_type(){
 }
 void Map::gen_map_water(){
 	///*
-	int water_height=ground_height*0.5;
+	int water_height=get_water_height();
 	//double type_val;
 	//double height;
 	for(int i=0;i<map_size.x;i++){
@@ -285,6 +286,7 @@ void Map::load_update_pos(FILE * file){
 void Map::save_map(std::string path){
 	FILE * file = fopen(path.c_str(),"w+t");
 	fprintf(file,"%d %d %d\n",map_size.x,map_size.y,map_size.z);
+	fprintf(file,"%d %lf\n",ground_height,water_height);
 	fprintf(file,"%u\n",seed);
 	unsigned char type;
 	for(int i=0;i<map_size.x;i++){
@@ -308,6 +310,7 @@ void Map::save_map(std::string path){
 void Map::load_map(std::string path){
 	FILE * file = fopen(path.c_str(),"r");
 	fscanf(file,"%d %d %d\n",&map_size.x,&map_size.y,&map_size.z);
+	fscanf(file,"%d %lf\n",&ground_height,&water_height);
 	fscanf(file,"%u\n",&seed);
 	if(map_size.x>MX||map_size.y>MY||map_size.z>MZ){
 		std::cerr<<"load map error Map size too large"<<std::endl;

@@ -58,6 +58,15 @@ ModelBuffer:
 
 ModelBuffer:
 	Name:
+		ball
+	Path:
+		celestialSphere.obj
+	Size:
+		10.0
+#load_end
+
+ModelBuffer:
+	Name:
 		doge
 	Path:
 		cube.obj

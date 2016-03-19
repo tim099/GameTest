@@ -11,6 +11,7 @@ ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow,unsigned _
 	max_l_shadow=_max_l_shadow;
 	max_pl_shadow=_max_pl_shadow;
 	shadow_quality=_shadow_quality;
+	parallellight_shadowmap_per_light=1;
 	s_num=0;
 	ps_num=0;
 
@@ -36,7 +37,7 @@ ShadowData::~ShadowData() {
 void ShadowData::sent_uniform(Shader *shader){
 	Uniform::sentMat4Arr(shader->programID,LVP,s_num,std::string("parallelLVP[0]"));
 	Uniform::sentMat4Arr(shader->programID,PLVP,6*ps_num,std::string("pointLVP[0]"));
-
+	shader->sent_Uniform("parallellight_shadowmap_per_light",parallellight_shadowmap_per_light);
 	SFBO->depth_textures.at(0)->sent_uniform(shader,10,"depthMaps");
 	//SFBO->color_textures.at(0)->sent_uniform(shader,10,"depthMaps");
 	//Texture::usetextureVec(shader,SFBO->depth_textures,3,"depthMap");
@@ -64,6 +65,7 @@ void ShadowData::gen_shadow_map(Shader *shaderShadowMapping,
 }
 void ShadowData::gen_parallelLights_LVP(std::vector<ParallelLight*>&para_lights,Camera *camera,double shadow_dis){
 	double shadow_size=(shadow_dis/sqrt(camera->look_dis()+1.0));
+	parallellight_shadowmap_per_light=1;
 	s_num=0;
 	for(unsigned i=0;i<para_lights.size();i++){
 		if(para_lights.at(i)->shadow&&s_num<(int)max_l_shadow){

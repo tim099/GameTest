@@ -12,6 +12,7 @@ struct paralight{
 	vec3 vec;
 };
 
+uniform int parallellight_shadowmap_per_light;
 uniform int parallellight_num;
 uniform vec3 parallellight_vec[MAX_PARALLELLIGHT];
 uniform vec3 parallellight_color[MAX_PARALLELLIGHT];
@@ -63,41 +64,32 @@ float specular_value(float specular_val){
 float linstep(float low, float high, float v){
     return clamp((v-low)/(high-low), 0.0, 1.0);
 }
-#define max_n 0//max_n=shadow map number per light
 float get_shadow_del(vec4 pos,int i){
+	vec4 LVP_pos;
 	int n=0;
-	
-	vec4 LVP_pos=biasMat*parallelLVP[max_n*(parallellight_shadow[i]-1)]*pos;
-	LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0
-	while(n<max_n){
-		n++;
-		LVP_pos=biasMat*parallelLVP[max_n*(parallellight_shadow[i]-1)+n]*pos;
+	int light_at;
+	while(n<parallellight_shadowmap_per_light){
+		light_at=parallellight_shadowmap_per_light*(parallellight_shadow[i]-1)+n;
+		LVP_pos=biasMat*parallelLVP[light_at]*pos;
 		LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0
 		if(LVP_pos.x<=1.0&&LVP_pos.x>=0.0&&
 			LVP_pos.y<=1.0&&LVP_pos.y>=0.0)break;
+		n++;
 	}
 	if((LVP_pos.x>1.0||LVP_pos.x<0.0||
 		LVP_pos.y>1.0||LVP_pos.y<0.0))return -1;
-	float depth=texture(depthMaps,vec3(LVP_pos.xy,max_n*(parallellight_shadow[i]-1)+n)).x;	
+	float depth=texture(depthMaps,vec3(LVP_pos.xy,light_at)).x;	
 
 	return (depth-LVP_pos.z);
 	
 }
 
 float parallellight_visibility(vec3 N,vec4 pos,vec3 light_v,int i){
-
-	vec4 LVP_pos=biasMat*parallelLVP[(parallellight_shadow[i]-1)]*pos;
-	LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0
-	//float del=get_shadow_del(pos,i);	
+	float del=get_shadow_del(pos,i);	
 	float visibility=0.0;
-	if(LVP_pos.x<=1.0&&LVP_pos.x>=0.0&&
-		LVP_pos.y<=1.0&&LVP_pos.y>=0.0){//del!=-1within the shadow texture	
-
-		float depth=texture(depthMaps,vec3(LVP_pos.xy,parallellight_shadow[i]-1)).x;
-		float del=depth-LVP_pos.z;	
+	if(del!=-1){//within the shadow texture	
 		float bias=0.0002*tan(acos(dot(N,light_v)));
 		bias=-clamp(bias,0.0,0.0002);
-
 		if(del>bias){	
 			visibility=1.0;
 		}else{
@@ -223,16 +215,8 @@ vec3 light_scattering(vec4 pos){
 			per_scatter=0.2/sample_num;
 			for(int j=0;j<sample_num;j++){
 				interpolated_sample=camera_pos+(len*delvec)/100*(sample_num+j);
-				
-				LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]
-					*vec4(interpolated_sample,1.0);
-				LVP_pos/=LVP_pos.w;
-			
-				t=LVP_pos.xy;	
-   	 			z_val=(texture(depthMaps,vec3(t,parallellight_shadow[i]-1)).x);
-				del=z_val-LVP_pos.z;	
-		
-				if((t.x<=1.0&&t.y<=1.0&&t.x>=0.0&&t.y>=0.0)){//in depth map
+				del=get_shadow_del(vec4(interpolated_sample,1),i);
+				if(del!=-1){//in depth map
 					if((del>0.0002)){				
 				 	  	scatter_value+=per_scatter; 	   	
     				}

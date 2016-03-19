@@ -4,6 +4,7 @@
 
 
 void main(){ 
+	common_frag();
 	vec3 tex_color=get_tex_color();
 	vec3 Normal=get_normal();
 	

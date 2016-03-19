@@ -36,7 +36,7 @@ public:
 	void set_obj(ModelBuffer *obj);
 	void clear_temp_drawdata();
 	bool draw_shadow;
-
+	bool sky_map;
 	//x=diffuse,y=specular_value,z=ambient,w=emissive
 	glm::vec4 mat;
 protected:

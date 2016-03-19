@@ -82,26 +82,19 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 	Camera refract_cam(camera);
 	if(real_water){
 	    waterReflectFBO->bind_buffer();
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    //clear window buffer
-		//FBO->color_textures.at(0)->draw_texture(shader2D,
-				//new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 
 	    float water_height=Map::get_cur_object()->get_water_height()*Map::CUBE_SIZE;
 	    shader->Enable(Clipping);
-	    glm::vec4 clip_plane(0,1.0,0,-water_height);
+	    glm::vec4 clip_plane(0,1.0,0,-water_height+0.01);
 	    shader->sent_Uniform("clipping_plane",clip_plane);
 	    //glCullFace(GL_FRONT);
 	    //glEnable(GL_CLIP_PLANE0);
 	    //glClipPlane(GL_CLIP_PLANE0,h);
 
-		//sent uniform
-
-
 		reflect_cam.pos.y-=2.0*(reflect_cam.pos.y-water_height);
 		reflect_cam.look_at.y-=2.0*(reflect_cam.look_at.y-water_height);
-		reflect_cam.fovy+=60;
-
+		reflect_cam.fovy+=10;
 		//reflect_cam.up.y=-1.0;
 		reflect_cam.sent_uniform(shader->programID, waterReflectFBO->aspect());
 		sent_shadow_uniform(shader);
@@ -112,20 +105,15 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 	    //glDisable(GL_CLIP_PLANE0);
 	    //glCullFace(GL_BACK);
 
-
 	    waterRefractFBO->bind_buffer();
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
-	    //FBO->color_textures.at(0)->draw_texture(shader2D,
-				//new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
-
 	    shader->Enable(Clipping);
 	    clip_plane=glm::vec4(0,-1.0,0,water_height-0.01);
 	    shader->sent_Uniform("clipping_plane",clip_plane);
 		//sent uniform
 
 		refract_cam.dis_alter(1.0);
-		//refract_cam.fovy+=10;
-
+		refract_cam.fovy+=10;
 		refract_cam.sent_uniform(shader->programID, waterRefractFBO->aspect());
 		sent_shadow_uniform(shader);
 	    for(unsigned i=0;i<d_objs.size();i++){//100

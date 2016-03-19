@@ -116,8 +116,8 @@ void Renderer::render() {
 	draw->draw_water(shader2D,shader,shaderWater,FBO,waterReflectFBO,waterRefractFBO);
 	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
 			glm::inverse(draw->camera->view_matrix(FBO->aspect())));
-	//waterRefractFBO->depth_textures.at(0)->draw_texture(shader2D,
-			//new DrawData2D(1.0, glm::vec2(0, 1.0), 0.3));
+	waterRefractFBO->color_textures.at(0)->draw_texture(shader2D,
+			new DrawData2D(1.0, glm::vec2(0, 1.0), 0.3));
 
 	draw->draw2D(shader2D,FBO2);
 

@@ -156,7 +156,7 @@ void main(){
     if(real_water!=0){
         vec3 reflect_col=get_water_reflect(Normal);
     	vec3 refract_col=get_water_refract(Normal,0.8);
-		color=vec4((total_light)*(0.2*tex_color)+0.4f*reflect_col+0.4*refract_col,1.0);
+		color=vec4((total_light)*(0.2*tex_color)+0.6f*reflect_col+0.4*refract_col,1.0);
     }else{
     	vec3 reflect_col=get_reflect(Normal);
     	color=vec4((total_light)*(0.4*tex_color+0.8f*reflect_col),0.7);

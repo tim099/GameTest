@@ -40,8 +40,8 @@ Test::Test() {
 
 	//map->load_map("files/maps/map011");
 
-	window = new Window(glm::ivec2(1366, 733), "Age of Cube", false); //must before any draw obj
-	//window = new Window(glm::ivec2(1920, 1080), "Age of Cube", true); //must before any draw obj
+	window = new Window(glm::ivec2(1366, 733), "Age of Cube", false);
+	//window = new Window(glm::ivec2(1920, 1080), "Age of Cube", true);
 
 	draw = new Draw();
 	draw->register_cur();

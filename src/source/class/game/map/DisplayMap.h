@@ -35,7 +35,7 @@ public:
 
 	void display_height_alter(int val,Tim::ThreadPool* threadpool);
 	void update_map(glm::ivec3 pos);
-	void update_water_map(glm::ivec3 pos);
+
 	Tim::Mutex* createMapObjectMutex;
 	int range,display_height;
 protected:

@@ -19,6 +19,7 @@ public:
 	void remove_cube(glm::ivec3 pos);
 	CubeEX* get_cube(int x,int y,int z);
 	glm::ivec2 seg_at;//start position's x and z
+	bool updated;
 protected:
 	void save_landscape(FILE * file);
 	void load_landscape(FILE * file);

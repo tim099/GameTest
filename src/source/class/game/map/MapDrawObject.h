@@ -22,7 +22,7 @@ public:
 	//if model_buffer not exist,create the model buffer,else update the model_buffer
 	void update_model_buffer();
 	Model *model;
-	bool map_updated;
+	//bool updated;
 
 	//draw_map==true if this MapDrawObje should be draw in this frame
 	bool draw;

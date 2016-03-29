@@ -14,7 +14,7 @@ void MapDrawObject::init(std::string tex_str,std::string Nor_str){
 	model=new Model(60,true);
 	mat=glm::vec4(0.3,0.2,0.1,0.15);
 	model_updated=false;
-	map_updated=false;
+	//updated=false;
 	draw=false;
 }
 void MapDrawObject::clear_model_buffer(){

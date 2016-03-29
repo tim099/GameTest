@@ -107,8 +107,9 @@ void DisplayMap::gen_map_obj(){
 void DisplayMap::update_whole_map(){
 	for (int i = 0; i < seg.x; i++) {
 		for (int j = 0; j < seg.z; j++) {
-			dmaps->get(i,j)->map_updated=true;
-			water_dmaps->get(i,j)->water_updated=true;
+			map->get_map_seg(i,j)->updated=true;
+			//dmaps->get(i,j)->updated=true;
+			//water_dmaps->get(i,j)->updated=true;
 		}
 	}
 }
@@ -128,46 +129,25 @@ void DisplayMap::display_height_alter(int val, Tim::ThreadPool* threadpool) {
 	}
 	update_whole_map();
 }
-void DisplayMap::update_water_map(glm::ivec3 pos){
-	if ((pos.x / segsize.x) >= seg.x || (pos.x / segsize.x) < 0
-			|| (pos.z / segsize.z) >= seg.z || (pos.z / segsize.z) < 0) {
-		std::cerr << "DisplayMap::update_water_map out of range" << std::endl;
-		return;
-	}
-	water_dmaps->get(pos.x / segsize.x, pos.z / segsize.z)->water_updated=true;
-
-	if (pos.x % segsize.x == segsize.x - 1 && ((pos.x / segsize.x) + 1 < seg.x)){
-		water_dmaps->get((pos.x / segsize.x) + 1, pos.z / segsize.z)->water_updated=true;
-	}
-	if (pos.x % segsize.x == 0 && ((pos.x / segsize.x) - 1 >= 0)){
-		water_dmaps->get((pos.x / segsize.x) - 1, pos.z / segsize.z)->water_updated=true;
-	}
-	if (pos.z % segsize.z == segsize.z - 1 && ((pos.z / segsize.z) + 1 < seg.z)){
-		water_dmaps->get(pos.x / segsize.x, (pos.z / segsize.z) + 1)->water_updated=true;
-	}
-	if (pos.z % segsize.z == 0 && ((pos.z / segsize.z) - 1 >= 0)){
-		water_dmaps->get(pos.x / segsize.x, (pos.z / segsize.z) - 1)->water_updated=true;
-	}
-}
 void DisplayMap::update_map(glm::ivec3 pos) {
 	if ((pos.x / segsize.x) >= seg.x || (pos.x / segsize.x) < 0
 			|| (pos.z / segsize.z) >= seg.z || (pos.z / segsize.z) < 0) {
 		std::cerr << "DisplayMap::update_map out of range" << std::endl;
 		return;
 	}
-	dmaps->get(pos.x / segsize.x, pos.z / segsize.z)->map_updated=true;
+	map->get_map_seg(pos.x / segsize.x, pos.z / segsize.z)->updated=true;
 
 	if (pos.x % segsize.x == segsize.x - 1 && ((pos.x / segsize.x) + 1 < seg.x)){
-		dmaps->get((pos.x / segsize.x) + 1, pos.z / segsize.z)->map_updated=true;
+		map->get_map_seg((pos.x / segsize.x) + 1, pos.z / segsize.z)->updated=true;
 	}
 	if (pos.x % segsize.x == 0 && ((pos.x / segsize.x) - 1 >= 0)){
-		dmaps->get((pos.x / segsize.x) - 1, pos.z / segsize.z)->map_updated=true;
+		map->get_map_seg((pos.x / segsize.x) - 1, pos.z / segsize.z)->updated=true;
 	}
 	if (pos.z % segsize.z == segsize.z - 1 && ((pos.z / segsize.z) + 1 < seg.z)){
-		dmaps->get(pos.x / segsize.x, (pos.z / segsize.z) + 1)->map_updated=true;
+		map->get_map_seg(pos.x / segsize.x, (pos.z / segsize.z) + 1)->updated=true;
 	}
 	if (pos.z % segsize.z == 0 && ((pos.z / segsize.z) - 1 >= 0)){
-		dmaps->get(pos.x / segsize.x, (pos.z / segsize.z) - 1)->map_updated=true;
+		map->get_map_seg(pos.x / segsize.x, (pos.z / segsize.z) - 1)->updated=true;
 	}
 
 }
@@ -243,7 +223,7 @@ void DisplayMap::create_map_object(int px, int pz) {
 		}
 	}
 	map_dobj->update_model();
-	map_dobj->map_updated=false;
+	map->get_map_seg(px,pz)->updated=false;
 }
 void DisplayMap::create_water_object(int px, int pz) {
 	//Model *watermodel = dmaps[px][pz]->watermodel;
@@ -337,7 +317,7 @@ void DisplayMap::create_water_object(int px, int pz) {
 	//watermodel->merge(waterball,pos);
 
 	water_dobj->update_model();
-	water_dobj->water_updated=false;
+	//water_dobj->updated=false;
 }
 void DisplayMap::draw_map(Camera *camera,Tim::ThreadPool* threadpool) {
 	glm::ivec2 dp_pos(camera->look_at.x/Map::CUBE_SIZE, camera->look_at.z/Map::CUBE_SIZE);
@@ -366,11 +346,8 @@ void DisplayMap::draw_map(Camera *camera,Tim::ThreadPool* threadpool) {
 			dmap=dmaps->get(i,j);
 			dwater=water_dmaps->get(i,j);
 			//std::cout<<"drawmap at="<<i<<","<<j<<std::endl;
-			if(dmap->map_updated){
+			if(map->get_map_seg(i,j)->updated){
 				update_maps.push_back(glm::ivec2(i,j));
-				//dmap->map_updated=false;
-			}
-			if(dwater->water_updated){
 				update_waters.push_back(glm::ivec2(i,j));
 			}
 			dwater->draw=true;

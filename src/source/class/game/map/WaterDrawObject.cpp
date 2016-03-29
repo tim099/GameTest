@@ -8,7 +8,7 @@ void WaterDrawObject::init(){
 	model=new Model(60,true);
 	mat=glm::vec4(0.3,0.2,0.1,0.15);
 	model_updated=false;
-	water_updated=false;
+	//updated=false;
 	draw=false;
 	draw_shadow=true;
 	alpha_drawobject=true;

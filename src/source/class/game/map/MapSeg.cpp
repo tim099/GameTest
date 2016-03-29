@@ -6,6 +6,7 @@
 #include <cstdio>
 MapSeg::MapSeg() {
 	map=0;
+	updated=false;
 }
 void MapSeg::init(Map* _map,glm::ivec2 _seg_at){
 	map=_map;

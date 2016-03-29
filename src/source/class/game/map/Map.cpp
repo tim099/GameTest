@@ -361,7 +361,7 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 	}
 	map->get(x,y,z)=type;
 	push_update_cube(x,y,z);
-	dp_map->update_water_map(glm::ivec3(x,y,z));
+	//dp_map->update_water_map(glm::ivec3(x,y,z));
 	dp_map->update_map(glm::ivec3(x,y,z));
 	return true;
 }

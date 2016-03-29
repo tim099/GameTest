@@ -4,6 +4,7 @@
 #include "class/game/scene/Scene.h"
 #include "class/display/UI/UI.h"
 #include "class/display/UI/page/PageControl.h"
+namespace AOC{
 class SceneStart: public Scene {
 public:
 	SceneStart();
@@ -28,9 +29,9 @@ protected:
 	void create_map();
 
 	void handle_input();
-	void handle_signal();
+	virtual void handle_signal(Signal *sig);
 	UI::PageControl *p_control;
 	UI::UI *UI;
 };
-
+}
 #endif /* SOURCE_CLASS_GAME_SCENE_AGEOFCUBESCENE_SCENESTART_H_ */

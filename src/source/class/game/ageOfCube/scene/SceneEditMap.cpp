@@ -1,6 +1,7 @@
 #include "class/game/ageOfCube/scene/SceneEditMap.h"
 #include "class/display/UI/page/PageControl.h"
 #include <ctime>
+namespace AOC{
 SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	map_name = _map_name;
 	map_size = _map_size;
@@ -147,4 +148,5 @@ void SceneEditMap::pause() {
 void SceneEditMap::resume() {
 	//draw->Enable3D=false;
 
+}
 }

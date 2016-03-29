@@ -29,6 +29,11 @@ protected:
 	virtual void scene_draw()=0;
 	virtual void scene_initialize()=0;
 	virtual	void scene_terminate()=0;
+
+	virtual void handle_signal(Signal *sig);
+
+	void get_signal();
+
 	Draw* draw;
 	Input* input;
 	Receiver* receiver;

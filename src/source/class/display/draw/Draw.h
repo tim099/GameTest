@@ -25,7 +25,8 @@ public:
 
 	//render all object(3D Models)
 	void draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,
-			Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterReflectFBO);
+			Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterReflectFBO,
+			FrameBuffer * waterRefractFBO);
 
 	void draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 			FrameBuffer *waterReflectFBO,FrameBuffer *waterRefractFBO);
@@ -55,6 +56,7 @@ public:
 	Camera *camera;
 	bool Enable3D;
 	float wave_height,wave_width;
+	float water_height;
 	bool real_water;
 protected:
 

@@ -5,6 +5,7 @@
 #include "class/game/map/Map.h"
 #include "class/display/camera/Camera.h"
 #include "class/display/UI/UI.h"
+namespace AOC{
 class SceneEditMap : public Scene{
 public:
 	SceneEditMap(std::string map_name,glm::ivec3 map_size);
@@ -34,5 +35,5 @@ protected:
 	std::string map_name;
 	glm::ivec3 map_size;
 };
-
+}
 #endif /* SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_SCENEEDITMAP_H_ */

@@ -24,7 +24,8 @@ Draw::Draw() {
 	Enable3D=true;
 	real_water=false;
 	wave_height=0.1f;
-	wave_width=3.0f;
+	wave_width=1.0f;
+	water_height=40.0f;
 }
 Draw::~Draw() {
 	delete d_objsMutex;
@@ -55,7 +56,8 @@ void Draw::gen_shadow(Shader *shaderShadowMapping){
 	lightControl->gen_shadow(shaderShadowMapping,camera,this);
 }
 void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,
-		Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterReflectFBO){
+		Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterReflectFBO,
+		FrameBuffer * waterRefractFBO){
 	if(!Enable3D){
 		shader->active_shader();
 		FBO->bind_buffer();
@@ -75,6 +77,9 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
     for(unsigned i=0;i<d_objs.size();i++){//100
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
+    draw_water(shader2D,shader,shaderWater,FBO,waterReflectFBO,waterRefractFBO);
+	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
+			glm::inverse(camera->view_matrix(FBO->aspect())));
 }
 void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 		FrameBuffer *waterReflectFBO,FrameBuffer *waterRefractFBO){
@@ -84,7 +89,7 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 	    waterReflectFBO->bind_buffer();
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 
-	    float water_height=Map::get_cur_object()->get_water_height()*Map::CUBE_SIZE;
+	    //float water_height=Map::get_cur_object()->get_water_height()*Map::CUBE_SIZE;
 	    shader->Enable(Clipping);
 	    glm::vec4 clip_plane(0,1.0,0,-water_height+0.01);
 	    shader->sent_Uniform("clipping_plane",clip_plane);
@@ -139,9 +144,10 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 	if(real_water){
 		shaderWater->sent_Uniform("real_water",1);
 		reflect_cam.sent_uniform(shaderWater->programID, waterReflectFBO->aspect(),"reflectWVP");
-		refract_cam.sent_uniform(shaderWater->programID, waterRefractFBO->aspect(),"refractWVP");
 		waterReflectFBO->depth_textures.at(0)->sent_uniform(shaderWater,31,"reflectdepthtex");
 		waterReflectFBO->color_textures.at(0)->sent_uniform(shaderWater,32,"reflecttex");
+
+		refract_cam.sent_uniform(shaderWater->programID, waterRefractFBO->aspect(),"refractWVP");
 		waterRefractFBO->depth_textures.at(0)->sent_uniform(shaderWater,34,"refractdepthtex");
 		waterRefractFBO->color_textures.at(0)->sent_uniform(shaderWater,35,"refracttex");
 	}else{

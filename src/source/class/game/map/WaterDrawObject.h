@@ -17,9 +17,9 @@ public:
 	}
 	//if model_buffer not exist,create the model buffer,else update the model_buffer
 	void update_model_buffer();
-	Model *watermodel;
+	Model *model;
 	bool water_updated;
-	bool draw_water;
+	bool draw;
 protected:
 	void clear_model_buffer();
 	bool model_updated;

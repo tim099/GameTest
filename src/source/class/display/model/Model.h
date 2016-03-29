@@ -38,7 +38,7 @@ public:
 	GLfloat* uvBuffer;
 	GLfloat* vnBuffer;
 	GLfloat* lyBuffer;
-	int len,max_len;
+	int vert_num,max_vert;
 protected:
 
 	void initial(int len,int max_len,bool layertex=false);

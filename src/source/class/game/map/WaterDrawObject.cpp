@@ -5,23 +5,23 @@ WaterDrawObject::WaterDrawObject() {
 }
 void WaterDrawObject::init(){
 	init_drawObject("","","",false);
-	watermodel=new Model(60,true);
+	model=new Model(60,true);
 	mat=glm::vec4(0.3,0.2,0.1,0.15);
 	model_updated=false;
 	water_updated=false;
-	draw_water=false;
+	draw=false;
 	draw_shadow=true;
 	alpha_drawobject=true;
 }
 WaterDrawObject::~WaterDrawObject() {
-	delete watermodel;
+	delete model;
 	if(model_buffer)delete model_buffer;
 }
 void WaterDrawObject::update_model_buffer(){
 	if(!model_buffer){
-		set_obj(new ModelBuffer(watermodel));
+		set_obj(new ModelBuffer(model));
 	}else{
-		model_buffer->load_model(watermodel);
+		model_buffer->load_model(model);
 	}
 	model_updated=false;
 }
@@ -32,7 +32,7 @@ void WaterDrawObject::clear_model_buffer(){
 	}
 }
 void WaterDrawObject::update(){
-	if(draw_water){
+	if(draw){
 		if(model_updated||!model_buffer){
 			update_model_buffer();
 		}
@@ -40,5 +40,5 @@ void WaterDrawObject::update(){
 		clear_model_buffer();
 	}
 
-	draw_water=false;
+	draw=false;
 }

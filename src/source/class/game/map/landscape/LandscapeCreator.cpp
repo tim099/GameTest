@@ -1,6 +1,8 @@
 #include "class/game/map/landscape/LandscapeCreator.h"
 #include "class/game/map/landscape/tree/Tree.h"
+#include <iostream>
 LandscapeCreator::LandscapeCreator() {
+	//std::cout<<"LandscapeCreator::LandscapeCreator()"<<std::endl;
 	push(new Tree());
 }
 LandscapeCreator::~LandscapeCreator() {

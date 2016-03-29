@@ -4,9 +4,7 @@
 #include "class/game/map/cube/CubeEX.h"
 
 class Landscape: public CubeEX {
-	static bool landscape_inited;
 public:
-	static void  Landscape_init();
 	/*
 	 * this function is prepare for the initialization of static class member
 	 * (for something like drawObject...

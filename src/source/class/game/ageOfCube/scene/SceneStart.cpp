@@ -3,6 +3,7 @@
 #include "class/display/UI/string/UIString.h"
 #include "class/tim/string/String.h"
 #include "class/game/ageOfCube/scene/SceneEditMap.h"
+namespace AOC{
 SceneStart::SceneStart() {
 	UI=0;
 	receiver=0;
@@ -39,15 +40,12 @@ void SceneStart::resume(){
 		p_control->switch_page("startPage");
 	}
 }
-void SceneStart::handle_signal(){
-	Signal* sig;
-	while((sig=receiver->get_signal())){
-		std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;
-		if(sig->get_data()=="CreateNewMap"){
-			create_new_map();
-		}else if(sig->get_data()=="CreateMap"){
-			create_map();
-		}
+void SceneStart::handle_signal(Signal* sig){
+	std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;
+	if(sig->get_data()=="CreateNewMap"){
+		create_new_map();
+	}else if(sig->get_data()=="CreateMap"){
+		create_map();
 	}
 }
 void SceneStart::create_new_map(){
@@ -81,7 +79,7 @@ void SceneStart::create_map(){
 		std::cout<<map_size[i]<<",";
 	}std::cout<<std::endl;
 	Signal *sig=new Signal("push_scene","Game");
-	sig->ex_data=new SceneEditMap(std::string(map_name->get_string()),
+	sig->ex_data=new AOC::SceneEditMap(std::string(map_name->get_string()),
 			glm::ivec3(map_size[0],map_size[1],map_size[2]));
 	//sig->ex_data=new SceneStart();
 	sig->sent();
@@ -103,9 +101,10 @@ void SceneStart::handle_input(){
 }
 void SceneStart::scene_update(){
 	handle_input();
-	handle_signal();
+
 	UI->update_UIObject();
 }
 void SceneStart::scene_draw(){
 	UI->draw_UIObject(draw);
+}
 }

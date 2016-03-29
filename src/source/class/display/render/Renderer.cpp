@@ -112,21 +112,17 @@ void Renderer::render() {
 
 	draw->update();
 
-	draw->draw3D(shader,shaderWater,shaderShadowMapping,shader2D,FBO,waterReflectFBO);
-	draw->draw_water(shader2D,shader,shaderWater,FBO,waterReflectFBO,waterRefractFBO);
-	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
-			glm::inverse(draw->camera->view_matrix(FBO->aspect())));
-	waterRefractFBO->color_textures.at(0)->draw_texture(shader2D,
-			new DrawData2D(1.0, glm::vec2(0, 1.0), 0.3));
+	draw->draw3D(shader,shaderWater,shaderShadowMapping,shader2D,FBO,
+			waterReflectFBO,waterRefractFBO);
 
 	draw->draw2D(shader2D,FBO2);
-
 
 	FrameBuffer::unbind_buffer(window->get_size()); //start draw on window buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    //clear window buffer
 
 	FBO->color_textures.at(0)->draw_texture(shader2D,
 			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
+
 	/*
 	shader2D->Enable(SobelMode | AddOnMode);
 	shader2D->sent_Uniform("sobel_dv", glm::vec2(250, 120));
@@ -136,7 +132,6 @@ void Renderer::render() {
 	*/
 	FBO2->color_textures.at(0)->draw_texture(shader2D,
 			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
-
 	rendering = false;
 	//window->swap_buffer();
 	//window->render_off();    //release thread using this window

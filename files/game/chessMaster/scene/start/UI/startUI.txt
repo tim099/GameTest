@@ -1,0 +1,30 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		root
+#HEADER_END
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.1 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.14
+	Height:
+		0.0
+			
+	Set_string:
+		"test"	
+	
+	Set_signal:
+		Data:
+			test
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+
+#END

@@ -34,7 +34,7 @@ Model *CubeModel::CubeSide(int i,double sx,double sy,double sz){
 	}
 	Vertex::gen_vn(side->vtBuffer,side->vnBuffer);
 	Vertex::gen_vn(side->vtBuffer+9,side->vnBuffer+9);
-	side->len=6;
+	side->vert_num=6;
 	return side;
 }
 Model *CubeModel::CubeSide(int i,double size){
@@ -62,7 +62,7 @@ Model *CubeModel::CubeSide(int i,double size){
 	}
 	Vertex::gen_vn(side->vtBuffer,side->vnBuffer);
 	Vertex::gen_vn(side->vtBuffer+9,side->vnBuffer+9);
-	side->len=6;
+	side->vert_num=6;
 	return side;
 }
 

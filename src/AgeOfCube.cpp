@@ -18,12 +18,13 @@
 //#include <thread>
 #include "class/tim/string/String.h"
 #include "class/game/ageOfCube/AgeOfCubes.h"
+#include "class/game/chessMaster/ChessMaster.h"
 #include "class/tim/string/String.h"
 #include "class/game/map/cube/Cube.h"
 #include "class/game/timer/Timer.h"
 #include <map>
 int main(){
-
+	//std::cout<<"AOC ver 0.0"<<std::endl;
 	Timer timer;
 	//for(int j=0;j<100;j++)
 	//for(int i=0;i<100000;i++){
@@ -35,6 +36,13 @@ int main(){
 
 	ageOfCubes->mainloop();
 	delete ageOfCubes;
+	*/
+	/*
+	ChessMaster* cm=new ChessMaster();
+	cm->initialize();
+
+	cm->mainloop();
+	delete cm;
 	*/
 	///*
 	Test *test=new Test();

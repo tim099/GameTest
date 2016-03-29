@@ -180,7 +180,7 @@ void DisplayMap::create_map_object(int px, int pz) {
 	static const unsigned char front=1<<4;
 	static const unsigned char back=1<<5;
 	MapDrawObject *map_dobj=dmaps->get(px,pz);
-	Model *mapmodel=map_dobj->mapmodel;
+	Model *mapmodel=map_dobj->model;
 	mapmodel->clear();
 	int sx=px * segsize.x;
 	int ex=(px + 1) * segsize.x;
@@ -255,7 +255,7 @@ void DisplayMap::create_water_object(int px, int pz) {
 	static const unsigned char front=1<<4;
 	static const unsigned char back=1<<5;
 	WaterDrawObject *water_dobj=water_dmaps->get(px,pz);
-	Model *watermodel=water_dobj->watermodel;
+	Model *watermodel=water_dobj->model;
 	watermodel->clear();
 
 	int sx=px * segsize.x;
@@ -373,10 +373,10 @@ void DisplayMap::draw_map(Camera *camera,Tim::ThreadPool* threadpool) {
 			if(dwater->water_updated){
 				update_waters.push_back(glm::ivec2(i,j));
 			}
-			dwater->draw_water=true;
+			dwater->draw=true;
 			dwater->push_temp_drawdata(new DrawDataObj(pos,true));
 
-			dmap->draw_map=true;
+			dmap->draw=true;
 			dmap->push_temp_drawdata(new DrawDataObj(pos,true));
 
 			//draw CubeEX
@@ -389,5 +389,6 @@ void DisplayMap::draw_map(Camera *camera,Tim::ThreadPool* threadpool) {
 			0.015, glm::vec2(0.8, 1.0)));
 	gen_map_model(threadpool,update_maps);
 	gen_water_model(threadpool,update_waters);
+	Draw::get_cur_object()->water_height=map->get_water_height()*Map::CUBE_SIZE;
 	//std::cout<<"DisplayMap::draw_map end"<<std::endl;
 }

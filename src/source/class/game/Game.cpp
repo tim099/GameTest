@@ -110,6 +110,7 @@ void Game::handle_game_signal(){
 	}
 }
 void Game::update(){
+	//std::cout<<"Game::update() 1"<<std::endl;
 	input->update();
 	handle_game_signal();
 

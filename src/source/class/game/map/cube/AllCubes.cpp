@@ -10,7 +10,7 @@
 #include "class/game/map/cube/basic/stone/Coal.h"
 AllCubes::AllCubes() {
 	Cube::Cube_init();
-	Landscape::Landscape_init();
+	//Landscape::Landscape_init();
 	push(new Stone());
 
 	push(new Dirt());

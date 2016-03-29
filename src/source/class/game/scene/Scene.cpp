@@ -22,7 +22,17 @@ void Scene::terminate(){
 	scene_terminate();
 	input->remove_receiver(receiver->get_name());
 }
+void Scene::handle_signal(Signal *sig){
+	std::cout<<"not implement handle signal in class Scene!!"<<std::endl;
+}
+void Scene::get_signal(){
+	Signal* sig;
+	while((sig=receiver->get_signal())){
+		handle_signal(sig);
+	}
+}
 void Scene::update(){
+	get_signal();
 	scene_update();
 }
 void Scene::draw_scene(){

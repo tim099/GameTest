@@ -1,0 +1,26 @@
+#LOAD_TEXTUREMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/game/chessMaster/textures/chessBoard/
+Name:
+	chess
+#HEADER_END
+
+Texture:
+	TextureName:
+		black
+	TexturePath:
+		03.bmp
+Texture:
+	TextureName:
+		white
+	TexturePath:
+		02.bmp
+Texture:
+	TextureName:
+		normal
+	TexturePath:
+		dirtNor.bmp
+#END

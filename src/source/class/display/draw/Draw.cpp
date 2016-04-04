@@ -65,13 +65,11 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 		return;
 	}
 	gen_shadow(shaderShadowMapping);
-
 	shader->active_shader();
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 	//sent uniform
 	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shader, 30, "skybox");
-
 	camera->sent_uniform(shader->programID, FBO->aspect());
 	sent_shadow_uniform(shader);
     for(unsigned i=0;i<d_objs.size();i++){//100

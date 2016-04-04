@@ -16,7 +16,6 @@ DisplayMap::DisplayMap(Map *_map) {
 	range = 3;
 	createMapObjectMutex = new Tim::Mutex();
 	cube = new CubeModel(0.5 * Map::CUBE_SIZE);
-	water_cube = new CubeModel(0.5*Map::CUBE_SIZE,0.5*Map::CUBE_SIZE,0.5*Map::CUBE_SIZE);
 	gen_display_map_seg();
 
 	pos = new Position(glm::vec3(0, 0, 0), glm::vec3());
@@ -42,7 +41,6 @@ DisplayMap::DisplayMap(Map *_map) {
 }
 DisplayMap::~DisplayMap() {
 	delete cube;
-	delete water_cube;
 	delete createMapObjectMutex;
 	Draw* cur_draw=Draw::get_cur_object();
 
@@ -278,32 +276,32 @@ void DisplayMap::create_water_object(int px, int pz) {
 							(k + 0.5) * Map::CUBE_SIZE);
 					if(surface)pos.y=(j + 0.5) * Map::CUBE_SIZE;
 					if (j + 1 >= display_height || !(cube_exist&up)){
-						if(surface)watermodel->merge(water_cube->cube[0], pos);
+						if(surface)watermodel->merge(cube->cube[0], pos);
 						else watermodel->merge(cube->cube[0], pos);
 					}
 
 					if (j - 1 < 0 || !(cube_exist&down)){
-						if(surface)watermodel->merge(water_cube->cube[1], pos);
+						if(surface)watermodel->merge(cube->cube[1], pos);
 						else watermodel->merge(cube->cube[1], pos);
 					}
 
 
 					if (i + 1 >= map->get_size().x ||!(cube_exist&left)){
-						if(surface)watermodel->merge(water_cube->cube[2], pos);
+						if(surface)watermodel->merge(cube->cube[2], pos);
 						else watermodel->merge(cube->cube[2], pos);
 					}
 
 					if (i - 1 < 0 ||!(cube_exist&right)){
-						if(surface)watermodel->merge(water_cube->cube[3], pos);
+						if(surface)watermodel->merge(cube->cube[3], pos);
 						else watermodel->merge(cube->cube[3], pos);
 					}
 					if (k + 1 >= map->get_size().z || !(cube_exist&front)){
-						if(surface)watermodel->merge(water_cube->cube[4], pos);
+						if(surface)watermodel->merge(cube->cube[4], pos);
 						else watermodel->merge(cube->cube[4], pos);
 					}
 
 					if (k - 1 < 0 || !(cube_exist&back)){
-						if(surface)watermodel->merge(water_cube->cube[5], pos);
+						if(surface)watermodel->merge(cube->cube[5], pos);
 						else watermodel->merge(cube->cube[5], pos);
 					}
 				}

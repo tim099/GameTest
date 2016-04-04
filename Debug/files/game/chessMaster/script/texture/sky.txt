@@ -1,0 +1,75 @@
+#LOAD_TEXTUREMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/texture/
+Name:
+	test
+#HEADER_END
+
+//start to load texture
+//each texture start with a Tag (ex:Texture:
+
+Texture:
+	TextureName:
+		NormalTexture
+	TexturePath:
+		normal.bmp
+		
+Texture:
+	TextureName:
+		tex3
+	TexturePath:
+		tex3.bmp		
+Texture:
+	TextureName:
+		test
+	TexturePath:
+		test.png
+
+Texture:
+	TextureName:
+		test2
+	TexturePath:
+		test2.bmp
+
+Texture:
+	TextureName:
+		test3
+	TexturePath:
+		test3.BMP
+
+Texture:
+	TextureName:
+		galaxy
+	TexturePath:
+		galaxy.bmp
+
+Texture:
+	TextureName:
+		doge
+	TexturePath:
+		doge.bmp
+
+TextureCubeMap:
+	TextureName:
+		texcube
+	TextureSize:
+		256
+		256
+	TexturePath:
+		sky/sky0.bmp		
+	TexturePath:
+		sky/sky1.bmp
+	TexturePath:
+		sky/sky2.bmp
+	TexturePath:
+		sky/sky3.bmp					
+	TexturePath:
+		sky/sky4.bmp
+	TexturePath:
+		sky/sky5.bmp				
+		
+		
+#END

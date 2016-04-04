@@ -3,6 +3,7 @@
 const int NormalMapping=1<<0;
 const int LayerTexture=1<<1;
 const int AlphaTexture=1<<2;
-
+const int Clipping=1<<3;
+const int SkyMap=1<<4;
 uniform int shaderData;
 #endif

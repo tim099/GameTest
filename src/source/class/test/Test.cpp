@@ -226,20 +226,20 @@ void Test::camera_control(){
 		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
 				* (0.05 * input->mouse->scroll);
 	}
-	if(camera->look_at.x>1.0f*map->get_size().x){
+	if(camera->look_at.x>Map::CUBE_SIZE*map->get_size().x+4.0){
 		if(camera->v.x>0.0f){
 			camera->v.x*=-0.9f;
 		}
-	}else if(camera->look_at.x<0.0f){
+	}else if(camera->look_at.x<-4.0){
 		if(camera->v.x<0.0f){
 			camera->v.x*=-0.9f;
 		}
 	}
-	if(camera->look_at.z>1.0f*map->get_size().z){
+	if(camera->look_at.z>Map::CUBE_SIZE*map->get_size().z+4.0){
 		if(camera->v.z>0.0f){
 			camera->v.z*=-0.9f;
 		}
-	}else if(camera->look_at.z<0.0f){
+	}else if(camera->look_at.z<-4.0){
 		if(camera->v.z<0.0f){
 			camera->v.z*=-0.9f;
 		}

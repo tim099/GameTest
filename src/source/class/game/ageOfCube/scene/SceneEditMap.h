@@ -1,7 +1,6 @@
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_SCENEEDITMAP_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_SCENEEDITMAP_H_
 #include "class/game/scene/Scene.h"
-#include "class/game/map/DisplayMap.h"
 #include "class/game/map/Map.h"
 #include "class/display/camera/Camera.h"
 #include "class/display/UI/UI.h"

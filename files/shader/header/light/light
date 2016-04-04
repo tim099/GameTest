@@ -1,6 +1,6 @@
 #define MAX_POINTLIGHT 100 
 #define MAX_PARALLELLIGHT 10
-#define MAX_CUBELIGHT 10 
+#define MAX_CUBELIGHT 30 
 #define MAX_POINTLIGHT_SHADOW 4
 mat4 biasMat=mat4(
 	0.5, 0.0, 0.0, 0.0,

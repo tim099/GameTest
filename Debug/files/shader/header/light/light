@@ -1,5 +1,6 @@
 #define MAX_POINTLIGHT 100 
 #define MAX_PARALLELLIGHT 10
+#define MAX_CUBELIGHT 30 
 #define MAX_POINTLIGHT_SHADOW 4
 mat4 biasMat=mat4(
 	0.5, 0.0, 0.0, 0.0,
@@ -11,6 +12,7 @@ struct paralight{
 	vec3 vec;
 };
 
+uniform int parallellight_shadowmap_per_light;
 uniform int parallellight_num;
 uniform vec3 parallellight_vec[MAX_PARALLELLIGHT];
 uniform vec3 parallellight_color[MAX_PARALLELLIGHT];
@@ -22,13 +24,22 @@ uniform vec3 pointlight_pos[MAX_POINTLIGHT];
 uniform vec3 pointlight_color[MAX_POINTLIGHT];
 uniform int pointlight_shadow[MAX_PARALLELLIGHT];
 
+uniform int cubelight_num;
+uniform vec3 cubelight_pos[MAX_CUBELIGHT];
+uniform vec3 cubelight_color[MAX_CUBELIGHT];
+uniform float cubelight_size[MAX_CUBELIGHT];
+
+
 uniform mat4 pointLVP[MAX_POINTLIGHT_SHADOW*6];
 uniform mat4 parallelLVP[MAX_PARALLELLIGHT];
 
 uniform sampler2DArray depthMaps;
 uniform sampler2DArray pointdepthMaps;
 uniform sampler2DArray pointdepthMap[MAX_POINTLIGHT_SHADOW];
-uniform samplerCube cubedepthMap[MAX_POINTLIGHT_SHADOW];
+
+//uniform samplerCube cubedepthMap[MAX_POINTLIGHT_SHADOW];
+
+
 int check_vec(vec3 v){
 	if(abs(v.x)>=abs(v.z)){
 		if(abs(v.x)>=abs(v.y)){//x=max
@@ -53,21 +64,32 @@ float specular_value(float specular_val){
 float linstep(float low, float high, float v){
     return clamp((v-low)/(high-low), 0.0, 1.0);
 }
+float get_shadow_del(vec4 pos,int i){
+	vec4 LVP_pos;
+	int n=0;
+	int light_at;
+	while(n<parallellight_shadowmap_per_light){
+		light_at=parallellight_shadowmap_per_light*(parallellight_shadow[i]-1)+n;
+		LVP_pos=biasMat*parallelLVP[light_at]*pos;
+		LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0
+		if(LVP_pos.x<=1.0&&LVP_pos.x>=0.0&&
+			LVP_pos.y<=1.0&&LVP_pos.y>=0.0)break;
+		n++;
+	}
+	if((LVP_pos.x>1.0||LVP_pos.x<0.0||
+		LVP_pos.y>1.0||LVP_pos.y<0.0))return -1;
+	float depth=texture(depthMaps,vec3(LVP_pos.xy,light_at)).x;	
+
+	return (depth-LVP_pos.z);
+	
+}
 
 float parallellight_visibility(vec3 N,vec4 pos,vec3 light_v,int i){
-
-	vec4 LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]*pos;
-	LVP_pos/=LVP_pos.w;//convert range from 0.0~w to 0.0~1.0	
+	float del=get_shadow_del(pos,i);	
 	float visibility=0.0;
-	if(LVP_pos.x<=1.0&&LVP_pos.x>=0.0&&
-		LVP_pos.y<=1.0&&LVP_pos.y>=0.0){//within the shadow texture	
-
-		float depth=texture(depthMaps,vec3(LVP_pos.xy,parallellight_shadow[i]-1)).x;
-			
-		float del=depth-LVP_pos.z;	
+	if(del!=-1){//within the shadow texture	
 		float bias=0.0002*tan(acos(dot(N,light_v)));
 		bias=-clamp(bias,0.0,0.0002);
-
 		if(del>bias){	
 			visibility=1.0;
 		}else{
@@ -193,16 +215,8 @@ vec3 light_scattering(vec4 pos){
 			per_scatter=0.2/sample_num;
 			for(int j=0;j<sample_num;j++){
 				interpolated_sample=camera_pos+(len*delvec)/100*(sample_num+j);
-				
-				LVP_pos=biasMat*parallelLVP[parallellight_shadow[i]-1]
-					*vec4(interpolated_sample,1.0);
-				LVP_pos/=LVP_pos.w;
-			
-				t=LVP_pos.xy;	
-   	 			z_val=(texture(depthMaps,vec3(t,parallellight_shadow[i]-1)).x);
-				del=z_val-LVP_pos.z;	
-		
-				if((t.x<=1.0&&t.y<=1.0&&t.x>=0.0&&t.y>=0.0)){//in depth map
+				del=get_shadow_del(vec4(interpolated_sample,1),i);
+				if(del!=-1){//in depth map
 					if((del>0.0002)){				
 				 	  	scatter_value+=per_scatter; 	   	
     				}
@@ -213,8 +227,22 @@ vec3 light_scattering(vec4 pos){
 	}
 	return total_scatter;
 }
-
+vec3 cube_light(vec4 position){
+	vec3 total_light=vec3(0,0,0);
+	for(int i=0;i<cubelight_num;i++){
+		if(abs(position.x-cubelight_pos[i].x)<0.5f*cubelight_size[i]){
+			if(abs(position.y-cubelight_pos[i].y)<0.5f*cubelight_size[i]){
+				if(abs(position.z-cubelight_pos[i].z)<0.5f*cubelight_size[i]){
+					total_light+=cubelight_color[i];
+				}
+			}
+		}
+	}
+	return total_light;
+}
 vec3 compute_total_light(vec3 Normal,vec4 position){
 	return (parallel_light(Normal,position)
-    	+point_light(Normal,position)+mat.w);//mat.w=emissive;
+    		+point_light(Normal,position)
+    		+cube_light(position)
+    		)+mat.w;//mat.w=emissive;
 }

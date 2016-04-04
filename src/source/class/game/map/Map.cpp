@@ -217,7 +217,6 @@ void Map::regen_map(){
 	gen_map_shape();
 	gen_map_water();
 	gen_map_cube_type();
-
 	gen_map_land_scape();
 	times++;
 }
@@ -232,13 +231,11 @@ void Map::gen_map(glm::ivec3 _map_size,unsigned _seed,int _ground_height){
 		std::cerr<<"Map::gen_map error Map size too large"<<std::endl;
 		return;
 	}
-
 	//map=new Tim::Array3D<Cube>(map_size.x,map_size.y,map_size.z);
 	init();
 
 	noise.init(seed);
 	//srand(seed);
-
 	regen_map();
 	dp_map->update_whole_map();
 }
@@ -361,7 +358,7 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 	}
 	map->get(x,y,z)=type;
 	push_update_cube(x,y,z);
-	//dp_map->update_water_map(glm::ivec3(x,y,z));
+
 	dp_map->update_map(glm::ivec3(x,y,z));
 	return true;
 }
@@ -576,12 +573,13 @@ void Map::find_select_cube(){
 	pos=glm::vec3((pos.x/Map::CUBE_SIZE),
 			      (pos.y/Map::CUBE_SIZE),
 			      (pos.z/Map::CUBE_SIZE));
-	if(get_cube_type((int)pos.x,(int)pos.y,(int)pos.z)==Cube::cubeNull
-			||(int)pos.y>=dp_map->display_height){//can't be selected
-		selected_on=glm::ivec3(pos.x,pos.y,pos.z);
+	glm::ivec3 p=glm::ivec3(pos.x,pos.y,pos.z);
+	if(get_cube_type(p.x,p.y,p.z)==Cube::cubeNull
+			||p.y>=dp_map->display_height){//can't be selected
+		selected_on=p;
 		find_selected_cube(pos);
 	}else{
-		selected_cube=glm::ivec3(pos.x,pos.y,pos.z);
+		selected_cube=p;
 		find_selected_on(pos);
 	}
 }

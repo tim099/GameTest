@@ -1,0 +1,4 @@
+board_path:
+	files/game/chessMaster/game/chess/chessBoard/board
+pieces_path:
+	files/game/chessMaster/game/chess/chessBoard/pieces

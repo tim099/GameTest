@@ -49,6 +49,9 @@ void LightControl::push_light(ParallelLight* l){
 void LightControl::push_light(CubeLight* l){
 	cube_lights.push_back(l);
 }
+void LightControl::push_temp_light(CubeLight* l){
+	temp_cube_lights.push_back(l);
+}
 void LightControl::choose_point_light(glm::vec3 camera_pos){
     selected_point_lights.clear();
     for(unsigned i=0;i<point_lights.size();i++){
@@ -107,6 +110,15 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
     	cubelight_color.push_back(c_light->color);
     	cubelight_size.push_back(c_light->size);
     }
+    for(unsigned i=0;i<temp_cube_lights.size();i++){
+    	//std::cout<<"test temp cube light"<<std::endl;
+    	c_light=temp_cube_lights.at(i);
+    	cubelight_pos.push_back(c_light->pos);
+    	cubelight_color.push_back(c_light->color);
+    	cubelight_size.push_back(c_light->size);
+    	delete c_light;
+    }
+    temp_cube_lights.clear();
     glUniform1i(glGetUniformLocation(shader->programID,"parallellight_num"),
     		parallellight_vec.size());
     glUniform3fv(glGetUniformLocation(shader->programID,"parallellight_vec"),
@@ -125,11 +137,11 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
     glUniform1iv(glGetUniformLocation(shader->programID,"pointlight_shadow"),
     		pointlight_shadow.size(),(const GLint*)(pointlight_shadow.data()));
 
-    glUniform1i(glGetUniformLocation(shader->programID,"cubelight_num"),cube_lights.size());
+    glUniform1i(glGetUniformLocation(shader->programID,"cubelight_num"),cubelight_pos.size());
     glUniform3fv(glGetUniformLocation(shader->programID,"cubelight_pos"),
-    		cube_lights.size(),(const GLfloat*)(cubelight_pos.data()));
+    		cubelight_pos.size(),(const GLfloat*)(cubelight_pos.data()));
     glUniform3fv(glGetUniformLocation(shader->programID,"cubelight_color"),
-    		cube_lights.size(),(const GLfloat*)(cubelight_color.data()));
+    		cubelight_color.size(),(const GLfloat*)(cubelight_color.data()));
     glUniform1fv(glGetUniformLocation(shader->programID,"cubelight_size"),
-    		cube_lights.size(),(const GLfloat*)(cubelight_size.data()));
+    		cubelight_size.size(),(const GLfloat*)(cubelight_size.data()));
 }

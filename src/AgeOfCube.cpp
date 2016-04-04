@@ -24,12 +24,8 @@
 #include "class/game/timer/Timer.h"
 #include <map>
 int main(){
-	//std::cout<<"AOC ver 0.0"<<std::endl;
-	Timer timer;
-	//for(int j=0;j<100;j++)
-	//for(int i=0;i<100000;i++){
-		//timer.tic(100000);
-	//}
+	std::cout<<"AOC ver 0.0"<<std::endl;
+
 	/*
 	AgeOfCubes* ageOfCubes=new AgeOfCubes();
 	ageOfCubes->initialize();
@@ -37,18 +33,18 @@ int main(){
 	ageOfCubes->mainloop();
 	delete ageOfCubes;
 	*/
-	/*
+	///*
 	ChessMaster* cm=new ChessMaster();
 	cm->initialize();
 
 	cm->mainloop();
 	delete cm;
-	*/
-	///*
+	//*/
+	/*
 	Test *test=new Test();
 	test->Mainloop();
 
 	delete test;
-	//*/
+	*/
     return 0;
 }

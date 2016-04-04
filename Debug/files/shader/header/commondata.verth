@@ -4,9 +4,10 @@ layout(location = 1)in vec2 vertexUV;
 layout(location = 2)in vec3 vertexNormal;
 
 layout(location = 3)in float UVlayer;//active at option LayerTexture
-//layout(location = 4)in float test;//active at option LayerTexture
+
 uniform mat4 VP;
 uniform mat4 M; 
+uniform vec4 clipping_plane;
 
 out VertexDataOut {
 	vec2 UV;
@@ -16,6 +17,13 @@ out VertexDataOut {
 	vec4 MVP_pos;
 	float UVlayer;
 }vertout;
+void clipping(){
+	if((shaderData&Clipping)==0)return;
+	if(dot(clipping_plane,vertout.position)<0){//do clipping
+		vertout.MVP_pos.z=vertout.MVP_pos.w+100.0;
+	}
+	
+}
 void common_vert(){
 	vertout.vertexPosition=vertexPosition;
 	vertout.position=M*vec4(vertout.vertexPosition,1);//real world position
@@ -25,9 +33,7 @@ void common_vert(){
     if((shaderData&LayerTexture)!=0){
     	vertout.UVlayer=UVlayer;
     }
+    //clipping();
     gl_Position=vertout.MVP_pos;//;VP*M*vec4(vertexPosition,1)  
-    
-    //if((shaderData&LayerTexture)!=0){
-    	//vertout.UV.x+=test;//fake
-    //}
+    //gl_ClipDistance[0]=dot(vec4(0,-1,0,40),vertout.position);
 }

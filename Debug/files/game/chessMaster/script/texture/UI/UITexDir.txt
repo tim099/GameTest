@@ -1,0 +1,14 @@
+#LOAD_ALL_TEXTURES_SCRIPT
+
+#HEADER
+Name:
+	UI
+FolderPath:
+	files/game/chessMaster/script/texture/UI/	
+#HEADER_END
+
+TextureMap:
+	ScriptPath:
+		UI.txt	
+
+#END

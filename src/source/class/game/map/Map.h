@@ -10,6 +10,7 @@
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/game/map/cube/Cube.h"
 #include "class/game/map/MapSeg.h"
+#include "class/game/map/DisplayMap.h"
 class CubeEX;
 class CubeOutOfEdge;
 class Water;
@@ -17,7 +18,6 @@ class CubeNull;
 class CubeError;
 class AllCubes;
 class LandscapeCreator;
-class DisplayMap;
 class Timer;
 class Map : public Tim::GlobalObject<Map>{
 

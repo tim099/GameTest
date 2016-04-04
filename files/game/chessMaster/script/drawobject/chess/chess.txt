@@ -1,0 +1,167 @@
+#LOAD_DRAWOBJECTMAP_SCRIPT
+
+#HEADER
+
+Name:
+	chess
+	
+#HEADER_END
+
+DrawObject:
+	Name:
+		black_king
+	ModelBuffer:
+		chess/king
+	Texture:
+		chess/black
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.15	
+			
+#load_end
+DrawObject:
+	Name:
+		white_king
+	ModelBuffer:
+		chess/king
+	Texture:
+		chess/white
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.05
+#load_end
+
+DrawObject:
+	Name:
+		black_queen
+	ModelBuffer:
+		chess/queen
+	Texture:
+		chess/black
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.15	
+			
+#load_end
+
+DrawObject:
+	Name:
+		white_queen
+	ModelBuffer:
+		chess/queen
+	Texture:
+		chess/white
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.05
+#load_end
+
+DrawObject:
+	Name:
+		black_bishop
+	ModelBuffer:
+		chess/bishop
+	Texture:
+		chess/black
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.15	
+			
+#load_end
+
+DrawObject:
+	Name:
+		white_bishop
+	ModelBuffer:
+		chess/bishop
+	Texture:
+		chess/white
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.05
+#load_end
+
+DrawObject:
+	Name:
+		black_knight
+	ModelBuffer:
+		chess/knight
+	Texture:
+		chess/black
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.15	
+#load_end
+
+DrawObject:
+	Name:
+		white_knight
+	ModelBuffer:
+		chess/knight
+	Texture:
+		chess/white
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.05
+#load_end
+
+DrawObject:
+	Name:
+		black_rook
+	ModelBuffer:
+		chess/rook
+	Texture:
+		chess/black
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.15	
+#load_end
+
+DrawObject:
+	Name:
+		white_rook
+	ModelBuffer:
+		chess/rook
+	Texture:
+		chess/white
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.05
+#load_end
+
+DrawObject:
+	Name:
+		black_pawn
+	ModelBuffer:
+		chess/pawn
+	Texture:
+		chess/black
+	NormalMap:
+		chess/normal	
+	Material:
+		0.4 1.0 0.02 0.15	
+#load_end
+
+DrawObject:
+	Name:
+		white_pawn
+	ModelBuffer:
+		chess/pawn
+	Texture:
+		chess/white
+	NormalMap:
+		chess/normal		
+	Material:
+		0.4 1.0 0.02 0.05
+#load_end
+#END

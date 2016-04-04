@@ -97,7 +97,6 @@ void DrawObjectMap::Parse_DrawObject(std::istream &is){
 			if(line=="true"){
 				sky_map=true;
 			}
-
 		}
 	}
 }

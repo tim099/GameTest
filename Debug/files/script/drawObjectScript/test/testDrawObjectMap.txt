@@ -68,7 +68,9 @@ DrawObject:
 	NormalMap:	
 		test/NormalTexture
 	Material:
-		0.0 0.0 0.02 0.1
+		0.0 0.0 0.02 0.85
+	SkyMap:
+		true
 	DrawShadow:
 		false				
 #load_end

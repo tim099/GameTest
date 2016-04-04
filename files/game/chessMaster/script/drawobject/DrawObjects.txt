@@ -1,0 +1,16 @@
+#LOAD_ALL_DRAWOBJECTS_SCRIPT
+
+#HEADER
+
+Name:
+	root
+FolderPath:
+	files/game/chessMaster/script/drawobject/
+#HEADER_END
+
+Map:
+	ScriptPath:
+		chess/chess.txt
+
+
+#END

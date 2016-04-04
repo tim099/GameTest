@@ -43,7 +43,6 @@ protected:
 	Tim::Array2D<MapDrawObject*>*dmaps;
 	Tim::Array2D<WaterDrawObject*>*water_dmaps;
 	CubeModel *cube;
-	CubeModel *water_cube;
 	Map *map;
 	Position *pos;
 

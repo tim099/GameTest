@@ -1,0 +1,9 @@
+draw_piece1:
+	chess/black_knight
+	
+draw_piece2:
+	chess/white_knight
+rule_path:
+	files/game/chessMaster/game/chess/chessBoard/piece/knight.lua
+
+#END

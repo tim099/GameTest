@@ -3,7 +3,8 @@
 #include <files/shader/header/commondata.fragh>
 #include <files/shader/header/toon.fragh>
 
-void main(){ 
+void main(){
+	common_frag();
 	vec3 tex_color=get_tex_color();
 	vec3 Normal=vert.Normal;
 	

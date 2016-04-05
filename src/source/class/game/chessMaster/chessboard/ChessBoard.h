@@ -7,6 +7,7 @@
 #include "class/display/model/cube/CubeModel.h"
 #include "class/tim/math/Position.h"
 #include "class/tim/globalObject/GlobalObject.h"
+#include "class/game/chessMaster/piece/Step.h"
 namespace CM {
 
 class ChessBoard : public Tim::GlobalObject<ChessBoard>{
@@ -32,13 +33,20 @@ public:
 	void load_pieces(std::string path);
 	void find_select_cube();
 
+	void move(Step &step);
+	void undo(Step &step);
+	void find_next_step(glm::ivec2 cur_step,std::vector<glm::ivec2> &next_step);
+
 	bool bound_check(int x,int y);
+	int evaluate_score(Tim::Array2D<short int> *chess_board,int player);
 
 	//cube being selected by mouse
 	glm::ivec3 selected_cube;
 
 	//cube being selected on(may near by the selected cube or equal to selected cube
 	glm::ivec3 selected_on;
+
+	glm::ivec2 selected_piece;
 	double cube_size;
 	std::vector<Piece*>pieces;
 	Tim::Array2D<short int> *chess_board;//all chess on the board

@@ -3,6 +3,9 @@ draw_piece1:
 	
 draw_piece2:
 	chess/white_knight
+weight:
+	20
+
 rule_path:
 	files/game/chessMaster/game/chess/chessBoard/piece/knight.lua
 

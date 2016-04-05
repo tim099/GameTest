@@ -11,20 +11,42 @@ CreateUIObject:
 	Texture:
 		UI/UI/button2
 	Width:
-		0.14
+		0.1
 	Height:
 		0.0
 			
 	Set_string:
-		"test"	
+		"Easy AI"	
 	
 	Set_signal:
 		Data:
-			test
+			easy
 		Receiver:
 			SceneStart
 	Parent:
 		root			
 #create_end
-
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.2 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		0.0
+			
+	Set_string:
+		"Normal AI"	
+	
+	Set_signal:
+		Data:
+			normal
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
 #END

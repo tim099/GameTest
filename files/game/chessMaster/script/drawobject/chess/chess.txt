@@ -13,11 +13,9 @@ DrawObject:
 	ModelBuffer:
 		chess/king
 	Texture:
-		chess/black
-	NormalMap:
-		chess/normal		
+		chess/black	
 	Material:
-		0.4 1.0 0.02 0.15	
+		0.4 1.0 0.02 0.25	
 			
 #load_end
 DrawObject:
@@ -26,9 +24,7 @@ DrawObject:
 	ModelBuffer:
 		chess/king
 	Texture:
-		chess/white
-	NormalMap:
-		chess/normal		
+		chess/white	
 	Material:
 		0.4 1.0 0.02 0.05
 #load_end
@@ -39,11 +35,9 @@ DrawObject:
 	ModelBuffer:
 		chess/queen
 	Texture:
-		chess/black
-	NormalMap:
-		chess/normal		
+		chess/black	
 	Material:
-		0.4 1.0 0.02 0.15	
+		0.4 1.0 0.02 0.25	
 			
 #load_end
 
@@ -53,9 +47,7 @@ DrawObject:
 	ModelBuffer:
 		chess/queen
 	Texture:
-		chess/white
-	NormalMap:
-		chess/normal		
+		chess/white		
 	Material:
 		0.4 1.0 0.02 0.05
 #load_end
@@ -66,11 +58,9 @@ DrawObject:
 	ModelBuffer:
 		chess/bishop
 	Texture:
-		chess/black
-	NormalMap:
-		chess/normal		
+		chess/black		
 	Material:
-		0.4 1.0 0.02 0.15	
+		0.4 1.0 0.02 0.25	
 			
 #load_end
 
@@ -80,9 +70,7 @@ DrawObject:
 	ModelBuffer:
 		chess/bishop
 	Texture:
-		chess/white
-	NormalMap:
-		chess/normal		
+		chess/white	
 	Material:
 		0.4 1.0 0.02 0.05
 #load_end
@@ -93,11 +81,9 @@ DrawObject:
 	ModelBuffer:
 		chess/knight
 	Texture:
-		chess/black
-	NormalMap:
-		chess/normal		
+		chess/black	
 	Material:
-		0.4 1.0 0.02 0.15	
+		0.4 1.0 0.02 0.25	
 #load_end
 
 DrawObject:
@@ -106,9 +92,7 @@ DrawObject:
 	ModelBuffer:
 		chess/knight
 	Texture:
-		chess/white
-	NormalMap:
-		chess/normal		
+		chess/white	
 	Material:
 		0.4 1.0 0.02 0.05
 #load_end
@@ -119,11 +103,9 @@ DrawObject:
 	ModelBuffer:
 		chess/rook
 	Texture:
-		chess/black
-	NormalMap:
-		chess/normal		
+		chess/black		
 	Material:
-		0.4 1.0 0.02 0.15	
+		0.4 1.0 0.02 0.25	
 #load_end
 
 DrawObject:
@@ -132,9 +114,7 @@ DrawObject:
 	ModelBuffer:
 		chess/rook
 	Texture:
-		chess/white
-	NormalMap:
-		chess/normal		
+		chess/white		
 	Material:
 		0.4 1.0 0.02 0.05
 #load_end
@@ -145,11 +125,9 @@ DrawObject:
 	ModelBuffer:
 		chess/pawn
 	Texture:
-		chess/black
-	NormalMap:
-		chess/normal	
+		chess/black	
 	Material:
-		0.4 1.0 0.02 0.15	
+		0.4 1.0 0.02 0.25	
 #load_end
 
 DrawObject:
@@ -158,9 +136,7 @@ DrawObject:
 	ModelBuffer:
 		chess/pawn
 	Texture:
-		chess/white
-	NormalMap:
-		chess/normal		
+		chess/white		
 	Material:
 		0.4 1.0 0.02 0.05
 #load_end

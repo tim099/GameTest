@@ -8,6 +8,7 @@
 namespace CM {
 
 Piece::Piece() {
+	weight=1;
 	draw_piece1=0;
 	draw_piece2=0;
 	type=1;
@@ -59,6 +60,9 @@ void Piece::load_script(std::string path){
 			draw_piece2=AllDrawObjects::get_cur_object()->get(line);
 		}else if(line=="rule_path:"){//.lua file
 			Tim::String::get_line(is, rule_path, true, true);
+		}else if(line=="weight:"){//.lua file
+			Tim::String::get_line(is, line, true, true);
+			sscanf(line.c_str(),"%d",&weight);
 		}else if(line!=""){
 			std::cerr<<"Piece::load_script unknown script:"<<line<<std::endl;
 		}
@@ -70,9 +74,6 @@ void Piece::load_script(std::string path){
 	rule->rigister_function("bound_check",Piece::bound_check);
 	rule->rigister_function("get_board",Piece::get_board);
 	rule->p_call(0,0,0);
-	//std::cout<<"str = "<<lua_tostring(rule->L,1)<<std::endl;
-    //std::cout<<"str = "<<rule->get_string("str")<<std::endl;
-    //std::cout<<"str = "<<lua_tostring(rule->L,-1)<<std::endl;
 }
 void Piece::next_step(glm::ivec2 cur_step,std::vector<glm::ivec2> &next_step,bool player1){
 	rule->get_global("next_step");

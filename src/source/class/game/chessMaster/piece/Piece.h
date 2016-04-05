@@ -19,6 +19,7 @@ public:
 	void load_script(std::string path);
 	void draw(Position* pos,bool player1);
 	unsigned char type;
+	int weight;
 protected:
 	static int bound_check(lua_State *L);
 	static int get_board(lua_State *L);

@@ -5,6 +5,7 @@
 #include "class/tim/string/String.h"
 #include <fstream>
 #include <iostream>
+#include <cmath>
 namespace CM {
 ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	cube_size=1.0;
@@ -52,6 +53,24 @@ void ChessBoard::init(int sizex,int sizey,int sizez){
 	}
 	updated=true;
 }
+int ChessBoard::evaluate_score(Tim::Array2D<short int> *chess_board,int player){
+	int total_score=0;
+	int type,weight;
+	for(int i=0;i<chess_board->sizex;i++){
+		for(int j=0;j<chess_board->sizey;j++){
+			type=chess_board->get(i,j);
+			if(type!=0){
+				weight=pieces.at(abs(type)-1)->weight;
+				if(type*player>0){
+					total_score+=weight;
+				}else{
+					total_score-=weight;
+				}
+			}
+		}
+	}
+	return total_score;
+}
 bool ChessBoard::bound_check(int x,int y){
 	if(x<0||y<0||x>=chess_board->sizex||y>=chess_board->sizey){
 		return false;
@@ -67,6 +86,7 @@ bool ChessBoard::set_type(int x,int y,short int val){
 }
 int ChessBoard::get_type(int x,int y){
 	if(x<0||y<0||x>=chess_board->sizex||y>chess_board->sizey){
+		std::cerr<<"ChessBoard::get_type out of range"<<x<<","<<y<<std::endl;
 		return 0;
 	}
 	return chess_board->get(x,y);
@@ -148,14 +168,12 @@ void ChessBoard::save_board(std::string path){
 			}
 		}
 	}
-	///*
 	for(int i=0;i<board->sizex;i++){
 			for(int k=0;k<board->sizez;k++){
 				type=chess_board->get(i,k);
 				fprintf(file,"%d\n",type);
 			}
 	}
-	//*/
 	fclose(file);
 }
 void ChessBoard::load_board(std::string path){
@@ -173,14 +191,12 @@ void ChessBoard::load_board(std::string path){
 			}
 		}
 	}
-	///*
 	for(int i=0;i<board->sizex;i++){
 			for(int k=0;k<board->sizez;k++){
 				fscanf(file,"%d\n",&type);
 				chess_board->get(i,k)=type;//;
 			}
 	}
-	//*/
 	fclose(file);
 	updated=true;
 }
@@ -414,6 +430,7 @@ void ChessBoard::find_select_cube(){
 			      (pos.y/cube_size),
 			      (pos.z/cube_size));
 	glm::ivec3 p=glm::ivec3(pos.x,pos.y,pos.z);
+	selected_piece=glm::ivec2(p.x,p.z);
 	if(get_type(p.x,p.y,p.z)>0){//can be selected
 		//std::cout<<"1"<<std::endl;
 		selected_cube=p;
@@ -423,6 +440,28 @@ void ChessBoard::find_select_cube(){
 		selected_on=p;
 		find_selected_cube(pos);
 	}
+}
+void ChessBoard::find_next_step(glm::ivec2 cur_step,std::vector<glm::ivec2> &next_step){
+	int type=chess_board->get(cur_step.x,cur_step.y);
+	next_step.clear();
+	bool player1=true;
+	if(type<0){
+		type*=-1;
+		player1=false;
+	}
+	type-=1;
+	pieces.at(type)->next_step(cur_step,next_step,player1);
+}
+void ChessBoard::move(Step &step){
+	int type=get_type(step.x,step.y);
+	step.ntype=get_type(step.nx,step.ny);
+	set_type(step.x,step.y,0);
+	set_type(step.nx,step.ny,type);
+}
+void ChessBoard::undo(Step &step){
+	int type=get_type(step.nx,step.ny);
+	set_type(step.x,step.y,type);
+	set_type(step.nx,step.ny,step.ntype);
 }
 void ChessBoard::draw(){
 	//std::cout<<"ChessBoard::draw()"<<std::endl;

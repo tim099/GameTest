@@ -3,6 +3,9 @@ draw_piece1:
 	
 draw_piece2:
 	chess/white_pawn
+
+weight:
+	5
 rule_path:
 	files/game/chessMaster/game/chess/chessBoard/piece/pawn.lua
 

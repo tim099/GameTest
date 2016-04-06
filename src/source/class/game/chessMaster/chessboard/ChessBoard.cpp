@@ -3,6 +3,7 @@
 #include "class/display/draw/drawObject/drawData/DrawDataObj.h"
 #include "class/input/Input.h"
 #include "class/tim/string/String.h"
+
 #include <fstream>
 #include <iostream>
 #include <cmath>
@@ -11,6 +12,7 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	cube_size=1.0;
 	board=0;
 	chess_board=0;
+	rule=0;
 	dboard = new DynamicDrawObject();
 	dboard->init_drawObject("","cube/cube_textures","cube/cube_normals",true);
 	Draw::get_cur_object()->push(dboard);
@@ -26,6 +28,7 @@ ChessBoard::~ChessBoard() {
 	for(unsigned i=0;i<pieces.size();i++)delete pieces.at(i);
 	if(board)delete board;
 	if(chess_board)delete chess_board;
+	if(rule)delete rule;
 	delete dboard;
 	delete pos;
 	delete cube;
@@ -128,7 +131,15 @@ void ChessBoard::load_script(std::string path){
 	}else{
 		std::cerr << "ChessBoard::load_script fail,no pieces_path:" <<std::endl;
 	}
-
+	if(Tim::String::get_line(is, line, true, true)&&line=="rule_path:"){
+		Tim::String::get_line(is, rule_path, true, true);
+	}
+	if(rule)delete rule;
+	rule=new Tim::Lua();
+	rule->loadfile(rule_path);
+	rule->rigister_function("bound_check",Piece::bound_check);
+	rule->rigister_function("get_board",Piece::get_board);
+	rule->p_call(0,0,0);
 	file.close();
 }
 void ChessBoard::save_pieces(std::string path){

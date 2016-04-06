@@ -12,6 +12,7 @@ class ChessBoard;
 
 class Piece {
 public:
+	friend ChessBoard;
 	Piece();
 	virtual ~Piece();
 

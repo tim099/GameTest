@@ -1,0 +1,11 @@
+draw_piece1:
+	chess/black_queen
+draw_piece2:
+	chess/white_queen
+	
+weight:
+	50
+rule_path:
+	files/game/chessMaster/game/chess/chessBoard/piece/queen.lua
+
+#END

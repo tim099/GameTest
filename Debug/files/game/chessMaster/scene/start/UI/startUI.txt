@@ -16,7 +16,7 @@ CreateUIObject:
 		0.0
 			
 	Set_string:
-		"Easy AI"	
+		" Easy AI "	
 	
 	Set_signal:
 		Data:
@@ -30,7 +30,7 @@ CreateUIObject:
 	PictureButton
 	
 	Position:
-		0.2 0.9
+		0.25 0.9
 	Texture:
 		UI/UI/button2
 	Width:
@@ -44,6 +44,53 @@ CreateUIObject:
 	Set_signal:
 		Data:
 			normal
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.4 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		0.0
+			
+	Set_string:
+		"Undo"	
+	
+	Set_signal:
+		Data:
+			undo
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.55 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		0.0
+			
+	Set_string:
+		"Auto"	
+	
+	Set_signal:
+		Data:
+			auto
 		Receiver:
 			SceneStart
 	Parent:

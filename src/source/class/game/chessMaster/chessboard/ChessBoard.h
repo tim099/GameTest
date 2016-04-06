@@ -8,6 +8,7 @@
 #include "class/tim/math/Position.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/game/chessMaster/piece/Step.h"
+#include "class/tim/lua/Lua.h"
 namespace CM {
 
 class ChessBoard : public Tim::GlobalObject<ChessBoard>{
@@ -60,6 +61,8 @@ protected:
 	DynamicDrawObject *dboard;
 	CubeModel *cube;
 	Position *pos;
+	Tim::Lua *rule;
+	std::string rule_path;
 	bool updated;
 
 };

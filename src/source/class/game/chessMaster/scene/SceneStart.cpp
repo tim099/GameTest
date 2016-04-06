@@ -4,6 +4,8 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/tim/math/Position.h"
 #include "class/tim/string/String.h"
+#include <stdlib.h>
+#include <time.h>
 namespace CM {
 namespace scene{
 SceneStart::SceneStart() {
@@ -21,6 +23,7 @@ SceneStart::SceneStart() {
 	total_compute=0;
 	do_pruning=true;
 	difficulty=3;
+	edit_mode=false;
 }
 SceneStart::~SceneStart() {
 
@@ -82,20 +85,32 @@ void SceneStart::resume(){
 void SceneStart::handle_signal(Signal *sig){
 	if(sig->get_data()=="normal"){
 		difficulty=5;
-	}
-	if(sig->get_data()=="easy"){
+	}else if(sig->get_data()=="easy"){
 		difficulty=3;
+	}else if(sig->get_data()=="undo"){
+		if(steps.size()>=2){
+			chess_board->undo(*steps.back());
+			delete steps.back();
+			steps.pop_back();
+			chess_board->undo(*steps.back());
+			delete steps.back();
+			steps.pop_back();
+		}
+
+	}else if(sig->get_data()=="auto"){
+		selected=false;
+		AI_move(turn);
 	}
 	std::cout<<sig->get_data()<<std::endl;
 }
 void SceneStart::next_turn(CM::Step step){
 	turn*=-1;
 	if(turn==1){
-		//camera=p1camera;
-		//draw->set_camera(camera);
+		camera=p1camera;
+		draw->set_camera(camera);
 	}else{
-		//camera=p2camera;
-		//draw->set_camera(camera);
+		camera=p2camera;
+		draw->set_camera(camera);
 	}
 	steps.push_back(new CM::Step(&step));
 	chess_board->move(*steps.back());
@@ -139,20 +154,10 @@ void SceneStart::camera_control(){
 				* input->mouse->pos_delta().x)
 				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
 	}
-	if(input->keyboard->get('S')){
-		chess_board->save_board(CM::folder_path+"game/chess/chessBoard/board");
-	}
-	if(input->keyboard->get('L')){
-		chess_board->load_board(CM::folder_path+"game/chess/chessBoard/board");
-	}
+
 	///*
 
-	if(input->keyboard->get('Q')&&type<11){
-		type++;
-	}
-	if(input->keyboard->get('E')&&type>1){
-		type--;
-	}
+
 	//*/
 	if (input->mouse->scroll) {
 		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
@@ -180,6 +185,7 @@ void SceneStart::camera_control(){
 CM::Step SceneStart::best_step(int player,int depth,int pruning){
 	CM::Step cur;
 	CM::Step best;
+	std::vector<CM::Step>bests;
 	best.score=-999999*player;
 	int type;
 	std::vector<glm::ivec2> next_step;
@@ -196,11 +202,14 @@ CM::Step SceneStart::best_step(int player,int depth,int pruning){
 					chess_board->move(cur);
 					if(depth<=1){
 						total_compute++;
-						cur.score=chess_board->evaluate_score(chess_board->chess_board,player);
+						cur.score=chess_board->evaluate_score(chess_board->chess_board,1);
 					}else{
 						cur.score=best_step(-player,depth-1,best.score).score;
 					}
-					if(player*cur.score>player*best.score){
+					if(player*cur.score>=player*best.score){
+						if(player*cur.score==player*best.score){
+							bests.push_back(cur);
+						}
 						best=cur;
 						if(do_pruning&&player*pruning<player*best.score){
 							//std::cout<<"pruning"<<std::endl;
@@ -214,9 +223,25 @@ CM::Step SceneStart::best_step(int player,int depth,int pruning){
 			}
 		}
 	}
+	///*
+	if(bests.size()>1){
+		srand(time(NULL));
+		std::vector<CM::Step>bests2;
+		for(unsigned i=0;i<bests.size();i++){
+			if(bests.at(i).score==best.score){
+				bests2.push_back(bests.at(i));
+			}
+		}
+		if(bests2.size()>2){
+			int at=(rand()%bests2.size());
+			best=bests2.at(at);
+		}
+	}
+	//*/
 	return best;
 }
 void SceneStart::AI_move(int player){
+	selected=false;
 	total_compute=0;
 	do_pruning=true;
 	CM::Step best=best_step(player,difficulty,player*999999);
@@ -228,39 +253,31 @@ void SceneStart::AI_move(int player){
 	std::cout<<"total compute="<<total_compute<<std::endl;
 	*/
 	//std::cout<<"find best step="<<best.x<<","<<best.y<<"to"<<best.nx<<","<<best.ny<<std::endl;
-	//std::cout<<"find best score="<<best.score<<std::endl;
+	//std::cout<<"find best score="<<player*best.score<<std::endl;
 	next_turn(best);
 
 }
 void SceneStart::handle_input(){
-	if (input->mouse->left_clicked()) {//->left_pressed()
-		if(!destruct_mode){
-			/*
-			chess_board->set_type(chess_board->selected_on.x,
-								chess_board->selected_on.y,
-								chess_board->selected_on.z,
-								type);
-			 */
-			/*
-			chess_board->chess_board->get(chess_board->selected_on.x,
-					chess_board->selected_on.z)=type;
-			*/
-			/*
-			int x=chess_board->selected_cube.x;
-			int z=chess_board->selected_cube.z;
-			int type=chess_board->chess_board->get(x,z);
-			std::vector<glm::ivec2> next_step;
-			if(type!=0){
-				bool player1=true;
-				if(type<0){
-					type*=-1;
-					player1=false;
-				}
-				type-=1;
-				chess_board->pieces.at(type)->next_step(glm::ivec2(x,z),next_step,player1);
-			}
-			*/
+	if(edit_mode){
+		if (input->mouse->left_clicked()) {
+			if(!destruct_mode){
+				//chess_board->set_type(chess_board->selected_on.x,
+									//chess_board->selected_on.y,
+									//chess_board->selected_on.z,type);
 
+				chess_board->set_type(chess_board->selected_on.x,
+						chess_board->selected_on.z,type);
+			}else{
+				//chess_board->set_type(chess_board->selected_cube.x,
+									//chess_board->selected_cube.y,
+									//chess_board->selected_cube.z,0);
+				chess_board->set_type(chess_board->selected_on.x,
+						chess_board->selected_on.z,-type);
+			}
+
+		}
+	}else{
+		if(input->mouse->left_clicked()){
 			prev_sx=sx;
 			prev_sy=sy;
 			sx=chess_board->selected_piece.x;
@@ -286,39 +303,22 @@ void SceneStart::handle_input(){
 					selected=false;
 				}
 			}
-
-		}else{
-			//std::cout<<"undo"<<std::endl;
-			chess_board->undo(*steps.back());
-			delete steps.back();
-			steps.pop_back();
-			/*
-			int x=chess_board->selected_cube.x;
-			int z=chess_board->selected_cube.z;
-			int type=chess_board->chess_board->get(x,z);
-			std::vector<glm::ivec2> next_step;
-			if(type!=0){
-				bool player1=true;
-				if(type<0){
-					type*=-1;
-					player1=false;
-				}
-				type-=1;
-				chess_board->pieces.at(type)->next_step(glm::ivec2(x,z),next_step,player1);
-			}
-			*/
-			/*
-			chess_board->chess_board->get(chess_board->selected_on.x,
-					chess_board->selected_on.z)=-type;
-			*/
-			/*
-			chess_board->set_type(chess_board->selected_cube.x,
-								chess_board->selected_cube.y,
-								chess_board->selected_cube.z,
-							    0);
-			*/
 		}
-
+	}
+	if(input->keyboard->get('E')){
+		edit_mode^=1;
+	}
+	if(input->keyboard->get('S')){
+		chess_board->save_board(CM::folder_path+"game/chess/chessBoard/board.txt");
+	}
+	if(input->keyboard->get('L')){
+		chess_board->load_board(CM::folder_path+"game/chess/chessBoard/board.txt");
+	}
+	if(input->keyboard->get('Q')&&type<11){
+		type++;
+	}
+	if(input->keyboard->get('E')&&type>0){
+		type--;
 	}
 	camera_control();
 }
@@ -345,7 +345,7 @@ void SceneStart::scene_draw(){
 	}
 	int score=chess_board->evaluate_score(chess_board->chess_board,turn);
 	draw->push(new RenderString("score:"+Tim::String::to_string(score),0.02,glm::vec2(0,0.85)));
-	if(score<-9999){
+	if(score<-99999){
 		if(turn==-1)draw->push(new RenderString("Black win!!",0.05,glm::vec2(0.3,0.5)));
 		else draw->push(new RenderString("White win!!",0.05,glm::vec2(0.3,0.5)));
 	}
@@ -380,6 +380,13 @@ void SceneStart::scene_draw(){
 		cl->pos=glm::vec3((steps.back()->nx+0.5f)*chess_board->cube_size,
 						  (2.5f)*chess_board->cube_size,
 						  (steps.back()->ny+0.5f)*chess_board->cube_size);
+		cl=new CubeLight();
+		cl->size=1.01f*chess_board->cube_size;
+		lightControl->push_temp_light(cl);
+		cl->color=glm::vec3(0.5,0.5,0.5);
+		cl->pos=glm::vec3((steps.back()->x+0.5f)*chess_board->cube_size,
+						  (2.5f)*chess_board->cube_size,
+						  (steps.back()->y+0.5f)*chess_board->cube_size);
 	}
 
 

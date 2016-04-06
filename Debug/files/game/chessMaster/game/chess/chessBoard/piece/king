@@ -4,7 +4,7 @@ draw_piece1:
 draw_piece2:
 	chess/white_king
 weight:
-	99999	
+	9999	
 rule_path:
 	files/game/chessMaster/game/chess/chessBoard/piece/king.lua
 #END

@@ -54,6 +54,7 @@ protected:
 	long long unsigned total_compute;
 	bool do_pruning;
 	int difficulty;
+	bool edit_mode;
 };
 }
 } /* namespace CM */

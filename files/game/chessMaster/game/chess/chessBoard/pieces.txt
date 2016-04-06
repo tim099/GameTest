@@ -1,0 +1,26 @@
+
+
+piece_path:
+	files/game/chessMaster/game/chess/chessBoard/piece/king.txt
+
+piece_path:
+	files/game/chessMaster/game/chess/chessBoard/piece/queen.txt
+
+piece_path:
+	files/game/chessMaster/game/chess/chessBoard/piece/bishop.txt
+
+piece_path:
+	files/game/chessMaster/game/chess/chessBoard/piece/knight.txt
+
+piece_path:
+	files/game/chessMaster/game/chess/chessBoard/piece/rook.txt
+
+piece_path:
+	files/game/chessMaster/game/chess/chessBoard/piece/pawn.txt
+
+
+
+
+
+
+#END

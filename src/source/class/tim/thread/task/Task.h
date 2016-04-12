@@ -16,7 +16,7 @@ protected:
 	virtual void TaskDone();
 	virtual void ExecuteTask()=0;
 	bool done;
-	bool auto_terminate;
+	bool auto_terminate;//auto delete this task when execute done
 	bool task_start;
 	Mutex *taskMutex;
 };

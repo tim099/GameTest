@@ -1,0 +1,10 @@
+draw_piece1:
+	chineseChess/red_elephant
+	
+draw_piece2:
+	chineseChess/black_elephant
+weight:
+	20
+rule_path:
+	files/game/chessMaster/game/chineseChess/chessBoard/piece/elephant.lua
+#END

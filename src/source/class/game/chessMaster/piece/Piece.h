@@ -1,5 +1,7 @@
 #ifndef SOURCE_CLASS_GAME_CHESSMASTER_PIECE_PIECE_H_
 #define SOURCE_CLASS_GAME_CHESSMASTER_PIECE_PIECE_H_
+#include "class/tim/thread/mutex/Mutex.h"
+#include "class/game/chessMaster/piece/Step.h"
 #include <string>
 #include <vector>
 #include <glm/vec2.hpp>
@@ -16,14 +18,17 @@ public:
 	Piece();
 	virtual ~Piece();
 
-	void next_step(glm::ivec2 cur_step,std::vector<glm::ivec2> &next_step,bool player1);
+
+	virtual void next_step(Tim::Array2D<short int> *chess_board,
+			glm::ivec2 cur_step,std::vector<CM::Step> &next_step,int player);
 	void load_script(std::string path);
-	void draw(Position* pos,bool player1);
-	unsigned char type;
+	void draw(Position* pos,int player);
+	//unsigned char type;
 	int weight;
 protected:
-	static int bound_check(lua_State *L);
-	static int get_board(lua_State *L);
+	virtual void next_step(Tim::Array2D<short int> *chess_board,
+			glm::ivec2 cur_step,std::vector<int> &next_step,int player);
+	Tim::Mutex* rule_mutex;
 	DrawObject *draw_piece1;//player1's piece EX:black king
 	DrawObject *draw_piece2;//player2's piece EX:white king
 	std::string rule_path;

@@ -12,9 +12,14 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	cube_size=1.0;
 	board=0;
 	chess_board=0;
+	cur_board=0;
+	board_mutex=new Tim::Mutex();
 	rule=0;
+	cube_type_num=3;
 	dboard = new DynamicDrawObject();
-	dboard->init_drawObject("","cube/cube_textures","cube/cube_normals",true);
+	tex_path="chess/board_textures";
+	normal_path="chess/board_normals";
+	dboard->init_drawObject("",tex_path,normal_path,true);
 	Draw::get_cur_object()->push(dboard);
 
 	pos = new Position(glm::vec3(0, 0, 0), glm::vec3());
@@ -29,9 +34,16 @@ ChessBoard::~ChessBoard() {
 	if(board)delete board;
 	if(chess_board)delete chess_board;
 	if(rule)delete rule;
+	delete board_mutex;
+	clear_steps();
 	delete dboard;
 	delete pos;
 	delete cube;
+}
+void ChessBoard::clear(){
+	for(unsigned i=0;i<pieces.size();i++)delete pieces.at(i);
+	pieces.clear();
+	clear_steps();
 }
 void ChessBoard::init(int sizex,int sizey,int sizez){
 	if(board)delete board;
@@ -56,12 +68,36 @@ void ChessBoard::init(int sizex,int sizey,int sizez){
 	}
 	updated=true;
 }
-int ChessBoard::evaluate_score(Tim::Array2D<short int> *chess_board,int player){
+int ChessBoard::get_board(lua_State *L){
+	//std::cout<<"ChessBoard::get_board"<<std::endl;
+
+	lua_getglobal(L, "board");
+	Tim::Array2D<short int> *cb =(Tim::Array2D<short int>*)lua_touserdata(L,-1);
+	lua_pop(L,1);
+	//Tim::Array2D<short int> *cb=ChessBoard::get_cur_object()->cur_board;
+
+	int y = lua_tonumber(L, -1);
+	lua_pop(L,1);
+	int x = lua_tonumber(L, -1);
+	lua_pop(L,1);
+
+
+	int type=cb->get(x,y);;
+
+	lua_pushnumber(L,type);
+
+	return 1;
+}
+int ChessBoard::check_winner(Tim::Array2D<short int> *cb){
+	int result=rule->check_winner(cb);
+	return result;
+}
+int ChessBoard::evaluate_score(Tim::Array2D<short int> *cb,int player){
 	int total_score=0;
 	int type,weight;
-	for(int i=0;i<chess_board->sizex;i++){
-		for(int j=0;j<chess_board->sizey;j++){
-			type=chess_board->get(i,j);
+	for(int i=0;i<cb->sizex;i++){
+		for(int j=0;j<cb->sizey;j++){
+			type=cb->get(i,j);
 			if(type!=0){
 				weight=pieces.at(abs(type)-1)->weight;
 				if(type*player>0){
@@ -88,11 +124,20 @@ bool ChessBoard::set_type(int x,int y,short int val){
 	return true;
 }
 int ChessBoard::get_type(int x,int y){
+	/*
 	if(x<0||y<0||x>=chess_board->sizex||y>chess_board->sizey){
 		std::cerr<<"ChessBoard::get_type out of range"<<x<<","<<y<<std::endl;
 		return 0;
 	}
+	*/
 	return chess_board->get(x,y);
+}
+Piece* ChessBoard::get_piece(int x,int y){
+	int type=get_type(x,y);
+	if(type==0)return 0;
+
+	if(type<0)type*=-1;
+	return pieces.at(type-1);
 }
 int ChessBoard::get_type(int x,int y,int z){
 	if(x<0||y<0||z<0||x>=board->sizex||y>=board->sizey||z>board->sizez){
@@ -110,6 +155,7 @@ bool ChessBoard::set_type(int x,int y,int z,unsigned char val){
 	return true;
 }
 void ChessBoard::load_script(std::string path){
+	clear();
 	std::filebuf file;
 	file.open(path.c_str(), std::ios::in);
 	if (!file.is_open()) {
@@ -134,12 +180,25 @@ void ChessBoard::load_script(std::string path){
 	if(Tim::String::get_line(is, line, true, true)&&line=="rule_path:"){
 		Tim::String::get_line(is, rule_path, true, true);
 	}
+
+	if(Tim::String::get_line(is, line, true, true)&&line=="texture:"){
+		Tim::String::get_line(is, tex_path, true, true);
+	}
+	if(Tim::String::get_line(is, line, true, true)&&line=="normal_texture:"){
+		Tim::String::get_line(is, normal_path, true, true);
+	}
+	if(Tim::String::get_line(is, line, true, true)&&line=="cube_type_num:"){
+		Tim::String::get_line(is, line, true, true);
+		sscanf(line.c_str(),"%d",&cube_type_num);
+	}
+	//if(dboard)delete dboard;
+	//dboard = new DynamicDrawObject();
+	//std::cout<<"ChessBoard::load_script tex_path="<<tex_path<<std::endl;
+	dboard->init_drawObject("",tex_path,normal_path,true);
+
 	if(rule)delete rule;
-	rule=new Tim::Lua();
-	rule->loadfile(rule_path);
-	rule->rigister_function("bound_check",Piece::bound_check);
-	rule->rigister_function("get_board",Piece::get_board);
-	rule->p_call(0,0,0);
+	rule=new CM::Rule();
+	rule->load_rule(rule_path);
 	file.close();
 }
 void ChessBoard::save_pieces(std::string path){
@@ -171,31 +230,36 @@ void ChessBoard::save_board(std::string path){
 	FILE * file = fopen(path.c_str(),"w+t");
 	fprintf(file,"%d %d %d\n",board->sizex,board->sizey,board->sizez);
 	int type;
-	for(int i=0;i<board->sizex;i++){
-		for(int j=0;j<board->sizey;j++){
+	for(int j=0;j<board->sizey;j++){
+		for(int i=0;i<board->sizex;i++){
 			for(int k=0;k<board->sizez;k++){
 				type=board->get(i,j,k);
-				fprintf(file,"%u\n",type);
+				fprintf(file,"%3d ",type);
 			}
+			fprintf(file,"\n");
 		}
+		fprintf(file,"\n");
 	}
 	for(int i=0;i<board->sizex;i++){
 			for(int k=0;k<board->sizez;k++){
 				type=chess_board->get(i,k);
-				fprintf(file,"%d\n",type);
+				//fprintf(file,"%d\n",type);
+				fprintf(file,"%3d ",type);
 			}
+			fprintf(file,"\n");
 	}
 	fclose(file);
 }
 void ChessBoard::load_board(std::string path){
+	clear_steps();
 	FILE * file = fopen(path.c_str(),"r");
 	int sizex,sizey,sizez;
 	fscanf(file,"%d %d %d\n",&sizex,&sizey,&sizez);
 
 	init(sizex,sizey,sizez);
 	int type;
-	for(int i=0;i<board->sizex;i++){
-		for(int j=0;j<board->sizey;j++){
+	for(int j=0;j<board->sizey;j++){
+		for(int i=0;i<board->sizex;i++){
 			for(int k=0;k<board->sizez;k++){
 				fscanf(file,"%d",&type);
 				board->get(i,j,k)=type;
@@ -204,7 +268,7 @@ void ChessBoard::load_board(std::string path){
 	}
 	for(int i=0;i<board->sizex;i++){
 			for(int k=0;k<board->sizez;k++){
-				fscanf(file,"%d\n",&type);
+				fscanf(file,"%d",&type);
 				chess_board->get(i,k)=type;//;
 			}
 	}
@@ -229,7 +293,7 @@ void ChessBoard::gen_model(){
 				int type = board->get(i, j, k);
 
 				if (type > 0) {
-					tex_layer = type;
+					tex_layer = type-1;
 					cube_exist = 0;
 					glm::vec3 pos = glm::vec3((i + 0.5) * cube_size,
 							(j + 0.5) * cube_size,
@@ -441,7 +505,9 @@ void ChessBoard::find_select_cube(){
 			      (pos.y/cube_size),
 			      (pos.z/cube_size));
 	glm::ivec3 p=glm::ivec3(pos.x,pos.y,pos.z);
-	selected_piece=glm::ivec2(p.x,p.z);
+	if(p.x>=0&&p.z>=0&&p.x<chess_board->sizex&&p.z<chess_board->sizey){
+		selected_piece=glm::ivec2(p.x,p.z);
+	}
 	if(get_type(p.x,p.y,p.z)>0){//can be selected
 		//std::cout<<"1"<<std::endl;
 		selected_cube=p;
@@ -452,35 +518,69 @@ void ChessBoard::find_select_cube(){
 		find_selected_cube(pos);
 	}
 }
-void ChessBoard::find_next_step(glm::ivec2 cur_step,std::vector<glm::ivec2> &next_step){
-	int type=chess_board->get(cur_step.x,cur_step.y);
-	next_step.clear();
-	bool player1=true;
+void ChessBoard::find_next_step(Tim::Array2D<short int> *cb,
+		int player,std::vector<CM::Step> &next){
+	next.clear();
+	int type;
+	for(int i=0;i<cb->sizex;i++){
+		for(int j=0;j<cb->sizey;j++){
+			type=cb->get(i,j);
+			if(type*player>0){//player's chess
+				find_next_step(cb,glm::ivec2(i,j),next);
+			}
+		}
+	}
+}
+void ChessBoard::find_next_step(Tim::Array2D<short int> *cb,
+		glm::ivec2 cur_step,std::vector<CM::Step> &next_steps){
+	int type=cb->get(cur_step.x,cur_step.y);
+	int player=1;
 	if(type<0){
 		type*=-1;
-		player1=false;
+		player=-1;
 	}
 	type-=1;
-	pieces.at(type)->next_step(cur_step,next_step,player1);
+	pieces.at(type)->next_step(cb,cur_step,next_steps,player);
 }
 void ChessBoard::move(Step &step){
-	int type=get_type(step.x,step.y);
-	step.ntype=get_type(step.nx,step.ny);
-	set_type(step.x,step.y,0);
-	set_type(step.nx,step.ny,type);
+	step.move(chess_board);
+}
+void ChessBoard::undo(){
+	if(steps.size()>=2){
+		undo(*steps.back());
+		delete steps.back();
+		steps.pop_back();
+		undo(*steps.back());
+		delete steps.back();
+		steps.pop_back();
+	}
+}
+void ChessBoard::next_turn(CM::Step step){
+	steps.push_back(new CM::Step(&step));
+	move(*steps.back());
+}
+void ChessBoard::clear_steps(){
+	for(unsigned i=0;i<steps.size();i++){
+		delete steps.at(i);
+	}
+	steps.clear();
+}
+void ChessBoard::restart(){
+	while(!steps.empty()){
+		undo(*steps.back());
+		delete steps.back();
+		steps.pop_back();
+	}
 }
 void ChessBoard::undo(Step &step){
-	int type=get_type(step.nx,step.ny);
-	set_type(step.x,step.y,type);
-	set_type(step.nx,step.ny,step.ntype);
+	step.undo(chess_board);
 }
 void ChessBoard::draw(){
 	//std::cout<<"ChessBoard::draw()"<<std::endl;
 	if(updated)gen_model();
 	dboard->draw=true;
 	dboard->push_temp_drawdata(new DrawDataObj(pos,true));
-	for(unsigned int i=0;i<pieces_pos.size();i++)delete pieces_pos.at(i);
-	pieces_pos.clear();
+
 	int type;
 	Position* pos;
 	for(int i=0;i<chess_board->sizex;i++){
@@ -490,12 +590,11 @@ void ChessBoard::draw(){
 				pos=new Position(glm::vec3((i+0.5f)*cube_size,
 						  (2.5f)*cube_size,
 						  (j+0.5f)*cube_size));
-				pieces_pos.push_back(pos);
 				if(type>0){
 					pos->set_ry(180.0f);
-					pieces.at(type-1)->draw(pos,true);
+					pieces.at(type-1)->draw(pos,1);
 				}else{//P2
-					pieces.at((-type)-1)->draw(pos,false);
+					pieces.at((-type)-1)->draw(pos,-1);
 
 				}
 

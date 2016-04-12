@@ -1,0 +1,10 @@
+draw_piece1:
+	chineseChess/red_horse
+	
+draw_piece2:
+	chineseChess/black_horse
+weight:
+	30	
+rule_path:
+	files/game/chessMaster/game/chineseChess/chessBoard/piece/horse.lua
+#END

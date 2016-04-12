@@ -1,0 +1,10 @@
+draw_piece1:
+	chineseChess/red_soldier
+	
+draw_piece2:
+	chineseChess/black_soldier
+weight:
+	7	
+rule_path:
+	files/game/chessMaster/game/chineseChess/chessBoard/piece/soldier.lua
+#END

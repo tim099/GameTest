@@ -46,7 +46,7 @@ void Game::initialize(){
 	controller_system->push(new SelectableControl());
 
 	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
-	thread_pool = new Tim::ThreadPool(8);
+	thread_pool = new Tim::ThreadPool(8,REALTIME_PRIORITY_CLASS);
 	initialize_game();
 
 	//window->render_off();

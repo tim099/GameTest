@@ -1,4 +1,14 @@
 board_path:
-	files/game/chessMaster/game/chess/chessBoard/board
+	files/game/chessMaster/game/chess/chessBoard/board.txt
 pieces_path:
-	files/game/chessMaster/game/chess/chessBoard/pieces
+	files/game/chessMaster/game/chess/chessBoard/pieces.txt
+rule_path:
+	files/game/chessMaster/game/chess/chessBoard/rule.lua
+
+texture:
+	chess/board_textures
+normal_texture:	
+	chess/board_normals
+cube_type_num:
+	2
+#END

@@ -5,15 +5,16 @@
 Name:
 	root
 FolderPath:
-	files/game/chessMaster/model/
+	files/game/chessMaster/
 #HEADER_END
 
 Map:
 	ScriptPath:
-		chessmodel/script/chessmodels.txt
+		game/chess/model/chessmodel/script/chessmodels.txt
 
-
-
+Map:
+	ScriptPath:
+		game/chineseChess/model/chessmodel/script/chessmodels.txt
 
 
 #END

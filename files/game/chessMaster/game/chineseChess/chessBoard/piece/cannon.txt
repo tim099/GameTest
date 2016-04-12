@@ -1,0 +1,10 @@
+draw_piece1:
+	chineseChess/red_cannon
+	
+draw_piece2:
+	chineseChess/black_cannon
+weight:
+	50	
+rule_path:
+	files/game/chessMaster/game/chineseChess/chessBoard/piece/cannon.lua
+#END

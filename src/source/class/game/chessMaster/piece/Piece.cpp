@@ -1,5 +1,4 @@
 #include "class/game/chessMaster/piece/Piece.h"
-#include "class/display/draw/drawObject/DrawObject.h"
 #include "class/tim/string/String.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/game/chessMaster/chessboard/ChessBoard.h"
@@ -11,35 +10,13 @@ Piece::Piece() {
 	weight=1;
 	draw_piece1=0;
 	draw_piece2=0;
-	type=1;
+	//type=1;
 	rule=0;
+	rule_mutex=new Tim::Mutex();
 }
 Piece::~Piece() {
 	if(rule)delete rule;
-}
-int Piece::bound_check(lua_State *L){
-	int y = lua_tonumber(L, -1);
-	lua_pop(L,1);
-	int x = lua_tonumber(L, -1);
-	lua_pop(L,1);
-	//std::cout<<"x="<<x<<",y="<<y<<std::endl;
-	if(ChessBoard::get_cur_object()->bound_check(x,y)){
-		lua_pushnumber(L,1);
-	}else{
-		lua_pushnumber(L,0);
-	}
-	return 1;
-}
-int Piece::get_board(lua_State *L){
-	int y = lua_tonumber(L, -1);
-	lua_pop(L,1);
-	int x = lua_tonumber(L, -1);
-	lua_pop(L,1);
-
-	int type=ChessBoard::get_cur_object()->get_type(x,y);
-	lua_pushnumber(L,type);
-
-	return 1;
+	delete rule_mutex;
 }
 void Piece::load_script(std::string path){
 	std::filebuf file;
@@ -71,38 +48,47 @@ void Piece::load_script(std::string path){
 	if(rule)delete rule;
 	rule=new Tim::Lua();
 	rule->loadfile(rule_path);
-	rule->rigister_function("bound_check",Piece::bound_check);
-	rule->rigister_function("get_board",Piece::get_board);
+	//rule->rigister_function("bound_check",ChessBoard::bound_check);
+	rule->rigister_function("get_board",ChessBoard::get_board);
 	rule->p_call(0,0,0);
 }
-void Piece::next_step(glm::ivec2 cur_step,std::vector<glm::ivec2> &next_step,bool player1){
+void Piece::next_step(Tim::Array2D<short int> *chess_board,
+		glm::ivec2 cur_step,std::vector<int> &next_step,int player){
+	rule_mutex->wait_for_this();
+	//ChessBoard::get_cur_object()->set_current(chess_board);
+	rule->pushlightuserdata(chess_board);
+	rule->set_global("board");
+
 	rule->get_global("next_step");
 	rule->push_number(cur_step.x);
 	rule->push_number(cur_step.y);
-	if(player1){
-		rule->push_number(1);
-	}else{
-		rule->push_number(-1);
-	}
+	rule->push_number(player);
+
 	rule->p_call(3,1,0);
 
+	rule->get_table(next_step);
 
-	std::vector<int> table;
-	rule->get_table(table);
-	int step_num=table.size()/2;
-	//std::cout<<"step_num="<<step_num<<std::endl;
-	for(int i=0;i<step_num;i++){
-		int x=table.at(2*i),y=table.at(2*i+1);
-		next_step.push_back(glm::ivec2(x,y));
-		//std::cout<<"step="<<x<<","<<y<<std::endl;
-	}
 	rule->pop(1);//pop next_step
+
+	rule_mutex->release();
 }
-void Piece::draw(Position* pos,bool player1){
-	if(player1){
-		draw_piece1->push_temp_drawdata(new DrawDataObj(pos));
+void Piece::next_step(Tim::Array2D<short int> *chess_board,
+		glm::ivec2 cur_step,std::vector<CM::Step> &next_steps,int player){
+	std::vector<int> next;
+	next.reserve(100);
+	next_step(chess_board,cur_step,next,player);
+	CM::Step next_step;
+	int i=0;
+	while(i<(int)next.size()){
+		next_step.parse_step(chess_board,cur_step,next,i);
+		next_steps.push_back(next_step);
+	}
+}
+void Piece::draw(Position* pos,int player){
+	if(player==1){
+		draw_piece1->push_temp_drawdata(new DrawDataObj(pos,true,true));
 	}else{
-		draw_piece2->push_temp_drawdata(new DrawDataObj(pos));
+		draw_piece2->push_temp_drawdata(new DrawDataObj(pos,true,true));
 	}
 }
 

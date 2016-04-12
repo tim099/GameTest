@@ -4,22 +4,21 @@
 Name:
 	root
 FolderPath:
-	files/game/chessMaster/script/texture/
+	files/game/chessMaster/
 #HEADER_END
 
 //create textureMap container under this directory
 TextureDir:
 	ScriptPath:
-		UI/UITexDir.txt		
+		script/texture/UI/UITexDir.txt		
+
 TextureMap:
 	ScriptPath:
-		chessBoard/cubeTexMap.txt
+		game/chess/textures/textures.txt
 TextureMap:
 	ScriptPath:
-		chess/chess.txt		
-		
-		
+		game/chineseChess/textures/textures.txt		
 TextureMap:
 	ScriptPath:
-		sky.txt	
+		script/texture/sky.txt	
 #END	

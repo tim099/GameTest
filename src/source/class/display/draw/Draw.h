@@ -54,13 +54,14 @@ public:
 	void clear_tmp_data();
 	DrawObject* get_obj(unsigned i);
 	Camera *camera;
+	LightControl* lightControl;
 	bool Enable3D;
 	float wave_height,wave_width;
 	float water_height;
 	bool real_water;
 protected:
 
-	LightControl* lightControl;
+
 
 	std::vector<DrawObject*> d_objs;
 	std::vector<DrawObject*> water_d_objs;

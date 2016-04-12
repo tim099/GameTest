@@ -6,9 +6,12 @@
 #include "class/display/UI/page/PageControl.h"
 #include "class/display/camera/Camera.h"
 #include "class/game/chessMaster/piece/Step.h"
+
 namespace CM {
+class AI;
 namespace scene{
 class SceneStart : public Scene{
+	static const int MAX=999999;
 public:
 	SceneStart();
 	virtual ~SceneStart();
@@ -34,27 +37,28 @@ protected:
 	void draw_step();
 
 	void AI_move(int player);
-	CM::Step best_step(int player,int depth,int pruning);
 
 	void next_turn(CM::Step step);
 	UI::UI *UI;
 	ChessBoard *chess_board;
 	Camera* camera;
 	Camera* p1camera,*p2camera;
-	std::vector<CM::Step*> steps;
+	CM::AI *ai;
 
 	LightControl* lightControl;
-	std::vector<glm::ivec2> next_step;
+	//std::vector<glm::ivec2> next_step;
+	std::vector<CM::Step> next_step;
+	int winner;
 	int turn;
 	bool destruct_mode;
 	int type;
+	int chess_type;
 	bool selected;
-	int sx,sy;
+	glm::ivec2 s;
 	int prev_sx,prev_sy;
-	long long unsigned total_compute;
-	bool do_pruning;
 	int difficulty;
-	bool edit_mode;
+	bool edit_mode,edit_chess;
+	int AI_mode;
 };
 }
 } /* namespace CM */

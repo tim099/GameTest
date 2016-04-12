@@ -7,6 +7,8 @@
 namespace KeyCode {
 	static const unsigned BackSpace = 259;
 	static const unsigned Enter = 257;
+	static const unsigned Plus = 334;
+	static const unsigned Minus = 333;
 };
 class KeyBoard {
 

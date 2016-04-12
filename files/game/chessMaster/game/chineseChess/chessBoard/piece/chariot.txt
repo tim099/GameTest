@@ -1,0 +1,10 @@
+draw_piece1:
+	chineseChess/red_chariot
+	
+draw_piece2:
+	chineseChess/black_chariot
+weight:
+	50
+rule_path:
+	files/game/chessMaster/game/chineseChess/chessBoard/piece/chariot.lua
+#END

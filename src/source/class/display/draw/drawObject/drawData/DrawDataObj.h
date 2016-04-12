@@ -9,10 +9,11 @@ public:
 	 * not handle the delete of pos
 	 */
 	DrawDataObj();
-	DrawDataObj(Position* pos,bool draw_shadow=true);
+	DrawDataObj(Position* pos,bool draw_shadow=true,bool delete_pos=false);
 	virtual ~DrawDataObj();
 	void set_pos(Position* pos);
 	bool draw_shadow;
+	bool delete_pos;
 	Position* pos;
 protected:
 

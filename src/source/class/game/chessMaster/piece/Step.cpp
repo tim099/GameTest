@@ -1,18 +1,106 @@
 #include "class/game/chessMaster/piece/Step.h"
-
+#include "class/game/chessMaster/chessboard/ChessBoard.h"
+#include "class/display/draw/Draw.h"
+#include "class/display/light/LightControl.h"
 namespace CM {
 
-Step::Step(int _x,int _y,int _nx,int _ny,int _score) {
-	x=_x,y=_y,nx=_nx,ny=_ny;score=_score;ntype=0;
+Step::Step() {
+	score=0;
 }
 Step::Step(Step *step){
-	x=step->x,y=step->y,nx=step->nx,ny=step->ny;score=step->score;ntype=step->ntype;
+	init(*step);
+}
+void Step::init(const Step &step){
+	score=step.score;
+	moves.clear();
+	for(unsigned i=0;i<step.moves.size();i++){
+		moves.push_back(step.moves.at(i));
+	}
 }
 Step::~Step() {
 
 }
+void Step::move(Tim::Array2D<short int> *chess_board){
+	for(unsigned i=0;i<moves.size();i++){
+		moves.at(i).w=chess_board->get(moves.at(i).x,moves.at(i).y);
+		chess_board->get(moves.at(i).x,moves.at(i).y)=moves.at(i).z;
+	}
+}
+void Step::undo(Tim::Array2D<short int> *chess_board){
+	for(unsigned i=0;i<moves.size();i++){
+		chess_board->get(moves.at(i).x,moves.at(i).y)=moves.at(i).w;
+	}
+}
+void Step::parse_step(Tim::Array2D<short int> *chess_board,glm::ivec2 cur_step,std::vector<int> &next_step,int &i){
+	moves.clear();
+	int type;
+	if(next_step.at(i)>=0){
+		add_move(cur_step.x,cur_step.y,0,-1);
+		type=chess_board->get(cur_step.x,cur_step.y);
+		add_move(next_step.at(i),next_step.at(i+1),type,1);
+		//std::cout<<"move:"<<next_step.at(i).x<<","
+				//<<next_step.at(i).y<<","
+				//<<type<<std::endl;
+		i+=2;
+	}else if(next_step.at(i)==-1){
+		int move_num=next_step.at(i+1);
+		while(move_num>0){
+			i+=2;
+			add_move(next_step.at(i),next_step.at(i+1),next_step.at(i+2),next_step.at(i+3));
+			//std::cout<<"special move:"<<next_step.at(i).x<<","
+					//<<next_step.at(i).y<<","
+					//<<next_step.at(i+1).x<<std::endl;
+			i+=2;
+			move_num--;
+		}
+		i+=2;
+	}
+}
 Step& Step::operator=(const Step& step){
-	x=step.x,y=step.y,nx=step.nx,ny=step.ny;score=step.score;ntype=step.ntype;
+	init(step);
 	return (*this);
+}
+bool Step::selected(int x,int y){
+	for(unsigned i=0;i<moves.size();i++){
+		if(moves.at(i).z!=0&&moves.at(i).w!=-1){
+			if(moves.at(i).x==x&&moves.at(i).y==y){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+void Step::draw_next_step(){
+	ChessBoard* chess_board=ChessBoard::get_cur_object();
+	CubeLight* cl;
+	for(unsigned i=0;i<moves.size();i++){
+		if(selected(moves.at(i).x,moves.at(i).y)){
+			cl=new CubeLight();
+			cl->size=1.01f*chess_board->cube_size;
+			if(moves.at(i).z*chess_board->get_type(moves.at(i).x,moves.at(i).y)<0){
+				cl->color=glm::vec3(0.5,0,0);
+			}else{
+				cl->color=glm::vec3(0,0.5,0);
+			}
+			cl->pos=glm::vec3((moves.at(i).x+0.5f)*chess_board->cube_size,
+							  (2.5f)*chess_board->cube_size,
+							  (moves.at(i).y+0.5f)*chess_board->cube_size);
+			//chess_board->get_piece(x,y)->draw()
+			Draw::get_cur_object()->lightControl->push_temp_light(cl);
+		}
+	}
+}
+void Step::draw_step(glm::vec3 color){
+	ChessBoard* chess_board=ChessBoard::get_cur_object();
+	CubeLight* cl;
+	for(unsigned i=0;i<moves.size();i++){
+		cl=new CubeLight();
+		cl->size=1.01f*chess_board->cube_size;
+		cl->color=color;
+		cl->pos=glm::vec3((moves.at(i).x+0.5f)*chess_board->cube_size,
+						  (2.5f)*chess_board->cube_size,
+						  (moves.at(i).y+0.5f)*chess_board->cube_size);
+		Draw::get_cur_object()->lightControl->push_temp_light(cl);
+	}
 }
 } /* namespace CM */

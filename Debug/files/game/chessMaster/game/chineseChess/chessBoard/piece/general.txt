@@ -1,0 +1,10 @@
+draw_piece1:
+	chineseChess/red_general
+	
+draw_piece2:
+	chineseChess/black_general
+weight:
+	9999	
+rule_path:
+	files/game/chessMaster/game/chineseChess/chessBoard/piece/general.lua
+#END

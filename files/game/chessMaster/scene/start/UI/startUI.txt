@@ -7,16 +7,16 @@ CreateUIObject:
 	PictureButton
 	
 	Position:
-		0.1 0.9
+		0.02 0.9
 	Texture:
 		UI/UI/button2
 	Width:
-		0.1
+		0.08
 	Height:
 		0.0
 			
 	Set_string:
-		" Easy AI "	
+		" Easy "	
 	
 	Set_signal:
 		Data:
@@ -30,16 +30,16 @@ CreateUIObject:
 	PictureButton
 	
 	Position:
-		0.25 0.9
+		0.12 0.9
 	Texture:
 		UI/UI/button2
 	Width:
-		0.1
+		0.08
 	Height:
 		0.0
 			
 	Set_string:
-		"Normal AI"	
+		"Normal"	
 	
 	Set_signal:
 		Data:
@@ -49,15 +49,62 @@ CreateUIObject:
 	Parent:
 		root			
 #create_end
+
 CreateUIObject:
 	PictureButton
 	
 	Position:
-		0.4 0.9
+		0.22 0.9
 	Texture:
 		UI/UI/button2
 	Width:
-		0.1
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"Normal+"	
+	
+	Set_signal:
+		Data:
+			normal_plus
+		Receiver:
+			SceneStart
+	Parent:
+		root
+#create_end
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.32 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"Hard"	
+	
+	Set_signal:
+		Data:
+			hard
+		Receiver:
+			SceneStart
+	Parent:
+		root	
+#create_end
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.42 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
 	Height:
 		0.0
 			
@@ -77,11 +124,11 @@ CreateUIObject:
 	PictureButton
 	
 	Position:
-		0.55 0.9
+		0.52 0.9
 	Texture:
 		UI/UI/button2
 	Width:
-		0.1
+		0.08
 	Height:
 		0.0
 			
@@ -91,6 +138,196 @@ CreateUIObject:
 	Set_signal:
 		Data:
 			auto
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.62 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"Restart"	
+	
+	Set_signal:
+		Data:
+			restart
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.72 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"Edit"	
+	
+	Set_signal:
+		Data:
+			edit
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.82 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"Chess"	
+	
+	Set_signal:
+		Data:
+			chess
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.02 0.8
+	Texture:
+		UI/UI/button2
+	Width:
+		0.12
+	Height:
+		0.0
+			
+	Set_string:
+		"	play
+chineseChess"	
+	
+	Set_signal:
+		Data:
+			play_chineseChess
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.02 0.7
+	Texture:
+		UI/UI/button2
+	Width:
+		0.12
+	Height:
+		0.0
+			
+	Set_string:
+		"play chess"	
+	
+	Set_signal:
+		Data:
+			play_chess
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.02 0.6
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"P vs P"	
+	
+	Set_signal:
+		Data:
+			PVP
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.02 0.5
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"P vs AI"	
+	
+	Set_signal:
+		Data:
+			PVA
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.02 0.4
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"AI vs AI"	
+	
+	Set_signal:
+		Data:
+			AVA
 		Receiver:
 			SceneStart
 	Parent:

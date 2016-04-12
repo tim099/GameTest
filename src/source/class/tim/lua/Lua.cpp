@@ -39,14 +39,30 @@ bool Lua::p_call(int parameter_num,int return_num,int errfunc){
 std::string Lua::get_string(std::string name){
     lua_getglobal(L,"str");
     std::string str=lua_tostring(L,-1);
-    lua_pop(L,1);
+    lua_pop(L,1);//pop string create by lua_tostring on the top
     return str;
+}
+void Lua::set_global(std::string name){
+	lua_setglobal(L,name.c_str());
 }
 void Lua::get_global(std::string name){
 	lua_getglobal(L,name.c_str());
 }
 void Lua::push_number(int num){
 	lua_pushnumber(L,num);
+}
+void Lua::pushlightuserdata(void *ptr){
+	lua_pushlightuserdata(L,ptr);
+}
+void *Lua::get_userdata(int at){
+	void *ptr=lua_touserdata(L,at);
+	lua_pop(L,1);//pop ptr create by lua_touserdata on the top
+	return ptr;
+}
+int Lua::get_number(int at){
+	int num=lua_tonumber(L,at);
+	lua_pop(L,1);//pop int create by lua_tonumber on the top
+	return num;
 }
 int Lua::to_number(int at){
 	return lua_tonumber(L,at);

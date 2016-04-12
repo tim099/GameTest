@@ -1,5 +1,5 @@
-#include "class/display/light/LightControl.h"
 #include "class/display/draw/Draw.h"
+#include "class/display/light/LightControl.h"
 #include "class/display/shader/Shader.h"
 #include "class/display/shader/shader2D/Shader2D.h"
 #include "class/display/texture/texture2D/Texture2D.h"

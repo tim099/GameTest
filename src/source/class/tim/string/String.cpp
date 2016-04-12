@@ -17,6 +17,11 @@ std::string String::to_string(int num){
 	sprintf(cnum,"%d",num);
 	return std::string(cnum);
 }
+std::string String::to_string(float num){
+	char cnum[100];
+	sprintf(cnum,"%.2f",num);
+	return std::string(cnum);
+}
 void String::put_back_line(std::istream &is,std::string& line){
 	for(unsigned i=0;i<line.size();i++){
 		std::cout<<"put_back:"<<line[i]<<std::endl;

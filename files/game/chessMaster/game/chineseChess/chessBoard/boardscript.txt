@@ -1,0 +1,16 @@
+board_path:
+	files/game/chessMaster/game/chineseChess/chessBoard/board.txt
+
+pieces_path:
+	files/game/chessMaster/game/chineseChess/chessBoard/pieces.txt
+
+rule_path:
+	files/game/chessMaster/game/chineseChess/chessBoard/rule.lua
+
+texture:
+	chineseChess/board_textures
+normal_texture:	
+	chineseChess/board_normals
+cube_type_num:
+	21
+#END

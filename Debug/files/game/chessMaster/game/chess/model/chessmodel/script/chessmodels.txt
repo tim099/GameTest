@@ -1,0 +1,77 @@
+#LOAD_MODELBUFFERMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/game/chessMaster/game/chess/model/chessmodel/
+Name:
+	chess
+#HEADER_END
+
+ModelBuffer:
+	Name:
+		king
+	Path:
+		king.obj
+	Size:
+		1.0
+	Align_center:
+		true
+		
+#load_end
+
+ModelBuffer:
+	Name:
+		queen
+	Path:
+		queen.obj
+	Size:
+		1.0
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		bishop
+	Path:
+		bishop.obj
+	Size:
+		1.0
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		knight
+	Path:
+		knight.obj
+	Size:
+		1.0
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		pawn
+	Path:
+		pawn.obj
+	Size:
+		1.0
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		rook
+	Path:
+		rook.obj
+	Size:
+		1.0
+	Align_center:
+		true
+#load_end
+#END

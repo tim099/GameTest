@@ -25,8 +25,12 @@ void Task::Execute(){
 
 	ExecuteTask();
 	TaskDone();
-	taskMutex->release();
+
 	//done=true; //done by thread!!
+}
+void Task::Execute_done(){
+	done=true;
+	taskMutex->release();
 }
 bool Task::Done()const{
 	return done;

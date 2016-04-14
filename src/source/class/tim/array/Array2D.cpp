@@ -20,6 +20,13 @@ template <class Type>
 Array2D<Type>::~Array2D() {
 	delete[] arr;
 }
-
+template <class Type>
+bool Array2D<Type>::operator==(const Array2D<Type>& arr2){
+	if(sizex!=arr2.sizex||sizey!=arr2.sizey)return false;
+	for(unsigned i=0;i<sizex*sizey;i++){
+		if(arr[i]!=arr2.arr[i])return false;
+	}
+	return true;
+}
 } /* namespace Tim */
 #endif

@@ -70,11 +70,16 @@ void Thread::sleep(){
 void Thread::ExecuteTask(){
 	threadMutex->wait_for_this();
 	thread_start=true;
-
+	Tim::Task *task;
+	bool AutoTerminate;
 	while(!task_q.empty()){
-		task_q.front()->Execute();
-		task_q.front()->done=true;//delete task_q.front(); dont!!
-		if(task_q.front()->AutoTerminate())delete task_q.front();
+		task=task_q.front();
+		AutoTerminate=task_q.front()->AutoTerminate();
+		task->Execute();
+		task->Execute_done();
+		if(AutoTerminate){
+			delete task_q.front();
+		}
 		task_q.pop();
 	}
 	if(done)done->done(this);

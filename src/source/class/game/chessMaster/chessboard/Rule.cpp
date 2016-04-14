@@ -16,6 +16,7 @@ void Rule::load_rule(std::string path){
 	rule->loadfile(path);
 	//rule->rigister_function("bound_check",ChessBoard::bound_check);
 	rule->rigister_function("get_board",ChessBoard::get_board);
+	rule->rigister_function("find_board",ChessBoard::find_board);
 	rule->p_call(0,0,0);
 }
 int Rule::check_winner(Tim::Array2D<short int> *chess_board){

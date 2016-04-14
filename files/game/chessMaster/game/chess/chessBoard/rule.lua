@@ -1,16 +1,5 @@
 function check_result()
-	winner=0 --no result,no player win yet,i==1 if player1 win,i==-1 if player2 win
-	for i=0,7 do
-		for j=0,7 do
-			type=get_board(i,j)
-			if(type==1)then --player1's king==1
-				winner=winner+1
-			end
-			if(type==-1)then --player2's king==-1
-				winner=winner-1
-			end
-		end
-	end
-
+	winner=find_board(1);--0=no result,no player win yet,i==1 if player1 win,i==-1 if player2 win
+	winner=winner-find_board(-1);
 	return winner
 end

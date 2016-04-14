@@ -6,15 +6,18 @@ namespace CM {
 class AI;
 class ChessBoard;
 class Step;
+class StepNode;
 class TaskComputeScore: public Tim::Task {
 public:
-	TaskComputeScore(CM::AI *ai,Step *step,Tim::Array2D<short int> *chess_board,
+	TaskComputeScore(CM::AI *ai,Step *step,CM::StepNode *cur_node,
+			Tim::Array2D<short int> *chess_board,
 			int player,int depth,int pruning,bool max);
 	virtual ~TaskComputeScore();
 	Step *step;
 protected:
 	virtual void ExecuteTask();
 	CM::AI *ai;
+	CM::StepNode *cur_node;
 	Tim::Array2D<short int> *chess_board;
 	int player;
 	int depth;

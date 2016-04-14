@@ -48,8 +48,6 @@ protected:
 	LightControl* lightControl;
 	//std::vector<glm::ivec2> next_step;
 	std::vector<CM::Step> next_step;
-	int winner;
-	int turn;
 	bool destruct_mode;
 	int type;
 	int chess_type;

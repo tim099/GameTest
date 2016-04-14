@@ -14,7 +14,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
-//#include <cstdio>
+#include <cstdio>
 //#include <thread>
 #include "class/tim/string/String.h"
 #include "class/game/ageOfCube/AgeOfCubes.h"
@@ -25,7 +25,6 @@
 #include <map>
 int main(){
 	std::cout<<"AOC ver 0.0"<<std::endl;
-
 	/*
 	AgeOfCubes* ageOfCubes=new AgeOfCubes();
 	ageOfCubes->initialize();
@@ -34,6 +33,7 @@ int main(){
 	delete ageOfCubes;
 	*/
 	///*
+
 	ChessMaster* cm=new ChessMaster();
 	cm->initialize();
 

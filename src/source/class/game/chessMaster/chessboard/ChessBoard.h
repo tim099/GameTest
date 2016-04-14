@@ -11,6 +11,7 @@
 #include "class/tim/lua/Lua.h"
 #include "class/game/chessMaster/chessboard/Rule.h"
 #include "class/tim/thread/mutex/Mutex.h"
+#include "class/game/chessMaster/chessboard/BoardMCT.h"
 namespace CM {
 
 class ChessBoard : public Tim::GlobalObject<ChessBoard>{
@@ -36,6 +37,9 @@ public:
 
 	void save_pieces(std::string path);
 	void load_pieces(std::string path);
+
+	void save_mct();
+	void load_mct();
 	void find_select_cube();
 
 	void restart();
@@ -51,6 +55,8 @@ public:
 	void find_next_step(Tim::Array2D<short int> *chess_board,
 			int player,std::vector<CM::Step> &next_steps);
 	static int get_board(lua_State *L);
+	static int find_board(lua_State *L);
+
 	bool bound_check(int x,int y);
 	int check_winner(Tim::Array2D<short int> *chess_board);
 	int evaluate_score(Tim::Array2D<short int> *chess_board,int player);
@@ -77,17 +83,27 @@ public:
 	inline Tim::Array2D<short int>* get_cur()const{
 		return cur_board;
 	}
+	inline CM::StepNode *get_cur_node(){
+		return cur_node;
+	}
+	CM::BoardMCT *mct;
+	int winner,cur_player;
 protected:
+	void backpropagation();
 	void gen_model();
 	void find_selected_on(glm::vec3 pos);
 	void find_selected_cube(glm::vec3 pos);
 	std::string tex_path;
 	std::string normal_path;
+	std::string dir_path;
 	DynamicDrawObject *dboard;
 	CubeModel *cube;
 	Position *pos;
 	Tim::Mutex *board_mutex;
-	//Tim::Lua *rule;
+
+
+	CM::StepNode *cur_node;
+
 	CM::Rule *rule;
 	std::string rule_path;
 	bool updated;

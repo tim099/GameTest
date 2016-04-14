@@ -2,6 +2,7 @@
 #define SOURCE_CLASS_GAME_CHESSMASTER_PIECE_STEP_H_
 #include "class/tim/array/Array2D.h"
 #include <vector>
+#include <cstdio>
 #include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
@@ -13,7 +14,15 @@ public:
 	Step(Step *step);
 	void init(const Step &step);
 	virtual ~Step();
+
+
+	void save(FILE * file);
+	void load(FILE * file);
+
 	Step& operator=(const Step& step);
+	bool operator==(const Step& step);
+	bool operator>(const Step& step);
+	bool operator<(const Step& step);
 	void move(Tim::Array2D<short int> *chess_board);
 	void undo(Tim::Array2D<short int> *chess_board);
 	void draw_next_step();

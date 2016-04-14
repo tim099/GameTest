@@ -2,6 +2,7 @@
 #include "class/game/chessMaster/chessboard/ChessBoard.h"
 #include "class/display/draw/Draw.h"
 #include "class/display/light/LightControl.h"
+
 namespace CM {
 
 Step::Step() {
@@ -19,6 +20,25 @@ void Step::init(const Step &step){
 }
 Step::~Step() {
 
+}
+void Step::save(FILE * file){
+	fprintf(file,"%d\n",score);
+	fprintf(file,"%u\n",moves.size());
+	glm::ivec4 *move;
+	for(unsigned i=0;i<moves.size();i++){
+		move=&moves.at(i);
+		fprintf(file,"%d,%d,%d,%d\n",move->x,move->y,move->z,move->w);
+	}
+}
+void Step::load(FILE * file){
+	fscanf(file,"%d\n",&score);
+	unsigned move_size;
+	fscanf(file,"%u\n",&move_size);
+	glm::ivec4 move;
+	for(unsigned i=0;i<move_size;i++){
+		fscanf(file,"%d,%d,%d,%d\n",&move.x,&move.y,&move.z,&move.w);
+		moves.push_back(move);
+	}
 }
 void Step::move(Tim::Array2D<short int> *chess_board){
 	for(unsigned i=0;i<moves.size();i++){
@@ -59,6 +79,52 @@ void Step::parse_step(Tim::Array2D<short int> *chess_board,glm::ivec2 cur_step,s
 Step& Step::operator=(const Step& step){
 	init(step);
 	return (*this);
+}
+bool Step::operator==(const Step& step){
+	if(step.moves.size()!=moves.size()){
+		return false;
+	}
+	for(unsigned i=0;i<moves.size();i++){
+		if(step.moves.at(i).x!=moves.at(i).x||
+				step.moves.at(i).y!=moves.at(i).y||
+				step.moves.at(i).z!=moves.at(i).z){
+			return false;
+		}
+	}
+	return true;
+}
+bool Step::operator>(const Step& step){
+	if(step.moves.size()>moves.size()){
+		return false;
+	}else if(step.moves.size()<moves.size()){
+		return true;
+	}
+	//size equal
+	for(unsigned i=0;i<moves.size();i++){
+		if(step.moves.at(i).x>moves.at(i).x){
+			return false;
+		}else if(step.moves.at(i).x<moves.at(i).x){
+			return true;
+		}else{
+			if(step.moves.at(i).y>moves.at(i).y){
+				return false;
+			}else if(step.moves.at(i).y<moves.at(i).y){
+				return true;
+			}else{
+				if(step.moves.at(i).z>moves.at(i).z){
+					return false;
+				}else if(step.moves.at(i).z<moves.at(i).z){
+					return true;
+				}
+			}
+		}
+
+	}
+	return false;
+}
+bool Step::operator<(const Step& step){
+	if((*this)==step||((*this)>step))return false;
+	return true;
 }
 bool Step::selected(int x,int y){
 	for(unsigned i=0;i<moves.size();i++){

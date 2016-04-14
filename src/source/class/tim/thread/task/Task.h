@@ -9,6 +9,7 @@ public:
 	Task();
 	virtual ~Task();
 	void Execute();
+	void Execute_done();
 	bool Done()const;
 	bool AutoTerminate()const;
 	void join(DWORD time=INFINITE);

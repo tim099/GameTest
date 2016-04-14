@@ -5,13 +5,14 @@
 #include "class/tim/thread/ThreadPool.h"
 namespace CM {
 class ChessBoard;
+class StepNode;
 class AI {
 	static const int MAX=999999;
 public:
 	AI();
 	virtual ~AI();
 	CM::Step find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* chess_board,int player,int depth,int pruning);
-	int get_score(Tim::Array2D<short int> *chess_board,
+	int get_score(CM::StepNode *_cur_node,Tim::Array2D<short int> *chess_board,
 			int player,int depth,int pruning,bool max);
 	bool search_done;
 	bool searching;

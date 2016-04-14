@@ -1,5 +1,4 @@
 
-
 piece_path:
 	files/game/chessMaster/game/chineseChess/chessBoard/piece/general.txt
 piece_path:

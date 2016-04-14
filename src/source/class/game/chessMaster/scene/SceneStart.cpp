@@ -23,11 +23,9 @@ SceneStart::SceneStart() {
 	chess_type=0;
 	selected=false;
 	prev_sx=0;prev_sy=0;
-	turn=1;
 	difficulty=3;
 	edit_mode=false;
 	edit_chess=false;
-	winner=0;
 	AI_mode=0;
 	ai=0;
 }
@@ -110,6 +108,8 @@ void SceneStart::handle_signal(Signal *sig){
 		AI_mode=0;
 	}else if(sig->get_data()=="AVA"){
 		AI_mode=1;
+	}else if(sig->get_data()=="auto_AVA"){
+		AI_mode=3;
 	}else if(sig->get_data()=="undo"){
 		next_step.clear();
 		selected=false;
@@ -121,7 +121,7 @@ void SceneStart::handle_signal(Signal *sig){
 	}else if(sig->get_data()=="auto"){
 		next_step.clear();
 		selected=false;
-		AI_move(turn);
+		AI_move(chess_board->cur_player);
 	}else if(sig->get_data()=="edit"){
 		next_step.clear();
 		selected=false;
@@ -141,7 +141,6 @@ void SceneStart::handle_signal(Signal *sig){
 	//std::cout<<sig->get_data()<<std::endl;
 }
 void SceneStart::next_turn(CM::Step step){
-	turn*=-1;
 	chess_board->next_turn(step);
 
 }
@@ -267,7 +266,7 @@ void SceneStart::handle_input(){
 				if(s.x>=0&&s.y>=0&&s.x<chess_board->chess_board->sizex&&
 						s.y<chess_board->chess_board->sizey){
 					int type=chess_board->chess_board->get(s.x,s.y);
-					if(type*turn>0){
+					if(type*chess_board->cur_player>0){
 						next_step.clear();
 						chess_board->find_next_step(chess_board->chess_board,
 								glm::ivec2(s.x,s.y),next_step);
@@ -327,30 +326,40 @@ void SceneStart::scene_update(){
 	camera->update();
 	UI->update_UIObject();
 	chess_board->find_select_cube();
-	winner=chess_board->check_winner(chess_board->chess_board);
+	chess_board->winner=chess_board->check_winner(chess_board->chess_board);
 	if(ai->search_done){
 		next_turn(ai->best_step);
 		ai->search_done=false;
 		std::cout<<"total_compute="<<ai->total_compute<<std::endl;
 	}
-	if(winner==0){
+	if(chess_board->winner==0){
 		if(AI_mode==0){
-			if(turn==-1){
-				AI_move(turn);
+			if(chess_board->cur_player==-1){
+				AI_move(chess_board->cur_player);
 			}else{
 				camera=p1camera;
 				draw->set_camera(camera);
 			}
 		}else if(AI_mode==1){
-			AI_move(turn);
+			AI_move(chess_board->cur_player);
+		}else if(AI_mode==3){
+			if(chess_board->steps.size()>5){
+				chess_board->restart();
+			}else{
+				AI_move(chess_board->cur_player);
+			}
 		}else if(AI_mode==2){
-			if(turn==1){
+			if(chess_board->cur_player==1){
 				camera=p1camera;
 				draw->set_camera(camera);
 			}else{
 				camera=p2camera;
 				draw->set_camera(camera);
 			}
+		}
+	}else{
+		if(AI_mode==3){
+			chess_board->restart();
 		}
 	}
 }
@@ -360,7 +369,7 @@ void SceneStart::scene_draw(){
 		draw->push(new RenderString("AI thinking time:"+Tim::String::to_string(time_used),
 				0.02,glm::vec2(0,0.95)));
 	}else{
-		if(turn==1){
+		if(chess_board->cur_player==1){
 			draw->push(new RenderString("player1's turn",0.02,glm::vec2(0,0.95)));
 		}else{
 			draw->push(new RenderString("player2's turn",0.02,glm::vec2(0,0.95)));
@@ -393,10 +402,12 @@ void SceneStart::scene_draw(){
 	}
 
 
-	int score=chess_board->evaluate_score(chess_board->chess_board,turn);
+	int score=chess_board->evaluate_score(chess_board->chess_board,chess_board->cur_player);
 	draw->push(new RenderString("score:"+Tim::String::to_string(score),0.02,glm::vec2(0,0.85)));
-	if(winner!=0){
-		if(winner==1)draw->push(new RenderString("player1 win!!",0.05,glm::vec2(0.3,0.5)));
+	draw->push(new RenderString("turn:"+Tim::String::to_string((int)chess_board->steps.size()),
+			0.02,glm::vec2(0.2,0.85)));
+	if(chess_board->winner!=0){
+		if(chess_board->winner==1)draw->push(new RenderString("player1 win!!",0.05,glm::vec2(0.3,0.5)));
 		else draw->push(new RenderString("player2 win!!",0.05,glm::vec2(0.3,0.5)));
 	}
 	CubeLight* cl=new CubeLight();

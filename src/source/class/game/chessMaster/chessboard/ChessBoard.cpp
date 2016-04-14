@@ -17,6 +17,10 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	rule=0;
 	cube_type_num=3;
 	dboard = new DynamicDrawObject();
+	mct = new BoardMCT();
+	cur_node=mct->step_root;
+
+
 	tex_path="chess/board_textures";
 	normal_path="chess/board_normals";
 	dboard->init_drawObject("",tex_path,normal_path,true);
@@ -30,10 +34,12 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	register_cur();
 }
 ChessBoard::~ChessBoard() {
+	save_mct();
 	for(unsigned i=0;i<pieces.size();i++)delete pieces.at(i);
 	if(board)delete board;
 	if(chess_board)delete chess_board;
 	if(rule)delete rule;
+	if(mct)delete mct;
 	delete board_mutex;
 	clear_steps();
 	delete dboard;
@@ -44,6 +50,10 @@ void ChessBoard::clear(){
 	for(unsigned i=0;i<pieces.size();i++)delete pieces.at(i);
 	pieces.clear();
 	clear_steps();
+	winner=0;
+	cur_player=1;
+	if(mct)delete mct;
+	mct=0;
 }
 void ChessBoard::init(int sizex,int sizey,int sizez){
 	if(board)delete board;
@@ -67,6 +77,25 @@ void ChessBoard::init(int sizex,int sizey,int sizez){
 		}
 	}
 	updated=true;
+	winner=0;
+	cur_player=1;
+}
+int ChessBoard::find_board(lua_State *L){
+	lua_getglobal(L, "board");
+	Tim::Array2D<short int> *cb =(Tim::Array2D<short int>*)lua_touserdata(L,-1);
+	lua_pop(L,1);
+	int type = lua_tonumber(L, -1);
+	lua_pop(L,1);
+	int total=0;
+	for(int i=0;i<cb->sizex;i++){
+		for(int j=0;j<cb->sizey;j++){
+			if(cb->get(i,j)==type){
+				total++;
+			}
+		}
+	}
+	lua_pushnumber(L,total);
+	return 1;
 }
 int ChessBoard::get_board(lua_State *L){
 	//std::cout<<"ChessBoard::get_board"<<std::endl;
@@ -165,15 +194,21 @@ void ChessBoard::load_script(std::string path){
 	}
 	std::istream is(&file);
 	std::string line;
+
+	if(Tim::String::get_line(is, line, true, true)&&line=="dir_path:"){
+		Tim::String::get_line(is,dir_path, true, true);
+	}else{
+		std::cerr << "ChessBoard::load_script fail,no board_path:" <<std::endl;
+	}
 	if(Tim::String::get_line(is, line, true, true)&&line=="board_path:"){
 		Tim::String::get_line(is, line, true, true);
-		load_board(line);
+		load_board(dir_path+line);
 	}else{
 		std::cerr << "ChessBoard::load_script fail,no board_path:" <<std::endl;
 	}
 	if(Tim::String::get_line(is, line, true, true)&&line=="pieces_path:"){
 		Tim::String::get_line(is, line, true, true);
-		load_pieces(line);
+		load_pieces(dir_path+line);
 	}else{
 		std::cerr << "ChessBoard::load_script fail,no pieces_path:" <<std::endl;
 	}
@@ -198,7 +233,11 @@ void ChessBoard::load_script(std::string path){
 
 	if(rule)delete rule;
 	rule=new CM::Rule();
-	rule->load_rule(rule_path);
+	rule->load_rule(dir_path+rule_path);
+
+	load_mct();
+
+
 	file.close();
 }
 void ChessBoard::save_pieces(std::string path){
@@ -225,6 +264,15 @@ void ChessBoard::load_pieces(std::string path){
 		}
 	}
 	file.close();
+}
+void ChessBoard::save_mct(){
+	mct->save(dir_path+"chessBoard/boardMCT.txt");
+}
+void ChessBoard::load_mct(){
+	if(mct)delete mct;
+	mct = new BoardMCT();
+	mct->load(dir_path+"chessBoard/boardMCT.txt");
+	cur_node=mct->step_root;
 }
 void ChessBoard::save_board(std::string path){
 	FILE * file = fopen(path.c_str(),"w+t");
@@ -544,20 +592,42 @@ void ChessBoard::find_next_step(Tim::Array2D<short int> *cb,
 }
 void ChessBoard::move(Step &step){
 	step.move(chess_board);
+	cur_node=mct->find_and_expand(cur_node,step);
+}
+void ChessBoard::undo(Step &step){
+	step.undo(chess_board);
+	cur_node=(CM::StepNode*)cur_node->parent;
+	winner=check_winner(chess_board);
 }
 void ChessBoard::undo(){
 	if(steps.size()>=2){
 		undo(*steps.back());
 		delete steps.back();
 		steps.pop_back();
+
 		undo(*steps.back());
 		delete steps.back();
 		steps.pop_back();
 	}
 }
+void ChessBoard::backpropagation(){
+	bool win_node=true;
+	for(CM::StepNode *node=cur_node;node!=0;node=(CM::StepNode *)node->parent){
+		node->data.simulations++;
+		if(win_node)node->data.wins++;
+
+		win_node^=1;
+	}
+}
 void ChessBoard::next_turn(CM::Step step){
 	steps.push_back(new CM::Step(&step));
 	move(*steps.back());
+	winner=check_winner(chess_board);
+	if(winner!=0){
+		backpropagation();
+	}
+	cur_player*=-1;
+
 }
 void ChessBoard::clear_steps(){
 	for(unsigned i=0;i<steps.size();i++){
@@ -566,15 +636,15 @@ void ChessBoard::clear_steps(){
 	steps.clear();
 }
 void ChessBoard::restart(){
+	winner=0;
+	cur_player=1;
 	while(!steps.empty()){
 		undo(*steps.back());
 		delete steps.back();
 		steps.pop_back();
 	}
 }
-void ChessBoard::undo(Step &step){
-	step.undo(chess_board);
-}
+
 void ChessBoard::draw(){
 	//std::cout<<"ChessBoard::draw()"<<std::endl;
 	if(updated)gen_model();

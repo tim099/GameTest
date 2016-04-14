@@ -333,4 +333,27 @@ CreateUIObject:
 	Parent:
 		root			
 #create_end
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.02 0.3
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"auto AI"	
+	
+	Set_signal:
+		Data:
+			auto_AVA
+		Receiver:
+			SceneStart
+	Parent:
+		root			
+#create_end
 #END

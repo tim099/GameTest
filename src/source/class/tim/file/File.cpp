@@ -75,6 +75,13 @@ bool File::check_if_file_exist(std::string dir_path, std::string file_name) {
 	}
 	return false;
 }
+bool File::check_if_file_exist(std::string file_path){
+	struct stat st;
+	if(stat(file_path.c_str(), &st)==0){
+		return true;
+	}
+	return false;
+}
 off_t File::get_file_size(const char *path) {
 	struct stat st;
 	stat(path, &st);

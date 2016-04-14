@@ -1,11 +1,14 @@
+dir_path:
+	files/game/chessMaster/game/chineseChess/
+
 board_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/board.txt
+	chessBoard/board.txt
 
 pieces_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/pieces.txt
+	chessBoard/pieces.txt
 
 rule_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/rule.lua
+	chessBoard/rule.lua
 
 texture:
 	chineseChess/board_textures

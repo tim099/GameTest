@@ -10,16 +10,20 @@
 namespace CM {
 
 ChineseChess::ChineseChess() {
-	load_board("files/game/chessMaster/game/chineseChess/chessBoard/board.txt");
+	dir_path="files/game/chessMaster/game/chineseChess/";
+	load_board(dir_path+"chessBoard/board.txt");
+	rule_path=dir_path+"chessBoard/rule.lua";
+
 	create_pieces();
 	cube_type_num=21;
-	rule_path="files/game/chessMaster/game/chineseChess/chessBoard/rule.lua";
+
 	tex_path="chineseChess/board_textures";
 	normal_path="chineseChess/board_normals";
 
 	dboard->init_drawObject("",tex_path,normal_path,true);
 	if(rule)delete rule;
 	rule=new CM::ChineseChessRule();
+	load_mct();
 	//rule->load_rule(rule_path);
 }
 ChineseChess::~ChineseChess() {

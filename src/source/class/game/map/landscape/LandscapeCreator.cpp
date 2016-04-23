@@ -4,6 +4,7 @@
 LandscapeCreator::LandscapeCreator() {
 	//std::cout<<"LandscapeCreator::LandscapeCreator()"<<std::endl;
 	push(new Tree());
+	register_cur();
 }
 LandscapeCreator::~LandscapeCreator() {
 	//delete handle by Tim::MapContainer

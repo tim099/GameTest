@@ -42,7 +42,6 @@ Test::Test() {
 
 	window = new Window(glm::ivec2(1366, 733), "Age of Cube", false);
 	//window = new Window(glm::ivec2(1920, 1080), "Age of Cube", true);
-
 	draw = new Draw();
 	draw->register_cur();
 	UIObj_Creator=new UI::UIObjectCreator();
@@ -57,7 +56,6 @@ Test::Test() {
 
 	drawObjects = new AllDrawObjects("files/script/drawObjectScript/loadAllDrawObjects.txt");
 	drawObjects->register_cur();
-
 
 
 	lightControl = new LightControl(120);
@@ -80,6 +78,7 @@ Test::Test() {
 
 	map = new Map();
 	map->load_map("files/maps/maptest");
+
 	//map->gen_map(glm::ivec3(250,150,250),time(NULL),80);//0
 	//map->save_map("files/maps/maptest");
 
@@ -99,6 +98,7 @@ Test::Test() {
 	UI = new UI::UI();
 	UI->Load_script("files/script/UIscript/saveUI.txt");
 	thread_pool->push_task(new TestTask());
+	std::cout<<"Test::Test() 7"<<std::endl;
 }
 Test::~Test() {
 	//window->render_on();

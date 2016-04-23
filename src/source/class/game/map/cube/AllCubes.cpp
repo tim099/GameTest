@@ -26,6 +26,4 @@ AllCubes::~AllCubes() {
 void AllCubes::push(Cube* cube){
 	cubes.push(cube->get_type(),cube);
 }
-Cube* AllCubes::get_cube(unsigned char type){
-	return cubes.get(type);
-}
+

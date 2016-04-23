@@ -53,15 +53,15 @@ void Piece::load_script(std::string path){
 	rule->p_call(0,0,0);
 }
 void Piece::next_step(Tim::Array2D<short int> *chess_board,
-		glm::ivec2 cur_step,std::vector<int> &next_step,int player){
+		int x,int y,std::vector<int> &next_step,int player){
 	rule_mutex->wait_for_this();
 	//ChessBoard::get_cur_object()->set_current(chess_board);
 	rule->pushlightuserdata(chess_board);
 	rule->set_global("board");
 
 	rule->get_global("next_step");
-	rule->push_number(cur_step.x);
-	rule->push_number(cur_step.y);
+	rule->push_number(x);
+	rule->push_number(y);
 	rule->push_number(player);
 
 	rule->p_call(3,1,0);
@@ -73,14 +73,14 @@ void Piece::next_step(Tim::Array2D<short int> *chess_board,
 	rule_mutex->release();
 }
 void Piece::next_step(Tim::Array2D<short int> *chess_board,
-		glm::ivec2 cur_step,std::vector<CM::Step> &next_steps,int player){
+		int x,int y,std::vector<CM::Step> &next_steps,int player){
 	std::vector<int> next;
-	next.reserve(100);
-	next_step(chess_board,cur_step,next,player);
+	next.reserve(120);
+	next_step(chess_board,x,y,next,player);
 	CM::Step next_step;
 	int i=0;
 	while(i<(int)next.size()){
-		next_step.parse_step(chess_board,cur_step,next,i);
+		next_step.parse_step(chess_board,x,y,next,i);
 		next_steps.push_back(next_step);
 	}
 }

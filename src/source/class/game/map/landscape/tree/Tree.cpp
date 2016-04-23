@@ -3,15 +3,20 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include <cstdio>
 #include <iostream>
-DrawObject *Tree::tree_Drawobj=0;
 
 void Tree::landscape_pre_init(){
-	std::cout<<"Tree::pre_init()"<<std::endl;
+	//std::cout<<"Tree::pre_init()"<<std::endl;
 	tree_Drawobj=AllDrawObjects::get_cur_object()->get("landscape/pinetree");
 	//tree_Drawobj=AllDrawObjects::get_cur_object()->get("landscape/broadleaftree");
 }
 Tree::Tree() {
 	tree_type=pine_tree;
+	tree_Drawobj=0;
+	pos=0;
+}
+Tree::Tree(Tree* tree) {
+	tree_type=tree->tree_type;
+	tree_Drawobj=tree->tree_Drawobj;
 	pos=0;
 }
 Tree::~Tree() {

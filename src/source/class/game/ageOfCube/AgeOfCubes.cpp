@@ -1,6 +1,7 @@
 #include "class/game/ageOfCube/AgeOfCubes.h"
 #include "class/game/ageOfCube/scene/SceneStart.h"
 #include <iostream>
+namespace AOC{
 AgeOfCubes::AgeOfCubes() {
 	textures = 0;
 	modelBuffers = 0;
@@ -40,4 +41,4 @@ void AgeOfCubes::game_update(){
 
 
 }
-
+}

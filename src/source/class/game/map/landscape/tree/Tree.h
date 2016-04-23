@@ -5,15 +5,13 @@
 class DrawObject;
 class Tree : public Landscape{
 	static const unsigned char pine_tree=0;
-
-	static DrawObject *tree_Drawobj;
-
 public:
 	Tree();
+	Tree(Tree* tree);
 	virtual ~Tree();
 	virtual void landscape_pre_init();
 	virtual Landscape* create_landscape(){
-		return new Tree();
+		return new Tree(this);
 	}
 	virtual std::string get_name()const{
 		return "Tree";
@@ -28,6 +26,7 @@ public:
 protected:
 	virtual void save_landscape(FILE * file);
 	virtual void load_landscape(FILE * file);
+	DrawObject *tree_Drawobj;
 };
 
 #endif /* SOURCE_CLASS_GAME_MAP_LANDSCAPE_TREE_H_ */

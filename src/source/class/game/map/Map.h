@@ -11,6 +11,7 @@
 #include "class/game/map/cube/Cube.h"
 #include "class/game/map/MapSeg.h"
 #include "class/game/map/DisplayMap.h"
+#include "class/game/map/landscape/LandscapeCreator.h"
 class CubeEX;
 class CubeOutOfEdge;
 class Water;
@@ -143,6 +144,7 @@ protected:
 	CubeOutOfEdge *cube_out_of_edge;
 	CubeNull *cube_null;
 	CubeError *cube_error;
+	LandscapeCreator landscape_creator;
 	Water *cube_water;
 
 	AllCubes *all_cubes;

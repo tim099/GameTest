@@ -12,6 +12,7 @@
 #include "class/input/mouse/Mouse.h"
 #include "class/display/window/ViewPort.h"
 #include "class/game/map/Map.h"
+#include "class/display/font/DrawTextureStr.h"
 #include <iostream>
 
 Draw::Draw() {
@@ -222,7 +223,7 @@ DrawData* Draw::push_as_tex(RenderString* renderStr){
 	TextureString *tex=new TextureString();
 	DrawDataStr *data=new DrawDataStr(strRenderer,renderStr);
 
-	DrawTexture* draw_tex=new DrawTexture(tex,data);
+	DrawTextureStr* draw_tex=new DrawTextureStr(tex,data);
 
 	push(draw_tex);
 	return data;
@@ -253,5 +254,8 @@ void Draw::clear_tmp_data(){
     	d_texs.pop_back();
     }
     strRenderer->clear();
+    if(lightControl){
+    	lightControl->clear_temp_data();
+    }
 }
 

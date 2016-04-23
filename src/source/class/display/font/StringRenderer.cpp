@@ -70,6 +70,34 @@ void StringRenderer::render(Shader2D* shader2D, RenderString* render_str) {
 			render_text(c);
 		}
 	}
+	if(render_str->insert_at!=-1){
+		col = 0, line = 0;
+		for (unsigned i = 0; i < render_str->str.size()&&
+		(int)i<render_str->insert_at; i++) {
+
+			c = render_str->str.at(i);
+			switch (c) {
+			case '\n':
+				line++;
+				col = 0;
+				break;
+			case '	':
+				col += TAB_SIZE;
+				break;
+			default:
+				col++;
+			}
+
+		}
+		pos = 2.0f* (render_pos+ glm::vec2(
+						tsize.x * RenderString::Font_Interval
+						* (col) - 0.5,
+						-tsize.y * (line + 0.5) - 0.5));
+
+		shader2D->sent_Uniform("position", pos);
+		render_text('|');
+
+	}
 }
 void StringRenderer::draw_string(Shader2D* shader2D,RenderString* renderStr){
 	shader2D->active_shader();

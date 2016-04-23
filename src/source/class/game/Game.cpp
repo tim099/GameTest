@@ -4,6 +4,7 @@
 Game::Game() {
 	end=false;
 	terminated=false;
+	loading=false;
 	frame_start_time=0.0;
 	fps=0.0;
 	max_fps=60.0;
@@ -17,7 +18,7 @@ Game::Game() {
 	input=0;
 	game_receiver=0;
 	controller_system=0;
-
+	s_loading=0;
 	//render_thread = 0;
 	thread_pool = 0;
 }
@@ -47,6 +48,9 @@ void Game::initialize(){
 
 	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 	thread_pool = new Tim::ThreadPool(8,REALTIME_PRIORITY_CLASS);
+
+	s_loading = new LoadingScene();
+	s_loading->initialize(draw,input,thread_pool);
 	initialize_game();
 
 	//window->render_off();
@@ -59,6 +63,9 @@ void Game::terminate(){
 	}
 	terminate_game();
 
+
+
+	delete s_loading;
 	thread_pool->Terminate();
 	//render_thread->Terminate();
 
@@ -79,12 +86,15 @@ Scene* Game::get_cur_scene(){
 	return scenes.back();
 }
 void Game::push_scene(Scene* scene){
-	//window->render_on();
 	Scene* cur_scene=get_cur_scene();
 	if(cur_scene)cur_scene->pause();
+	loading=true;
+	scene_push(scene);
+}
+void Game::scene_push(Scene* scene){
 	scene->initialize(draw,input,thread_pool);
 	scenes.push_back(scene);
-	//window->render_off();
+	loading=false;
 }
 void Game::pop_scene(){
 	if(scenes.empty())return;

@@ -16,9 +16,9 @@ namespace CM {
 
 class ChessBoard : public Tim::GlobalObject<ChessBoard>{
 public:
-	ChessBoard(int sizex=8,int sizey=2,int sizez=8);
+	ChessBoard(int sizex=8,int sizey=3,int sizez=8);
 	virtual ~ChessBoard();
-	void init(int sizex,int sizey,int sizez);
+
 
 	void draw();
 
@@ -51,13 +51,14 @@ public:
 	void next_turn(CM::Step step);
 
 	void find_next_step(Tim::Array2D<short int> *chess_board,
-			glm::ivec2 cur_step,std::vector<CM::Step> &next_steps);
+			int x,int y,std::vector<CM::Step> &next_steps);
 	void find_next_step(Tim::Array2D<short int> *chess_board,
 			int player,std::vector<CM::Step> &next_steps);
 	static int get_board(lua_State *L);
 	static int find_board(lua_State *L);
 
 	bool bound_check(int x,int y);
+	void backpropagation();
 	int check_winner(Tim::Array2D<short int> *chess_board);
 	int evaluate_score(Tim::Array2D<short int> *chess_board,int player);
 
@@ -75,11 +76,7 @@ public:
 	Tim::Array3D<unsigned char> *board;//the chess_board's structure
 	std::vector<CM::Step*> steps;
 	int cube_type_num;//number of cube type
-	inline void set_current(Tim::Array2D<short int> *_cur_board){
-		board_mutex->wait_for_this();
-		cur_board=_cur_board;
-		board_mutex->release();
-	}
+
 	inline Tim::Array2D<short int>* get_cur()const{
 		return cur_board;
 	}
@@ -88,8 +85,9 @@ public:
 	}
 	CM::BoardMCT *mct;
 	int winner,cur_player;
+	glm::ivec3 size;
 protected:
-	void backpropagation();
+	void init_board();
 	void gen_model();
 	void find_selected_on(glm::vec3 pos);
 	void find_selected_cube(glm::vec3 pos);
@@ -99,7 +97,6 @@ protected:
 	DynamicDrawObject *dboard;
 	CubeModel *cube;
 	Position *pos;
-	Tim::Mutex *board_mutex;
 
 
 	CM::StepNode *cur_node;

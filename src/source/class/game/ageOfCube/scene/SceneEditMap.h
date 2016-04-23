@@ -4,6 +4,7 @@
 #include "class/game/map/Map.h"
 #include "class/display/camera/Camera.h"
 #include "class/display/UI/UI.h"
+#include "class/game/timer/Timer.h"
 namespace AOC{
 class SceneEditMap : public Scene{
 public:
@@ -27,10 +28,10 @@ protected:
 	Map *map;
 	Camera *camera;
 	LightControl* lightControl;
-
+	CubeLight* cl;
 	UI::UI *UI;
-
-
+	Timer timer;
+	bool destruct_mode;
 	std::string map_name;
 	glm::ivec3 map_size;
 };

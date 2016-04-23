@@ -39,7 +39,7 @@ static const int MAX_POINT_LIGHT=100;
 	void push_light(CubeLight* l);
 	void push_temp_light(CubeLight* l);
 
-
+	void clear_temp_data();
 	std::vector<ParallelLight*>parallel_lights;
 	std::vector<PointLight*>point_lights;
 	std::vector<CubeLight*>cube_lights;

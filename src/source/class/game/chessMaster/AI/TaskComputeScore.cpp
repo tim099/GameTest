@@ -17,11 +17,11 @@ TaskComputeScore::TaskComputeScore(CM::AI *_ai,Step *_step,CM::StepNode *_cur_no
 	max=_max;
 }
 TaskComputeScore::~TaskComputeScore() {
-
+	//std::cout<<"TaskComputeScore::~TaskComputeScore"<<std::endl;
 }
 void TaskComputeScore::ExecuteTask(){
 
-	step->score=ai->get_score(cur_node,chess_board,player,depth,pruning,max);
+	step->score=ai->evaluate_score(cur_node,chess_board,player,depth,pruning,max);
 	//std::cout<<"TaskComputeScore::ExecuteTask() score="<<step->score<<std::endl;
 	delete chess_board;
 }

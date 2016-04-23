@@ -29,10 +29,13 @@ public:
 	void draw_step(glm::vec3 color);
 
 	bool selected(int x,int y);//return true if x,y selected on this step
-	void parse_step(Tim::Array2D<short int> *chess_board,glm::ivec2 cur_step,std::vector<int> &next_step,int &i);
+	void parse_step(Tim::Array2D<short int> *chess_board,int x,int y,
+			std::vector<int> &next_step,int &i);
+	/*
 	inline void add_move(int x,int y,int type,int selected){
 		moves.push_back(glm::ivec4(x,y,type,selected));
 	}
+	*/
 	int score;
 protected:
 	std::vector<glm::ivec4> moves;

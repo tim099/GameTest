@@ -51,25 +51,19 @@ void Step::undo(Tim::Array2D<short int> *chess_board){
 		chess_board->get(moves.at(i).x,moves.at(i).y)=moves.at(i).w;
 	}
 }
-void Step::parse_step(Tim::Array2D<short int> *chess_board,glm::ivec2 cur_step,std::vector<int> &next_step,int &i){
+void Step::parse_step(Tim::Array2D<short int> *chess_board,int x,int y,std::vector<int> &next_step,int &i){
 	moves.clear();
-	int type;
-	if(next_step.at(i)>=0){
-		add_move(cur_step.x,cur_step.y,0,-1);
-		type=chess_board->get(cur_step.x,cur_step.y);
-		add_move(next_step.at(i),next_step.at(i+1),type,1);
-		//std::cout<<"move:"<<next_step.at(i).x<<","
-				//<<next_step.at(i).y<<","
-				//<<type<<std::endl;
+	moves.reserve(2);
+	if(next_step[i]>=0){
+		moves.push_back(glm::ivec4(x,y,0,-1));
+		moves.push_back(glm::ivec4(next_step[i],next_step[i+1],chess_board->get(x,y),1));
 		i+=2;
-	}else if(next_step.at(i)==-1){
-		int move_num=next_step.at(i+1);
+	}else if(next_step[i]==-1){
+		int move_num=next_step[i+1];
 		while(move_num>0){
 			i+=2;
-			add_move(next_step.at(i),next_step.at(i+1),next_step.at(i+2),next_step.at(i+3));
-			//std::cout<<"special move:"<<next_step.at(i).x<<","
-					//<<next_step.at(i).y<<","
-					//<<next_step.at(i+1).x<<std::endl;
+			moves.push_back(glm::ivec4(next_step[i],next_step[i+1],
+					next_step[i+2],next_step[i+3]));
 			i+=2;
 			move_num--;
 		}

@@ -3,7 +3,9 @@
 #include "class/game/map/landscape/Landscape.h"
 #include "class/tim/map/MapContainer.h"
 #include "class/tim/globalObject/Singleton.h"
-class LandscapeCreator : public Tim::Singleton<LandscapeCreator>{
+#include "class/tim/globalObject/GlobalObject.h"
+class LandscapeCreator :public Tim::GlobalObject<LandscapeCreator>{
+	//: public Tim::Singleton<LandscapeCreator>
 public:
 	LandscapeCreator();
 	virtual ~LandscapeCreator();

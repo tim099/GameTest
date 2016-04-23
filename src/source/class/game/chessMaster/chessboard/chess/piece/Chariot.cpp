@@ -29,10 +29,11 @@ void Chariot::move_straight(Tim::Array2D<short int> *chess_board,
 
 }
 void Chariot::next_step(Tim::Array2D<short int> *chess_board,
-		glm::ivec2 cur_step,std::vector<int> &next_step,int player){
-	move_straight(chess_board,cur_step.x,cur_step.y,1,0,player,next_step);
-	move_straight(chess_board,cur_step.x,cur_step.y,-1,0,player,next_step);
-	move_straight(chess_board,cur_step.x,cur_step.y,0,1,player,next_step);
-	move_straight(chess_board,cur_step.x,cur_step.y,0,-1,player,next_step);
+		int x,int y,std::vector<int> &next_step,int player){
+
+	move_straight(chess_board,x,y,1,0,player,next_step);
+	move_straight(chess_board,x,y,-1,0,player,next_step);
+	move_straight(chess_board,x,y,0,1,player,next_step);
+	move_straight(chess_board,x,y,0,-1,player,next_step);
 }
 } /* namespace CM */

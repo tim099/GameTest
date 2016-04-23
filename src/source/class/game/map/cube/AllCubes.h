@@ -6,7 +6,9 @@ class AllCubes {
 public:
 	AllCubes();
 	virtual ~AllCubes();
-	Cube* get_cube(unsigned char type);
+	inline Cube* get_cube(unsigned char type){
+		return cubes.get(type);
+	}
 protected:
 	void push(Cube* cube);
 	Tim::MapContainer<unsigned char,Cube>cubes;

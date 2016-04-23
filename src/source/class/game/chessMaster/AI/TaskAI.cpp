@@ -1,5 +1,6 @@
 #include "class/game/chessMaster/AI/TaskAI.h"
 #include "class/game/chessMaster/AI/AI.h"
+#include <iostream>
 namespace CM {
 
 TaskAI::TaskAI(CM::AI *_ai,Tim::ThreadPool *_pool,
@@ -13,7 +14,7 @@ TaskAI::TaskAI(CM::AI *_ai,Tim::ThreadPool *_pool,
 	auto_terminate=true;
 }
 TaskAI::~TaskAI() {
-
+	//std::cout<<"TaskAI::~TaskAI()"<<std::endl;
 }
 void TaskAI::ExecuteTask(){
 	ai->find_best_step(pool,chess_board,player,depth,pruning);

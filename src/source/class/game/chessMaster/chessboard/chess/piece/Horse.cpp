@@ -12,8 +12,7 @@ Horse::~Horse() {
 
 }
 void Horse::next_step(Tim::Array2D<short int> *chess_board,
-		glm::ivec2 cur_step,std::vector<int> &next_step,int player){
-	int x=cur_step.x,y=cur_step.y;
+		int x,int y,std::vector<int> &next_step,int player){
 	int i,j;
 	i=x+1;
 	j=y+2;

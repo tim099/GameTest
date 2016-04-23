@@ -20,14 +20,14 @@ public:
 
 
 	virtual void next_step(Tim::Array2D<short int> *chess_board,
-			glm::ivec2 cur_step,std::vector<CM::Step> &next_step,int player);
+			int x,int y,std::vector<CM::Step> &next_step,int player);
 	void load_script(std::string path);
 	void draw(Position* pos,int player);
 	//unsigned char type;
 	int weight;
 protected:
 	virtual void next_step(Tim::Array2D<short int> *chess_board,
-			glm::ivec2 cur_step,std::vector<int> &next_step,int player);
+			int x,int y,std::vector<int> &next_step,int player);
 	Tim::Mutex* rule_mutex;
 	DrawObject *draw_piece1;//player1's piece EX:black king
 	DrawObject *draw_piece2;//player2's piece EX:white king

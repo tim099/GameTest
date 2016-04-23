@@ -24,7 +24,7 @@ public:
 		return false;
 	}
 	virtual void next_step(Tim::Array2D<short int> *chess_board,
-			glm::ivec2 cur_step,std::vector<int> &next_step,int player);
+			int x,int y,std::vector<int> &next_step,int player);
 };
 
 } /* namespace CM */

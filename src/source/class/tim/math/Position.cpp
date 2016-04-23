@@ -3,6 +3,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
+#include <iostream>
 Position::Position() {
 	init(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 0);
 }
@@ -13,7 +14,7 @@ Position::Position(glm::vec3 _pos, glm::vec3 _r, Position *_parent_pos) {
 	init(_pos, _r, _parent_pos);
 }
 Position::~Position() {
-
+	//std::cout<<"Position::~Position()"<<std::endl;
 }
 void Position::set_r(glm::vec3 _r) {
 
@@ -84,14 +85,16 @@ glm::vec4 Position::multiply_quaternion(glm::vec4 a, glm::vec4 b) {
 			b.w * a.w - b.x * a.x - b.y * a.y - b.z * a.z);
 }
 glm::mat4 Position::PosMat() {
-	if (!updated)
-		return pos_matrix;
-
+	if (!updated){
+		if (parent_pos) {
+			return parent_pos->PosMat()*pos_matrix;
+		}else{
+			return pos_matrix;
+		}
+	}
 	pos_matrix = glm::mat4(1.0f);
 
-	if (parent_pos) {
-		pos_matrix *= parent_pos->PosMat();
-	}
+
 	if(pos!=glm::vec3(0,0,0)){
 		pos_matrix *= glm::translate(pos);
 	}
@@ -121,5 +124,9 @@ glm::mat4 Position::PosMat() {
 	}
 
 	updated = false;
-	return pos_matrix;
+	if (parent_pos) {
+		return parent_pos->PosMat()*pos_matrix;
+	}else{
+		return pos_matrix;
+	}
 }

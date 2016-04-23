@@ -1,7 +1,7 @@
 #include "class/display/window/Window.h"
 #include "class/display/window/ViewPort.h"
 #include "class/tim/math/Math.h"
-#include <windows.h>
+//#include <windows.h>
 #include <GL/glew.h>
 #include <GL/glfw3.h>
 #include <iostream>
@@ -50,10 +50,10 @@ void Window::set_veiwport(){
 	ViewPort::set_viewport(0,0,size.x,size.y);
 }
 void Window::render_on(){
-	wglMakeCurrent(dc,lrc);
+	//wglMakeCurrent(dc,lrc);
 }
 void Window::render_off(){
-	wglMakeCurrent(0,0);
+	//wglMakeCurrent(0,0);
 }
 void Window::creat_window(const char* name,bool full_screen){
 	glfwinit();
@@ -64,8 +64,8 @@ void Window::creat_window(const char* name,bool full_screen){
     if(full_screen)window=glfwCreateWindow(size.x,size.y,name,glfwGetPrimaryMonitor(),NULL);//full screen
     else window=glfwCreateWindow(size.x,size.y,name,NULL,NULL);
     glfwMakeContextCurrent(window);
-    dc=wglGetCurrentDC();
-    lrc=wglGetCurrentContext();
+    //dc=wglGetCurrentDC();
+    //lrc=wglGetCurrentContext();
     glfwSetInputMode(window,GLFW_STICKY_KEYS,GL_TRUE);
     glewinit();
     set_veiwport();

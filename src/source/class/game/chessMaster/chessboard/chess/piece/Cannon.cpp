@@ -44,10 +44,10 @@ void Cannon::cannon_move(Tim::Array2D<short int> *chess_board,
 	}
 }
 void Cannon::next_step(Tim::Array2D<short int> *chess_board,
-		glm::ivec2 cur_step,std::vector<int> &next_step,int player){
-	cannon_move(chess_board,cur_step.x,cur_step.y,1,0,player,next_step);
-	cannon_move(chess_board,cur_step.x,cur_step.y,-1,0,player,next_step);
-	cannon_move(chess_board,cur_step.x,cur_step.y,0,1,player,next_step);
-	cannon_move(chess_board,cur_step.x,cur_step.y,0,-1,player,next_step);
+		int x,int y,std::vector<int> &next_step,int player){
+	cannon_move(chess_board,x,y,1,0,player,next_step);
+	cannon_move(chess_board,x,y,-1,0,player,next_step);
+	cannon_move(chess_board,x,y,0,1,player,next_step);
+	cannon_move(chess_board,x,y,0,-1,player,next_step);
 }
 } /* namespace CM */

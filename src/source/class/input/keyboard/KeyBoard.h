@@ -9,6 +9,10 @@ namespace KeyCode {
 	static const unsigned Enter = 257;
 	static const unsigned Plus = 334;
 	static const unsigned Minus = 333;
+	static const unsigned Left = 263;
+	static const unsigned Right = 262;
+	static const unsigned Up = 265;
+	static const unsigned Down = 264;
 };
 class KeyBoard {
 

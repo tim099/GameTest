@@ -60,6 +60,14 @@ void LightControl::choose_point_light(glm::vec3 camera_pos){
     	}
     }
 }
+void LightControl::clear_temp_data(){
+    for(unsigned i=0;i<temp_cube_lights.size();i++){
+    	//std::cout<<"test temp cube light"<<std::endl;
+    	delete temp_cube_lights.at(i);
+
+    }
+    temp_cube_lights.clear();
+}
 void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
 	//try to sort by dis and merge far light!!
 
@@ -116,9 +124,7 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
     	cubelight_pos.push_back(c_light->pos);
     	cubelight_color.push_back(c_light->color);
     	cubelight_size.push_back(c_light->size);
-    	delete c_light;
     }
-    temp_cube_lights.clear();
     glUniform1i(glGetUniformLocation(shader->programID,"parallellight_num"),
     		parallellight_vec.size());
     glUniform3fv(glGetUniformLocation(shader->programID,"parallellight_vec"),

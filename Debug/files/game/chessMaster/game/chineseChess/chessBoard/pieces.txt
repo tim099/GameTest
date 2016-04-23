@@ -1,18 +1,18 @@
 
 piece_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/piece/general.txt
+	chessBoard/piece/general.txt
 piece_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/piece/advisor.txt
+	chessBoard/piece/advisor.txt
 piece_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/piece/elephant.txt
+	chessBoard/piece/elephant.txt
 piece_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/piece/horse.txt
+	chessBoard/piece/horse.txt
 piece_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/piece/chariot.txt
+	chessBoard/piece/chariot.txt
 piece_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/piece/cannon.txt
+	chessBoard/piece/cannon.txt
 piece_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/piece/soldier.txt
+	chessBoard/piece/soldier.txt
 
 
 

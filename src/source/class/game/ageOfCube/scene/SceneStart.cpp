@@ -87,16 +87,18 @@ void SceneStart::create_map(){
 }
 void SceneStart::handle_input(){
 	if(input->keyboard->get('E')){
+		///*
 		if(UI->check_mode(UI::Mode::EDIT)){
 			UI->Disable_Mode(UI::Mode::EDIT);
 		}else{
 			UI->Enable_Mode(UI::Mode::EDIT);
 		}
+		//*/
 	}else if(input->keyboard->get('S')){
 		UI->Save_script("files/AgeOfCube/startScene/UI/startSceneUI.txt");
 	}else if(input->keyboard->get('L')){
-		delete UI;
-		UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
+		//delete UI;
+		//UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
 	}
 }
 void SceneStart::scene_update(){

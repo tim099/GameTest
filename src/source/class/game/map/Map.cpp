@@ -8,7 +8,6 @@
 #include "class/game/map/cube/CubeError.h"
 
 #include "class/game/map/cube/AllCubes.h"
-#include "class/game/map/landscape/LandscapeCreator.h"
 #include "class/game/map/cube/water/Water.h"
 #include "class/input/Input.h"
 #include "class/game/timer/Timer.h"
@@ -142,7 +141,7 @@ void Map::gen_land_scape(int i,int j,int k,
 		type_val+=0.2*noise.noise(x,y,z,0.6);
 		type_val+=0.1*noise.noise(x,y,z,1.0);
 		type_val+=0.1*get_wetness(i,k,height);
-		if(type_val>0.65)push_CubeEX(i,j,k,LandscapeCreator::get_cur_object()->create("Tree"));
+		if(type_val>0.65)push_CubeEX(i,j,k,landscape_creator.create("Tree"));
 	}
 
 }

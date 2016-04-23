@@ -15,7 +15,7 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/model/modelBuffer/AllModelBuffers.h"
 
-
+namespace AOC{
 class AgeOfCubes : public Game{
 public:
 	AgeOfCubes();
@@ -33,5 +33,5 @@ private:
 	//SceneStart *startScene;
 
 };
-
+}
 #endif /* SOURCE_CLASS_GAME_AGEOFCUBES_H_ */

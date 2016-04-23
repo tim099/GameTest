@@ -154,6 +154,8 @@ void PictureButton::start_draw(Draw* draw) {
 		data->ex_datas.push_back(new ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
 	}
 	draw->push(new DrawTexture(tex2D, data));
+
+	//return;
 	if (str) {
 		data = draw->push_as_tex(
 				new RenderString(*str, font_size, get_middle_pos(), true));

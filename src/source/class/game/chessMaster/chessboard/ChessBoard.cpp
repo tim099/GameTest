@@ -8,58 +8,76 @@
 #include <iostream>
 #include <cmath>
 namespace CM {
+
 ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	cube_size=1.0;
 	board=0;
 	chess_board=0;
 	cur_board=0;
-	board_mutex=new Tim::Mutex();
 	rule=0;
 	cube_type_num=3;
+	mct = 0;
+	cur_node=0;
 	dboard = new DynamicDrawObject();
-	mct = new BoardMCT();
-	cur_node=mct->step_root;
-
-
-	tex_path="chess/board_textures";
-	normal_path="chess/board_normals";
-	dboard->init_drawObject("",tex_path,normal_path,true);
-	Draw::get_cur_object()->push(dboard);
-
+	Draw::get_cur_object()->push(dboard);//remember to remove before delete dboard
 	pos = new Position(glm::vec3(0, 0, 0), glm::vec3());
 	cube = new CubeModel(0.5*cube_size);
 
-	init(sizex,sizey,sizez);
+	tex_path="chess/board_textures";
+	normal_path="chess/board_normals";
+
+	dboard->init_drawObject("",tex_path,normal_path,true);
+	size.x=sizex;
+	size.y=sizey;
+	size.z=sizez;
+	init_board();
 
 	register_cur();
 }
 ChessBoard::~ChessBoard() {
-	save_mct();
-	for(unsigned i=0;i<pieces.size();i++)delete pieces.at(i);
-	if(board)delete board;
-	if(chess_board)delete chess_board;
-	if(rule)delete rule;
-	if(mct)delete mct;
-	delete board_mutex;
-	clear_steps();
+	clear();
+
+	Draw::get_cur_object()->remove(dboard);
 	delete dboard;
 	delete pos;
 	delete cube;
 }
 void ChessBoard::clear(){
+	save_mct();
 	for(unsigned i=0;i<pieces.size();i++)delete pieces.at(i);
 	pieces.clear();
 	clear_steps();
 	winner=0;
 	cur_player=1;
-	if(mct)delete mct;
-	mct=0;
+	if(board){
+		delete board;
+		board=0;
+	}
+	if(chess_board){
+		delete chess_board;
+		chess_board=0;
+	}
+	if(rule){
+		delete rule;
+		rule=0;
+	}
+	if(mct){
+		delete mct;
+		mct=0;
+	}
 }
-void ChessBoard::init(int sizex,int sizey,int sizez){
-	if(board)delete board;
-	if(chess_board)delete chess_board;
-	board=new Tim::Array3D<unsigned char>(sizex,sizey,sizez);
-	chess_board=new Tim::Array2D<short int>(sizex,sizez);
+void ChessBoard::init_board(){
+	if(board){
+		delete board;
+		board=0;
+	}
+	if(chess_board){
+		delete chess_board;
+		chess_board=0;
+	}
+	clear_steps();
+	board=new Tim::Array3D<unsigned char>(size.x,size.y,size.z);
+	chess_board=new Tim::Array2D<short int>(size.x,size.z);
 	for(int i=0;i<board->sizex;i++){
 		for(int j=0;j<board->sizey;j++){
 			for(int k=0;k<board->sizez;k++){
@@ -258,7 +276,7 @@ void ChessBoard::load_pieces(std::string path){
 		if(line=="piece_path:"){
 			Tim::String::get_line(is, line, true, true);
 			piece=new Piece();
-			piece->load_script(line);
+			piece->load_script(dir_path+line);
 
 			pieces.push_back(piece);
 		}
@@ -266,6 +284,7 @@ void ChessBoard::load_pieces(std::string path){
 	file.close();
 }
 void ChessBoard::save_mct(){
+	if(!mct)return;
 	mct->save(dir_path+"chessBoard/boardMCT.txt");
 }
 void ChessBoard::load_mct(){
@@ -299,12 +318,14 @@ void ChessBoard::save_board(std::string path){
 	fclose(file);
 }
 void ChessBoard::load_board(std::string path){
-	clear_steps();
+
 	FILE * file = fopen(path.c_str(),"r");
 	int sizex,sizey,sizez;
 	fscanf(file,"%d %d %d\n",&sizex,&sizey,&sizez);
-
-	init(sizex,sizey,sizez);
+	size.x=sizex;
+	size.y=sizey;
+	size.z=sizez;
+	init_board();
 	int type;
 	for(int j=0;j<board->sizey;j++){
 		for(int i=0;i<board->sizex;i++){
@@ -569,26 +590,24 @@ void ChessBoard::find_select_cube(){
 void ChessBoard::find_next_step(Tim::Array2D<short int> *cb,
 		int player,std::vector<CM::Step> &next){
 	next.clear();
-	int type;
 	for(int i=0;i<cb->sizex;i++){
 		for(int j=0;j<cb->sizey;j++){
-			type=cb->get(i,j);
-			if(type*player>0){//player's chess
-				find_next_step(cb,glm::ivec2(i,j),next);
+			if(cb->get(i,j)*player>0){//player's chess
+				find_next_step(cb,i,j,next);
 			}
 		}
 	}
 }
 void ChessBoard::find_next_step(Tim::Array2D<short int> *cb,
-		glm::ivec2 cur_step,std::vector<CM::Step> &next_steps){
-	int type=cb->get(cur_step.x,cur_step.y);
+		int x,int y,std::vector<CM::Step> &next_steps){
+	int type=cb->get(x,y);
 	int player=1;
 	if(type<0){
 		type*=-1;
 		player=-1;
 	}
 	type-=1;
-	pieces.at(type)->next_step(cb,cur_step,next_steps,player);
+	pieces[type]->next_step(cb,x,y,next_steps,player);
 }
 void ChessBoard::move(Step &step){
 	step.move(chess_board);
@@ -650,7 +669,6 @@ void ChessBoard::draw(){
 	if(updated)gen_model();
 	dboard->draw=true;
 	dboard->push_temp_drawdata(new DrawDataObj(pos,true));
-
 	int type;
 	Position* pos;
 	for(int i=0;i<chess_board->sizex;i++){

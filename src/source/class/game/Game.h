@@ -16,13 +16,17 @@
 #include "class/display/render/Renderer.h"
 //#include "class/display/render/RenderTask.h"
 #include "class/display/UI/UIObjectCreator.h"
-
+#include "class/game/scene/LoadingScene.h"
 #include "class/input/Input.h"
 #include "class/controller/ControllerSystem.h"
 
 #include "class/tim/thread/ThreadPool.h"
+
+#include "class/game/SceneInitTask.h"
 #include <vector>
+
 class Game {
+	friend SceneInitTask;
 public:
 	Game();
 	virtual ~Game();
@@ -39,6 +43,7 @@ protected:
 	void handle_game_signal();
 	void swap_buffer();
 	void push_scene(Scene* scene);
+	void scene_push(Scene* scene);
 	void pop_scene();
 	std::vector<Scene*>scenes;
 	Window* window;
@@ -53,6 +58,9 @@ protected:
 	Input* input;
 	ControllerSystem *controller_system;
 	UI::UIObjectCreator *UIObj_Creator;
+
+	LoadingScene* s_loading;
+	bool loading;
 	bool end,terminated;
 	double fps,max_fps;
 	double frame_start_time;

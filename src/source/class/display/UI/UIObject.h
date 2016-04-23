@@ -14,7 +14,7 @@ class UIObjectCreator;
 namespace Mode{
 	static const int EDIT=1<<0;
 }
-class UIObject :public SelectableRec{
+class UIObject : public SelectableRec{
 public:
 	UIObject();
 	virtual ~UIObject();

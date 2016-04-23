@@ -17,10 +17,14 @@ public:
 	virtual std::string scene_name()const=0;
 
 	//define behavior when other scene switch to active scene, and pause this scene
-	virtual void pause()=0;
+	virtual void pause(){
+
+	}
 
 	//define behavior when this scene resume from pause state
-	virtual void resume()=0;
+	virtual void resume(){
+
+	}
 
 	void update();
 	void draw_scene();

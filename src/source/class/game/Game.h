@@ -43,7 +43,7 @@ protected:
 	void handle_game_signal();
 	void swap_buffer();
 	void push_scene(Scene* scene);
-	void scene_push(Scene* scene);
+	void scene_loading(Scene* scene);
 	void pop_scene();
 	std::vector<Scene*>scenes;
 	Window* window;

@@ -14,6 +14,10 @@ public:
 	void terminate();
 	virtual ~Scene();
 
+	virtual void loading(){//provide for some loading which took long time
+
+	}
+
 	virtual std::string scene_name()const=0;
 
 	//define behavior when other scene switch to active scene, and pause this scene

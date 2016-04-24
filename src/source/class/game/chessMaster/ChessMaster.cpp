@@ -25,8 +25,6 @@ void ChessMaster::terminate_game(){
 	delete textures;
 	delete modelBuffers;
 	//delete drawObjects;
-
-
 }
 void ChessMaster::game_update(){
 

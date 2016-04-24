@@ -24,6 +24,8 @@ public:
 	 * define behavior when this scene resume from pause state
 	 */
 	virtual void resume();
+
+	virtual void loading();
 	std::string local_path;
 protected:
 	virtual void scene_update();

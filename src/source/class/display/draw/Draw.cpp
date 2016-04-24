@@ -65,6 +65,10 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 		return;
 	}
+	if(!camera||!lightControl){
+		std::cerr<<"Draw::draw3D fail,light control or camera no set yet!!"<<std::endl;
+		return;
+	}
 	gen_shadow(shaderShadowMapping);
 	shader->active_shader();
 	FBO->bind_buffer();

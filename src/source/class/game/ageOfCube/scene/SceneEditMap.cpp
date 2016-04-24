@@ -13,22 +13,27 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	destruct_mode=false;
 	cl=0;
 }
+void SceneEditMap::loading(){
+
+	map->gen_map(map_size,time(NULL));
+}
 void SceneEditMap::scene_initialize() {
 	map = new Map();
-	map->gen_map(map_size,time(NULL));
 
-	glm::vec3 pos(0,50,0);
+	glm::vec3 pos(10,80,10);
 	camera = new Camera(pos,
-			pos+glm::vec3(1,-10,1), glm::vec3(0, 1, 0), 60.0, 0.1f,
+			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	lightControl = new LightControl(120);
 	lightControl->push_light(
 			new ParallelLight(glm::vec3(1.0, -1.2, 0.2),
 					glm::vec3(1.9, 1.9, 1.9), true));
-	draw->Enable3D = true;
-	draw->set_camera(camera);
-	draw->set_lightControl(lightControl);
-	UI = new UI::UI("files/AgeOfCube/editMap/UI/editMapUI.txt");
+
+	UI = new UI::UI();
+	UI->Load_script("files/AgeOfCube/editMap/UI/editMapUI.txt");
+
+	//UI->Load_script("files/script/UIscript/saveUI.txt");
+
 	cl=new CubeLight();
 	cl->color=glm::vec3(1,0.5,0);
 	cl->size=1.01f*Map::CUBE_SIZE;
@@ -196,13 +201,11 @@ void SceneEditMap::scene_draw() {
 
 }
 void SceneEditMap::pause() {
-	if (UI) {
-		delete UI;
-		UI = 0;
-	}
+
 }
 void SceneEditMap::resume() {
-	//draw->Enable3D=false;
-
+	draw->Enable3D = true;
+	draw->set_camera(camera);
+	draw->set_lightControl(lightControl);
 }
 }

@@ -13,7 +13,7 @@ public:
 	virtual std::string scene_name()const{
 		return "SceneEditMap";
 	}
-
+	virtual void loading();
 	virtual void pause();
 	virtual void resume();
 protected:

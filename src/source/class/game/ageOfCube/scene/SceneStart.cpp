@@ -10,8 +10,12 @@ SceneStart::SceneStart() {
 	p_control=0;
 }
 void SceneStart::scene_initialize(){
-	draw->Enable3D=false;
+
+	UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
+	p_control=(UI::PageControl*)UI->get_child("pageControl");
+
 	resume();
+
 	//std::vector<std::string> files=Tim::File::get_all_dirs("files/texture/");
 	//for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
 }
@@ -26,12 +30,21 @@ SceneStart::~SceneStart() {
 
 }
 void SceneStart::pause(){
+	/*
 	if(UI){
 		delete UI;
 		UI=0;
 	}
+	*/
 }
 void SceneStart::resume(){
+	draw->Enable3D=false;
+	if(!p_control){
+		std::cerr<<"SceneStart::scene_initialize ,can't find child page control"<<std::endl;
+	}else{
+		p_control->switch_page("startPage");
+	}
+	/*
 	UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
 	p_control=(UI::PageControl*)UI->get_child("pageControl");
 	if(!p_control){
@@ -39,6 +52,7 @@ void SceneStart::resume(){
 	}else{
 		p_control->switch_page("startPage");
 	}
+	*/
 }
 void SceneStart::handle_signal(Signal* sig){
 	std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;

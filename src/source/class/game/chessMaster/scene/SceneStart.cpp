@@ -33,6 +33,7 @@ SceneStart::~SceneStart() {
 
 }
 void SceneStart::scene_initialize() {
+	std::cout<<"SceneStart::scene_initialize() 1"<<std::endl;
 	//draw->Enable3D=false;
 	//int sizex=9,sizey=3,sizez=10;
 	//chess_board=new ChessBoard(9,3,10);
@@ -44,12 +45,12 @@ void SceneStart::scene_initialize() {
 	ai=new CM::AI();
 	glm::vec3 pos=glm::vec3(0.5*chess_board->cube_size*chess_board->size.x,6,-3);
 	p1camera = new Camera(pos,
-			pos+glm::vec3(0,-4,0.5f*chess_board->size.y),
+			pos+glm::vec3(0,-4,0.5f*chess_board->size.z),
 			glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	glm::vec3 pos2=glm::vec3(0.5*chess_board->cube_size*chess_board->size.x,6,10);
 	p2camera = new Camera(pos2,
-			pos2+glm::vec3(0,-4,-0.5f*chess_board->size.y),
+			pos2+glm::vec3(0,-4,-0.5f*chess_board->size.z),
 			glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	camera=p2camera;
@@ -69,11 +70,15 @@ void SceneStart::scene_initialize() {
 	lightControl->push_light(
 			new ParallelLight(glm::vec3(0.5, -0.4, -0.7),
 					glm::vec3(0.4, 0.4, 0.4), false));
-	draw->Enable3D = true;
+
 
 	draw->set_lightControl(lightControl);
 	UI = new UI::UI(CM::folder_path+local_path+"UI/startUI.txt");
+	resume();
 	//UI->Enable_Mode(UI::Mode::EDIT);
+	std::cout<<"SceneStart::scene_initialize() 2"<<std::endl;
+}
+void SceneStart::loading(){
 
 }
 void SceneStart::scene_terminate() {
@@ -88,7 +93,7 @@ void SceneStart::pause(){
 
 }
 void SceneStart::resume(){
-
+	draw->Enable3D = true;
 }
 void SceneStart::handle_signal(Signal *sig){
 	//std::cerr<<"SceneStart::handle_signal 1"<<std::endl;

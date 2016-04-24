@@ -1,5 +1,6 @@
 #include "class/game/Game.h"
 #include "class/input/mouse/selectable/SelectableControl.h"
+#include "class/game/SceneInitTask.h"
 #include <iostream>
 Game::Game() {
 	end=false;
@@ -64,10 +65,10 @@ void Game::terminate(){
 	terminate_game();
 
 
-
+	s_loading->terminate();
 	delete s_loading;
+
 	thread_pool->Terminate();
-	//render_thread->Terminate();
 
 	delete controller_system;
 	delete input;
@@ -82,17 +83,22 @@ void Game::terminate(){
 Scene* Game::get_cur_scene(){
 	if(scenes.empty()){
 		return 0;
+	}else if(loading){
+		return s_loading;
 	}
+
 	return scenes.back();
 }
 void Game::push_scene(Scene* scene){
+	loading=true;
 	Scene* cur_scene=get_cur_scene();
 	if(cur_scene)cur_scene->pause();
-	loading=true;
-	scene_push(scene);
-}
-void Game::scene_push(Scene* scene){
 	scene->initialize(draw,input,thread_pool);
+	thread_pool->push_task(new SceneInitTask(this,scene));
+	//scene_push(scene);
+}
+void Game::scene_loading(Scene* scene){
+	scene->loading();
 	scenes.push_back(scene);
 	loading=false;
 }
@@ -116,6 +122,8 @@ void Game::handle_game_signal(){
 		}else if(sig->get_data()=="push_scene"){
 			push_scene((Scene*)sig->ex_data);
 			delete sig;
+		}else if(sig->get_data()=="pop_scene"){
+			pop_scene();
 		}
 	}
 }
@@ -125,10 +133,11 @@ void Game::update(){
 	handle_game_signal();
 
 	//===========game update===============
-	//std::cout<<"Game::update() cur_state="<<get_cur_scene()->scene_name()<<std::endl;
 	game_update();
-	get_cur_scene()->update();
-	get_cur_scene()->draw_scene();
+	Scene* cur_scene=get_cur_scene();
+	//std::cout<<"Game::update() cur_scene="<<cur_scene->scene_name()<<std::endl;
+	cur_scene->update();
+	cur_scene->draw_scene();
 	//std::cout<<"Game::update() draw end"<<std::endl;
 	//===========system update=============
 	controller_system->update();

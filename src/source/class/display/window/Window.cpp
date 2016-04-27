@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 #include <GL/glfw3.h>
 #include <iostream>
-
+namespace Display{
 bool Window::glewinitial=false;
 bool Window::glfwinitial=false;
 
@@ -72,4 +72,5 @@ void Window::creat_window(const char* name,bool full_screen){
 }
 GLFWwindow* Window::get_window()const{
 	return window;
+}
 }

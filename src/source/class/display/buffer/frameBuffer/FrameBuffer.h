@@ -3,6 +3,7 @@
 #include <vector>
 #include "class/display/buffer/Buffer.h"
 #include "class/display/texture/Texture.h"
+namespace Display{
 class FrameBuffer {
 public:
 	FrameBuffer(glm::ivec2 size);
@@ -30,5 +31,5 @@ public:
 	std::vector<Texture*>color_textures;
 	std::vector<Texture*>depth_textures;
 };
-
+}
 #endif /* FRAMEBUFFER_H_ */

@@ -1,6 +1,7 @@
 #ifndef DRAWDATA2D_H_
 #define DRAWDATA2D_H_
 #include "class/display/draw/drawData/DrawData.h"
+namespace Display{
 class DrawData2D: public DrawData {
 public:
 	static const float AutoHeight = 0.0f;
@@ -16,5 +17,5 @@ public:
 	float alpha;
 	float width,height;
 };
-
+}
 #endif /* DRAWDATA2D_H_ */

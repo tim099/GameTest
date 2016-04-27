@@ -4,7 +4,7 @@
 #include "class/display/texture/Texture.h"
 #include "class/display/shader/Shader.h"
 #include <iostream>
-
+namespace Display{
 ModelBuffer::ModelBuffer(Model *m) {
 	initialize(m);
 }
@@ -87,4 +87,5 @@ void ModelBuffer::draw(GLuint programID, GLenum mode) {
 
 	//glDrawArrays(GL_LINES,0,vertex_num);
 	//glDrawArrays(GL_POINTS,0,vertex_num);
+}
 }

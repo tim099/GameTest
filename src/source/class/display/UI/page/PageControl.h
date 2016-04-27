@@ -2,7 +2,10 @@
 #define SOURCE_CLASS_DISPLAY_UI_PAGE_PAGECONTROL_H_
 
 #include "class/display/UI/UIObject.h"
+namespace Input{
 class Signal;
+}
+
 
 namespace UI {
 
@@ -27,7 +30,7 @@ protected:
 	virtual void update();
 
 
-	void handle_signal(Signal* signal);
+	void handle_signal(Input::Signal* signal);
 	unsigned cur_page;
 
 };

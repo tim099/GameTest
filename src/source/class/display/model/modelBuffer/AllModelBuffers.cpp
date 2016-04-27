@@ -1,5 +1,5 @@
 #include "class/display/model/modelBuffer/AllModelBuffers.h"
-
+namespace Display{
 AllModelBuffers::AllModelBuffers() {
 
 }
@@ -47,4 +47,5 @@ void AllModelBuffers::Parse_Header(std::istream &is, std::string &line){
 		Tim::String::get_line(is, line, true, true);
 		folder_path = std::string(line);
 	}
+}
 }

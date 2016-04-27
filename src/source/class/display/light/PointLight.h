@@ -2,7 +2,8 @@
 #define POINTLIGHT_H_
 #include "glm/glm.hpp"
 #include "class/display/light/Light.h"
-class PointLight : public Light{
+namespace Display{
+class PointLight : public Display::Light{
 public:
 	PointLight(glm::vec3 pos,glm::vec3 color,bool shadow);
 	virtual ~PointLight();
@@ -12,5 +13,5 @@ public:
 protected:
 
 };
-
+}
 #endif /* POINTLIGHT_H_ */

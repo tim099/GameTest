@@ -1,6 +1,7 @@
 #include "class/display/render/RenderTask.h"
 #include "class/display/window/Window.h"
 #include <iostream>
+namespace Display{
 RenderTask::RenderTask(Renderer *_renderrer) {
 	renderrer=_renderrer;
 }
@@ -13,4 +14,5 @@ void RenderTask::ExecuteTask(){
 	renderrer->render();
 	Window::get_cur_object()->render_off();
 	//std::cout<<"render end"<<std::endl;
+}
 }

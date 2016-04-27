@@ -2,7 +2,7 @@
 #define TEXTURE2D_H_
 #include "class/display/texture/Texture.h"
 #include "class/display/texture/texture2D/DrawData2D.h"
-
+namespace Display{
 template <class DataType>class Image;
 
 class Texture2D : public Texture {
@@ -25,5 +25,5 @@ public:
 protected:
 	virtual void draw(Shader2D* shader2D,DrawData *data);
 };
-
+}
 #endif /* TEXTURE2D_H_ */

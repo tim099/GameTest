@@ -8,13 +8,18 @@
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/display/font/RenderString.h"
 
+
+
+
+
+namespace Display{
 class DrawData;
 class StringRenderer;
-class LightControl;
-class Shader;
 class Camera;
 class FrameBuffer;
-class Draw: public Tim::GlobalObject<Draw> {
+class Shader;
+class LightControl;
+class Draw : public Tim::GlobalObject<Draw> {
 public:
 	Draw();
 	virtual ~Draw();
@@ -54,7 +59,7 @@ public:
 	void clear_tmp_data();
 	DrawObject* get_obj(unsigned i);
 	Camera *camera;
-	LightControl* lightControl;
+	Display::LightControl* lightControl;
 	bool Enable3D;
 	float wave_height,wave_width;
 	float water_height;
@@ -72,5 +77,5 @@ protected:
 	Tim::Mutex* d_objsMutex;
 	Tim::Mutex* d_texsMutex;
 };
-
+}
 #endif /* DRAW_H_ */

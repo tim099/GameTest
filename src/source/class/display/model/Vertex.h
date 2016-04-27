@@ -2,6 +2,7 @@
 #define VERTEX_H_
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+namespace Display{
 class Vertex {
 public:
 	Vertex();
@@ -16,5 +17,5 @@ public:
 	static void fill_vec2(GLfloat* vt,glm::vec2 v,int num=1);
 
 };
-
+}
 #endif /* VERTEX_H_ */

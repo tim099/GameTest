@@ -1,6 +1,9 @@
+#ifndef IMGDATA_CPP_
+#define IMGDATA_CPP_
 #include "class/display/texture/image/ImgData.h"
 #include <iostream>
 #include <cstdio>
+namespace Display{
 template <class DataType>
 ImgData<DataType>::ImgData() {
 	//format=GL_RGB;
@@ -12,4 +15,5 @@ template <class DataType>
 ImgData<DataType>::~ImgData() {
 
 }
-template class ImgData<unsigned char>;
+}
+#endif /* IMGDATA_H_ */

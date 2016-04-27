@@ -7,6 +7,8 @@ class GLFWwindow;
 class HDC__;
 class HGLRC__;
 #include "class/tim/globalObject/GlobalObject.h"
+
+namespace Display{
 class Window : public Tim::GlobalObject<Window>{
 	static bool glewinitial;
 	static bool glfwinitial;
@@ -41,6 +43,6 @@ protected:
 	HDC__ *dc;
 	HGLRC__ *lrc;
 };
-
+}
 
 #endif /* WINDOW_H_ */

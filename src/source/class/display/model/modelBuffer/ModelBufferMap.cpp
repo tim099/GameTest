@@ -1,5 +1,6 @@
 #include "class/display/model/modelBuffer/ModelBufferMap.h"
 #include "class/tim/string/String.h"
+namespace Display{
 ModelBufferMap::ModelBufferMap() {
 
 }
@@ -60,5 +61,5 @@ void ModelBufferMap::Parse_ModelBuffer(std::istream &is){
 
 	}
 }
-
+}
 

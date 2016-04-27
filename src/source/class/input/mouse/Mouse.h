@@ -3,7 +3,10 @@
 #include <GL/glew.h>
 #include <GL/glfw3.h>
 #include <glm/glm.hpp>
+namespace Display{
 class FrameBuffer;
+}
+namespace Input{
 class Mouse {
 	static Mouse *rigister_mouse;
 public:
@@ -25,7 +28,7 @@ public:
 
 	glm::vec2 get_tex_space_pos();
 
-	glm::vec3 get_world_space_pos(FrameBuffer* FBO,glm::mat4 inverseMat);
+	glm::vec3 get_world_space_pos(Display::FrameBuffer* FBO,glm::mat4 inverseMat);
 
 
 	glm::ivec2 pos_delta()const;
@@ -58,5 +61,5 @@ protected:
 	bool left,right,mid;
 	bool left_click,right_click,mid_click;
 };
-
+}
 #endif /* MOUSE_H_ */

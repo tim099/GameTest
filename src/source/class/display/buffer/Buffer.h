@@ -1,6 +1,7 @@
 #ifndef BUFFER_H_
 #define BUFFER_H_
 #include <GL/glew.h>
+namespace Display{
 class Buffer {
 public:
 	Buffer(GLfloat* data,int datasize,GLuint index,GLint size,GLenum type
@@ -25,5 +26,5 @@ protected:
 	GLboolean normalized;
 	GLsizei stride;
 };
-
+}
 #endif /* BUFFER_H_ */

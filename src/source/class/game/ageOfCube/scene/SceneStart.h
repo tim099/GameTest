@@ -4,6 +4,7 @@
 #include "class/game/scene/Scene.h"
 #include "class/display/UI/UI.h"
 #include "class/display/UI/page/PageControl.h"
+#include "class/display/UI/page/AutoPageControl.h"
 namespace AOC{
 class SceneStart: public Scene {
 public:
@@ -25,12 +26,17 @@ protected:
 	virtual void scene_initialize();
 	virtual	void scene_terminate();
 
+
 	void create_new_map();
 	void create_map();
+	void load_map();
+	void delete_map();
 
 	void handle_input();
-	virtual void handle_signal(Signal *sig);
+	virtual void handle_signal(Input::Signal *sig);
+	std::string map_folder_path;
 	UI::PageControl *p_control;
+	UI::AutoPageControl *auto_p_control;
 	UI::UI *UI;
 };
 }

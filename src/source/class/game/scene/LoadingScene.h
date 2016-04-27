@@ -16,7 +16,7 @@ protected:
 	virtual void scene_initialize();
 	virtual	void scene_terminate();
 	int timer;
-	Texture2D *texture;
+	Display::Texture2D *texture;
 };
 
 #endif /* SOURCE_CLASS_GAME_SCENE_LOADINGSCENE_H_ */

@@ -1,5 +1,6 @@
 #include "class/display/model/cube/CubeModel.h"
-#include <class/display/model/Vertex.h>
+#include "class/display/model/Vertex.h"
+namespace Display{
 CubeModel::CubeModel(double size) {
 	for(int i=0;i<6;i++)cube[i]=CubeSide(i,size);
 }
@@ -65,5 +66,5 @@ Model *CubeModel::CubeSide(int i,double size){
 	side->vert_num=6;
 	return side;
 }
-
+}
 

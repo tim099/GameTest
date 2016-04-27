@@ -4,8 +4,8 @@
 namespace CM {
 
 Horse::Horse() {
-	draw_piece1=AllDrawObjects::get_cur_object()->get("chineseChess/red_horse");
-	draw_piece2=AllDrawObjects::get_cur_object()->get("chineseChess/black_horse");
+	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_horse");
+	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_horse");
 	weight=30;
 }
 Horse::~Horse() {

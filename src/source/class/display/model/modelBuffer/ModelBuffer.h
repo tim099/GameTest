@@ -4,11 +4,11 @@
 #include <glm/glm.hpp>
 #include "class/display/buffer/Buffer.h"
 #include <string>
+
+
+namespace Display{
 class Model;
 class Shader;
-/*
- * Model stored in GPU
- */
 class ModelBuffer{
 public:
 	ModelBuffer(Model *m);
@@ -31,5 +31,5 @@ public:
 private:
 
 };
-
+}
 #endif /* BUFFEROBJECT_H_ */

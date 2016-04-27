@@ -3,6 +3,7 @@
 #include "class/input/mouse/selectable/Selectable.h"
 #include "class/controller/Controller.h"
 #include <vector>
+namespace Input{
 class Input;
 
 class SelectableControl : public Controller{
@@ -33,5 +34,6 @@ public:
 	Selectable* cur_selected;
 	std::vector<Selectable*>selectables;
 };
+}
 //#include "class/input/mouse/selectable/SelectableControl.cpp"
 #endif /* SELECTABLECONTROL_H_ */

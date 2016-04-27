@@ -11,10 +11,10 @@
 #include "class/display/texture/AllTextures.h"
 #include "class/input/mouse/Mouse.h"
 #include "class/display/window/ViewPort.h"
-#include "class/game/map/Map.h"
+#include "class/game/ageOfCube/map/Map.h"
 #include "class/display/font/DrawTextureStr.h"
 #include <iostream>
-
+namespace Display{
 Draw::Draw() {
 	d_objsMutex=new Tim::Mutex();
 	d_texsMutex=new Tim::Mutex();
@@ -38,7 +38,7 @@ Draw::~Draw() {
 		d_texs.pop_back();
 	}
 }
-void Draw::set_lightControl(LightControl* _lightControl){
+void Draw::set_lightControl(Display::LightControl* _lightControl){
 	lightControl=_lightControl;
 }
 void Draw::set_camera(Camera *_camera){
@@ -81,7 +81,7 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
     draw_water(shader2D,shader,shaderWater,FBO,waterReflectFBO,waterRefractFBO);
-	Mouse::get_cur_mouse()->get_world_space_pos(FBO,
+    Input::Mouse::get_cur_mouse()->get_world_space_pos(FBO,
 			glm::inverse(camera->view_matrix(FBO->aspect())));
 }
 void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
@@ -262,4 +262,4 @@ void Draw::clear_tmp_data(){
     	lightControl->clear_temp_data();
     }
 }
-
+}

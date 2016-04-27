@@ -5,6 +5,7 @@
 #include "class/tim/map/MapTree.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include <map>
+namespace Display{
 class AllTextures: public Tim::Parser,
 		public Tim::MapTree<TextureMap, Texture>,
 		public Tim::GlobalObject<AllTextures> {
@@ -28,5 +29,5 @@ protected:
 	virtual void Parse_Header(std::istream &is, std::string &line);
 	std::string folder_path;
 };
-
+}
 #endif /* SOURCE_CLASS_DISPLAY_TEXTURE_ALLTEXTURES_H_ */

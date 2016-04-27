@@ -15,6 +15,14 @@ File::~File() {
 	if (data)
 		delete[] data;
 }
+bool File::delete_file(std::string file_path){
+	if(!remove(file_path.c_str())){
+		return true;
+	}else{
+		std::cerr<<"File::delete_file:"<<file_path<<"fail"<<std::endl;
+	}
+	return false;
+}
 std::string File::get_type(const char* path) {
 	char path_buf[100];
 	memcpy(path_buf, path, sizeof(char) * strlen(path));

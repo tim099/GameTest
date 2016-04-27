@@ -1,6 +1,7 @@
 #ifndef SOURCE_CLASS_INPUT_SIGNAL_SIGNAL_H_
 #define SOURCE_CLASS_INPUT_SIGNAL_SIGNAL_H_
 #include <string>
+namespace Input{
 class Receiver;
 class Signal {
 public:
@@ -16,5 +17,5 @@ protected:
 	std::string data;
 	Receiver* receiver;
 };
-
+}
 #endif /* SOURCE_CLASS_INPUT_SIGNAL_SIGNAL_H_ */

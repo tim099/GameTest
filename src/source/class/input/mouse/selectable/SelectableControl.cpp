@@ -3,6 +3,7 @@
 #include "class/input/mouse/selectable/SelectableControl.h"
 #include "class/input/Input.h"
 #include <iostream>
+namespace Input{
 SelectableControl* SelectableControl::cur_SelectableControl=0;
 SelectableControl::SelectableControl() {
 	cur_selected=0;
@@ -28,27 +29,28 @@ void SelectableControl::update(){
 	selectables.clear();
 }
 Selectable* SelectableControl::find_selected(){
-	Selectable* select;
+	Selectable* _select;
 	cur_selected=0;
 	Input *input=Input::get_cur_object();
 	bool click=input->mouse->left_clicked();
 	bool pressed=input->mouse->left_pressed();
 	unsigned selectables_size=selectables.size();
 	for(unsigned i=0;i<selectables_size;i++){
-		select=selectables.at(selectables_size-i-1);
-		if(select->detect_mouse_collision(input->mouse)){
+		_select=selectables.at(selectables_size-i-1);
+		if(_select->detect_mouse_collision(input->mouse)){
 			if(click){
 				input->mouse->get_left_click();
-				cur_selected=select;
-				select->set_state(Selectable::state_selected,input->mouse);
+				cur_selected=_select;
+				_select->set_state(Selectable::state_selected,input->mouse);
 			}else if(pressed){
-				select->set_state(Selectable::state_select,input->mouse);
+				_select->set_state(Selectable::state_select,input->mouse);
 			}else{
-				select->set_state(Selectable::state_on,input->mouse);
+				_select->set_state(Selectable::state_on,input->mouse);
 			}
 			break;
 		}
 	}
 	return cur_selected;
+}
 }
 #endif /* SELECTABLECONTROL_CPP_ */

@@ -1,5 +1,5 @@
 #include "class/display/draw/drawObject/drawData/DrawDataObj.h"
-
+namespace Display{
 DrawDataObj::DrawDataObj() {
 	pos=0;
 	draw_shadow=false;
@@ -18,4 +18,5 @@ DrawDataObj::~DrawDataObj() {
 }
 void DrawDataObj::set_pos(Position* _pos){
 	pos=_pos;
+}
 }

@@ -3,7 +3,9 @@
 #include <glm/vec2.hpp>
 #include "class/display/UI/UIObject.h"
 class Draw;
+namespace Input{
 class Signal;
+}
 namespace UI {
 
 class Button: public UIObject {
@@ -11,10 +13,10 @@ public:
 	Button();
 	virtual ~Button();
 
-	virtual void selected(Mouse* mou);
+	virtual void selected(Input::Mouse* mou);
 
-	void set_signal(Signal* signal);
-	Signal* get_signal() const;
+	void set_signal(Input::Signal* signal);
+	Input::Signal* get_signal() const;
 
 	virtual std::string get_type()const{
 		return "Button";
@@ -29,7 +31,7 @@ protected:
 	virtual void update_button();
 
 
-	Signal* signal;
+	Input::Signal* signal;
 };
 
 } /* namespace UI */

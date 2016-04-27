@@ -12,7 +12,7 @@ public:
 	AI();
 	virtual ~AI();
 	CM::Step find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* chess_board,int player,int depth,int pruning);
-	int evaluate_score(CM::StepNode *_cur_node,Tim::Array2D<short int> *chess_board,
+	int evaluate_score(Tim::Array2D<short int> *chess_board,
 			int player,int depth,int pruning,bool max);
 	bool search_done;
 	bool searching;

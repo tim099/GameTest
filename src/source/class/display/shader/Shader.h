@@ -4,12 +4,13 @@
 #include <string>
 #include <GL/glew.h>
 #include "class/display/uniform/Uniform.h"
-
+namespace Display{
 const int NormalMapping=1<<0;
 const int LayerTexture=1<<1;
 const int AlphaTexture=1<<2;
 const int Clipping=1<<3;
 const int SkyMap=1<<4;
+
 class Shader {
 public:
 	Shader(std::string name=std::string("default"));
@@ -40,5 +41,5 @@ protected:
 	int shaderData;
 	std::string name;
 };
-
+}
 #endif /* SHADER_H_ */

@@ -1,5 +1,6 @@
 #include "class/display/buffer/Buffer.h"
 #include <iostream>
+namespace Display{
 Buffer::Buffer(GLfloat* data,int datasize,GLuint _index,GLint _size,GLenum _type,GLboolean _normalized
 		,GLsizei _stride) {
 	buffer=gen_buffer(data,datasize);
@@ -58,4 +59,5 @@ void Buffer::disable_all_buffer(){
 	glDisableVertexAttribArray(1);//uv
 	glDisableVertexAttribArray(2);//vn
 	glBindBuffer(GL_ARRAY_BUFFER,0);//unbind buffer
+}
 }

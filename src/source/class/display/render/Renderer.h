@@ -5,13 +5,16 @@
 #include "class/display/texture/texture3D/cubemap/TextureCubeMap.h"
 #include "class/display/texture/AllTextures.h"
 
+
+namespace Display{
 class Shader;
 class Shader2D;
 class FrameBuffer;
 class Camera;
-class Draw;
+
 class Window;
 class Mouse;
+class Draw;
 class Renderer{
 
 public:
@@ -41,5 +44,5 @@ protected:
 	GLuint VertexArrayID;
 	bool rendering;
 };
-
+}
 #endif /* RENDERER_H_ */

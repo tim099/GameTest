@@ -14,17 +14,20 @@ Button::Button() {
 Button::~Button() {
 	if(signal)delete signal;
 }
-void Button::selected(Mouse* mou){
-	Signal *sig=get_signal();
+void Button::selected(Input::Mouse* mou){
+	if(check_mode(UI::Mode::EDIT)){
+		return;
+	}
+	Input::Signal *sig=get_signal();
 	if(sig){
 		sig->sent();
 	}
 }
-void Button::set_signal(Signal* _signal){
+void Button::set_signal(Input::Signal* _signal){
 	if(signal)delete signal;
 	signal=_signal;
 }
-Signal* Button::get_signal()const{
+Input::Signal* Button::get_signal()const{
 	return signal;
 }
 void Button::update(){

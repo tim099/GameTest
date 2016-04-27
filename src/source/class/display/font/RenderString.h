@@ -2,7 +2,7 @@
 #define SOURCE_CLASS_DISPLAY_FONT_RENDERSTRING_H_
 #include <string>
 #include <glm/vec2.hpp>
-
+namespace Display{
 class RenderString {
 public:
 	static const float Font_Interval=0.65f;
@@ -27,5 +27,5 @@ public:
 protected:
 
 };
-
+}
 #endif /* SOURCE_CLASS_DISPLAY_FONT_RENDERSTRING_H_ */

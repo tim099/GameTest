@@ -31,10 +31,10 @@ void Piece::load_script(std::string path){
 	while(Tim::String::get_line(is, line, true, true)&&line!="#END"){
 		if(line=="draw_piece1:"){
 			Tim::String::get_line(is, line, true, true);
-			draw_piece1=AllDrawObjects::get_cur_object()->get(line);
+			draw_piece1=Display::AllDrawObjects::get_cur_object()->get(line);
 		}else if(line=="draw_piece2:"){
 			Tim::String::get_line(is, line, true, true);
-			draw_piece2=AllDrawObjects::get_cur_object()->get(line);
+			draw_piece2=Display::AllDrawObjects::get_cur_object()->get(line);
 		}else if(line=="rule_path:"){//.lua file
 			Tim::String::get_line(is, rule_path, true, true);
 		}else if(line=="weight:"){//.lua file
@@ -86,9 +86,9 @@ void Piece::next_step(Tim::Array2D<short int> *chess_board,
 }
 void Piece::draw(Position* pos,int player){
 	if(player==1){
-		draw_piece1->push_temp_drawdata(new DrawDataObj(pos,true,true));
+		draw_piece1->push_temp_drawdata(new Display::DrawDataObj(pos,true,true));
 	}else{
-		draw_piece2->push_temp_drawdata(new DrawDataObj(pos,true,true));
+		draw_piece2->push_temp_drawdata(new Display::DrawDataObj(pos,true,true));
 	}
 }
 

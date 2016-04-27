@@ -21,15 +21,15 @@ public:
 	AgeOfCubes();
 	virtual ~AgeOfCubes();
 private:
-	virtual Window* create_window();
+	virtual Display::Window* create_window();
 	virtual void initialize_game();
 	virtual void terminate_game();
 	virtual void game_update();
 
 
-	AllDrawObjects *drawObjects;
-	AllTextures* textures;
-	AllModelBuffers* modelBuffers;
+	Display::AllDrawObjects *drawObjects;
+	Display::AllTextures* textures;
+	Display::AllModelBuffers* modelBuffers;
 	//SceneStart *startScene;
 
 };

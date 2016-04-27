@@ -42,7 +42,7 @@ void PageControl::switch_page(std::string name) {
 		return;
 	}
 }
-void PageControl::handle_signal(Signal* signal) {
+void PageControl::handle_signal(Input::Signal* signal) {
 	if (signal->get_data() == "prev_page") {
 		prev_page();
 	} else if (signal->get_data() == "next_page") {
@@ -53,7 +53,7 @@ void PageControl::handle_signal(Signal* signal) {
 }
 void PageControl::update() {
 	if (receiver) {
-		Signal *sig;
+		Input::Signal *sig;
 		while ((sig = receiver->get_signal())) {
 			handle_signal(sig);
 		}

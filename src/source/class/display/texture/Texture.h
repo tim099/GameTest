@@ -4,7 +4,7 @@
 #include <glm/vec2.hpp>
 #include "class/display/texture/image/Image.h"
 #include "class/display/draw/drawData/DrawData.h"
-
+namespace Display{
 const int P_NONE=0;
 const int P_MipMap=1;
 const int P_Linear=2;
@@ -42,5 +42,5 @@ protected:
 	virtual void draw(Shader2D* shader2D,DrawData *data);
 	static void TexFilterParameteri(GLenum target,int Parameteri);
 };
-
+}
 #endif /* TEXTURE_H_ */

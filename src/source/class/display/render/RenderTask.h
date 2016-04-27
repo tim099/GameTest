@@ -3,6 +3,7 @@
 #include "class/tim/Thread/Thread.h"
 #include "class/display/render/Renderer.h"
 class Window;
+namespace Display{
 class RenderTask : public Tim::Task{
 public:
 	RenderTask(Renderer *renderrer);
@@ -12,5 +13,5 @@ protected:
 	Renderer *renderrer;
 
 };
-
+}
 #endif /* RENDERTASK_H_ */

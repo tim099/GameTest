@@ -9,15 +9,15 @@ ChessMaster::ChessMaster() {
 ChessMaster::~ChessMaster() {
 
 }
-Window* ChessMaster::create_window(){
-	return (new Window(glm::ivec2(1366, 733), "Chess Master", false));
+Display::Window* ChessMaster::create_window(){
+	return (new Display::Window(glm::ivec2(1366, 733), "Chess Master", false));
 }
 void ChessMaster::initialize_game(){
-	textures = new AllTextures(CM::folder_path+"script/texture/Textures.txt");
+	textures = new Display::AllTextures(CM::folder_path+"script/texture/Textures.txt");
 	textures->register_cur();	//set as cur using textures
-	modelBuffers = new AllModelBuffers(CM::folder_path+"script/modelbuffer/ModelBuffers.txt");
+	modelBuffers = new Display::AllModelBuffers(CM::folder_path+"script/modelbuffer/ModelBuffers.txt");
 	modelBuffers->register_cur();
-	drawObjects = new AllDrawObjects(CM::folder_path+"script/drawobject/DrawObjects.txt");
+	drawObjects = new Display::AllDrawObjects(CM::folder_path+"script/drawobject/DrawObjects.txt");
 	drawObjects->register_cur();
 	push_scene(new CM::scene::SceneStart());
 }

@@ -7,6 +7,8 @@
 #include <glm/glm.hpp>
 #include "class/display/draw/drawObject/drawData/DrawDataObj.h"
 #include <string>
+
+namespace Display{
 class Texture;
 class Shader;
 class DrawObject {
@@ -50,5 +52,5 @@ protected:
 	std::vector<DrawDataObj*> temp_datas;
 
 };
-
+}
 #endif /* DRAWOBJECT_H_ */

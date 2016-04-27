@@ -4,8 +4,8 @@
 namespace CM {
 
 Elephant::Elephant() {
-	draw_piece1=AllDrawObjects::get_cur_object()->get("chineseChess/red_elephant");
-	draw_piece2=AllDrawObjects::get_cur_object()->get("chineseChess/black_elephant");
+	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_elephant");
+	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_elephant");
 	weight=20;
 }
 Elephant::~Elephant() {

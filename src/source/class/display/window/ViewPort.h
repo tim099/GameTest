@@ -3,6 +3,7 @@
 #include <glm/vec2.hpp>
 #include <GL/glew.h>
 #include <GL/glfw3.h>
+namespace Display{
 class ViewPort {
 	static GLint x;
 	static GLint y;
@@ -21,5 +22,5 @@ public:
 	ViewPort();
 	virtual ~ViewPort();
 };
-
+}
 #endif /* SOURCE_CLASS_DISPLAY_WINDOW_VIEWPORT_H_ */

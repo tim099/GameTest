@@ -11,6 +11,7 @@
 #include "class/tim/math/Math.h"
 #include "class/display/model/Vertex.h"
 #include "class/tim/array/Array.h"
+namespace Display{
 const GLfloat F_MAX=999999999999999999.0;
 const GLfloat F_MIN=-999999999999999999.0;
 Model::Model(int _max_len,bool layertex) {
@@ -166,4 +167,5 @@ void Model::translate(glm::vec3 v){
 		vtBuffer[3*i+2]+=v.z;
 	}
 	mpos+=v;
+}
 }

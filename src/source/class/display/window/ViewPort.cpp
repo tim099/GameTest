@@ -2,6 +2,7 @@
 #include "class/tim/math/Math.h"
 
 #include <iostream>
+namespace Display{
 GLint ViewPort::x=0;
 GLint ViewPort::y=0;
 GLsizei ViewPort::width=0;
@@ -39,4 +40,5 @@ glm::ivec2 ViewPort::get_cur_viewport_size(){
 	//glGetIntegerv( GL_VIEWPORT, viewport );
 	//return glm::ivec2(viewport[2]-viewport[0],viewport[3]-viewport[1]);
 	return glm::ivec2(width-x,height-y);
+}
 }

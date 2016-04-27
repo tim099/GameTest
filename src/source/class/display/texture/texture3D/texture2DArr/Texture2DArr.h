@@ -3,6 +3,7 @@
 #include "class/display/texture/Texture.h"
 #include <vector>
 #include <string>
+namespace Display{
 template <class DataType>class Image;
 class Texture2DArr : public Texture {
 public:
@@ -19,5 +20,5 @@ public:
 			glm::vec3 pos=glm::vec3(0,0,0),double size=1.0);
 	glm::ivec3 size;
 };
-
+}
 #endif /* TEXTURE2DARR_H_ */

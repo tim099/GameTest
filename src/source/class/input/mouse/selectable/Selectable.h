@@ -1,11 +1,12 @@
 #ifndef SELECTABLE_H_
 #define SELECTABLE_H_
-class Mouse;
+
 /*
  * this is just a selectable interface
  * inherit this and implement your self
  */
-
+namespace Input{
+class Mouse;
 class Selectable {
 public:
 	const static int state_null=0;
@@ -47,5 +48,5 @@ public:
 protected:
 	int state;
 };
-
+}
 #endif /* SELECTABLE_H_ */

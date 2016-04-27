@@ -51,7 +51,7 @@ void UI::Parse_Header(std::ostream &os){
 void UI::update() {
 
 }
-void UI::start_draw(Draw* draw) {
+void UI::start_draw(Display::Draw* draw) {
 
 }
 } /* namespace UI */

@@ -7,12 +7,17 @@
 #include "class/display/uniform/Uniform.h"
 #include "class/display/draw/Draw.h"
 #include <cstdio>
+namespace Display{
 LightControl::LightControl(float _draw_dis) {
 	draw_dis=_draw_dis;
 	shadowData=new ShadowData(3,4);
 	shadow_dis=1.0;
 }
 LightControl::~LightControl() {
+	Display::Draw* draw=Display::Draw::get_cur_object();
+	if(draw->lightControl==this){
+		draw->set_lightControl(0);
+	}
 	for(unsigned i=0;i<point_lights.size();i++){
 		delete point_lights.at(i);
 	}
@@ -40,16 +45,16 @@ unsigned LightControl::parallel_light_size()const{
 unsigned LightControl::point_light_size()const{
 	return point_lights.size();
 }
-void LightControl::push_light(PointLight* l){
+void LightControl::push_light(Display::PointLight* l){
 	point_lights.push_back(l);//lights.size()<MAX_LIGHT
 }
-void LightControl::push_light(ParallelLight* l){
+void LightControl::push_light(Display::ParallelLight* l){
 	parallel_lights.push_back(l);
 }
-void LightControl::push_light(CubeLight* l){
+void LightControl::push_light(Display::CubeLight* l){
 	cube_lights.push_back(l);
 }
-void LightControl::push_temp_light(CubeLight* l){
+void LightControl::push_temp_light(Display::CubeLight* l){
 	temp_cube_lights.push_back(l);
 }
 void LightControl::choose_point_light(glm::vec3 camera_pos){
@@ -150,4 +155,5 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
     		cubelight_color.size(),(const GLfloat*)(cubelight_color.data()));
     glUniform1fv(glGetUniformLocation(shader->programID,"cubelight_size"),
     		cubelight_size.size(),(const GLfloat*)(cubelight_size.data()));
+}
 }

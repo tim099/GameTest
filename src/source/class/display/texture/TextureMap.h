@@ -6,6 +6,7 @@
 #include "class/tim/map/MapContainer.h"
 #include <string>
 #include <map>
+namespace Display{
 class TextureMap : public Tim::Parser{
 public:
 	TextureMap(std::string script_path=std::string("NULL"));
@@ -31,5 +32,5 @@ protected:
 	std::string folder_path;
 	std::string name;
 };
-
+}
 #endif /* TEXTUREMAP_H_ */

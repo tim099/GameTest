@@ -3,7 +3,7 @@
 #include "class/tim/string/String.h"
 #include <iostream>
 #include <fstream>
-
+namespace Display{
 AllTextures::AllTextures(std::string script_path) {
 	Load_script(script_path);
 }
@@ -48,4 +48,5 @@ void AllTextures::Parse_Header(std::istream &is, std::string &line) {
 		Tim::String::get_line(is, line, true, true);
 		folder_path = std::string(line);
 	}
+}
 }

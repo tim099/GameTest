@@ -11,7 +11,7 @@
 #include "class/input/mouse/Mouse.h"
 #include <cstdio>
 #include <iostream>
-
+namespace Display{
 Renderer::Renderer(Draw *_d_obj, Window *_window) {
 
 	draw = _d_obj;
@@ -120,6 +120,7 @@ void Renderer::render() {
 	FrameBuffer::unbind_buffer(window->get_size()); //start draw on window buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    //clear window buffer
 
+	//draw 3D
 	FBO->color_textures.at(0)->draw_texture(shader2D,
 			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
 
@@ -130,10 +131,12 @@ void Renderer::render() {
 			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
 	shader2D->Disable(SobelMode | AddOnMode);
 	*/
+	//draw 2D
 	FBO2->color_textures.at(0)->draw_texture(shader2D,
 			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
 	rendering = false;
 	//window->swap_buffer();
 	//window->render_off();    //release thread using this window
 	//std::cout<<"renderer render end"<<std::endl;
+}
 }

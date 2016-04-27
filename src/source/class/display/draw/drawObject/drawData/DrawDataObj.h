@@ -3,7 +3,8 @@
 
 #include "class/display/draw/drawData/DrawData.h"
 #include "class/tim/math/Position.h"
-class DrawDataObj: public DrawData {
+namespace Display{
+class DrawDataObj: public Display::DrawData {
 public:
 	/*
 	 * not handle the delete of pos
@@ -18,5 +19,5 @@ public:
 protected:
 
 };
-
+}
 #endif /* SOURCE_CLASS_DISPLAY_DRAW_DRAWOBJECT_DRAWDATA_DRAWDATAOBJ_H_ */

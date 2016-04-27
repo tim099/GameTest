@@ -9,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include <fstream>
+namespace Display{
 TextureMap::TextureMap(std::string script_path) {
 	if (script_path != std::string("NULL")) {
 		Load_script(script_path);
@@ -141,4 +142,4 @@ void TextureMap::Parse_Script(std::istream &is, std::string &line) {
 		Parse_textureCubeMap(is);
 	}
 }
-
+}

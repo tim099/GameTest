@@ -2,6 +2,7 @@
 #include "class/display/texture/texture2D/Texture2D.h"
 #include "class/display/window/ViewPort.h"
 #include <iostream>
+namespace Display{
 FrameBuffer::FrameBuffer(glm::ivec2 _size) {
 	size=_size;
 	FBOID=GenFramebuffer();
@@ -109,4 +110,5 @@ GLuint FrameBuffer::GenFramebuffer(){
 	//glBindFramebufferEXT(GL_FRAMEBUFFER,FBO);//GL_FRAMEBUFFER
 	//check_frame_buffer();
 	return FBO;
+}
 }

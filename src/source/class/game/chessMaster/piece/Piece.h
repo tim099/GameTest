@@ -8,7 +8,10 @@
 #include "class/tim/lua/Lua.h"
 #include <string>
 class Position;
+
+namespace Display{
 class DrawObject;
+}
 namespace CM {
 class ChessBoard;
 
@@ -29,8 +32,8 @@ protected:
 	virtual void next_step(Tim::Array2D<short int> *chess_board,
 			int x,int y,std::vector<int> &next_step,int player);
 	Tim::Mutex* rule_mutex;
-	DrawObject *draw_piece1;//player1's piece EX:black king
-	DrawObject *draw_piece2;//player2's piece EX:white king
+	Display::DrawObject *draw_piece1;//player1's piece EX:black king
+	Display::DrawObject *draw_piece2;//player2's piece EX:white king
 	std::string rule_path;
 	Tim::Lua *rule;
 };

@@ -1,6 +1,7 @@
 #include "class/display/shader/shader2D/Shader2D.h"
 #include "class/display/texture/Texture.h"
 #include "class/display/buffer/Buffer.h"
+namespace Display{
 Shader2D::Shader2D(std::string _name) : Shader(_name) {
 	textureData=0;
 }
@@ -20,4 +21,5 @@ void Shader2D::set_format(GLenum format){
 			textureType=Type_RGB;
 	}
 	sent_Uniform("textureType",textureType);
+}
 }

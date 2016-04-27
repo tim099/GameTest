@@ -38,7 +38,7 @@ protected:
 	virtual void initialize_game()=0;
 	virtual void terminate_game()=0;
 	virtual void game_update()=0;
-	virtual Window* create_window()=0;
+	virtual Display::Window* create_window()=0;
 	Scene* get_cur_scene();
 	void handle_game_signal();
 	void swap_buffer();
@@ -46,16 +46,16 @@ protected:
 	void scene_loading(Scene* scene);
 	void pop_scene();
 	std::vector<Scene*>scenes;
-	Window* window;
-	Draw *draw;
+	Display::Window* window;
+	Display::Draw *draw;
 	//RenderTask *render_task;
-	Renderer *renderer;
+	Display::Renderer *renderer;
 
-	Receiver* game_receiver;
+	Input::Receiver* game_receiver;
 	//Tim::Thread *render_thread;
 	Tim::ThreadPool *thread_pool;
 
-	Input* input;
+	Input::Input* input;
 	ControllerSystem *controller_system;
 	UI::UIObjectCreator *UIObj_Creator;
 

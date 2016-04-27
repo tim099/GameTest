@@ -3,6 +3,7 @@
 #include "class/display/model/modelBuffer/ModelBuffer.h"
 #include "class/tim/map/MapContainer.h"
 #include "class/tim/parser/Parser.h"
+namespace Display{
 class ModelBufferMap : public Tim::Parser{
 public:
 	ModelBufferMap();
@@ -25,5 +26,5 @@ protected:
 	std::string folder_path;
 	std::string name;
 };
-
+}
 #endif /* SOURCE_CLASS_DISPLAY_BUFFER_MODEL_MODELBUFFERMAP_H_ */

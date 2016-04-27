@@ -2,6 +2,7 @@
 #define SHADER2D_H_
 #include <glm/glm.hpp>
 #include "class/display/shader/Shader.h"
+namespace Display{
 const int SobelMode=1<<0;
 const int AddOnMode=1<<1;
 const int ColorAlterMode=1<<2;
@@ -19,5 +20,5 @@ public:
 protected:
 	int textureData;
 };
-
+}
 #endif /* SHADER2D_H_ */

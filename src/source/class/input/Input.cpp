@@ -2,7 +2,7 @@
 #include <GL/glew.h>
 #include <GL/glfw3.h>
 #include <iostream>
-
+namespace Input{
 Input::Input(GLFWwindow *window) {
 	keyboard=new KeyBoard();
 	mouse=new Mouse();
@@ -55,4 +55,5 @@ void Input::push_receiver(Receiver* receiver){
 		return;
 	}
 	receiver_map.push(receiver->get_name(),receiver);
+}
 }

@@ -2,6 +2,7 @@
 #include "class/display/model/Model.h"
 #include <cstring>
 #include <string>
+namespace Display{
 #define WHITESPACE " \t\n\r"
 Obj::Obj() {
 
@@ -50,4 +51,5 @@ Obj* Obj::load_obj(const char* path){
 	}
 	fclose(file);
 	return obj;
+}
 }

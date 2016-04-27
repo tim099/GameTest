@@ -1,5 +1,5 @@
 #include "class/display/texture/texture3D/cubemap/TextureCubeMap.h"
-
+namespace Display{
 TextureCubeMap::TextureCubeMap(GLuint _TexID,glm::ivec2 _size,GLenum _type,GLenum _format)
 : Texture(_TexID,GL_TEXTURE_CUBE_MAP,_type,_format){
 	size=_size;
@@ -37,4 +37,5 @@ TextureCubeMap* TextureCubeMap::gen_CubeMap(std::vector<std::string>&path,glm::i
 
 int TextureCubeMap::layer()const{
 	return 6;
+}
 }

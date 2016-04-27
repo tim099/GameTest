@@ -38,7 +38,7 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,i
 	std::cout<<"best score="<<best.score<<std::endl;
 	return best;
 }
-int AI::evaluate_score(CM::StepNode *cur_node,Tim::Array2D<short int> *chess_board,
+int AI::evaluate_score(Tim::Array2D<short int> *chess_board,
 		int player,int depth,int pruning,bool max){
 	CM::Step *cur;
 	int best;
@@ -48,7 +48,6 @@ int AI::evaluate_score(CM::StepNode *cur_node,Tim::Array2D<short int> *chess_boa
 	board->find_next_step(chess_board,player,next_step);
 
 
-	CM::StepNode *next_node=0;
 	//std::cout<<"step num="<<next_step.size()<<std::endl;
 	for (unsigned i = 0; i < next_step.size(); i++) {
 		cur = &next_step[i];
@@ -62,7 +61,7 @@ int AI::evaluate_score(CM::StepNode *cur_node,Tim::Array2D<short int> *chess_boa
 				else
 					cur->score = board->evaluate_score(chess_board, -player);
 			} else {//do backtracking
-				cur->score = evaluate_score(next_node, chess_board, -player,
+				cur->score = evaluate_score(chess_board, -player,
 						depth - 1, best, !max);
 			}
 		} else {//player win!!

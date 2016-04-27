@@ -3,6 +3,7 @@
 #include "class/display/texture/Texture.h"
 #include <vector>
 #include <string>
+namespace Display{
 class TextureCubeMap : public Texture{
 public:
 	TextureCubeMap(GLuint _TexID,glm::ivec2 size,GLenum type,GLenum format);
@@ -14,5 +15,5 @@ public:
 			GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_Linear);
 	glm::ivec2 size;
 };
-
+}
 #endif /* TEXTURECUBEMAP_H_ */

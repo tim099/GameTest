@@ -1,6 +1,7 @@
 #include "class/display/light/PointLight.h"
 #include <glm/gtx/transform.hpp>
 #include <iostream>
+namespace Display{
 PointLight::PointLight(glm::vec3 _pos,glm::vec3 _color,bool _shadow) : Light(_shadow){
 	pos=_pos;
 	color=_color;//glm::normalize(_color);
@@ -36,4 +37,5 @@ glm::mat4 PointLight::get_LVP(float aspect,int n)const{
 	glm::mat4 PLVP=P*V*trans;
 
 	return PLVP;
+}
 }

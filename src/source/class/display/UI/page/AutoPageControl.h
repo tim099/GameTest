@@ -17,6 +17,7 @@ public:
 	}
 
 	void create_pages(std::vector<std::string> &names);
+	void update_pages();
 	void set_path(std::string load_path);
 protected:
 	virtual bool save_child()const{

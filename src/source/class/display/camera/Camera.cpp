@@ -3,6 +3,7 @@
 #include <cmath>
 #include <iostream>
 #include "class/tim/math/Math.h"
+namespace Display{
 Camera::Camera(glm::vec3 _pos,glm::vec3 _look_at,glm::vec3 _up,
 		float _fovy,float _z_near,float _z_far){
 	pos=_pos;look_at=_look_at;up=_up;fovy=_fovy;
@@ -77,4 +78,5 @@ void Camera::update(){
 	dis_alter_v*=0.9;
 	move(v);
 	v*=0.9;
+}
 }

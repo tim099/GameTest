@@ -4,44 +4,12 @@
 namespace CM {
 
 Cannon::Cannon() {
-	draw_piece1=AllDrawObjects::get_cur_object()->get("chineseChess/red_cannon");
-	draw_piece2=AllDrawObjects::get_cur_object()->get("chineseChess/black_cannon");
+	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_cannon");
+	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_cannon");
 	weight=50;
 }
 Cannon::~Cannon() {
 
-}
-void Cannon::cannon_move(Tim::Array2D<short int> *chess_board,
-		int x,int y,int dx,int dy,int player
-		,std::vector<int> &next_step){
-	int i=x+dx;
-	int j=y+dy*player;
-	int type;
-	while(bound_check(i,j)){
-		type=chess_board->get(i,j);
-		if(type!=0){
-			i+=dx;
-			j+=dy*player;
-			while(bound_check(i,j)){
-				type=chess_board->get(i,j);
-				if(type!=0){
-					if(type*player<0){
-						next_step.push_back(i);
-						next_step.push_back(j);
-					}
-					break;
-				}
-				i+=dx;
-				j+=dy*player;
-			}
-			break;
-		}
-		next_step.push_back(i);
-		next_step.push_back(j);
-
-		i+=dx;
-		j+=dy*player;
-	}
 }
 void Cannon::next_step(Tim::Array2D<short int> *chess_board,
 		int x,int y,std::vector<int> &next_step,int player){

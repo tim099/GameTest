@@ -1,5 +1,6 @@
 #include "class/display/model/Vertex.h"
 #include <iostream>
+namespace Display{
 Vertex::Vertex() {
 
 }
@@ -81,4 +82,5 @@ void Vertex::gen_quad_vt(GLfloat* vtBuffer,glm::vec3 p,glm::vec3 size,bool up){
 	fill_vec3(vtBuffer+9,p+d3);
 	fill_vec3(vtBuffer+12,p+d2);
 	fill_vec3(vtBuffer+15,p+d4);
+}
 }

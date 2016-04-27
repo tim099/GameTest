@@ -2,7 +2,8 @@
 #define PARALLELLIGHT_H_
 #include "glm/glm.hpp"
 #include "class/display/light/Light.h"
-class ParallelLight : public Light{
+namespace Display{
+class ParallelLight : public Display::Light{
 public:
 	ParallelLight(glm::vec3 vec,glm::vec3 color,bool shadow);
 	virtual ~ParallelLight();
@@ -12,5 +13,5 @@ public:
 protected:
 
 };
-
+}
 #endif /* PARALLELLIGHT_H_ */

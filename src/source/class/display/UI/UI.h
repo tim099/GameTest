@@ -4,8 +4,9 @@
 #include <glm/glm.hpp>
 #include "class/display/UI/UIObject.h"
 #include "class/tim/parser/Parser.h"
+namespace Display{
 class Draw;
-
+}
 
 namespace UI {
 
@@ -39,7 +40,7 @@ protected:
 	virtual void Parse_Script(std::ostream &os);
 	virtual void Parse_Header(std::ostream &os);
 
-	virtual void start_draw(Draw* draw);
+	virtual void start_draw(Display::Draw* draw);
 	virtual void update();
 
 	std::string script_path;

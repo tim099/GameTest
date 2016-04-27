@@ -25,7 +25,7 @@ protected:
 	virtual void Parse_UIScript(std::istream &is,std::string &line);
 	virtual void Parse_UIScript(std::ostream &os);
 	virtual void update();
-	virtual void start_draw(Draw* draw);
+	virtual void start_draw(Display::Draw* draw);
 	inline void enable_input(){
 		cur_input_str=this;
 	}

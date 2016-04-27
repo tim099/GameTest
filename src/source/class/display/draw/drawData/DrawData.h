@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
+namespace Display{
 class Shader;
 class DrawData {
 public:
@@ -19,5 +20,5 @@ public:
 	void draw_end(Shader* shader);
 	std::vector<DrawDataEX*>ex_datas;
 };
-
+}
 #endif /* DRAWDATA_H_ */

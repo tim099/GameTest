@@ -1,7 +1,7 @@
 #include "class/input/keyboard/KeyBoard.h"
 #include <iostream>
 #include <cstdio>
-
+namespace Input{
 KeyBoard* KeyBoard::rigister_keyboard = 0;
 KeyBoard::KeyBoard() {
 	cur_char = 0;
@@ -120,4 +120,5 @@ void KeyBoard::key_release(int key, int scancode, int mods) {
 }
 void KeyBoard::key_repeat(int key, int scancode, int mods) {
 	//std::cout<<"key repeat:"<<(char)key<<",scancode:"<<scancode<<",mods:"<<mods<<std::endl;
+}
 }

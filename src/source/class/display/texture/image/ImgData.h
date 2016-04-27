@@ -2,7 +2,7 @@
 #define IMGDATA_H_
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-
+namespace Display{
 template <class DataType>
 class ImgData{
 public:
@@ -17,5 +17,6 @@ public:
 protected:
 
 };
-
+}
+#include "class/display/texture/image/ImgData.cpp"
 #endif /* IMGDATA_H_ */

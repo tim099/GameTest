@@ -31,21 +31,21 @@ Game::~Game() {
 void Game::initialize(){
 	window=create_window();
 	//window->render_on();
-	draw = new Draw();
+	draw = new Display::Draw();
 	draw->register_cur();
 	UIObj_Creator=new UI::UIObjectCreator();
 	UIObj_Creator->register_cur();
 
-	renderer = new Renderer(draw, window);
+	renderer = new Display::Renderer(draw, window);
 	//render_task = new RenderTask(renderer);
 
 
-	input = new Input(window->get_window());
+	input = new Input::Input(window->get_window());
 	input->register_cur();
-	game_receiver=new Receiver("Game");
+	game_receiver=new Input::Receiver("Game");
 	input->push_receiver(game_receiver);
 	controller_system=new ControllerSystem();
-	controller_system->push(new SelectableControl());
+	controller_system->push(new Input::SelectableControl());
 
 	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 	thread_pool = new Tim::ThreadPool(8,REALTIME_PRIORITY_CLASS);
@@ -114,7 +114,7 @@ void Game::pop_scene(){
 	}
 }
 void Game::handle_game_signal(){
-	Signal *sig = game_receiver->get_signal(); //get signal from receiver "test"
+	Input::Signal *sig = game_receiver->get_signal(); //get signal from receiver "test"
 	if (sig) {
 		std::cout << "got signal:" << sig->get_data() << std::endl;
 		if (sig->get_data() == "Quit") {
@@ -137,11 +137,15 @@ void Game::update(){
 	Scene* cur_scene=get_cur_scene();
 	//std::cout<<"Game::update() cur_scene="<<cur_scene->scene_name()<<std::endl;
 	cur_scene->update();
-	cur_scene->draw_scene();
 	//std::cout<<"Game::update() draw end"<<std::endl;
 	//===========system update=============
 	controller_system->update();
 	//std::cout<<"Game::update() controller_system->update() end"<<std::endl;
+	//===========update end================
+	cur_scene->scene_update_end();
+	//===========draw start================
+	cur_scene->draw_scene();
+
 	//===========render start==============
 	//render_thread->push_task(render_task);
 	//render_thread->start();
@@ -151,7 +155,9 @@ void Game::update(){
 
 	//render_thread->join();
 	draw->clear_tmp_data();
+	//std::cout<<"Game::update() draw->clear_tmp_data()"<<std::endl;
 	swap_buffer();
+	//std::cout<<"Game::update() end"<<std::endl;
 }
 void Game::mainloop(){
 	frame_start_time = glfwGetTime();

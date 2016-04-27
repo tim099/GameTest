@@ -44,31 +44,31 @@ void SceneStart::scene_initialize() {
 
 	ai=new CM::AI();
 	glm::vec3 pos=glm::vec3(0.5*chess_board->cube_size*chess_board->size.x,6,-3);
-	p1camera = new Camera(pos,
+	p1camera = new Display::Camera(pos,
 			pos+glm::vec3(0,-4,0.5f*chess_board->size.z),
 			glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	glm::vec3 pos2=glm::vec3(0.5*chess_board->cube_size*chess_board->size.x,6,10);
-	p2camera = new Camera(pos2,
+	p2camera = new Display::Camera(pos2,
 			pos2+glm::vec3(0,-4,-0.5f*chess_board->size.z),
 			glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	camera=p2camera;
 	draw->set_camera(camera);
 
-	lightControl = new LightControl(120);
+	lightControl = new Display::LightControl(120);
 	lightControl->shadow_dis=3.0f;
 	lightControl->push_light(
-			new ParallelLight(glm::vec3(1.0, -1.2, 0.2),
+			new Display::ParallelLight(glm::vec3(1.0, -1.2, 0.2),
 					glm::vec3(0.6, 0.6, 0.6), false));
 	lightControl->push_light(
-			new ParallelLight(glm::vec3(-0.5, -0.5, 2.1),
+			new Display::ParallelLight(glm::vec3(-0.5, -0.5, 2.1),
 					glm::vec3(1.1, 1.1, 1.1), true));
 	lightControl->push_light(
-			new ParallelLight(glm::vec3(-0.2, -1.2, -1.1),
+			new Display::ParallelLight(glm::vec3(-0.2, -1.2, -1.1),
 					glm::vec3(0.9, 0.9, 0.9), true));
 	lightControl->push_light(
-			new ParallelLight(glm::vec3(0.5, -0.4, -0.7),
+			new Display::ParallelLight(glm::vec3(0.5, -0.4, -0.7),
 					glm::vec3(0.4, 0.4, 0.4), false));
 
 
@@ -95,7 +95,7 @@ void SceneStart::pause(){
 void SceneStart::resume(){
 	draw->Enable3D = true;
 }
-void SceneStart::handle_signal(Signal *sig){
+void SceneStart::handle_signal(Input::Signal *sig){
 	//std::cerr<<"SceneStart::handle_signal 1"<<std::endl;
 	if(sig->get_data()=="hard"){
 		difficulty=6;
@@ -311,7 +311,7 @@ void SceneStart::handle_input(){
 		//chess_board->load_board(CM::folder_path+"game/chess/chessBoard/board.txt");
 		chess_board->load_board(CM::folder_path+"game/chineseChess/chessBoard/board.txt");
 	}
-	if(input->keyboard->get(KeyCode::Plus)){
+	if(input->keyboard->get(Input::KeyCode::Plus)){
 		if(edit_chess&&chess_type<(int)chess_board->pieces.size()){
 			chess_type++;
 		}else if(type<chess_board->cube_type_num){
@@ -319,7 +319,7 @@ void SceneStart::handle_input(){
 		}
 
 	}
-	if(input->keyboard->get(KeyCode::Minus)&&type>0){
+	if(input->keyboard->get(Input::KeyCode::Minus)&&type>0){
 		if(edit_chess&&chess_type>0){
 			chess_type--;
 		}else if(type>0){
@@ -389,27 +389,27 @@ void SceneStart::scene_update(){
 void SceneStart::scene_draw(){
 	if(ai->searching){
 		float time_used=(glfwGetTime()-ai->start_time);
-		draw->push(new RenderString("AI thinking time:"+Tim::String::to_string(time_used),
+		draw->push(new Display::RenderString("AI thinking time:"+Tim::String::to_string(time_used),
 				0.02,glm::vec2(0,0.95)));
 	}else{
 		if(chess_board->cur_player==1){
-			draw->push(new RenderString("player1's turn",0.02,glm::vec2(0,0.95)));
+			draw->push(new Display::RenderString("player1's turn",0.02,glm::vec2(0,0.95)));
 		}else{
-			draw->push(new RenderString("player2's turn",0.02,glm::vec2(0,0.95)));
+			draw->push(new Display::RenderString("player2's turn",0.02,glm::vec2(0,0.95)));
 		}
 	}
 
 	if(difficulty==3){
-		draw->push(new RenderString("Easy AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Easy AI",0.02,glm::vec2(0.4,0.95)));
 	}else if(difficulty==4){
-		draw->push(new RenderString("Normal AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Normal AI",0.02,glm::vec2(0.4,0.95)));
 	}else if(difficulty==5){
-		draw->push(new RenderString("Normal+ AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Normal+ AI",0.02,glm::vec2(0.4,0.95)));
 	}else if(difficulty==6){
-		draw->push(new RenderString("Hard AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Hard AI",0.02,glm::vec2(0.4,0.95)));
 	}
 
-	draw->push(new RenderString(Tim::String::to_string(chess_board->selected_piece.x)+","+
+	draw->push(new Display::RenderString(Tim::String::to_string(chess_board->selected_piece.x)+","+
 	Tim::String::to_string(chess_board->selected_piece.y),0.02,glm::vec2(0.6,0.95)));
 	if(edit_mode){
 		if(edit_chess){
@@ -419,24 +419,24 @@ void SceneStart::scene_draw(){
 					  (chess_board->selected_on.z+0.5f)*chess_board->cube_size));
 
 			if(chess_type>0)chess_board->pieces.at(chess_type-1)->draw(&pos,!destruct_mode);
-			draw->push(new RenderString("Edit Chess",0.02,glm::vec2(0.7,0.95)));
+			draw->push(new Display::RenderString("Edit Chess",0.02,glm::vec2(0.7,0.95)));
 		}else{
-			draw->push(new RenderString("Edit Board",0.02,glm::vec2(0.7,0.95)));
+			draw->push(new Display::RenderString("Edit Board",0.02,glm::vec2(0.7,0.95)));
 		}
 	}
 
 
 	int score=chess_board->evaluate_score(chess_board->chess_board,chess_board->cur_player);
-	draw->push(new RenderString("score:"+Tim::String::to_string(score),0.02,glm::vec2(0,0.85)));
-	draw->push(new RenderString("turn:"+Tim::String::to_string((int)chess_board->steps.size()),
+	draw->push(new Display::RenderString("score:"+Tim::String::to_string(score),0.02,glm::vec2(0,0.85)));
+	draw->push(new Display::RenderString("turn:"+Tim::String::to_string((int)chess_board->steps.size()),
 			0.02,glm::vec2(0.2,0.85)));
 	if(chess_board->winner!=0){
-		if(chess_board->winner==1)draw->push(new RenderString("player1 win!!",0.05,glm::vec2(0.3,0.5)));
-		else draw->push(new RenderString("player2 win!!",0.05,glm::vec2(0.3,0.5)));
+		if(chess_board->winner==1)draw->push(new Display::RenderString("player1 win!!",0.05,glm::vec2(0.3,0.5)));
+		else draw->push(new Display::RenderString("player2 win!!",0.05,glm::vec2(0.3,0.5)));
 	}
 	UI->draw_UIObject(draw);
 	chess_board->draw();
-	CubeLight* cl=new CubeLight();
+	Display::CubeLight* cl=new Display::CubeLight();
 	cl->size=1.01f*chess_board->cube_size;
 
 	if(destruct_mode){
@@ -467,8 +467,8 @@ void SceneStart::scene_draw(){
 	}
 }
 void SceneStart::draw_step(){
-	CubeLight* cl;
-	cl=new CubeLight();
+	Display::CubeLight* cl;
+	cl=new Display::CubeLight();
 	cl->size=1.01f*chess_board->cube_size;
 	cl->color=glm::vec3(0.5,0.5,0.5);
 	cl->pos=glm::vec3((s.x+0.5f)*chess_board->cube_size,

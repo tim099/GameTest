@@ -3,6 +3,7 @@
 
 #include "class/display/draw/drawObject/DrawObject.h"
 #include "class/display/model/Model.h"
+namespace Display{
 class DynamicDrawObject: public DrawObject {
 public:
 	DynamicDrawObject();
@@ -25,5 +26,5 @@ protected:
 	//if model is updated,then model_buffer should update before render
 	bool model_updated;
 };
-
+}
 #endif /* SOURCE_CLASS_DISPLAY_DRAW_DRAWOBJECT_DYNAMICDRAWOBJECT_H_ */

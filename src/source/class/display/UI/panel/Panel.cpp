@@ -16,10 +16,10 @@ Panel::Panel(glm::vec2 _pos,std::string _tex_path, float _width, float _height) 
 }
 void Panel::set_texture(std::string _tex_path, float width, float _height) {
 	tex_path=_tex_path;
-	tex2D=AllTextures::get_cur_tex(tex_path);
+	tex2D=Display::AllTextures::get_cur_tex(tex_path);
 	height = _height;
 	glm::vec2 _size = glm::vec2(width,
-			width / (tex2D->get_aspect() / ViewPort::get_cur_window_aspect()));
+			width / (tex2D->get_aspect() / Display::ViewPort::get_cur_window_aspect()));
 
 	if (height != AutoHeight) {
 		_size.y *= height;
@@ -57,16 +57,16 @@ Panel::~Panel() {
 UIObject* Panel::create_UIObject() {
 	return new Panel();
 }
-void Panel::start_draw(Draw* draw) {
-	DrawData* data = new DrawData2D(1.0, get_pos(), size.x, height);
+void Panel::start_draw(Display::Draw* draw) {
+	Display::DrawData* data = new Display::DrawData2D(1.0, get_pos(), size.x, height);
 	if(check_mode(UI::Mode::EDIT)){
 		if (state == Selectable::state_on) {
-			data->ex_datas.push_back(new ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
+			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
 		} else if (state == Selectable::state_selected) {
-			data->ex_datas.push_back(new ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
+			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
 		}
 	}
-	draw->push(new DrawTexture(tex2D, data));
+	draw->push(new Display::DrawTexture(tex2D, data));
 }
 void Panel::update() {
 

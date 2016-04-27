@@ -3,10 +3,9 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <windows.h>
+namespace Display{
 
 template <class DataType>class Image;
-
-
 template <class DataType>
 class Image {
 public:
@@ -35,5 +34,6 @@ protected:
 
 
 };
+}
 #include "class/display/texture/image/Image.cpp"
 #endif /* IMAGE_H_ */

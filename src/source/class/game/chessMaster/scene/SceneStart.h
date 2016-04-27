@@ -33,7 +33,7 @@ protected:
 
 	virtual void scene_initialize();
 	virtual	void scene_terminate();
-	virtual void handle_signal(Signal *sig);
+	virtual void handle_signal(Input::Signal *sig);
 	void handle_input();
 	void camera_control();
 	void draw_step();
@@ -43,11 +43,11 @@ protected:
 	void next_turn(CM::Step step);
 	UI::UI *UI;
 	ChessBoard *chess_board;
-	Camera* camera;
-	Camera* p1camera,*p2camera;
+	Display::Camera* camera;
+	Display::Camera* p1camera,*p2camera;
 	CM::AI *ai;
 
-	LightControl* lightControl;
+	Display::LightControl* lightControl;
 	//std::vector<glm::ivec2> next_step;
 	std::vector<CM::Step> next_step;
 	bool destruct_mode;

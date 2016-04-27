@@ -25,10 +25,10 @@ void PictureButton::init(glm::vec2 _pos, std::string _tex_path,
 void PictureButton::set_texture(std::string _tex_path, float width,
 		float _height) {
 	tex_path = _tex_path;
-	tex2D = AllTextures::get_cur_tex(tex_path);
+	tex2D = Display::AllTextures::get_cur_tex(tex_path);
 	height = _height;
 	glm::vec2 _size = glm::vec2(width,
-			width / (tex2D->get_aspect() / ViewPort::get_cur_window_aspect()));
+			width / (tex2D->get_aspect() / Display::ViewPort::get_cur_window_aspect()));
 
 	if (height != AutoHeight) {
 		_size.y *= height;
@@ -75,7 +75,7 @@ void PictureButton::Parse_UIScript(std::istream &is, std::string &line) {
 		if (line == "Receiver:") {
 			Tim::String::get_line(is, receiver, true, true);
 		}
-		set_signal(new Signal(data, receiver));
+		set_signal(new Input::Signal(data, receiver));
 	}else{
 		Parse_texture(is,line);
 	}
@@ -139,30 +139,30 @@ void PictureButton::set_string(std::string* _str, float _font_size) {
 		glm::vec2 max_size(edgex * size.x, edgey * size.y);
 
 		font_size = 1.0;
-		RenderString* rstr = new RenderString(*str, font_size);
+		Display::RenderString* rstr = new Display::RenderString(*str, font_size);
 		rstr->auto_char_size(max_size);
 		font_size = rstr->size;
 		delete rstr;
 	}
 }
-void PictureButton::start_draw(Draw* draw) {
-	DrawData* data = new DrawData2D(1.0, get_pos(), size.x, height);
+void PictureButton::start_draw(Display::Draw* draw) {
+	Display::DrawData* data = new Display::DrawData2D(1.0, get_pos(), size.x, height);
 
 	if (state == Selectable::state_on) {
-		data->ex_datas.push_back(new ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
+		data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
 	} else if (state == Selectable::state_selected) {
-		data->ex_datas.push_back(new ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
+		data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
 	}
-	draw->push(new DrawTexture(tex2D, data));
+	draw->push(new Display::DrawTexture(tex2D, data));
 
 	//return;
 	if (str) {
 		data = draw->push_as_tex(
-				new RenderString(*str, font_size, get_middle_pos(), true));
+				new Display::RenderString(*str, font_size, get_middle_pos(), true));
 		if (state == Selectable::state_on) {
-			data->ex_datas.push_back(new ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
+			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
 		} else if (state == Selectable::state_selected) {
-			data->ex_datas.push_back(new ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
+			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
 		}
 	}
 }

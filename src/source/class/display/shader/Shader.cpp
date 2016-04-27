@@ -6,6 +6,7 @@
 #include <vector>
 #include <cstring>
 #include <cstdio>
+namespace Display{
 Shader::Shader(std::string _name) {
 	shaderData=0;
 	programID=0;
@@ -129,4 +130,5 @@ void Shader::LoadShader(const char* vertex,const char* geometry,const char* frag
 
 	GLuint ProgramID=create_program(shaders);
     programID=ProgramID;
+}
 }

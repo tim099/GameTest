@@ -3,9 +3,9 @@
 #include "class/tim/array/Array2D.h"
 #include <vector>
 #include <cstdio>
-#include <glm/vec4.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
+#include "class/tim/math/vec4.h"
 namespace CM {
 
 class Step {
@@ -29,16 +29,30 @@ public:
 	void draw_step(glm::vec3 color);
 
 	bool selected(int x,int y);//return true if x,y selected on this step
-	void parse_step(Tim::Array2D<short int> *chess_board,int x,int y,
-			std::vector<int> &next_step,int &i);
-	/*
-	inline void add_move(int x,int y,int type,int selected){
-		moves.push_back(glm::ivec4(x,y,type,selected));
+	inline void parse_step(Tim::Array2D<short int> *chess_board,int x,int y,
+			std::vector<int> &next_step,int &i){
+		moves.clear();
+		moves.reserve(2);
+		if(next_step[i]>=0){
+			moves.push_back(Math::vec4<int>(x,y,0,-1));
+			moves.push_back(Math::vec4<int>(next_step[i],next_step[i+1],chess_board->get(x,y),1));
+			i+=2;
+		}else if(next_step[i]==-1){
+			int move_num=next_step[i+1];
+			while(move_num>0){
+				i+=2;
+				moves.push_back(Math::vec4<int>(next_step[i],next_step[i+1],
+						next_step[i+2],next_step[i+3]));
+				i+=2;
+				move_num--;
+			}
+			i+=2;
+		}
 	}
-	*/
 	int score;
+	std::vector<Math::vec4<int> > moves;
 protected:
-	std::vector<glm::ivec4> moves;
+
 };
 
 } /* namespace CM */

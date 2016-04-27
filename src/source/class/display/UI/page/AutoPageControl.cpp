@@ -36,6 +36,7 @@ void AutoPageControl::Parse_button_template(std::istream &is,std::string &line){
 }
 void AutoPageControl::create_pages(std::vector<std::string> &names){
 	if(names.empty())return;
+	clear_child();
 	int page_num=(names.size()/button_per_page);
 	int cur_name=0;
 	PictureButton *cur_but;
@@ -49,13 +50,22 @@ void AutoPageControl::create_pages(std::vector<std::string> &names){
 		for(int j=0;j<button_per_page;j++){
 			cur_but=(PictureButton *)button_template->copy_UIObject();
 			cur_but->set_string(new std::string(names.at(cur_name)),0);
-			cur_but->set_signal(new Signal(names.at(cur_name),sent_to));
+			cur_but->set_signal(new Input::Signal(names.at(cur_name),sent_to));
 			cur_group->push_child(cur_but);
 			cur_name++;
 			if(cur_name>=(int)names.size())break;
 		}
 	}
 	size=glm::vec2(button_template->get_size().x,fabs(interval.y)*button_per_page);
+}
+void AutoPageControl::update_pages(){
+	if(create_by_files){
+		std::vector<std::string> files=Tim::File::get_all_files(load_path);
+		create_pages(files);
+	}else if(create_by_dirs){
+		std::vector<std::string> dirs=Tim::File::get_all_dirs(load_path);
+		create_pages(dirs);
+	}
 }
 void AutoPageControl::Parse_UIScript(std::istream &is, std::string &line) {
 	if(line=="ButtonTemplate:"){
@@ -76,17 +86,15 @@ void AutoPageControl::Parse_UIScript(std::istream &is, std::string &line) {
 			return;
 		}
 		create_by_files=true;
-		std::vector<std::string> files=Tim::File::get_all_files(load_path);
-		//for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
-		create_pages(files);
+		update_pages();
 	}else if(line == "#LoadDirsToButtons"){
 		if(!button_template){
 			std::cerr<<"AutoPageControl::Parse_UIScript LoadDirsToButtons: fail"
 					<<"no button_template created"<<std::endl;
 			return;
 		}
-		std::vector<std::string> dirs=Tim::File::get_all_dirs(load_path);
-		create_pages(dirs);
+		create_by_dirs=true;
+		update_pages();
 	}
 
 }

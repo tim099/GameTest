@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 #include <string>
+namespace Display{
 class Camera {
 public:
 	Camera(glm::vec3 pos,glm::vec3 look_at,glm::vec3 up,float fovy,float z_near,float z_far);
@@ -41,5 +42,5 @@ public:
 protected:
 
 };
-
+}
 #endif /* CAMERA_H_ */

@@ -50,8 +50,17 @@ public:
 	void clear_steps();
 	void next_turn(CM::Step step);
 
-	void find_next_step(Tim::Array2D<short int> *chess_board,
-			int x,int y,std::vector<CM::Step> &next_steps);
+	inline void find_next_step(Tim::Array2D<short int> *chess_board,
+			int x,int y,std::vector<CM::Step> &next_steps){
+		int type=chess_board->get(x,y);
+		int player=1;
+		if(type<0){
+			type*=-1;
+			player=-1;
+		}
+		type-=1;
+		pieces[type]->next_step(chess_board,x,y,next_steps,player);
+	}
 	void find_next_step(Tim::Array2D<short int> *chess_board,
 			int player,std::vector<CM::Step> &next_steps);
 	static int get_board(lua_State *L);
@@ -59,7 +68,9 @@ public:
 
 	bool bound_check(int x,int y);
 	void backpropagation();
-	int check_winner(Tim::Array2D<short int> *chess_board);
+	inline int check_winner(Tim::Array2D<short int> *chess_board){
+		return rule->check_winner(chess_board);
+	}
 	int evaluate_score(Tim::Array2D<short int> *chess_board,int player);
 
 	//cube being selected by mouse
@@ -94,8 +105,8 @@ protected:
 	std::string tex_path;
 	std::string normal_path;
 	std::string dir_path;
-	DynamicDrawObject *dboard;
-	CubeModel *cube;
+	Display::DynamicDrawObject *dboard;
+	Display::CubeModel *cube;
 	Position *pos;
 
 

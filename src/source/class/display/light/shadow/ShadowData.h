@@ -18,6 +18,7 @@ class Shader;
 static const unsigned ShadowHighQuality=4096;
 static const unsigned ShadowNormalQuality=2048;
 static const unsigned ShadowLowQuality=1024;
+namespace Display{
 class ShadowData{
 public:
 	/*max_l_shadow=max shadows number for the parallel lights
@@ -30,10 +31,10 @@ public:
 	void sent_uniform(Shader *shader);
 	void gen_shadow_map(Shader *shaderShadowMapping,std::vector<PointLight*>&point_lights,
 			std::vector<ParallelLight*>&lights,Camera *camera,
-			double shadow_dis,Draw *d_obj);
+			double shadow_dis,Display::Draw *d_obj);
 	void gen_parallelLights_LVP(std::vector<ParallelLight*>&lights,Camera *camera,double shadow_dis);
 	void gen_pointLight_LVP(std::vector<PointLight*>&point_lights);
-	void gen_shadows_texture(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int num,Draw *d_obj
+	void gen_shadows_texture(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int num,Display::Draw *d_obj
 			,int start_layer=0);
 
 	glm::mat4 *LVP;
@@ -50,5 +51,5 @@ public:
 	unsigned max_pl_shadow;
 
 };
-
+}
 #endif /* SHADOWDATA_H_ */

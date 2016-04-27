@@ -18,10 +18,10 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	cube_type_num=3;
 	mct = 0;
 	cur_node=0;
-	dboard = new DynamicDrawObject();
-	Draw::get_cur_object()->push(dboard);//remember to remove before delete dboard
+	dboard = new Display::DynamicDrawObject();
+	Display::Draw::get_cur_object()->push(dboard);//remember to remove before delete dboard
 	pos = new Position(glm::vec3(0, 0, 0), glm::vec3());
-	cube = new CubeModel(0.5*cube_size);
+	cube = new Display::CubeModel(0.5*cube_size);
 
 	tex_path="chess/board_textures";
 	normal_path="chess/board_normals";
@@ -37,7 +37,7 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 ChessBoard::~ChessBoard() {
 	clear();
 
-	Draw::get_cur_object()->remove(dboard);
+	Display::Draw::get_cur_object()->remove(dboard);
 	delete dboard;
 	delete pos;
 	delete cube;
@@ -134,10 +134,6 @@ int ChessBoard::get_board(lua_State *L){
 	lua_pushnumber(L,type);
 
 	return 1;
-}
-int ChessBoard::check_winner(Tim::Array2D<short int> *cb){
-	int result=rule->check_winner(cb);
-	return result;
 }
 int ChessBoard::evaluate_score(Tim::Array2D<short int> *cb,int player){
 	int total_score=0;
@@ -354,7 +350,7 @@ void ChessBoard::gen_model(){
 	static const unsigned char back = 1 << 5;
 	unsigned char cube_exist;
 	int tex_layer;
-	Model *model = dboard->model;
+	Display::Model *model = dboard->model;
 	model->clear();
 	for (int i = 0; i < board->sizex; i++) {
 		for (int j = 0; j < board->sizey; j++) {
@@ -569,7 +565,7 @@ void ChessBoard::find_selected_cube(glm::vec3 pos){
 	}
 }
 void ChessBoard::find_select_cube(){
-	glm::vec3 pos=Input::get_cur_object()->mouse->world_pos;
+	glm::vec3 pos=Input::Input::get_cur_object()->mouse->world_pos;
 	pos=glm::vec3((pos.x/cube_size),
 			      (pos.y/cube_size),
 			      (pos.z/cube_size));
@@ -597,17 +593,6 @@ void ChessBoard::find_next_step(Tim::Array2D<short int> *cb,
 			}
 		}
 	}
-}
-void ChessBoard::find_next_step(Tim::Array2D<short int> *cb,
-		int x,int y,std::vector<CM::Step> &next_steps){
-	int type=cb->get(x,y);
-	int player=1;
-	if(type<0){
-		type*=-1;
-		player=-1;
-	}
-	type-=1;
-	pieces[type]->next_step(cb,x,y,next_steps,player);
 }
 void ChessBoard::move(Step &step){
 	step.move(chess_board);
@@ -668,7 +653,7 @@ void ChessBoard::draw(){
 	//std::cout<<"ChessBoard::draw()"<<std::endl;
 	if(updated)gen_model();
 	dboard->draw=true;
-	dboard->push_temp_drawdata(new DrawDataObj(pos,true));
+	dboard->push_temp_drawdata(new Display::DrawDataObj(pos,true));
 	int type;
 	Position* pos;
 	for(int i=0;i<chess_board->sizex;i++){

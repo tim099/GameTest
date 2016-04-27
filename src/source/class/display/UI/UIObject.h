@@ -6,15 +6,21 @@
 #include <iostream>
 #include "class/input/mouse/selectable/rectangle/SelectableRec.h"
 #include "class/tim/string/String.h"
+namespace Display{
 class Draw;
+}
+
+namespace Input{
 class Receiver;
+}
+
 namespace UI {
 class UIObjectCreator;
 
 namespace Mode{
 	static const int EDIT=1<<0;
 }
-class UIObject : public SelectableRec{
+class UIObject : public Input::SelectableRec{
 public:
 	UIObject();
 	virtual ~UIObject();
@@ -39,7 +45,7 @@ public:
 	void update_UIObject();
 
 	//draw this UIObject and it's children
-	void draw_UIObject(Draw* draw);
+	void draw_UIObject(Display::Draw* draw);
 
 
 	glm::vec2 get_size()const;
@@ -106,7 +112,7 @@ protected:
 	virtual void Parse_UIScript(std::istream &is,std::string &line);
 	virtual void Parse_UIScript(std::ostream &os);
 	virtual void update();
-	virtual void start_draw(Draw* draw);
+	virtual void start_draw(Display::Draw* draw);
 	//==========SelectableRec implement========
 	virtual glm::vec2 get_rec_pos()const;
 	virtual glm::vec2 get_rec_size()const;
@@ -115,7 +121,7 @@ protected:
 	std::vector<UIObject*>childs;
 	std::string name;
 	glm::vec2 size;
-	Receiver *receiver;
+	Input::Receiver *receiver;
 	UIObjectCreator* creator;
 private:
 	glm::vec2 pos;

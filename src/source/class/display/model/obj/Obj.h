@@ -5,7 +5,7 @@
 #include <vector>
 #include <cstdio>
 #include <class/display/model/obj/Face.h>
-
+namespace Display{
 class Model;
 
 class Obj{
@@ -21,5 +21,5 @@ protected:
 
 
 };
-
+}
 #endif /* OBJ_H_ */

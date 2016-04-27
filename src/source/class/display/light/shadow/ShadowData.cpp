@@ -7,6 +7,7 @@
 #include "class/display/shader/Shader.h"
 #include <iostream>
 #include <cstdio>
+namespace Display{
 ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow,unsigned _shadow_quality) {
 	max_l_shadow=_max_l_shadow;
 	max_pl_shadow=_max_pl_shadow;
@@ -47,7 +48,7 @@ void ShadowData::sent_uniform(Shader *shader){
 void ShadowData::gen_shadow_map(Shader *shaderShadowMapping,
 		std::vector<PointLight*>&point_lights,
 		std::vector<ParallelLight*>&lights,Camera *camera,
-		double shadow_dis,Draw *d_obj){
+		double shadow_dis,Display::Draw *d_obj){
 	SFBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//clear buffer
 	PSFBO->bind_buffer();
@@ -77,7 +78,7 @@ void ShadowData::gen_parallelLights_LVP(std::vector<ParallelLight*>&para_lights,
 	}
 }
 void ShadowData::gen_shadows_texture(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int s_num
-		,Draw *d_obj,int start_layer){
+		,Display::Draw *d_obj,int start_layer){
 	if(s_num==0)return;
 	shader->active_shader();
 
@@ -99,4 +100,4 @@ void ShadowData::gen_pointLight_LVP(std::vector<PointLight*>&point_lights){
 		}
 	}
 }
-
+}

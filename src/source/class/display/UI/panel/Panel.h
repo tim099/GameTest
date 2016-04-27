@@ -3,7 +3,9 @@
 #include "class/display/UI/UIObject.h"
 #include <glm/vec2.hpp>
 #include "class/input/mouse/selectable/rectangle/SelectableRec.h"
+namespace Display{
 class Texture;
+}
 namespace UI {
 
 class Panel: public UIObject {
@@ -24,14 +26,14 @@ protected:
 	virtual void Parse_UIScript(std::istream &is,std::string &line);
 	virtual void Parse_UIScript(std::ostream &os);
 	virtual void update();
-	virtual void start_draw(Draw* draw);
+	virtual void start_draw(Display::Draw* draw);
 //========================================================
 
 	//provide update for inherit class from Panel
 	virtual void update_panel();
 
 	std::string tex_path;
-	Texture* tex2D;
+	Display::Texture* tex2D;
 	float height;
 };
 

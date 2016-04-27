@@ -2,8 +2,9 @@
 #define SOURCE_CLASS_DISPLAY_UI_BUTTON_PICTUREBUTTON_PICTUREBUTTON_H_
 #include "class/display/UI/button/Button.h"
 #include <string>
+namespace Display{
 class Texture;
-
+}
 namespace UI {
 
 class PictureButton : public Button{
@@ -37,9 +38,9 @@ public:
 protected:
 	virtual void Parse_UIScript(std::istream &is,std::string &line);
 	virtual void Parse_UIScript(std::ostream &os);
-	virtual void start_draw(Draw* draw);
+	virtual void start_draw(Display::Draw* draw);
 	std::string* str;
-	Texture* tex2D;
+	Display::Texture* tex2D;
 	std::string tex_path;
 	float height;
 	float font_size;

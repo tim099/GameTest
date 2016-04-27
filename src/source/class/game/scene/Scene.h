@@ -10,7 +10,7 @@
 class Scene {
 public:
 	Scene();
-	void initialize(Draw* draw,Input* input,Tim::ThreadPool *thread_pool);
+	void initialize(Display::Draw* draw,Input::Input* input,Tim::ThreadPool *thread_pool);
 	void terminate();
 	virtual ~Scene();
 
@@ -29,22 +29,27 @@ public:
 	virtual void resume(){
 
 	}
+	//this function will be called by Game after controller_system updated
+	virtual void scene_update_end(){
+
+	}
 
 	void update();
 	void draw_scene();
+
 protected:
 	virtual void scene_update()=0;
 	virtual void scene_draw()=0;
 	virtual void scene_initialize()=0;
 	virtual	void scene_terminate()=0;
 
-	virtual void handle_signal(Signal *sig);
+	virtual void handle_signal(Input::Signal *sig);
 
 	void get_signal();
 
-	Draw* draw;
-	Input* input;
-	Receiver* receiver;
+	Display::Draw* draw;
+	Input::Input* input;
+	Input::Receiver* receiver;
 	Tim::ThreadPool *thread_pool;
 };
 

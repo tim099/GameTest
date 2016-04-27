@@ -20,7 +20,7 @@ UIObject::~UIObject() {
 		parent->remove_child(this);
 	}
 	if (receiver) {
-		Input::get_cur_object()->remove_receiver(receiver->get_name());
+		Input::Input::get_cur_object()->remove_receiver(receiver->get_name());
 	}
 	clear_child();
 }
@@ -134,7 +134,7 @@ glm::vec2 UIObject::get_rec_size() const {
 	return size;
 }
 //========================================
-void UIObject::draw_UIObject(Draw* draw) {
+void UIObject::draw_UIObject(Display::Draw* draw) {
 	if (hide)
 		return;
 	start_draw(draw);
@@ -142,7 +142,7 @@ void UIObject::draw_UIObject(Draw* draw) {
 		childs.at(i)->draw_UIObject(draw);
 	}
 }
-void UIObject::start_draw(Draw* draw) {
+void UIObject::start_draw(Display::Draw* draw) {
 
 }
 void UIObject::update_UIObject() {
@@ -152,7 +152,7 @@ void UIObject::update_UIObject() {
 	detect_selection();
 	if ((check_mode(Mode::EDIT))&&get_state() == state_select) {
 		set_pos(get_pos()+ 0.5f
-					* Mouse::get_cur_mouse()->get_screen_pos_delta());
+					* Input::Mouse::get_cur_mouse()->get_screen_pos_delta());
 	}
 
 
@@ -241,10 +241,10 @@ glm::vec2 UIObject::get_relative_pos()const{
 }
 void UIObject::set_receiver(std::string receiver_name) {
 	if (receiver) {
-		Input::get_cur_object()->remove_receiver(receiver->get_name());
+		Input::Input::get_cur_object()->remove_receiver(receiver->get_name());
 	}
-	receiver = new Receiver(receiver_name);
-	Input::get_cur_object()->push_receiver(receiver);
+	receiver = new Input::Receiver(receiver_name);
+	Input::Input::get_cur_object()->push_receiver(receiver);
 }
 UIObject* UIObject::copy_UIObject(){
 	std::cerr<<"UIObject:"<<get_type()<<"not implement UIObject::copy_UIObject()"<<std::endl;

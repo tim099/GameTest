@@ -11,6 +11,7 @@
 #include "class/tim/map/MapContainer.h"
 #include <map>
 class GLFWwindow;
+namespace Input{
 class Input : public Tim::GlobalObject<Input>{
 public:
 	Input(GLFWwindow *window);
@@ -38,5 +39,5 @@ protected:
 	Tim::MapContainer<std::string,Receiver> receiver_map;
 	//std::map<std::string,Receiver*> receiver_map;
 };
-
+}
 #endif /* INPUT_H_ */

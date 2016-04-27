@@ -10,6 +10,7 @@
 #include <string>
 #include "class/display/texture/image/png/lodepng.h"
 #include "class/tim/file/File.h"
+namespace Display{
 template<class DataType>
 Image<DataType>::Image() {
 	format = GL_RGB;
@@ -135,6 +136,6 @@ void Image<DataType>::load_sub_image2D(const char *imagepath, GLenum target,
 			format, type, bmp_img->data);
 	delete bmp_img;
 }
-
+}
 //template class Image<unsigned char>;
 #endif /* IMAGE_CPP_ */

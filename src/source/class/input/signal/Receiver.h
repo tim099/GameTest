@@ -3,6 +3,7 @@
 #include <queue>
 #include <string>
 #include "class/input/signal/Signal.h"
+namespace Input{
 class Receiver {
 public:
 	Receiver(std::string name);
@@ -14,5 +15,5 @@ protected:
 	std::string name;
 	std::queue<Signal*>signal_q;
 };
-
+}
 #endif /* SOURCE_CLASS_INPUT_SIGNAL_RECEIVER_H_ */

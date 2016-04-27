@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
+namespace Display{
 class Obj;
 class Model {
 public:
@@ -28,11 +29,11 @@ public:
 	/*
 	 * merge model and set the model layer of the model being merge
 	 */
-	void merge(Model *m,glm::vec3 trans,float layer);
+	void merge(Display::Model *m,glm::vec3 trans,float layer);
 	/*
 	 * merge model,can set the translate value of the model being merge
 	 */
-	void merge(Model *m,glm::vec3 trans=glm::vec3(0,0,0));
+	void merge(Display::Model *m,glm::vec3 trans=glm::vec3(0,0,0));
 	void max_len_alter(int _len);
 	GLfloat* vtBuffer;
 	GLfloat* uvBuffer;
@@ -47,5 +48,5 @@ protected:
 	glm::vec3 mpos;
 
 };
-
+}
 #endif /* MODEL_H_ */

@@ -1,5 +1,5 @@
-#ifndef LIGHTCONTROL_H_
-#define LIGHTCONTROL_H_
+#ifndef LightControl_H_
+#define LightControl_H_
 
 
 #include "class/display/light/PointLight.h"
@@ -9,10 +9,13 @@
 
 #include <vector>
 
-class Draw;
+
+
+namespace Display{
 class Shader;
 class Camera;
 class FrameBuffer;
+class Draw;
 class LightControl {
 public:
 static const int MAX_LIGHT=100;
@@ -34,10 +37,10 @@ static const int MAX_POINT_LIGHT=100;
 	PointLight* get_point_light(int i)const;
 	ParallelLight* get_parallel_light(int i)const;
 
-	void push_light(PointLight* l);
-	void push_light(ParallelLight* l);
-	void push_light(CubeLight* l);
-	void push_temp_light(CubeLight* l);
+	void push_light(Display::PointLight* l);
+	void push_light(Display::ParallelLight* l);
+	void push_light(Display::CubeLight* l);
+	void push_temp_light(Display::CubeLight* l);
 
 	void clear_temp_data();
 	std::vector<ParallelLight*>parallel_lights;
@@ -57,5 +60,5 @@ protected:
 	std::vector<PointLight*>selected_point_lights;
 	float draw_dis;
 };
-
-#endif /* LIGHTCONTROL_H_ */
+}
+#endif /* Display::LightControl_H_ */

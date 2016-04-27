@@ -3,6 +3,7 @@
 #include "class/display/window/ViewPort.h"
 #include "class/tim/math/Math.h"
 #include <iostream>
+namespace Display{
 RenderString::RenderString(std::string _str,float _size,glm::vec2 _pos,bool _render_at_middle) {
 	str=_str;
 	size=_size;
@@ -45,4 +46,5 @@ glm::vec2 RenderString::string_size(const std::string *str,float size){
 }
 glm::vec2 RenderString::string_size()const{
 	return string_size(&str,size);
+}
 }

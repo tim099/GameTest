@@ -2,7 +2,7 @@
 #define SOURCE_CLASS_DISPLAY_FONT_STRINGRENDERER_H_
 #include "class/display/font/RenderString.h"
 #include <vector>
-
+namespace Display{
 class Shader2D;
 class Texture2D;
 class Buffer;
@@ -37,5 +37,5 @@ protected:
 	Buffer *vtbuffer;
 	Buffer *uvbuffer;
 };
-
+}
 #endif /* SOURCE_CLASS_DISPLAY_FONT_STRINGRENDERER_H_ */

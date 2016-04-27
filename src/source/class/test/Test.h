@@ -17,9 +17,9 @@
 
 #include "class/input/Input.h"
 
-#include "class/game/map/DisplayMap.h"
+#include "class/game/ageOfCube/map/DisplayMap.h"
 #include "class/tim/thread/ThreadPool.h"
-#include "class/game/map/Map.h"
+#include "class/game/ageOfCube/map/Map.h"
 
 #include "class/tim/objectpool/ObjPool.h"
 
@@ -39,8 +39,8 @@ public:
 private:
 	void handle_input();
 	void camera_control();
-	void update_obj_pos(Camera *camera);
-	void update_map(Camera *camera);
+	void update_obj_pos(Display::Camera *camera);
+	void update_map(Display::Camera *camera);
 	void prepare_draw_obj();
 	void creat_light();
 
@@ -53,25 +53,25 @@ private:
 	Tim::ObjPool<Position>*position_pool;
 
 
-	Draw *draw;
-	LightControl* lightControl;
-	PointLight *camlight;
-	ParallelLight *s_light;
+	Display::Draw *draw;
+	Display::LightControl* lightControl;
+	Display::PointLight *camlight;
+	Display::ParallelLight *s_light;
 
-	Input* input;
-	Receiver* receiver;
+	Input::Input* input;
+	Input::Receiver* receiver;
 
-	AllDrawObjects *drawObjects;
-	AllTextures* textures;
-	AllModelBuffers* modelBuffers;
-	Window *window;
-	Camera *camera;
+	Display::AllDrawObjects *drawObjects;
+	Display::AllTextures* textures;
+	Display::AllModelBuffers* modelBuffers;
+	Display::Window *window;
+	Display::Camera *camera;
 
-	Renderer *renderer;
+	Display::Renderer *renderer;
 	//DisplayMap *dmap;
 	//RenderTask *render_task;
 
-	Map *map;
+	AOC::Map *map;
 	UI::UI *UI;
 	//Tim::Thread *render_thread;
 	Tim::ThreadPool *thread_pool;

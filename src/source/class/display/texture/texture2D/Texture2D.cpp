@@ -7,6 +7,7 @@
 #include "class/tim/file/File.h"
 #include "class/display/window/ViewPort.h"
 #include <iostream>
+namespace Display{
 Texture2D::Texture2D(GLuint _TexID,glm::ivec2 _size,GLenum _type,GLenum _format)
 : Texture(_TexID,GL_TEXTURE_2D,_type,_format){
 	size=_size;
@@ -102,4 +103,5 @@ Image<unsigned char>* Texture2D::convert_to_image(GLenum _format){
 	Image<unsigned char> *img=new Image<unsigned char>(size,_format);
 	glGetTexImage(GL_TEXTURE_2D,0,_format,type,img->data);
 	return img;
+}
 }

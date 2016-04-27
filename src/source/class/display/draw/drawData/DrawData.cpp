@@ -1,6 +1,7 @@
 #include "class/display/draw/drawData/DrawData.h"
 #include "class/display/shader/Shader.h"
 #include <iostream>
+namespace Display{
 DrawData::DrawData() {
 
 }
@@ -18,4 +19,5 @@ void DrawData::draw_end(Shader *shader){
 	for(unsigned i=0;i<ex_datas.size();i++){
 		ex_datas.at(i)->draw_end(shader);
 	}
+}
 }

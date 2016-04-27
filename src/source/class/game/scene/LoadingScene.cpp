@@ -8,7 +8,7 @@ LoadingScene::~LoadingScene() {
 	if(texture)delete texture;
 }
 void LoadingScene::scene_initialize(){
-	texture=Texture2D::loadImage("files/texture/jannealter.png");
+	texture=Display::Texture2D::loadImage("files/texture/jannealter.png");
 }
 void LoadingScene::scene_terminate(){
 
@@ -19,14 +19,15 @@ void LoadingScene::scene_update(){
 }
 void LoadingScene::scene_draw(){
 	if(timer<25){
-		draw->push(new RenderString("Now Loading.",0.04,glm::vec2(0.4,0.5)));
+		draw->push(new Display::RenderString("Now Loading.",0.04,glm::vec2(0.4,0.5)));
 	}else if(timer<50){
-		draw->push(new RenderString("Now Loading..",0.04,glm::vec2(0.4,0.5)));
+		draw->push(new Display::RenderString("Now Loading..",0.04,glm::vec2(0.4,0.5)));
 	}else if(timer<75){
-		draw->push(new RenderString("Now Loading...",0.04,glm::vec2(0.4,0.5)));
+		draw->push(new Display::RenderString("Now Loading...",0.04,glm::vec2(0.4,0.5)));
 	}else{
-		draw->push(new RenderString("Now Loading....",0.04,glm::vec2(0.4,0.5)));
+		draw->push(new Display::RenderString("Now Loading....",0.04,glm::vec2(0.4,0.5)));
 	}
-	draw->push(new DrawTexture(texture,new DrawData2D(1.0,glm::vec2(0,1),0.5)));
+	draw->push(new Display::DrawTexture(texture,
+			new Display::DrawData2D(1.0,glm::vec2(0,1),0.5)));
 }
 

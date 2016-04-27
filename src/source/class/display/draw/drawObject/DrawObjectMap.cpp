@@ -1,6 +1,7 @@
 #include "class/display/draw/drawObject/DrawObjectMap.h"
 #include "class/tim/string/String.h"
 #include "class/display/draw/Draw.h"
+namespace Display{
 DrawObjectMap::DrawObjectMap() {
 
 }
@@ -8,7 +9,7 @@ DrawObjectMap::DrawObjectMap(std::string script_path) {
 	Load_script(script_path);
 }
 DrawObjectMap::~DrawObjectMap() {
-	Draw* cur_draw=Draw::get_cur_object();
+	Display::Draw* cur_draw=Display::Draw::get_cur_object();
 
 	if(!cur_draw){
 		std::cerr<<"DrawObjectMap::~DrawObjectMap(), cur Draw is not exist!!"<<std::endl;
@@ -56,7 +57,7 @@ void DrawObjectMap::Parse_DrawObject(std::istream &is){
 	bool draw_shadow=true;
 	bool sky_map=false;
 	glm::vec4 mat;
-	Draw* cur_draw=Draw::get_cur_object();
+	Display::Draw* cur_draw=Display::Draw::get_cur_object();
 
 	if(!cur_draw){
 		std::cerr<<"DrawObjectMap::Parse_DrawObject cur Draw is not exist!!"<<std::endl;
@@ -99,4 +100,5 @@ void DrawObjectMap::Parse_DrawObject(std::istream &is){
 			}
 		}
 	}
+}
 }

@@ -3,6 +3,7 @@
 #include "class/display/draw/drawObject/DrawObjectMap.h"
 #include "class/tim/map/MapTree.h"
 #include "class/tim/globalObject/GlobalObject.h"
+namespace Display{
 class AllDrawObjects: public Tim::MapTree<DrawObjectMap, DrawObject>,
 		public Tim::GlobalObject<AllDrawObjects>,
 		public Tim::Parser {
@@ -21,5 +22,5 @@ protected:
 	virtual void Parse_dir(std::istream &is);
 	std::string folder_path;
 };
-
+}
 #endif /* SOURCE_CLASS_DISPLAY_DRAW_OBJECT_DRAWDATA_ALLDRAWOBJECTS_H_ */

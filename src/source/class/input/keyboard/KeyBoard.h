@@ -4,6 +4,7 @@
 #include <GL/glfw3.h>
 #include <set>
 #include <string>
+namespace Input{
 namespace KeyCode {
 	static const unsigned BackSpace = 259;
 	static const unsigned Enter = 257;
@@ -55,5 +56,5 @@ protected:
 	unsigned cur_char;
 	std::string input_str;
 };
-
+}
 #endif /* KEYBOARD_H_ */

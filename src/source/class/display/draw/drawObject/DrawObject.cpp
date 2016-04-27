@@ -10,7 +10,7 @@
 
 #include "class/display/draw/Draw.h"
 #include <iostream>
-
+namespace Display{
 DrawObject::DrawObject(std::string _obj_str, std::string _tex_str,
 		std::string _normalTex_str, bool _layer_texture) {
 	init_drawObject(_obj_str, _tex_str, _normalTex_str, _layer_texture);
@@ -164,4 +164,5 @@ void DrawObject::draw_object(Shader *shader) {
 	}
 
 	//Buffer::disable_all_buffer();
+}
 }

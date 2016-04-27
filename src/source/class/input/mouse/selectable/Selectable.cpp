@@ -1,5 +1,6 @@
 #include "class/input/mouse/selectable/Selectable.h"
 #include "class/input/mouse/selectable/SelectableControl.h"
+namespace Input{
 Selectable::Selectable() {
 	state=state_null;
 }
@@ -33,4 +34,5 @@ void Selectable::set_state(int _state,Mouse* mou){
 }
 int Selectable::get_state()const{
 	return state;
+}
 }

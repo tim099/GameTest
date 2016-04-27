@@ -1,5 +1,5 @@
 #include "class/display/draw/drawObject/DynamicDrawObject.h"
-
+namespace Display{
 DynamicDrawObject::DynamicDrawObject() {
 	model_updated=false;
 	draw=false;
@@ -32,4 +32,5 @@ void DynamicDrawObject::update(){
 		clear_model_buffer();
 	}
 	draw=false;
+}
 }

@@ -31,7 +31,7 @@ void SortGroup::set_interval(glm::vec2 _interval){
 void SortGroup::sort(){
 	UIObject *child;
 	glm::vec2 del=interval;
-	del.y*=ViewPort::get_cur_window_aspect();
+	del.y*=Display::ViewPort::get_cur_window_aspect();
 	float val;
 	for(unsigned i=0;i<childs.size();i++){
 		child=childs.at(i);

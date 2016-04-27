@@ -7,7 +7,7 @@
 #include "class/display/window/ViewPort.h"
 #include <glm/glm.hpp>
 #include <iostream>
-
+namespace Display{
 StringRenderer::StringRenderer(std::string fontTexturePath) {
 	targetaspect = 0.0f;
 	fontTexture = Texture2D::loadImage(fontTexturePath.c_str(), P_Linear);
@@ -143,4 +143,5 @@ void StringRenderer::draw(Shader2D* shader2D) {
 	}
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
+}
 }

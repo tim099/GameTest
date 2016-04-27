@@ -20,20 +20,20 @@
 #include "class/game/ageOfCube/AgeOfCubes.h"
 #include "class/game/chessMaster/ChessMaster.h"
 #include "class/tim/string/String.h"
-#include "class/game/map/cube/Cube.h"
+#include "class/game/ageOfCube/map/cube/Cube.h"
 #include "class/game/timer/Timer.h"
 #include <map>
 int main(){
 	std::cout<<"AOC ver 0.0"<<std::endl;
-	///*
+	/*
 	//while(true){
 	AOC::AgeOfCubes* ageOfCubes=new AOC::AgeOfCubes();
 	ageOfCubes->initialize();
 	ageOfCubes->mainloop();
 	delete ageOfCubes;
 	//}
-	//*/
-	/*
+	*/
+	///*
 	//while(true){
 	ChessMaster* cm=new ChessMaster();
 	cm->initialize();
@@ -41,7 +41,7 @@ int main(){
 	cm->mainloop();
 	delete cm;
 	//}
-	*/
+	//*/
 
 	/*
 	Test *test=new Test();

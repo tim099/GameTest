@@ -1,6 +1,6 @@
 #include "class/game/ageOfCube/scene/SceneEditMap.h"
 #include "class/display/UI/page/PageControl.h"
-
+#include "class/tim/file/File.h"
 #include <ctime>
 namespace AOC{
 SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
@@ -14,19 +14,23 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	cl=0;
 }
 void SceneEditMap::loading(){
+	if(Tim::File::check_if_file_exist(map_name)){
+		map->load_map(map_name);
+	}else{
+		map->gen_map(map_size,time(NULL));
+	}
 
-	map->gen_map(map_size,time(NULL));
 }
 void SceneEditMap::scene_initialize() {
-	map = new Map();
+	map = new AOC::Map();
 
 	glm::vec3 pos(10,80,10);
-	camera = new Camera(pos,
+	camera = new Display::Camera(pos,
 			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
-	lightControl = new LightControl(120);
+	lightControl = new Display::LightControl(120);
 	lightControl->push_light(
-			new ParallelLight(glm::vec3(1.0, -1.2, 0.2),
+			new Display::ParallelLight(glm::vec3(1.0, -1.2, 0.2),
 					glm::vec3(1.9, 1.9, 1.9), true));
 
 	UI = new UI::UI();
@@ -34,16 +38,17 @@ void SceneEditMap::scene_initialize() {
 
 	//UI->Load_script("files/script/UIscript/saveUI.txt");
 
-	cl=new CubeLight();
+	cl=new Display::CubeLight();
 	cl->color=glm::vec3(1,0.5,0);
 	cl->size=1.01f*Map::CUBE_SIZE;
 	lightControl->push_light(cl);
 	resume();
 	//========================
-	std::cout << "SceneEditMap::scene_initialize()" << std::endl;
+	//std::cout << "SceneEditMap::scene_initialize()" << std::endl;
 }
 void SceneEditMap::scene_terminate() {
 	delete lightControl;
+	//draw->set_lightControl(0);
 	delete camera;
 
 	if(map)delete map;
@@ -56,6 +61,7 @@ SceneEditMap::~SceneEditMap() {
 
 }
 void SceneEditMap::camera_control(){
+
 	if(input->keyboard->pressed('R')){
 		camera->v.y += 0.01f* sqrt(camera->look_dis() + 0.001);
 	}
@@ -128,6 +134,11 @@ void SceneEditMap::camera_control(){
 		}
 	}
 }
+void SceneEditMap::handle_signal(Input::Signal *sig){
+	if(sig->get_data()=="save_map"){
+		map->save_map(map_name);
+	}
+}
 void SceneEditMap::handle_input() {
 	camera_control();
 	if (input->keyboard->pressed_char('w')) {
@@ -138,6 +149,18 @@ void SceneEditMap::handle_input() {
 	}
 	if (input->keyboard->get('I')) {
 		map->dp_map->range += 1;
+	}
+	/*
+	if (input->keyboard->get('E')) {
+		if(UI->check_mode(UI::Mode::EDIT)){
+			UI->Disable_Mode(UI::Mode::EDIT);
+		}else{
+			UI->Enable_Mode(UI::Mode::EDIT);
+		}
+	}
+	*/
+	if (input->keyboard->get('V')) {
+		destruct_mode^=1;
 	}
 	if (input->keyboard->get('K')) {
 		if (map->dp_map->range > 1)
@@ -152,6 +175,9 @@ void SceneEditMap::handle_input() {
 				//dmap->update_map(pos);
 			}
 		}
+	}
+	if(input->keyboard->get('S')){
+		UI->Save_script("files/AgeOfCube/editMap/UI/editMapUI.txt");
 	}
 	if (input->keyboard->pressed('V')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
@@ -178,10 +204,12 @@ void SceneEditMap::scene_update() {
 	UI->update_UIObject();
 	timer.tic(1);
 	camera->update();
-	handle_input();
 	map->update(&timer);
 
 
+}
+void SceneEditMap::scene_update_end(){
+	handle_input();
 }
 void SceneEditMap::scene_draw() {
 	UI->draw_UIObject(draw);
@@ -197,8 +225,6 @@ void SceneEditMap::scene_draw() {
 				  (map->selected_on.y+0.5f)*Map::CUBE_SIZE,
 				  (map->selected_on.z+0.5f)*Map::CUBE_SIZE);
 	}
-
-
 }
 void SceneEditMap::pause() {
 

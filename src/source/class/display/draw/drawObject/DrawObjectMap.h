@@ -3,6 +3,7 @@
 #include "class/display/draw/drawObject/DrawObject.h"
 #include "class/tim/map/MapContainer.h"
 #include "class/tim/parser/Parser.h"
+namespace Display{
 class DrawObjectMap : public Tim::Parser{
 public:
 	DrawObjectMap();
@@ -24,5 +25,5 @@ protected:
 	std::string name;
 	std::string folder_path;
 };
-
+}
 #endif /* SOURCE_CLASS_DISPLAY_DRAW_DRAWOBJECT_DRAWOBJECTMAP_H_ */

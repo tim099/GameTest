@@ -1,5 +1,6 @@
 #include "class/input/signal/Receiver.h"
 #include <iostream>
+namespace Input{
 Receiver::Receiver(std::string _name) {
 	name=_name;
 }
@@ -20,4 +21,5 @@ Signal *Receiver::get_signal(){
 	Signal *s=signal_q.front();
 	signal_q.pop();//don't delete the signal!!
 	return s;
+}
 }

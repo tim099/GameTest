@@ -3,16 +3,16 @@
 #include "class/display/UI/string/UIString.h"
 #include "class/tim/string/String.h"
 #include "class/game/ageOfCube/scene/SceneEditMap.h"
+
 namespace AOC{
 SceneStart::SceneStart() {
 	UI=0;
 	receiver=0;
 	p_control=0;
+	auto_p_control=0;
+	map_folder_path="files/AgeOfCube/maps/";
 }
 void SceneStart::scene_initialize(){
-
-	UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
-	p_control=(UI::PageControl*)UI->get_child("pageControl");
 
 	resume();
 
@@ -39,28 +39,47 @@ void SceneStart::pause(){
 }
 void SceneStart::resume(){
 	draw->Enable3D=false;
-	if(!p_control){
-		std::cerr<<"SceneStart::scene_initialize ,can't find child page control"<<std::endl;
-	}else{
-		p_control->switch_page("startPage");
+	if(UI){
+		delete UI;
+		UI=0;
 	}
-	/*
 	UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
 	p_control=(UI::PageControl*)UI->get_child("pageControl");
+	auto_p_control=(UI::AutoPageControl*)UI->get_child("newGame_autoPageControl");
+	//if(UI)delete UI;
+
 	if(!p_control){
 		std::cerr<<"SceneStart::scene_initialize ,can't find child page control"<<std::endl;
 	}else{
 		p_control->switch_page("startPage");
 	}
-	*/
 }
-void SceneStart::handle_signal(Signal* sig){
+void SceneStart::handle_signal(Input::Signal* sig){
 	std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;
 	if(sig->get_data()=="CreateNewMap"){
 		create_new_map();
 	}else if(sig->get_data()=="CreateMap"){
 		create_map();
+	}else if(sig->get_data()=="edit_map"){
+		load_map();
+	}else if(sig->get_data()=="delete_map"){
+		delete_map();
 	}
+}
+void SceneStart::load_map(){
+	std::string map_name=((UI::UIString*)UI->get_child("Selected_Map"))->get_string();
+	if(map_name=="Null")return;
+	Input::Signal *sig=new Input::Signal("push_scene","Game");
+
+
+	sig->ex_data=new AOC::SceneEditMap(map_folder_path+map_name,
+			glm::ivec3(1,1,1));
+	sig->sent();
+}
+void SceneStart::delete_map(){
+	std::string map_name=((UI::UIString*)UI->get_child("Selected_Map"))->get_string();
+	Tim::File::delete_file(map_folder_path+map_name);
+	auto_p_control->update_pages();
 }
 void SceneStart::create_new_map(){
 	UI::UIString *new_map_name=(UI::UIString*)UI->get_child("NewMapName");
@@ -92,28 +111,28 @@ void SceneStart::create_map(){
 		sscanf(size.at(i).c_str(),"%u",&map_size[i]);
 		std::cout<<map_size[i]<<",";
 	}std::cout<<std::endl;
-	Signal *sig=new Signal("push_scene","Game");
-	sig->ex_data=new AOC::SceneEditMap(std::string(map_name->get_string()),
+	Input::Signal *sig=new Input::Signal("push_scene","Game");
+	sig->ex_data=new AOC::SceneEditMap(map_folder_path+std::string(map_name->get_string()),
 			glm::ivec3(map_size[0],map_size[1],map_size[2]));
 	//sig->ex_data=new SceneStart();
 	sig->sent();
 
 }
 void SceneStart::handle_input(){
+	///*
 	if(input->keyboard->get('E')){
-		///*
 		if(UI->check_mode(UI::Mode::EDIT)){
 			UI->Disable_Mode(UI::Mode::EDIT);
 		}else{
 			UI->Enable_Mode(UI::Mode::EDIT);
 		}
-		//*/
 	}else if(input->keyboard->get('S')){
 		UI->Save_script("files/AgeOfCube/startScene/UI/startSceneUI.txt");
 	}else if(input->keyboard->get('L')){
 		//delete UI;
 		//UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
 	}
+	//*/
 }
 void SceneStart::scene_update(){
 	handle_input();

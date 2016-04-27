@@ -30,7 +30,7 @@ void UIString::initialize(std::string* _str, float _font_size) {
 	str = _str;
 	cur_insert_at=str->size();
 	font_size = _font_size;
-	size = glm::vec2(1,2)*RenderString::string_size(str,font_size);
+	size = glm::vec2(1,2)*Display::RenderString::string_size(str,font_size);
 }
 UIObject* UIString::create_UIObject() {
 	return new UIString();
@@ -59,24 +59,24 @@ void UIString::Parse_UIScript(std::ostream &os) {
 		os << "	" << "#EnableInputMode" << std::endl;
 	}
 }
-void UIString::start_draw(Draw* draw) {
+void UIString::start_draw(Display::Draw* draw) {
 	if (str) {
-		RenderString* rstr=new RenderString(*str, font_size, get_pos(), false);
-		DrawData* data=draw->push_as_tex(rstr);
+		Display::RenderString* rstr=new Display::RenderString(*str, font_size, get_pos(), false);
+		Display::DrawData* data=draw->push_as_tex(rstr);
 		if(input_mode&&cur_input_str==this){
 			rstr->insert_at=insert_at;
-			data->ex_datas.push_back(new ColorAlter(glm::vec3(0.2, 0.2, 0.2)));
+			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.2, 0.2, 0.2)));
 		}
 	}
 }
 void UIString::update() {
 	if(receiver){
-		Signal *sig=receiver->get_signal();
+		Input::Signal *sig=receiver->get_signal();
 		if(sig){
 			*str=sig->get_data();
 		}
 	}
-	if(Input::get_cur_object()->mouse->left_clicked()){
+	if(Input::Input::get_cur_object()->mouse->left_clicked()){
 		if (get_state() == state_select) {
 			enable_input();
 		}else{
@@ -85,19 +85,19 @@ void UIString::update() {
 	}
 
 	if(input_mode&&cur_input_str==this){
-		KeyBoard* keyboard=Input::get_cur_object()->keyboard;
-		if(keyboard->get(KeyCode::Left)){
+		Input::KeyBoard* keyboard=Input::Input::get_cur_object()->keyboard;
+		if(keyboard->get(Input::KeyCode::Left)){
 			if(cur_insert_at>0)cur_insert_at--;
-		}else if(keyboard->get(KeyCode::Right)){
+		}else if(keyboard->get(Input::KeyCode::Right)){
 			if(cur_insert_at<(int)str->size())cur_insert_at++;
-		}else if(keyboard->get(KeyCode::BackSpace)){
-			if(str->size()>0){
+		}else if(keyboard->get(Input::KeyCode::BackSpace)){
+			if(str->size()>0&&cur_insert_at>0){
 				std::string tmp=str->substr(cur_insert_at,str->size());
 				str->resize(cur_insert_at-1);
 				//str->erase(cur_insert_at-1);
 				*str+=tmp;
 				cur_insert_at--;
-				size = glm::vec2(1,2)*RenderString::string_size(str,font_size);
+				size = glm::vec2(1,2)*Display::RenderString::string_size(str,font_size);
 			}
 		}else{
 			unsigned c=keyboard->get_char();
@@ -108,7 +108,7 @@ void UIString::update() {
 				str->push_back((char)c);
 				*str+=tmp;
 				cur_insert_at++;
-				size = glm::vec2(1,2)*RenderString::string_size(str,font_size);
+				size = glm::vec2(1,2)*Display::RenderString::string_size(str,font_size);
 			}
 		}
 		keyboard->clear_keys();

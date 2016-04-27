@@ -1,5 +1,5 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
-
+namespace Display{
 AllDrawObjects::AllDrawObjects() {
 
 }
@@ -44,4 +44,5 @@ void AllDrawObjects::Parse_Header(std::istream &is, std::string &line){
 		Tim::String::get_line(is, line, true, true);
 		folder_path = std::string(line);
 	}
+}
 }

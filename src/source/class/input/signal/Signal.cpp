@@ -1,6 +1,7 @@
 #include "class/input/signal/Signal.h"
 #include "class/input/signal/Receiver.h"
 #include "class/input/Input.h"
+namespace Input{
 Signal::Signal(std::string _data,std::string _sent_to) {
 	sent_to=_sent_to;
 	data=_data;
@@ -27,4 +28,5 @@ void Signal::sent(){
 	}else{
 		Input::get_cur_object()->sent_signal(this);
 	}
+}
 }

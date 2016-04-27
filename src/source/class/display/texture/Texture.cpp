@@ -10,6 +10,7 @@
 #include <cstring>
 #include <vector>
 #include <GL/glfw3.h>
+namespace Display{
 Texture::Texture(GLuint _TexID,GLenum _target,GLenum _type,GLenum _format) {
 	TexID=_TexID;
 	target=_target;
@@ -98,4 +99,5 @@ void Texture::draw(Shader2D* shader2D,DrawData *data){
 double Texture::get_aspect(){
 	std::cerr<<"error not implement get_aspect() in this class"<<std::endl;
 	return 1.0;
+}
 }

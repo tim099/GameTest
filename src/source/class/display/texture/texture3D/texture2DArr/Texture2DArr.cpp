@@ -2,6 +2,7 @@
 #include "class/display/texture/image/Image.h"
 #include "class/display/shader/shader2D/Shader2D.h"
 #include "class/display/buffer/Buffer.h"
+namespace Display{
 Texture2DArr::Texture2DArr(GLuint _TexID,glm::ivec3 _size,GLenum _type,GLenum _format)
 : Texture(_TexID,GL_TEXTURE_2D_ARRAY,_type,_format){
 	size=_size;
@@ -39,4 +40,5 @@ Texture2DArr* Texture2DArr::gen_texture2DArr(glm::ivec3 size,GLint internalforma
 	Texture2DArr *tex=new Texture2DArr(texture,size,type,format);
 
 	return tex;
+}
 }

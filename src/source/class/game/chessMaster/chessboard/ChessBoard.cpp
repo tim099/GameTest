@@ -49,6 +49,7 @@ void ChessBoard::clear(){
 	clear_steps();
 	winner=0;
 	cur_player=1;
+
 	if(board){
 		delete board;
 		board=0;
@@ -98,6 +99,11 @@ void ChessBoard::init_board(){
 	winner=0;
 	cur_player=1;
 }
+void ChessBoard::init_pieces(){
+	for(unsigned i=0;i<pieces.size();i++){
+		pieces_weight[i]=pieces.at(i)->weight;
+	}
+}
 int ChessBoard::find_board(lua_State *L){
 	lua_getglobal(L, "board");
 	Tim::Array2D<short int> *cb =(Tim::Array2D<short int>*)lua_touserdata(L,-1);
@@ -134,24 +140,6 @@ int ChessBoard::get_board(lua_State *L){
 	lua_pushnumber(L,type);
 
 	return 1;
-}
-int ChessBoard::evaluate_score(Tim::Array2D<short int> *cb,int player){
-	int total_score=0;
-	int type,weight;
-	for(int i=0;i<cb->sizex;i++){
-		for(int j=0;j<cb->sizey;j++){
-			type=cb->get(i,j);
-			if(type!=0){
-				weight=pieces.at(abs(type)-1)->weight;
-				if(type*player>0){
-					total_score+=weight;
-				}else{
-					total_score-=weight;
-				}
-			}
-		}
-	}
-	return total_score;
 }
 bool ChessBoard::bound_check(int x,int y){
 	if(x<0||y<0||x>=chess_board->sizex||y>=chess_board->sizey){
@@ -250,7 +238,7 @@ void ChessBoard::load_script(std::string path){
 	rule->load_rule(dir_path+rule_path);
 
 	load_mct();
-
+	init_pieces();
 
 	file.close();
 }
@@ -586,10 +574,12 @@ void ChessBoard::find_select_cube(){
 void ChessBoard::find_next_step(Tim::Array2D<short int> *cb,
 		int player,std::vector<CM::Step> &next){
 	next.clear();
-	for(int i=0;i<cb->sizex;i++){
-		for(int j=0;j<cb->sizey;j++){
-			if(cb->get(i,j)*player>0){//player's chess
-				find_next_step(cb,i,j,next);
+	int sx=cb->sizex;
+	int sy=cb->sizey;
+	for(int x=0;x<sx;x++){
+		for(int y=0;y<sy;y++){
+			if(cb->get(x,y)*player>0){//player's chess
+				pieces[cb->get(x,y)*player-1]->next_step(cb,x,y,next,player);
 			}
 		}
 	}

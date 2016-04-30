@@ -11,12 +11,13 @@ Chariot::Chariot() {
 Chariot::~Chariot() {
 
 }
-void Chariot::next_step(Tim::Array2D<short int> *chess_board,
-		int x,int y,std::vector<int> &next_step,int player){
 
+void Chariot::next_step(Tim::Array2D<short int> *chess_board,
+		int x,int y,std::vector<CM::Step> &next_step,int player){
 	move_straight(chess_board,x,y,1,0,player,next_step);
 	move_straight(chess_board,x,y,-1,0,player,next_step);
 	move_straight(chess_board,x,y,0,1,player,next_step);
 	move_straight(chess_board,x,y,0,-1,player,next_step);
 }
+
 } /* namespace CM */

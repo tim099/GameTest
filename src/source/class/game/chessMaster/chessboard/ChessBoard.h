@@ -15,10 +15,10 @@
 namespace CM {
 
 class ChessBoard : public Tim::GlobalObject<ChessBoard>{
+	static const int max_pieces_num=1000;
 public:
 	ChessBoard(int sizex=8,int sizey=3,int sizez=8);
 	virtual ~ChessBoard();
-
 
 	void draw();
 
@@ -51,15 +51,8 @@ public:
 	void next_turn(CM::Step step);
 
 	inline void find_next_step(Tim::Array2D<short int> *chess_board,
-			int x,int y,std::vector<CM::Step> &next_steps){
-		int type=chess_board->get(x,y);
-		int player=1;
-		if(type<0){
-			type*=-1;
-			player=-1;
-		}
-		type-=1;
-		pieces[type]->next_step(chess_board,x,y,next_steps,player);
+			int x,int y,int player,std::vector<CM::Step> &next_steps){
+		pieces[chess_board->get(x,y)*player-1]->next_step(chess_board,x,y,next_steps,player);
 	}
 	void find_next_step(Tim::Array2D<short int> *chess_board,
 			int player,std::vector<CM::Step> &next_steps);
@@ -71,7 +64,26 @@ public:
 	inline int check_winner(Tim::Array2D<short int> *chess_board){
 		return rule->check_winner(chess_board);
 	}
-	int evaluate_score(Tim::Array2D<short int> *chess_board,int player);
+	int evaluate_score(Tim::Array2D<short int> *chess_board,int player){
+		int total_score=0;
+		int type,flag;
+
+		for(int i=0;i<chess_board->sizex;i++){
+			for(int j=0;j<chess_board->sizey;j++){
+				type=chess_board->get(i,j);
+				if(type!=0){
+					if(type>0){
+						flag=1;
+					}else{
+						type=-type;
+						flag=-1;
+					}
+					total_score+=flag*pieces_weight[type-1];
+				}
+			}
+		}
+		return player*total_score;
+	}
 
 	//cube being selected by mouse
 	glm::ivec3 selected_cube;
@@ -82,7 +94,6 @@ public:
 	glm::ivec2 selected_piece;
 	double cube_size;
 	std::vector<Piece*>pieces;
-
 	Tim::Array2D<short int> *chess_board;//all chess on the board
 	Tim::Array3D<unsigned char> *board;//the chess_board's structure
 	std::vector<CM::Step*> steps;
@@ -94,14 +105,23 @@ public:
 	inline CM::StepNode *get_cur_node(){
 		return cur_node;
 	}
+	CM::Rule *rule;
 	CM::BoardMCT *mct;
 	int winner,cur_player;
 	glm::ivec3 size;
 protected:
 	void init_board();
+	void init_pieces();
 	void gen_model();
+
+	void gen_pieces_weight();
+
+
 	void find_selected_on(glm::vec3 pos);
 	void find_selected_cube(glm::vec3 pos);
+
+
+	int pieces_weight[max_pieces_num];
 	std::string tex_path;
 	std::string normal_path;
 	std::string dir_path;
@@ -112,7 +132,7 @@ protected:
 
 	CM::StepNode *cur_node;
 
-	CM::Rule *rule;
+
 	std::string rule_path;
 	bool updated;
 

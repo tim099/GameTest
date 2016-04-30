@@ -23,8 +23,17 @@ public:
 	bool operator==(const Step& step);
 	bool operator>(const Step& step);
 	bool operator<(const Step& step);
-	void move(Tim::Array2D<short int> *chess_board);
-	void undo(Tim::Array2D<short int> *chess_board);
+	inline void move(Tim::Array2D<short int> *chess_board){
+		for(unsigned i=0;i<moves.size();i++){
+			moves.at(i).w=chess_board->get(moves.at(i).x,moves.at(i).y);
+			chess_board->get(moves.at(i).x,moves.at(i).y)=moves.at(i).z;
+		}
+	}
+	inline void undo(Tim::Array2D<short int> *chess_board){
+		for(unsigned i=0;i<moves.size();i++){
+			chess_board->get(moves.at(i).x,moves.at(i).y)=moves.at(i).w;
+		}
+	}
 	void draw_next_step();
 	void draw_step(glm::vec3 color);
 
@@ -51,6 +60,7 @@ public:
 	}
 	int score;
 	std::vector<Math::vec4<int> > moves;
+
 protected:
 
 };

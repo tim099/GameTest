@@ -20,7 +20,6 @@ TaskComputeScore::~TaskComputeScore() {
 	//std::cout<<"TaskComputeScore::~TaskComputeScore"<<std::endl;
 }
 void TaskComputeScore::ExecuteTask(){
-
 	step->score=ai->evaluate_score(chess_board,player,depth,pruning,max);
 	//std::cout<<"TaskComputeScore::ExecuteTask() score="<<step->score<<std::endl;
 	delete chess_board;

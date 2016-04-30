@@ -22,9 +22,9 @@
 #include "class/tim/string/String.h"
 #include "class/game/ageOfCube/map/cube/Cube.h"
 #include "class/game/timer/Timer.h"
+#include "class/game/chessMaster/piece/Step.h"
 #include <map>
 int main(){
-	std::cout<<"AOC ver 0.0"<<std::endl;
 	/*
 	//while(true){
 	AOC::AgeOfCubes* ageOfCubes=new AOC::AgeOfCubes();

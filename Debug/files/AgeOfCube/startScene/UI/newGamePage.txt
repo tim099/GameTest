@@ -61,31 +61,6 @@ CreateUIObject:
 	Name:
 		default
 	Position:
-		0.189605 0.128103
-	Texture:
-		UI/UI/button2
-	Width:
-		0.2
-	Height:
-		0
-	Set_string:
-"Prev Page"
-	String_size:
-		0.02
-	Set_signal:
-		Data:
-			prev_page
-		Receiver:
-			newGame_autoPageControl
-	Parent:
-		newGamePage
-#create_end
-
-CreateUIObject:
-		PictureButton
-	Name:
-		default
-	Position:
 		0.733529 0.611459
 	Texture:
 		UI/UI/button2
@@ -144,13 +119,12 @@ CreateUIObject:
 	Height:
 		0
 	Set_string:
-"Start Game!!
-with selected Map"
+"Edit selected Map"
 	String_size:
 		0.0176471
 	Set_signal:
 		Data:
-			start_new_game
+			edit_map
 		Receiver:
 			SceneStart
 	Parent:
@@ -162,11 +136,36 @@ CreateUIObject:
 	Name:
 		default
 	Position:
-		0.406297 0.128922
+		0.131772 0.324556
 	Texture:
 		UI/UI/button2
 	Width:
-		0.2
+		0.15
+	Height:
+		0
+	Set_string:
+"Prev Page"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			prev_page
+		Receiver:
+			newGame_autoPageControl
+	Parent:
+		newGamePage
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.383603 0.326739
+	Texture:
+		UI/UI/button2
+	Width:
+		0.15
 	Height:
 		0
 	Set_string:
@@ -201,9 +200,9 @@ CreateUIObject:
 	Name:
 		Selected_Map
 	Position:
-		0.328696 0.903751
+		0.341873 0.902387
 	String:
-"Map011"
+"Null"
 	String_size:
 		0.02
 	Parent:
@@ -233,7 +232,7 @@ CreateUIObject:
 	ButtonPerPage:
 		8
 	LoadPath:
-		files/maps/
+		files/AgeOfCube/maps/
 	#LoadFilesToButtons
 	Parent:
 		newGamePage

@@ -28,6 +28,9 @@ Game::~Game() {
 	//std::cout<<"delete window"<<std::endl;
 
 }
+Tim::ThreadPool* Game::create_thread_pool(){
+	return new Tim::ThreadPool(8,REALTIME_PRIORITY_CLASS);
+}
 void Game::initialize(){
 	window=create_window();
 	//window->render_on();
@@ -48,7 +51,7 @@ void Game::initialize(){
 	controller_system->push(new Input::SelectableControl());
 
 	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
-	thread_pool = new Tim::ThreadPool(8,REALTIME_PRIORITY_CLASS);
+	thread_pool = create_thread_pool();
 
 	s_loading = new LoadingScene();
 	s_loading->initialize(draw,input,thread_pool);

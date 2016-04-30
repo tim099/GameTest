@@ -39,6 +39,7 @@ protected:
 	virtual void terminate_game()=0;
 	virtual void game_update()=0;
 	virtual Display::Window* create_window()=0;
+	virtual Tim::ThreadPool* create_thread_pool();
 	Scene* get_cur_scene();
 	void handle_game_signal();
 	void swap_buffer();

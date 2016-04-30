@@ -74,7 +74,7 @@ CreateUIObject:
 	Name:
 		default_UIObject
 	Position:
-		0.0790626 0.577558
+		0.0512442 0.580286
 	String:
 "Enter Map size(X*Y*Z):"
 	String_size:

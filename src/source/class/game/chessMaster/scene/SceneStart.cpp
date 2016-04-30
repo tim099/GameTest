@@ -3,7 +3,6 @@
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/game/chessMaster/AI/AI.h"
-#include "class/game/chessMaster/AI/TaskAI.h"
 #include "class/tim/math/Position.h"
 #include "class/tim/string/String.h"
 #include "class/game/chessMaster/chessboard/chess/ChineseChess.h"
@@ -190,11 +189,6 @@ void SceneStart::camera_control(){
 				* input->mouse->pos_delta().x)
 				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
 	}
-
-	///*
-
-
-	//*/
 	if (input->mouse->scroll) {
 		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
 				* (0.05 * input->mouse->scroll);
@@ -221,10 +215,7 @@ void SceneStart::camera_control(){
 void SceneStart::AI_move(int player){
 	selected=false;
 	if(!ai->searching){
-		ai->search_done=false;
-		thread_pool->push_task(new CM::TaskAI(ai,thread_pool,chess_board,player,difficulty,MAX));
-		//CM::Step best=ai->find_best_step(chess_board,player,difficulty,player*MAX);
-
+		ai->search_start(thread_pool,chess_board,player,difficulty,MAX);
 	}
 }
 void SceneStart::handle_input(){
@@ -276,7 +267,7 @@ void SceneStart::handle_input(){
 					if(type*chess_board->cur_player>0){
 						next_step.clear();
 						chess_board->find_next_step(chess_board->chess_board,
-								s.x,s.y,next_step);
+								s.x,s.y,chess_board->cur_player,next_step);
 						selected=true;
 					}else{
 						selected=false;

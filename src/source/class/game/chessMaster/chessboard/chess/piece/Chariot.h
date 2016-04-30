@@ -15,22 +15,28 @@ public:
 	}
 	inline void move_straight(Tim::Array2D<short int> *chess_board,
 			int x,int y,int dx,int dy,int player
-			,std::vector<int> &next_step){
+			,std::vector<CM::Step> &next_step){
+		CM::Step cur_step;
+		cur_step.moves.push_back(Math::vec4<int>(x,y,0,-1));
+		cur_step.moves.push_back(Math::vec4<int>(0,0,chess_board->get(x,y),1));
+
 		int i=x+dx;
 		int j=y+dy*player;
 		int type;
 		while(bound_check(i,j)){
 			type=chess_board->get(i,j);
 			if (type*player>0)break;//stop by player's own piece
-			next_step.push_back(i);
-			next_step.push_back(j);
+			cur_step.moves[1].x=i;
+			cur_step.moves[1].y=j;
+			next_step.push_back(cur_step);
 			if (type*player<0)break;//attack enemy and stop here
 			i+=dx;
 			j+=dy*player;
 		}
 	}
 	virtual void next_step(Tim::Array2D<short int> *chess_board,
-			int x,int y,std::vector<int> &next_step,int player);
+			int x,int y,std::vector<CM::Step> &next_step,int player);
+
 };
 
 } /* namespace CM */

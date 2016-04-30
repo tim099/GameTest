@@ -21,7 +21,6 @@ public:
 	Piece();
 	virtual ~Piece();
 
-
 	virtual void next_step(Tim::Array2D<short int> *chess_board,
 			int x,int y,std::vector<CM::Step> &next_step,int player);
 	void load_script(std::string path);

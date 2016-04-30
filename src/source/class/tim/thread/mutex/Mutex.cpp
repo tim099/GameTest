@@ -8,10 +8,4 @@ Mutex::Mutex() {
 Mutex::~Mutex() {
 	CloseHandle(mutex);
 }
-void Mutex::wait_for_this(DWORD time){
-	WaitForSingleObject(mutex,time);
-}
-void Mutex::release(){
-	ReleaseMutex(mutex);
-}
 } /* namespace Tim */

@@ -7,8 +7,12 @@ class Mutex {
 public:
 	Mutex();
 	virtual ~Mutex();
-	void wait_for_this(DWORD time=INFINITE);
-	void release();
+	inline void wait_for_this(DWORD time=INFINITE){
+		WaitForSingleObject(mutex,time);
+	}
+	inline void release(){
+		ReleaseMutex(mutex);
+	}
 	HANDLE mutex;
 };
 

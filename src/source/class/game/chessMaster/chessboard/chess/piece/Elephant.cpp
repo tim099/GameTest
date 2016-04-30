@@ -12,35 +12,42 @@ Elephant::~Elephant() {
 
 }
 void Elephant::next_step(Tim::Array2D<short int> *chess_board,
-		int x,int y,std::vector<int> &next_step,int player){
+		int x,int y,std::vector<CM::Step> &next_step,int player){
+	CM::Step cur_step;
+	cur_step.moves.push_back(Math::vec4<int>(x,y,0,-1));
+	cur_step.moves.push_back(Math::vec4<int>(0,0,chess_board->get(x,y),1));
 	int i,j;
 	i=x+2;
 	j=y+2;
 	if(bound_check(i,j)&&chess_board->get(x+1,y+1)==0&&chess_board->get(i,j)*player<=0
 			&&((player==1&&j<5)||(player==-1&&j>=5))){
-		next_step.push_back(i);
-		next_step.push_back(j);
+		cur_step.moves[1].x=i;
+		cur_step.moves[1].y=j;
+		next_step.push_back(cur_step);
 	}
 	i=x-2;
 	j=y+2;
 	if(bound_check(i,j)&&chess_board->get(x-1,y+1)==0&&chess_board->get(i,j)*player<=0
 			&&((player==1&&j<5)||(player==-1&&j>=5))){
-		next_step.push_back(i);
-		next_step.push_back(j);
+		cur_step.moves[1].x=i;
+		cur_step.moves[1].y=j;
+		next_step.push_back(cur_step);
 	}
 	i=x+2;
 	j=y-2;
 	if(bound_check(i,j)&&chess_board->get(x+1,y-1)==0&&chess_board->get(i,j)*player<=0
 			&&((player==1&&j<5)||(player==-1&&j>=5))){
-		next_step.push_back(i);
-		next_step.push_back(j);
+		cur_step.moves[1].x=i;
+		cur_step.moves[1].y=j;
+		next_step.push_back(cur_step);
 	}
 	i=x-2;
 	j=y-2;
 	if(bound_check(i,j)&&chess_board->get(x-1,y-1)==0&&chess_board->get(i,j)*player<=0
 			&&((player==1&&j<5)||(player==-1&&j>=5))){
-		next_step.push_back(i);
-		next_step.push_back(j);
+		cur_step.moves[1].x=i;
+		cur_step.moves[1].y=j;
+		next_step.push_back(cur_step);
 	}
 }
 } /* namespace CM */

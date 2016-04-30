@@ -104,7 +104,8 @@ CreateUIObject:
 	Position:
 		0.25871 0.952182
 	String:
-"QAQEEe"
+"erterrrt
+ertrter"
 	String_size:
 		0.02
 	Parent:

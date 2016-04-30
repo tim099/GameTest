@@ -2,24 +2,28 @@
 #include "class/game/chessMaster/chessboard/ChessBoard.h"
 #include "class/display/draw/Draw.h"
 #include "class/display/light/LightControl.h"
-
+#include <iostream>
 namespace CM {
 
 Step::Step() {
 	score=0;
+	moves.reserve(2);
 }
 Step::Step(Step *step){
 	init(*step);
 }
 void Step::init(const Step &step){
+	//std::cout<<"Step::init"<<std::endl;
 	score=step.score;
 	moves.clear();
-	for(unsigned i=0;i<step.moves.size();i++){
-		moves.push_back(step.moves.at(i));
+	unsigned move_size=step.moves.size();
+	moves.reserve(move_size);
+	for(unsigned i=0;i<move_size;i++){
+		moves.push_back(step.moves[i]);
 	}
 }
 Step::~Step() {
-
+	//std::cout<<"Step::~Step()"<<std::endl;
 }
 void Step::save(FILE * file){
 	fprintf(file,"%d\n",score);
@@ -40,39 +44,8 @@ void Step::load(FILE * file){
 		moves.push_back(move);
 	}
 }
-void Step::move(Tim::Array2D<short int> *chess_board){
-	for(unsigned i=0;i<moves.size();i++){
-		moves.at(i).w=chess_board->get(moves.at(i).x,moves.at(i).y);
-		chess_board->get(moves.at(i).x,moves.at(i).y)=moves.at(i).z;
-	}
-}
-void Step::undo(Tim::Array2D<short int> *chess_board){
-	for(unsigned i=0;i<moves.size();i++){
-		chess_board->get(moves.at(i).x,moves.at(i).y)=moves.at(i).w;
-	}
-}
-/*
-void Step::parse_step(Tim::Array2D<short int> *chess_board,int x,int y,std::vector<int> &next_step,int &i){
-	moves.clear();
-	moves.reserve(2);
-	if(next_step[i]>=0){
-		moves.push_back(glm::ivec4(x,y,0,-1));
-		moves.push_back(glm::ivec4(next_step[i],next_step[i+1],chess_board->get(x,y),1));
-		i+=2;
-	}else if(next_step[i]==-1){
-		int move_num=next_step[i+1];
-		while(move_num>0){
-			i+=2;
-			moves.push_back(glm::ivec4(next_step[i],next_step[i+1],
-					next_step[i+2],next_step[i+3]));
-			i+=2;
-			move_num--;
-		}
-		i+=2;
-	}
-}
-*/
 Step& Step::operator=(const Step& step){
+	//std::cout<<"Step::operator="<<std::endl;
 	init(step);
 	return (*this);
 }

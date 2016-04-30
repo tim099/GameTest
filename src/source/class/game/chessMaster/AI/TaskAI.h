@@ -9,7 +9,8 @@ class ChessBoard;
 class TaskAI: public Tim::Task {
 public:
 	TaskAI(CM::AI *ai,Tim::ThreadPool *pool,
-			CM::ChessBoard* chess_board,int player,int depth,int pruning);
+			CM::ChessBoard* chess_board,int player,
+			int depth,int pruning);
 	virtual ~TaskAI();
 protected:
 	virtual void ExecuteTask();

@@ -3,6 +3,7 @@
 #include "class/game/chessMaster/piece/Step.h"
 #include "class/tim/array/Array2D.h"
 #include "class/tim/thread/ThreadPool.h"
+#include "class/tim/objectpool/ObjPool.h"
 namespace CM {
 class ChessBoard;
 class StepNode;
@@ -11,7 +12,12 @@ class AI {
 public:
 	AI();
 	virtual ~AI();
-	CM::Step find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* chess_board,int player,int depth,int pruning);
+
+	void search_start(Tim::ThreadPool *pool,
+			CM::ChessBoard* chess_board,int player,int depth,int pruning);
+
+	CM::Step find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* chess_board,
+			int player,int depth,int pruning);
 	int evaluate_score(Tim::Array2D<short int> *chess_board,
 			int player,int depth,int pruning,bool max);
 	bool search_done;
@@ -33,9 +39,10 @@ protected:
 	CM::Step find_best_step(Tim::ThreadPool* pool,Tim::Array2D<short int> *chess_board,
 			int player,int depth,int pruning,bool max);
 
+	Tim::ObjPool<std::vector<CM::Step> >*steps_pool;
 	CM::ChessBoard* board;
-
-
+	void test(int width,int depth);
+	int total_test;
 };
 
 } /* namespace CM */

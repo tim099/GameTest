@@ -15,6 +15,7 @@ ChineseChess::ChineseChess() {
 	rule_path=dir_path+"chessBoard/rule.lua";
 
 	create_pieces();
+	init_pieces();
 	cube_type_num=21;
 
 	tex_path="chineseChess/board_textures";
@@ -24,6 +25,7 @@ ChineseChess::ChineseChess() {
 	if(rule)delete rule;
 	rule=new CM::ChineseChessRule();
 	load_mct();
+
 	//rule->load_rule(rule_path);
 }
 ChineseChess::~ChineseChess() {

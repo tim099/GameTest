@@ -1,7 +1,7 @@
 #include "class/game/chessMaster/AI/AI.h"
 #include "class/game/chessMaster/chessboard/ChessBoard.h"
 #include "class/game/chessMaster/AI/TaskComputeScore.h"
-
+#include "class/game/chessMaster/AI/TaskAI.h"
 #include <stdlib.h>
 #include <time.h>
 #include <algorithm>
@@ -16,16 +16,84 @@ AI::AI() {
 	search_done=false;
 	searching=false;
 	total_compute=0;
+	total_test=0;
+	steps_pool=new Tim::ObjPool<std::vector<CM::Step> >(2000);
 }
 AI::~AI() {
-
+	delete steps_pool;
 }
-CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,int player,int depth,int pruning){
+void AI::search_start(Tim::ThreadPool *pool,
+		CM::ChessBoard* chess_board,int player,int depth,int pruning){
+	search_done=false;
+	searching=true;
+	CM::TaskAI* task=new CM::TaskAI(this,pool,chess_board,player,depth,pruning);
+	pool->push_task(task);
+	//task->join();
+	//find_best_step(pool,chess_board,player,depth,pruning);
+}
+void AI::test(int width,int depth){
+
+	if(depth==0){
+		total_test++;
+		return;
+	}
+	///*
+	//CM::Step* next_step = new CM::Step[width];
+	///*
+	std::vector<CM::Step>* next_step=steps_pool->create();
+	next_step->clear();
+	board->find_next_step(board->chess_board,1,*next_step);
+	steps_pool->free(next_step);
+	//*/
+	/*
+	std::vector<CM::Step> next_step;
+	next_step.reserve(40);
+	board->find_next_step(board->chess_board,1,next_step);
+	*/
+	for (int i = 0; i < width; i++) {
+		 // next_step[i].moves.push_back(Math::vec4<int> (0,0,0,0));
+		 //board->check_winner(board->chess_board);
+		 //board->evaluate_score(board->chess_board,1);
+
+
+		test(width, depth - 1);
+	}
+	 //delete[] next_step;
+	 //*/
+	/*
+	 std::vector<CM::Step> next_step;
+	 next_step.reserve(width);
+	 for(int i=0;i<width;i++){
+	 next_step.push_back(CM::Step());
+	 test(width,depth-1);
+	 }
+	 */
+	/*
+	 std::vector<int> next_step(width,int(0));
+	 //next_step.resize(width);
+	 for (int i = 0; i < width; i++) {
+	 next_step[i] = i;
+	 test(width, depth - 1);
+	 }
+	 */
+}
+CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,int player,
+		int depth,int pruning){
+	total_compute=0;
+	board=_chess_board;
+
+	/*
+	total_test=0;
+	start_time=glfwGetTime();
+	test(15,5);
+	std::cout<<"total test:"<<total_test<<std::endl;
+	std::cout<<"test time used:"<<(float)(glfwGetTime()-start_time)<<std::endl;
+	*/
+
 	start_time=glfwGetTime();
 	search_done=false;
 	searching=true;
-	total_compute=0;
-	board=_chess_board;
+
 
 	Tim::Array2D<short int> *cb=new Tim::Array2D<short int>(board->chess_board);
 	CM::Step best=find_best_step(pool,cb,player,depth,pruning,true);
@@ -43,23 +111,25 @@ int AI::evaluate_score(Tim::Array2D<short int> *chess_board,
 	CM::Step *cur;
 	int best;
 	best=max?-MAX:MAX;;
-	std::vector<CM::Step> next_step;
-	next_step.reserve(60);
-	board->find_next_step(chess_board,player,next_step);
 
+	std::vector<CM::Step>* next_step=steps_pool->create();
+	next_step->clear();
 
-	//std::cout<<"step num="<<next_step.size()<<std::endl;
-	for (unsigned i = 0; i < next_step.size(); i++) {
-		cur = &next_step[i];
+	board->find_next_step(chess_board,player,*next_step);
+	bool end=false;
+	unsigned step_size=next_step->size();
+
+	for (unsigned i = 0;(i<step_size)&&!end; i++) {
+		cur = &(*next_step)[i];
 		cur->move(chess_board);
-		int winner = board->check_winner(chess_board);
-		if (winner == 0) {//no player win yet
+		if (board->check_winner(chess_board) == 0) {//no player win yet
 			if (depth <= 1) {//compute score
 				total_compute++;
-				if (max)
+				if (max){
 					cur->score = board->evaluate_score(chess_board, player);
-				else
+				}else{
 					cur->score = board->evaluate_score(chess_board, -player);
+				}
 			} else {//do backtracking
 				cur->score = evaluate_score(chess_board, -player,
 						depth - 1, best, !max);
@@ -74,13 +144,12 @@ int AI::evaluate_score(Tim::Array2D<short int> *chess_board,
 		if ((max && cur->score > best) || (!max && cur->score < best)) {
 			best = cur->score;
 			if ((max && pruning < best) || (!max && pruning > best)) {
-				cur->undo(chess_board);
-				return best;
+				end=true;
 			}
 		}
-
 		cur->undo(chess_board);
 	}
+	steps_pool->free(next_step);
 
 	return best;
 }
@@ -124,7 +193,7 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,Tim::Array2D<short int> *chess
 				break;
 			}
 		}
-		if(depth>3){
+		if(depth>5){
 			next_node=board->mct->find_and_expand(cur_node,(*cur));
 		}else{
 			next_node=board->mct->find(cur_node,(*cur));

@@ -23,7 +23,7 @@
 #include "class/game/ageOfCube/map/cube/Cube.h"
 #include "class/game/timer/Timer.h"
 #include "class/game/chessMaster/piece/Step.h"
-#include <map>
+#include "class/tim/array/vector.h"
 int main(){
 	/*
 	//while(true){

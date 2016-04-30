@@ -254,9 +254,9 @@ void SceneStart::handle_input(){
 				s.y=chess_board->selected_piece.y;
 				if(selected){
 					for(unsigned i=0;i<next_step.size();i++){
-						if(next_step.at(i).selected(s.x,s.y)){
+						if(next_step[i].selected(s.x,s.y)){
 							selected=false;
-							next_turn(next_step.at(i));
+							next_turn(next_step[i]);
 							break;
 						}
 					}
@@ -467,7 +467,7 @@ void SceneStart::draw_step(){
 					  (s.y+0.5f)*chess_board->cube_size);
 	lightControl->push_temp_light(cl);
 	for(unsigned i=0;i<next_step.size();i++){
-		next_step.at(i).draw_next_step();
+		next_step[i].draw_next_step();
 	}
 }
 

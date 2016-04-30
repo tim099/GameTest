@@ -6,7 +6,7 @@
 #include "class/display/UI/page/PageControl.h"
 #include "class/display/camera/Camera.h"
 #include "class/game/chessMaster/piece/Step.h"
-
+#include "class/tim/array/vector.h"
 namespace CM {
 class AI;
 namespace scene{
@@ -49,7 +49,7 @@ protected:
 
 	Display::LightControl* lightControl;
 	//std::vector<glm::ivec2> next_step;
-	std::vector<CM::Step> next_step;
+	Tim::vector<CM::Step> next_step;
 	bool destruct_mode;
 	int type;
 	int chess_type;

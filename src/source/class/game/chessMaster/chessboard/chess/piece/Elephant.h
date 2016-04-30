@@ -16,7 +16,7 @@ public:
 		return false;
 	}
 	virtual void next_step(Tim::Array2D<short int> *chess_board,
-			int x,int y,std::vector<CM::Step> &next_step,int player);
+			int x,int y,Tim::vector<CM::Step> &next_step,int player);
 };
 
 } /* namespace CM */

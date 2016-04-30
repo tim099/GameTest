@@ -2,10 +2,12 @@
 #define SOURCE_CLASS_GAME_CHESSMASTER_PIECE_PIECE_H_
 #include "class/tim/thread/mutex/Mutex.h"
 #include "class/game/chessMaster/piece/Step.h"
+#include "class/tim/array/vector.h"
 #include <string>
 #include <vector>
 #include <glm/vec2.hpp>
 #include "class/tim/lua/Lua.h"
+#include "class/tim/array/vector.h"
 #include <string>
 class Position;
 
@@ -22,7 +24,7 @@ public:
 	virtual ~Piece();
 
 	virtual void next_step(Tim::Array2D<short int> *chess_board,
-			int x,int y,std::vector<CM::Step> &next_step,int player);
+			int x,int y,Tim::vector<CM::Step> &next_step,int player);
 	void load_script(std::string path);
 	void draw(Position* pos,int player);
 	//unsigned char type;

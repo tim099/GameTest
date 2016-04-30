@@ -15,12 +15,10 @@ public:
 	}
 	inline void cannon_move(Tim::Array2D<short int> *chess_board,
 			int x,int y,int dx,int dy,int player
-			,std::vector<CM::Step> &next_step){
+			,Tim::vector<CM::Step> &next_step){
 		CM::Step cur_step;
-		//cur_step.moves.push_back(Math::vec4<int>(x,y,0,-1));
-		//cur_step.moves.push_back(Math::vec4<int>(0,0,chess_board->get(x,y),1));
-		cur_step.moves[cur_step.move_num++]=Math::vec4<int>(x,y,0,-1);
-		cur_step.moves[cur_step.move_num++]=Math::vec4<int>(0,0,chess_board->get(x,y),1);
+		cur_step.add_move(x,y,0,-1);
+		cur_step.add_move(0,0,chess_board->get(x,y),1);
 		int i=x+dx;
 		int j=y+dy*player;
 		int type;
@@ -53,7 +51,7 @@ public:
 		}
 	}
 	virtual void next_step(Tim::Array2D<short int> *chess_board,
-			int x,int y,std::vector<CM::Step> &next_step,int player);
+			int x,int y,Tim::vector<CM::Step> &next_step,int player);
 };
 
 } /* namespace CM */

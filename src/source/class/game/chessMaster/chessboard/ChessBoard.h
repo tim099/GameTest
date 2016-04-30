@@ -12,6 +12,7 @@
 #include "class/game/chessMaster/chessboard/Rule.h"
 #include "class/tim/thread/mutex/Mutex.h"
 #include "class/game/chessMaster/chessboard/BoardMCT.h"
+#include "class/tim/array/vector.h"
 namespace CM {
 
 class ChessBoard : public Tim::GlobalObject<ChessBoard>{
@@ -51,11 +52,23 @@ public:
 	void next_turn(CM::Step step);
 
 	inline void find_next_step(Tim::Array2D<short int> *chess_board,
-			int x,int y,int player,std::vector<CM::Step> &next_steps){
+			int x,int y,int player,Tim::vector<CM::Step> &next_steps){
 		pieces[chess_board->get(x,y)*player-1]->next_step(chess_board,x,y,next_steps,player);
 	}
 	void find_next_step(Tim::Array2D<short int> *chess_board,
-			int player,std::vector<CM::Step> &next_steps);
+			int player,Tim::vector<CM::Step> &next_steps){
+		next_steps.clear();
+		int sx=chess_board->sizex;
+		int sy=chess_board->sizey;
+		for(int x=0;x<sx;x++){
+			for(int y=0;y<sy;y++){
+				if(chess_board->get(x,y)*player>0){//player's chess
+					pieces[chess_board->get(x,y)*player-1]->
+					next_step(chess_board,x,y,next_steps,player);
+				}
+			}
+		}
+	}
 	static int get_board(lua_State *L);
 	static int find_board(lua_State *L);
 
@@ -66,7 +79,7 @@ public:
 	}
 	int evaluate_score(Tim::Array2D<short int> *chess_board,int player){
 		int total_score=0;
-		int type,flag;
+		short int type,flag;
 
 		for(int i=0;i<chess_board->sizex;i++){
 			for(int j=0;j<chess_board->sizey;j++){

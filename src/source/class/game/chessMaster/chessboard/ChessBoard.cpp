@@ -571,19 +571,6 @@ void ChessBoard::find_select_cube(){
 		find_selected_cube(pos);
 	}
 }
-void ChessBoard::find_next_step(Tim::Array2D<short int> *cb,
-		int player,std::vector<CM::Step> &next){
-	next.clear();
-	int sx=cb->sizex;
-	int sy=cb->sizey;
-	for(int x=0;x<sx;x++){
-		for(int y=0;y<sy;y++){
-			if(cb->get(x,y)*player>0){//player's chess
-				pieces[cb->get(x,y)*player-1]->next_step(cb,x,y,next,player);
-			}
-		}
-	}
-}
 void ChessBoard::move(Step &step){
 	step.move(chess_board);
 	cur_node=mct->find_and_expand(cur_node,step);

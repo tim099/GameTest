@@ -2,7 +2,6 @@
 #define SOURCE_CLASS_TIM_OBJECTPOOL_OBJPOOL_H_
 #include <vector>
 #include <queue>
-#include "class/tim/thread/mutex/Mutex.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include <iostream>
 /*
@@ -23,7 +22,7 @@ public:
 		cur_pool->free(obj);
 	}
 	inline Type* create(){
-		mutex->wait_for_this();
+		//mutex->wait_for_this();
 		if(available.empty()){
 			create_obj(2*objs.size()+1);
 		}
@@ -31,20 +30,20 @@ public:
 		available.pop_back();
 		//std::cout<<"Type* ObjPool<Type>::create():"<<
 				//"cur size="<<objs.size()<<",available size="<<available_q.size()<<std::endl;
-		mutex->release();
+		//mutex->release();
 		return buff;
 	}
 
 	inline void free(Type* obj){
-		mutex->wait_for_this();
+		//mutex->wait_for_this();
 		available.push_back(obj);
-		mutex->release();
+		//mutex->release();
 		//std::cout<<"ObjPool<Type>::free(Type* obj),"
 				//<<"cur size="<<objs.size()<<",available size="<<available_q.size()<<std::endl;
 	}
 private:
 	inline void create_obj(unsigned size){
-		std::cout<<"create obj size:"<<size<<std::endl;
+		//std::cout<<"create obj size:"<<size<<std::endl;
 		Type *buff;
 		while(size>objs.size()){
 			buff=new Type();
@@ -52,7 +51,7 @@ private:
 			available.push_back(buff);
 		}
 	}
-	Tim::Mutex* mutex;
+	//Tim::Mutex* mutex;
 	std::vector<Type*>objs;
 	std::vector<Type*>available;
 };

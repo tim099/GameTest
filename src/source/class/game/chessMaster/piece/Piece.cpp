@@ -73,7 +73,7 @@ void Piece::next_step(Tim::Array2D<short int> *chess_board,
 	rule_mutex->release();
 }
 void Piece::next_step(Tim::Array2D<short int> *chess_board,
-		int x,int y,std::vector<CM::Step> &next_steps,int player){
+		int x,int y,Tim::vector<CM::Step> &next_steps,int player){
 	std::vector<int> next;
 	next.reserve(120);
 	next_step(chess_board,x,y,next,player);

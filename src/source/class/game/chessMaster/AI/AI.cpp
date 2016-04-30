@@ -109,7 +109,7 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,i
 int AI::evaluate_score(Tim::Array2D<short int> *chess_board,
 		int player,int depth,int pruning,bool max){
 	CM::Step *cur;
-	int best;
+	int best,cur_score;
 	best=max?-MAX:MAX;;
 
 	std::vector<CM::Step>* next_step=steps_pool->create();
@@ -121,28 +121,28 @@ int AI::evaluate_score(Tim::Array2D<short int> *chess_board,
 
 	for (unsigned i = 0;(i<step_size)&&!end; i++) {
 		cur = &(*next_step)[i];
-		cur->move(chess_board);
+		cur->move(chess_board);//
 		if (board->check_winner(chess_board) == 0) {//no player win yet
 			if (depth <= 1) {//compute score
 				total_compute++;
 				if (max){
-					cur->score = board->evaluate_score(chess_board, player);
+					cur_score = board->evaluate_score(chess_board, player);
 				}else{
-					cur->score = board->evaluate_score(chess_board, -player);
+					cur_score = board->evaluate_score(chess_board, -player);
 				}
 			} else {//do backtracking
-				cur->score = evaluate_score(chess_board, -player,
+				cur_score = evaluate_score(chess_board, -player,
 						depth - 1, best, !max);
 			}
 		} else {//player win!!
 			if (max) {
-				cur->score = MAX;
+				cur_score = MAX;
 			} else {
-				cur->score = -MAX;
+				cur_score = -MAX;
 			}
 		}
-		if ((max && cur->score > best) || (!max && cur->score < best)) {
-			best = cur->score;
+		if ((max && cur_score > best) || (!max && cur_score < best)) {
+			best = cur_score;
 			if ((max && pruning < best) || (!max && pruning > best)) {
 				end=true;
 			}

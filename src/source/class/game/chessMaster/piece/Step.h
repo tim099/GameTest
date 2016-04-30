@@ -9,6 +9,7 @@
 namespace CM {
 
 class Step {
+	static const int max_move=10;
 public:
 	Step();
 	Step(Step *step);
@@ -23,15 +24,19 @@ public:
 	bool operator==(const Step& step);
 	bool operator>(const Step& step);
 	bool operator<(const Step& step);
+	inline void add_move(const int &x,const int &y,const int &z,const int &w){
+		moves[move_num].x=x;moves[move_num].y=y;moves[move_num].z=z;moves[move_num].w=w;
+		move_num++;
+	}
 	inline void move(Tim::Array2D<short int> *chess_board){
-		for(unsigned i=0;i<moves.size();i++){
-			moves.at(i).w=chess_board->get(moves.at(i).x,moves.at(i).y);
-			chess_board->get(moves.at(i).x,moves.at(i).y)=moves.at(i).z;
+		for(unsigned i=0;i<move_num;i++){
+			moves[i].w=chess_board->get(moves[i].x,moves[i].y);
+			chess_board->get(moves[i].x,moves[i].y)=moves[i].z;
 		}
 	}
 	inline void undo(Tim::Array2D<short int> *chess_board){
-		for(unsigned i=0;i<moves.size();i++){
-			chess_board->get(moves.at(i).x,moves.at(i).y)=moves.at(i).w;
+		for(unsigned i=0;i<move_num;i++){
+			chess_board->get(moves[i].x,moves[i].y)=moves[i].w;
 		}
 	}
 	void draw_next_step();
@@ -40,27 +45,27 @@ public:
 	bool selected(int x,int y);//return true if x,y selected on this step
 	inline void parse_step(Tim::Array2D<short int> *chess_board,int x,int y,
 			std::vector<int> &next_step,int &i){
-		moves.clear();
-		moves.reserve(2);
+		move_num=0;
 		if(next_step[i]>=0){
-			moves.push_back(Math::vec4<int>(x,y,0,-1));
-			moves.push_back(Math::vec4<int>(next_step[i],next_step[i+1],chess_board->get(x,y),1));
+			//moves[move_num++]=Math::vec4<int>(x,y,0,-1);
+			add_move(x,y,0,-1);
+			moves[move_num++]=Math::vec4<int>(next_step[i],next_step[i+1],chess_board->get(x,y),1);
 			i+=2;
 		}else if(next_step[i]==-1){
-			int move_num=next_step[i+1];
-			while(move_num>0){
+			int total_move_num=next_step[i+1];
+			while(total_move_num>0){
 				i+=2;
-				moves.push_back(Math::vec4<int>(next_step[i],next_step[i+1],
+				moves[move_num++]=(Math::vec4<int>(next_step[i],next_step[i+1],
 						next_step[i+2],next_step[i+3]));
 				i+=2;
-				move_num--;
+				total_move_num--;
 			}
 			i+=2;
 		}
 	}
 	int score;
-	std::vector<Math::vec4<int> > moves;
-
+	Math::vec4<int> moves[max_move];
+	unsigned move_num;
 protected:
 
 };

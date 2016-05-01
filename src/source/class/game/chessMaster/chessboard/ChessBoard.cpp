@@ -3,7 +3,9 @@
 #include "class/display/draw/drawObject/drawData/DrawDataObj.h"
 #include "class/input/Input.h"
 #include "class/tim/string/String.h"
-
+#include "class/display/texture/AllTextures.h"
+#include "class/display/model/modelBuffer/AllModelBuffers.h"
+#include "class/display/draw/drawObject/AllDrawObjects.h"
 #include <fstream>
 #include <iostream>
 #include <cmath>
@@ -18,15 +20,16 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	cube_type_num=3;
 	mct = 0;
 	cur_node=0;
+	model_map=0;
+	tex_map=0;
+	draw_map=0;
+
 	dboard = new Display::DynamicDrawObject();
 	Display::Draw::get_cur_object()->push(dboard);//remember to remove before delete dboard
 	pos = new Position(glm::vec3(0, 0, 0), glm::vec3());
 	cube = new Display::CubeModel(0.5*cube_size);
 
-	tex_path="chess/board_textures";
-	normal_path="chess/board_normals";
-
-	dboard->init_drawObject("",tex_path,normal_path,true);
+	dboard->init_drawObject("","","",true);
 	size.x=sizex;
 	size.y=sizey;
 	size.z=sizez;
@@ -38,6 +41,7 @@ ChessBoard::~ChessBoard() {
 	clear();
 
 	Display::Draw::get_cur_object()->remove(dboard);
+	remove_drawobject();
 	delete dboard;
 	delete pos;
 	delete cube;
@@ -78,7 +82,8 @@ void ChessBoard::init_board(){
 	}
 	clear_steps();
 	board=new Tim::Array3D<unsigned char>(size.x,size.y,size.z);
-	chess_board=new Tim::Array2D<short int>(size.x,size.z);
+	//chess_board=new Tim::Array2D<short int>(size.x,size.z);
+	chess_board=new CM::Board<short int>(size.x,size.z,pieces.size());
 	for(int i=0;i<board->sizex;i++){
 		for(int j=0;j<board->sizey;j++){
 			for(int k=0;k<board->sizez;k++){
@@ -90,11 +95,8 @@ void ChessBoard::init_board(){
 			}
 		}
 	}
-	for(int i=0;i<chess_board->sizex;i++){
-		for(int j=0;j<chess_board->sizey;j++){
-			chess_board->get(i,j)=0;
-		}
-	}
+
+
 	updated=true;
 	winner=0;
 	cur_player=1;
@@ -125,7 +127,7 @@ int ChessBoard::get_board(lua_State *L){
 	//std::cout<<"ChessBoard::get_board"<<std::endl;
 
 	lua_getglobal(L, "board");
-	Tim::Array2D<short int> *cb =(Tim::Array2D<short int>*)lua_touserdata(L,-1);
+	CM::Board<short int> *cb =(CM::Board<short int>*)lua_touserdata(L,-1);
 	lua_pop(L,1);
 	//Tim::Array2D<short int> *cb=ChessBoard::get_cur_object()->cur_board;
 
@@ -202,21 +204,12 @@ void ChessBoard::load_script(std::string path){
 	}else{
 		std::cerr << "ChessBoard::load_script fail,no board_path:" <<std::endl;
 	}
-	if(Tim::String::get_line(is, line, true, true)&&line=="board_path:"){
-		Tim::String::get_line(is, line, true, true);
-		load_board(dir_path+line);
-	}else{
-		std::cerr << "ChessBoard::load_script fail,no board_path:" <<std::endl;
-	}
-	if(Tim::String::get_line(is, line, true, true)&&line=="pieces_path:"){
-		Tim::String::get_line(is, line, true, true);
-		load_pieces(dir_path+line);
-	}else{
-		std::cerr << "ChessBoard::load_script fail,no pieces_path:" <<std::endl;
-	}
-	if(Tim::String::get_line(is, line, true, true)&&line=="rule_path:"){
-		Tim::String::get_line(is, rule_path, true, true);
-	}
+
+	init_drawobject();
+	load_pieces(dir_path+"chessBoard/pieces.txt");
+	load_board(dir_path+"chessBoard/board.txt");
+
+
 
 	if(Tim::String::get_line(is, line, true, true)&&line=="texture:"){
 		Tim::String::get_line(is, tex_path, true, true);
@@ -235,12 +228,30 @@ void ChessBoard::load_script(std::string path){
 
 	if(rule)delete rule;
 	rule=new CM::Rule();
-	rule->load_rule(dir_path+rule_path);
+	rule->load_rule(dir_path+"chessBoard/rule.lua");
 
 	load_mct();
-	init_pieces();
+
 
 	file.close();
+}
+void ChessBoard::init_drawobject(){
+
+	model_map=new Display::ModelBufferMap();
+	model_map->folder_path=dir_path+"model/";
+	model_map->Load_script(dir_path+"model/models.txt");
+	Display::AllModelBuffers::get_cur_object()->push_map(model_map);
+
+	tex_map=new Display::TextureMap(dir_path+"textures/textures.txt");
+	Display::AllTextures::get_cur_object()->push_map(tex_map);
+
+	draw_map=new Display::DrawObjectMap(dir_path+"drawobject/chess.txt");
+	Display::AllDrawObjects::get_cur_object()->push_map(draw_map);
+}
+void ChessBoard::remove_drawobject(){
+	Display::AllModelBuffers::get_cur_object()->remove_map(model_map);
+	Display::AllTextures::get_cur_object()->remove_map(tex_map);
+	Display::AllDrawObjects::get_cur_object()->remove_map(draw_map);
 }
 void ChessBoard::save_pieces(std::string path){
 
@@ -260,12 +271,13 @@ void ChessBoard::load_pieces(std::string path){
 		if(line=="piece_path:"){
 			Tim::String::get_line(is, line, true, true);
 			piece=new Piece();
-			piece->load_script(dir_path+line);
+			piece->load_script(dir_path,line);
 
 			pieces.push_back(piece);
 		}
 	}
 	file.close();
+	init_pieces();
 }
 void ChessBoard::save_mct(){
 	if(!mct)return;
@@ -291,9 +303,9 @@ void ChessBoard::save_board(std::string path){
 		}
 		fprintf(file,"\n");
 	}
-	for(int i=0;i<board->sizex;i++){
-			for(int k=0;k<board->sizez;k++){
-				type=chess_board->get(i,k);
+	for(int i=0;i<chess_board->sizex;i++){
+			for(int j=0;j<chess_board->sizey;j++){
+				type=chess_board->get(i,j);
 				//fprintf(file,"%d\n",type);
 				fprintf(file,"%3d ",type);
 			}
@@ -319,10 +331,16 @@ void ChessBoard::load_board(std::string path){
 			}
 		}
 	}
-	for(int i=0;i<board->sizex;i++){
-			for(int k=0;k<board->sizez;k++){
+	for(int i=0;i<chess_board->sizex;i++){
+			for(int j=0;j<chess_board->sizey;j++){
 				fscanf(file,"%d",&type);
-				chess_board->get(i,k)=type;//;
+				chess_board->get(i,j)=type;
+				if(type>0){
+					chess_board->piece_num[type-1]++;
+				}else if(type<0){
+					chess_board->piece_num[-type-1]--;
+				}
+
 			}
 	}
 	fclose(file);

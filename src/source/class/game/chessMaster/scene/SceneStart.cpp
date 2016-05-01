@@ -295,12 +295,13 @@ void SceneStart::handle_input(){
 		AI_mode=2;
 	}
 	if(input->keyboard->get('S')){
+
 		//chess_board->save_board(CM::folder_path+"game/chess/chessBoard/board.txt");
-		chess_board->save_board(CM::folder_path+"game/chineseChess/chessBoard/board.txt");
+		chess_board->save_board(chess_board->dir_path+"chessBoard/board.txt");
 	}
 	if(input->keyboard->get('L')){
 		//chess_board->load_board(CM::folder_path+"game/chess/chessBoard/board.txt");
-		chess_board->load_board(CM::folder_path+"game/chineseChess/chessBoard/board.txt");
+		chess_board->load_board(chess_board->dir_path+"chessBoard/board.txt");
 	}
 	if(input->keyboard->get(Input::KeyCode::Plus)){
 		if(edit_chess&&chess_type<(int)chess_board->pieces.size()){

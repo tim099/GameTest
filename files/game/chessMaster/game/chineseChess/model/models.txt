@@ -1,0 +1,21 @@
+#LOAD_MODELBUFFERMAP_SCRIPT
+
+#HEADER
+
+Name:
+	chineseChess
+#HEADER_END
+
+ModelBuffer:
+	Name:
+		cube
+	Path:
+		chessmodel/cube.obj
+	Size:
+		1.0
+	Align_center:
+		true
+		
+#load_end
+
+#END

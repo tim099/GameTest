@@ -19,7 +19,7 @@ void Rule::load_rule(std::string path){
 	rule->rigister_function("find_board",ChessBoard::find_board);
 	rule->p_call(0,0,0);
 }
-int Rule::check_winner(Tim::Array2D<short int> *chess_board){
+int Rule::check_winner(CM::Board<short int> *chess_board){
 	rule_mutex->wait_for_this();
 	rule->pushlightuserdata(chess_board);
 	rule->set_global("board");

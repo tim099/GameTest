@@ -4,7 +4,7 @@
 #include "class/tim/map/MapTree.h"
 #include "class/tim/globalObject/GlobalObject.h"
 namespace Display{
-class AllDrawObjects: public Tim::MapTree<DrawObjectMap, DrawObject>,
+class AllDrawObjects: public Tim::MapTree<Display::DrawObjectMap, DrawObject>,
 		public Tim::GlobalObject<AllDrawObjects>,
 		public Tim::Parser {
 public:

@@ -1,15 +1,6 @@
 dir_path:
 	files/game/chessMaster/game/chineseChess/
 
-board_path:
-	chessBoard/board.txt
-
-pieces_path:
-	chessBoard/pieces.txt
-
-rule_path:
-	chessBoard/rule.lua
-
 texture:
 	chineseChess/board_textures
 normal_texture:	

@@ -8,6 +8,6 @@ weight:
 	20
 
 rule_path:
-	files/game/chessMaster/game/chess/chessBoard/piece/knight.lua
+	chessBoard/piece/knight.lua
 
 #END

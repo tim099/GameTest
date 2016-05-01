@@ -4,14 +4,14 @@
 namespace CM {
 
 TaskComputeScore::TaskComputeScore(CM::AI *_ai,Step *_step,CM::StepNode *_cur_node,
-		Tim::Array2D<short int> *_chess_board,
+		CM::Board<short int> *_chess_board,
 		int _player,int _depth,int _pruning,bool _max,
 		Tim::ObjPool<Tim::vector<CM::Step> > *_steps_pool) {
 	step=_step;
 	cur_node=_cur_node;
 	ai=_ai;
 
-	chess_board=new Tim::Array2D<short int>(_chess_board);
+	chess_board=new CM::Board<short int>(_chess_board);
 	//std::cout<<"chess board="<<(int)chess_board<<","<<(int)_chess_board<<std::endl;
 	player=_player;
 	depth=_depth;

@@ -5,6 +5,7 @@
 #include "class/tim/thread/ThreadPool.h"
 #include "class/tim/objectpool/ObjPool.h"
 #include "class/tim/array/vector.h"
+#include "class/game/chessMaster/chessboard/Board.h"
 namespace CM {
 class ChessBoard;
 class StepNode;
@@ -30,7 +31,7 @@ public:
 protected:
 	CM::Step find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* chess_board,
 			int player,int depth,int pruning);
-	int evaluate_score(Tim::Array2D<short int> *chess_board,
+	int evaluate_score(CM::Board<short int>* chess_board,
 			int player,int depth,int pruning,bool max
 			,Tim::ObjPool<Tim::vector<CM::Step> >*steps_pool);
 	struct cmpmax{
@@ -43,12 +44,12 @@ protected:
 	        return (s1.score > s2.score);
 	    }
 	};
-	CM::Step find_best_step(Tim::ThreadPool* pool,Tim::Array2D<short int> *chess_board,
+	CM::Step find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_board,
 			int player,int depth,int pruning,bool max);
 
 	Tim::ObjPool<Tim::ObjPool<Tim::vector<CM::Step> > >*steps_pool;
 	CM::ChessBoard* board;
-	void test(int width,int depth);
+	void test(CM::Board<short int> *chess_board,int player,int depth,Tim::ObjPool<Tim::vector<CM::Step> >*steps_pool);
 	int total_test;
 };
 

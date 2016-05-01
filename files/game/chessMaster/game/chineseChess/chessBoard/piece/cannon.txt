@@ -6,5 +6,5 @@ draw_piece2:
 weight:
 	50	
 rule_path:
-	files/game/chessMaster/game/chineseChess/chessBoard/piece/cannon.lua
+	chessBoard/piece/cannon.lua
 #END

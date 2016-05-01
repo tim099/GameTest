@@ -1,11 +1,5 @@
 dir_path:
 	files/game/chessMaster/game/chess/
-board_path:
-	chessBoard/board.txt
-pieces_path:
-	chessBoard/pieces.txt
-rule_path:
-	chessBoard/rule.lua
 
 texture:
 	chess/board_textures

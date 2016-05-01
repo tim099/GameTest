@@ -8,7 +8,7 @@ public:
 	Array2D(int sizex,int sizey);
 	Array2D(Array2D* arr);
 	virtual ~Array2D();
-	bool operator==(const Array2D<Type>& arr);
+	bool operator==(const Array2D& arr);
 	//will not check the bound!!used carefully
 	inline Type& get(const int &x,const int &y){
 		return arr[sizex*y+x];

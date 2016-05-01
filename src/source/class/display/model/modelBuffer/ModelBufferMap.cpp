@@ -24,8 +24,7 @@ ModelBuffer* ModelBufferMap::get(std::string name){
 }
 void ModelBufferMap::Parse_Header(std::istream &is, std::string &line) {
 	if (line == "FolderPath:") {
-		Tim::String::get_line(is, line, true, true);
-		folder_path = std::string(line);
+		Tim::String::get_line(is, folder_path, true, true);
 	} else if (line == "Name:") {
 		Tim::String::get_line(is, line, true, true);
 		set_name(std::string(line));

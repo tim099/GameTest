@@ -16,7 +16,8 @@ void AllDrawObjects::Parse_map(std::istream &is){
 	if (line == "ScriptPath:") {
 		Tim::String::get_line(is, line, true, true);
 		scriptPath = std::string(line);
-		push_map(new DrawObjectMap(folder_path+scriptPath));
+		DrawObjectMap* map=new DrawObjectMap(folder_path+scriptPath);
+		push_map(map);
 	}
 }
 void AllDrawObjects::Parse_dir(std::istream &is){
@@ -26,7 +27,8 @@ void AllDrawObjects::Parse_dir(std::istream &is){
 	if (line == "ScriptPath:") {
 		Tim::String::get_line(is, line, true, true);
 		scriptPath = std::string(line);
-		push_dir(new AllDrawObjects(folder_path+scriptPath));
+		AllDrawObjects* dir=new AllDrawObjects(folder_path+scriptPath);
+		push_dir(dir);
 	}
 }
 void AllDrawObjects::Parse_Script(std::istream &is, std::string &line){

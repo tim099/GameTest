@@ -9,7 +9,7 @@ class ChineseChessRule: public Rule {
 public:
 	ChineseChessRule();
 	virtual ~ChineseChessRule();
-	virtual int check_winner(Tim::Array2D<short int> *chess_board);
+	virtual int check_winner(CM::Board<short int> *chess_board);
 };
 
 } /* namespace CM */

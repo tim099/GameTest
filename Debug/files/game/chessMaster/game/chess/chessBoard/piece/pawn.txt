@@ -8,6 +8,6 @@ draw_piece2:
 weight:
 	5
 rule_path:
-	files/game/chessMaster/game/chess/chessBoard/piece/pawn.lua
+	chessBoard/piece/pawn.lua
 
 #END

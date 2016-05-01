@@ -14,11 +14,5 @@ TextureDir:
 
 TextureMap:
 	ScriptPath:
-		game/chess/textures/textures.txt
-TextureMap:
-	ScriptPath:
-		game/chineseChess/textures/textures.txt		
-TextureMap:
-	ScriptPath:
 		script/texture/sky.txt	
 #END	

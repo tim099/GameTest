@@ -11,7 +11,7 @@ Soildier::Soildier() {
 Soildier::~Soildier() {
 
 }
-void Soildier::next_step(Tim::Array2D<short int> *chess_board,
+void Soildier::next_step(CM::Board<short int> *chess_board,
 		int x,int y,Tim::vector<CM::Step> &next_step,int player){
 	CM::Step cur_step;
 	cur_step.add_move(x,y,0,-1);

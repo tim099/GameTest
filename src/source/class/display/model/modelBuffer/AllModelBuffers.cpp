@@ -19,7 +19,8 @@ void AllModelBuffers::Parse_map(std::istream &is){
 	if (line == "ScriptPath:") {
 		Tim::String::get_line(is, line, true, true);
 		scriptPath = std::string(line);
-		push_map(new ModelBufferMap(folder_path+scriptPath));
+		ModelBufferMap* map=new ModelBufferMap(folder_path+scriptPath);
+		push_map(map);
 	}
 }
 void AllModelBuffers::Parse_dir(std::istream &is){
@@ -29,7 +30,8 @@ void AllModelBuffers::Parse_dir(std::istream &is){
 	if (line == "ScriptPath:") {
 		Tim::String::get_line(is, line, true, true);
 		scriptPath = std::string(line);
-		push_dir(new AllModelBuffers(folder_path+scriptPath));
+		AllModelBuffers* dir=new AllModelBuffers(folder_path+scriptPath);
+		push_dir(dir);
 	}
 }
 void AllModelBuffers::Parse_Script(std::istream &is, std::string &line){

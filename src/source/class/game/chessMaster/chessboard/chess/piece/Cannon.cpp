@@ -11,7 +11,7 @@ Cannon::Cannon() {
 Cannon::~Cannon() {
 
 }
-void Cannon::next_step(Tim::Array2D<short int> *chess_board,
+void Cannon::next_step(CM::Board<short int>*chess_board,
 		int x,int y,Tim::vector<CM::Step> &next_step,int player){
 	cannon_move(chess_board,x,y,1,0,player,next_step);
 	cannon_move(chess_board,x,y,-1,0,player,next_step);

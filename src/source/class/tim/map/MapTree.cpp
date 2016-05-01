@@ -47,6 +47,10 @@ void MapTree<maptype,type>::push_map(maptype* map){
 	maps.push(map->get_name(),map);
 }
 template <class maptype,class type>
+void MapTree<maptype,type>::remove_map(maptype* map){
+	maps.remove(map->get_name());
+}
+template <class maptype,class type>
 maptype* MapTree<maptype,type>::get_map(std::string name){
 	return maps.get(name);
 }

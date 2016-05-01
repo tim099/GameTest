@@ -12,7 +12,14 @@
 #include "class/game/chessMaster/chessboard/Rule.h"
 #include "class/tim/thread/mutex/Mutex.h"
 #include "class/game/chessMaster/chessboard/BoardMCT.h"
+#include "class/game/chessMaster/chessboard/Board.h"
 #include "class/tim/array/vector.h"
+
+namespace Display{
+	class ModelBufferMap;
+	class TextureMap;
+	class DrawObjectMap;
+}
 namespace CM {
 
 class ChessBoard : public Tim::GlobalObject<ChessBoard>{
@@ -51,11 +58,11 @@ public:
 	void clear_steps();
 	void next_turn(CM::Step step);
 
-	inline void find_next_step(Tim::Array2D<short int> *chess_board,
+	inline void find_next_step(CM::Board<short int> *chess_board,
 			int x,int y,int player,Tim::vector<CM::Step> &next_steps){
 		pieces[chess_board->get(x,y)*player-1]->next_step(chess_board,x,y,next_steps,player);
 	}
-	void find_next_step(Tim::Array2D<short int> *chess_board,
+	void find_next_step(CM::Board<short int> *chess_board,
 			int player,Tim::vector<CM::Step> &next_steps){
 		next_steps.clear();
 		int sx=chess_board->sizex;
@@ -74,15 +81,20 @@ public:
 
 	bool bound_check(int x,int y);
 	void backpropagation();
-	inline int check_winner(Tim::Array2D<short int> *chess_board){
+	inline int check_winner(CM::Board<short int> *chess_board){
 		return rule->check_winner(chess_board);
 	}
-	int evaluate_score(Tim::Array2D<short int> *chess_board,int player){
+	inline int evaluate_score(CM::Board<short int> *chess_board,int player){
 		int total_score=0;
-		short int type,flag;
+		for(int i=0;i<chess_board->piece_type_num;i++){
+			total_score+=pieces_weight[i]*chess_board->piece_num[i];
+		}
 
-		for(int i=0;i<chess_board->sizex;i++){
-			for(int j=0;j<chess_board->sizey;j++){
+		/*
+		short int type,flag;
+		int sx=chess_board->sizex,sy=chess_board->sizey;
+		for(int i=0;i<sx;i++){
+			for(int j=0;j<sy;j++){
 				type=chess_board->get(i,j);
 				if(type!=0){
 					if(type>0){
@@ -95,6 +107,7 @@ public:
 				}
 			}
 		}
+		*/
 		return player*total_score;
 	}
 
@@ -107,7 +120,8 @@ public:
 	glm::ivec2 selected_piece;
 	double cube_size;
 	std::vector<Piece*>pieces;
-	Tim::Array2D<short int> *chess_board;//all chess on the board
+	CM::Board<short int>*chess_board;//all chess on the board
+	//Tim::Array2D<short int> *chess_board;
 	Tim::Array3D<unsigned char> *board;//the chess_board's structure
 	std::vector<CM::Step*> steps;
 	int cube_type_num;//number of cube type
@@ -120,11 +134,14 @@ public:
 	}
 	CM::Rule *rule;
 	CM::BoardMCT *mct;
+	std::string dir_path;
 	int winner,cur_player;
 	glm::ivec3 size;
 protected:
 	void init_board();
 	void init_pieces();
+	void init_drawobject();
+	void remove_drawobject();
 	void gen_model();
 
 	void gen_pieces_weight();
@@ -137,12 +154,13 @@ protected:
 	int pieces_weight[max_pieces_num];
 	std::string tex_path;
 	std::string normal_path;
-	std::string dir_path;
+
 	Display::DynamicDrawObject *dboard;
 	Display::CubeModel *cube;
 	Position *pos;
-
-
+	Display::ModelBufferMap* model_map;
+	Display::TextureMap * tex_map;
+	Display::DrawObjectMap *draw_map;
 	CM::StepNode *cur_node;
 
 

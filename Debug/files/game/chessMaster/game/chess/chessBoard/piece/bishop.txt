@@ -7,6 +7,6 @@ draw_piece2:
 weight:
 	25
 rule_path:
-	files/game/chessMaster/game/chess/chessBoard/piece/bishop.lua
+	chessBoard/piece/bishop.lua
 
 #END

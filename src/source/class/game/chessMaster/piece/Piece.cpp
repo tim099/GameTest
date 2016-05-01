@@ -18,9 +18,9 @@ Piece::~Piece() {
 	if(rule)delete rule;
 	delete rule_mutex;
 }
-void Piece::load_script(std::string path){
+void Piece::load_script(std::string dir_path,std::string path){
 	std::filebuf file;
-	file.open(path.c_str(), std::ios::in);
+	file.open((dir_path+path).c_str(), std::ios::in);
 	if (!file.is_open()) {
 		std::cerr << "Piece::load_script fail,file:" << path
 				<< " open fail" << std::endl;
@@ -47,12 +47,12 @@ void Piece::load_script(std::string path){
 	}
 	if(rule)delete rule;
 	rule=new Tim::Lua();
-	rule->loadfile(rule_path);
+	rule->loadfile(dir_path+rule_path);
 	//rule->rigister_function("bound_check",ChessBoard::bound_check);
 	rule->rigister_function("get_board",ChessBoard::get_board);
 	rule->p_call(0,0,0);
 }
-void Piece::next_step(Tim::Array2D<short int> *chess_board,
+void Piece::next_step(CM::Board<short int> *chess_board,
 		int x,int y,std::vector<int> &next_step,int player){
 	rule_mutex->wait_for_this();
 	//ChessBoard::get_cur_object()->set_current(chess_board);
@@ -72,7 +72,7 @@ void Piece::next_step(Tim::Array2D<short int> *chess_board,
 
 	rule_mutex->release();
 }
-void Piece::next_step(Tim::Array2D<short int> *chess_board,
+void Piece::next_step(CM::Board<short int> *chess_board,
 		int x,int y,Tim::vector<CM::Step> &next_steps,int player){
 	std::vector<int> next;
 	next.reserve(120);

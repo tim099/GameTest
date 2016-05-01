@@ -6,5 +6,5 @@ draw_piece2:
 weight:
 	9999	
 rule_path:
-	files/game/chessMaster/game/chess/chessBoard/piece/king.lua
+	chessBoard/piece/king.lua
 #END

@@ -27,7 +27,8 @@ void AllTextures::Parse_textureDir(std::istream &is){
 	if (line == "ScriptPath:") {
 		Tim::String::get_line(is, line, true, true);
 		scriptPath = std::string(line);
-		push_dir(new AllTextures(folder_path+scriptPath));
+		AllTextures* dir=new AllTextures(folder_path+scriptPath);
+		push_dir(dir);
 	}
 }
 void AllTextures::Parse_textureMap(std::istream &is) {
@@ -37,7 +38,8 @@ void AllTextures::Parse_textureMap(std::istream &is) {
 	if (line == "ScriptPath:") {
 		Tim::String::get_line(is, line, true, true);
 		scriptPath = std::string(line);
-		push_map(new TextureMap(folder_path+scriptPath));
+		TextureMap* map=new TextureMap(folder_path+scriptPath);
+		push_map(map);
 	}
 }
 void AllTextures::Parse_Header(std::istream &is, std::string &line) {

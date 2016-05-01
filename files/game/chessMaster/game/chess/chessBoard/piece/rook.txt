@@ -6,6 +6,6 @@ draw_piece2:
 weight:
 	30
 rule_path:
-	files/game/chessMaster/game/chess/chessBoard/piece/rook.lua
+	chessBoard/piece/rook.lua
 
 #END

@@ -13,7 +13,7 @@ public:
 		}
 		return false;
 	}
-	inline void cannon_move(Tim::Array2D<short int> *chess_board,
+	inline void cannon_move(CM::Board<short int> *chess_board,
 			int x,int y,int dx,int dy,int player
 			,Tim::vector<CM::Step> &next_step){
 		CM::Step cur_step;
@@ -50,7 +50,7 @@ public:
 			j+=dy*player;
 		}
 	}
-	virtual void next_step(Tim::Array2D<short int> *chess_board,
+	virtual void next_step(CM::Board<short int> *chess_board,
 			int x,int y,Tim::vector<CM::Step> &next_step,int player);
 };
 

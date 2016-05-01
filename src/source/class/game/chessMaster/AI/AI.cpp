@@ -31,19 +31,24 @@ void AI::search_start(Tim::ThreadPool *pool,
 	//task->join();
 	//find_best_step(pool,chess_board,player,depth,pruning);
 }
-void AI::test(int width,int depth){
+void AI::test(CM::Board<short int> *chess_board,
+		int player,int depth,Tim::ObjPool<Tim::vector<CM::Step> >*steps_pool){
 	if(depth==0){
+		board->evaluate_score(chess_board, player);
 		total_test++;
 		return;
 	}
-	for (int i = 0; i < width; i++) {
+	Tim::vector<CM::Step>* next_step=steps_pool->create();
+	board->find_next_step(chess_board,player,*next_step);
+	for (unsigned i = 0; i < next_step->size(); i++) {
 		 // next_step[i].moves.push_back(Math::vec4<int> (0,0,0,0));
 		 //board->check_winner(board->chess_board);
 		 //board->evaluate_score(board->chess_board,1);
-
-
-		test(width, depth - 1);
+		(*next_step)[i].move(chess_board);
+		test(chess_board,-player, depth - 1,steps_pool);
+		(*next_step)[i].undo(chess_board);
 	}
+	steps_pool->free(next_step);
 }
 CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,int player,
 		int depth,int pruning){
@@ -53,7 +58,12 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,i
 	/*
 	total_test=0;
 	start_time=glfwGetTime();
-	test(15,5);
+	Tim::ObjPool<Tim::vector<CM::Step> >*tmp_pool=steps_pool->create();
+	Tim::Array2D<short int> *clone_board=new Tim::Array2D<short int>(board->chess_board);
+	test(clone_board,1,4,tmp_pool);
+	delete clone_board;
+	steps_pool->free(tmp_pool);
+
 	std::cout<<"total test:"<<total_test<<std::endl;
 	std::cout<<"test time used:"<<(float)(glfwGetTime()-start_time)<<std::endl;
 	*/
@@ -63,7 +73,7 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,i
 	searching=true;
 
 
-	Tim::Array2D<short int> *cb=new Tim::Array2D<short int>(board->chess_board);
+	CM::Board<short int> *cb=new CM::Board<short int>(board->chess_board);
 	CM::Step best=find_best_step(pool,cb,player,depth,pruning,true);
 	delete cb;
 
@@ -74,7 +84,7 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,i
 	std::cout<<"best score="<<best.score<<std::endl;
 	return best;
 }
-int AI::evaluate_score(Tim::Array2D<short int> *chess_board,
+int AI::evaluate_score(CM::Board<short int> *chess_board,
 		int player,int depth,int pruning,bool max,
 		Tim::ObjPool<Tim::vector<CM::Step> >*steps_pool){
 	CM::Step *cur;
@@ -122,7 +132,7 @@ int AI::evaluate_score(Tim::Array2D<short int> *chess_board,
 
 	return best;
 }
-CM::Step AI::find_best_step(Tim::ThreadPool* pool,Tim::Array2D<short int> *chess_board,
+CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_board,
 		int player,int depth,int pruning,bool max){
 	//std::cout<<"AI::find_best_step depth="<<depth<<std::endl;
 	CM::Step *cur;
@@ -135,13 +145,13 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,Tim::Array2D<short int> *chess
 	board->find_next_step(chess_board,player,next_step);
 	std::vector<CM::TaskComputeScore*> tasks;
 	CM::TaskComputeScore* task;
-	std::vector<Tim::Array2D<short int>*>prev_boards;
+	std::vector<CM::Board<short int>*>prev_boards;
 
-	Tim::Array2D<short int>* tmp_board=new Tim::Array2D<short int>(chess_board);
+	CM::Board<short int>* tmp_board=new CM::Board<short int>(chess_board);
 	for(int i=(board->steps.size()-1);(i>=0&&(board->steps.size()-i)<8);i--){
 		CM::Step step=board->steps.at(i);
 		step.undo(tmp_board);
-		prev_boards.push_back(new Tim::Array2D<short int>(tmp_board));
+		prev_boards.push_back(new CM::Board<short int>(tmp_board));
 	}
 	delete tmp_board;
 

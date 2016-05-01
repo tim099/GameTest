@@ -14,6 +14,7 @@ public:
 
 	void push(std::string name,ModelBuffer* buffer);
 	ModelBuffer* get(std::string name);
+	std::string folder_path;
 protected:
 	virtual inline std::string Script_name()const{
 		return "#LOAD_MODELBUFFERMAP_SCRIPT";
@@ -23,7 +24,7 @@ protected:
 
 	void Parse_ModelBuffer(std::istream &is);
 	Tim::MapContainer<std::string,ModelBuffer>mbuffer_map;
-	std::string folder_path;
+
 	std::string name;
 };
 }

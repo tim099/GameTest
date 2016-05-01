@@ -8,11 +8,4 @@ FolderPath:
 	files/game/chessMaster/
 #HEADER_END
 
-Map:
-	ScriptPath:
-		game/chess/drawobject/chess.txt
-Map:
-	ScriptPath:
-		game/chineseChess/drawobject/chess.txt
-
 #END

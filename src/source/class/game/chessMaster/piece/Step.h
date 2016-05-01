@@ -1,6 +1,6 @@
 #ifndef SOURCE_CLASS_GAME_CHESSMASTER_PIECE_STEP_H_
 #define SOURCE_CLASS_GAME_CHESSMASTER_PIECE_STEP_H_
-#include "class/tim/array/Array2D.h"
+#include "class/game/chessMaster/chessboard/Board.h"
 #include <vector>
 #include <cstdio>
 #include <glm/vec3.hpp>
@@ -28,14 +28,36 @@ public:
 		moves[move_num].x=x;moves[move_num].y=y;moves[move_num].z=z;moves[move_num].w=w;
 		move_num++;
 	}
-	inline void move(Tim::Array2D<short int> *chess_board){
+	inline void move(CM::Board<short int> *chess_board){
 		for(unsigned i=0;i<move_num;i++){
 			moves[i].w=chess_board->get(moves[i].x,moves[i].y);
 			chess_board->get(moves[i].x,moves[i].y)=moves[i].z;
+
+			if(moves[i].z>0){
+				chess_board->piece_num[moves[i].z-1]++;
+			}else if(moves[i].z<0){
+				chess_board->piece_num[-moves[i].z-1]--;
+			}
+			if(moves[i].w>0){
+				chess_board->piece_num[moves[i].w-1]--;
+			}else if(moves[i].w<0){
+				chess_board->piece_num[-moves[i].w-1]++;
+			}
+
 		}
 	}
-	inline void undo(Tim::Array2D<short int> *chess_board){
+	inline void undo(CM::Board<short int> *chess_board){
 		for(unsigned i=0;i<move_num;i++){
+			if(moves[i].z>0){
+				chess_board->piece_num[moves[i].z-1]--;
+			}else if(moves[i].z<0){
+				chess_board->piece_num[-moves[i].z-1]++;
+			}
+			if(moves[i].w>0){
+				chess_board->piece_num[moves[i].w-1]++;
+			}else if(moves[i].w<0){
+				chess_board->piece_num[-moves[i].w-1]--;
+			}
 			chess_board->get(moves[i].x,moves[i].y)=moves[i].w;
 		}
 	}

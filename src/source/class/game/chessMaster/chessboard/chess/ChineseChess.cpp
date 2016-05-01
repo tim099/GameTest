@@ -11,11 +11,13 @@ namespace CM {
 
 ChineseChess::ChineseChess() {
 	dir_path="files/game/chessMaster/game/chineseChess/";
-	load_board(dir_path+"chessBoard/board.txt");
+	init_drawobject();
+
 	rule_path=dir_path+"chessBoard/rule.lua";
 
 	create_pieces();
-	init_pieces();
+
+	load_board(dir_path+"chessBoard/board.txt");
 	cube_type_num=21;
 
 	tex_path="chineseChess/board_textures";
@@ -40,6 +42,7 @@ void ChineseChess::create_pieces(){
 	pieces.push_back(new Chariot());
 	pieces.push_back(new Cannon());
 	pieces.push_back(new Soildier());
+	init_pieces();
     //*/
 }
 } /* namespace CM */

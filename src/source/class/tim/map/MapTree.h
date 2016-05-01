@@ -10,11 +10,15 @@ public:
 	std::string get_name()const;
 	void set_name(std::string name);
 
-	type *get(std::string obj_path);
-	/*
-	 * push a map into this
-	 */
-	void push_map(maptype* obj_map);
+	type *get(std::string path);
+
+	//push a map into this
+	void push_map(maptype* map);
+
+	//remove a map from this
+	void remove_map(maptype* map);
+
+
 	/*
 	 * get map by name
 	 */
@@ -22,7 +26,7 @@ public:
 	/*
 	 *push a dir into this
 	 */
-	void push_dir(MapTree *obj_dir);
+	void push_dir(MapTree *dir);
 	/*
 	 * get Dir by name
 	 */

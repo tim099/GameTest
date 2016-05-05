@@ -9,6 +9,7 @@ class Renju: public ChessBoard {
 	static const int MAX=10000000;
 public:
 	static const int board_size=9;
+	static const int win_lenth=5;
 	Renju();
 	virtual ~Renju();
 	void create_pieces();
@@ -77,7 +78,7 @@ public:
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
-		for(int i=0;i<=(board_size-5);i++){
+		for(int i=0;i<=(board_size-win_lenth);i++){
 			len=0;space=0;back_space=0;
 			for(int j=0;j<board_size-i;j++){
 				type=chess_board->get(i+j,board_size-j-1);
@@ -93,7 +94,7 @@ public:
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
-		for(int i=4;i<board_size-1;i++){
+		for(int i=(win_lenth-1);i<board_size-1;i++){
 			len=0;space=0;back_space=0;
 			for(int j=0;j<=i;j++){
 				type=chess_board->get(i-j,j);
@@ -146,7 +147,6 @@ public:
 			}else{
 				total_score+=(i+1)*(i+1)*(len_num[0][i]-len_num[1][i]);
 			}
-
 		}
 		return player*total_score;
 	}

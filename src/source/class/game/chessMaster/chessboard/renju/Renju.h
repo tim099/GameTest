@@ -8,10 +8,11 @@ namespace CM {
 class Renju: public ChessBoard {
 	static const int MAX=10000000;
 public:
+	static const int board_size=9;
 	Renju();
 	virtual ~Renju();
 	void create_pieces();
-	inline void get_pattern(int &len,int &air,int &back_air,
+	inline void get_pattern(int &len,int &space,int &back_space,
 			int len_num[2][6]){
 		//std::cout<<"get_pattern len="<<len<<"air="<<air<<"back air="<<back_air<<std::endl;
 		bool p1=true;
@@ -19,36 +20,34 @@ public:
 			len=-len;
 			p1=false;
 		}
-		int val=len;
-
-		if(air+len+back_air<5){
-			val=0;
+		if(space+len+back_space<5){
+			len=0;
 		}else{
-			if(air&&back_air)val++;
+			if(space&&back_space)len++;
 		}
-		val--;
-		if(val>5)val=5;
-		if(val<0)val=0;
-		len_num[p1?0:1][val]++;
+		len--;
+		if(len>5)len=5;
+		if(len<0)len=0;
+		len_num[p1?0:1][len]++;
 
-		air=back_air;
-		back_air=0;
+		space=back_space;
+		back_space=0;
 		len=0;
 	}
-	inline void operate(int &type,int &len,int &air,int &back_air,
+	inline void operate(int &type,int &len,int &space,int &back_space,
 			int &total_score,int len_num[2][6]){
 		if(type!=0){
 			if(type*len<0){
-				get_pattern(len,air,back_air,len_num);
-			}else if(type*len>0&&back_air){//separated!!
-				get_pattern(len,air,back_air,len_num);
+				get_pattern(len,space,back_space,len_num);
+			}else if(type*len>0&&back_space){//separated!!
+				get_pattern(len,space,back_space,len_num);
 			}
 			len+=type;
 		}else{
 			if(len){//already find stone ahead
-				back_air++;
+				back_space++;
 			}else{
-				air++;
+				space++;
 			}
 		}
 	}
@@ -61,53 +60,53 @@ public:
 			len_num[0][i]=0;
 			len_num[1][i]=0;
 		}
-		int air,back_air;
-		for(int i=0;i<9;i++){
-			len=0;air=0;back_air=0;
-			for(int j=0;j<9;j++){
+		int space,back_space;
+		for(int i=0;i<board_size;i++){
+			len=0;space=0;back_space=0;
+			for(int j=0;j<board_size;j++){
 				type=chess_board->get(i,j);
-				operate(type,len,air,back_air,total_score,len_num);
+				operate(type,len,space,back_space,total_score,len_num);
 			}
-			if(len!=0)get_pattern(len,air,back_air,len_num);
+			if(len!=0)get_pattern(len,space,back_space,len_num);
 
-			len=0;air=0;back_air=0;
-			for(int j=0;j<9;j++){
+			len=0;space=0;back_space=0;
+			for(int j=0;j<board_size;j++){
 				type=chess_board->get(j,i);
-				operate(type,len,air,back_air,total_score,len_num);
+				operate(type,len,space,back_space,total_score,len_num);
 			}
-			if(len!=0)get_pattern(len,air,back_air,len_num);
+			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
 		for(int i=0;i<5;i++){
-			len=0;air=0;back_air=0;
+			len=0;space=0;back_space=0;
 			for(int j=0;j<9-i;j++){
 				type=chess_board->get(i+j,8-j);
-				operate(type,len,air,back_air,total_score,len_num);
+				operate(type,len,space,back_space,total_score,len_num);
 			}
-			if(len!=0)if(len!=0)get_pattern(len,air,back_air,len_num);
+			if(len!=0)get_pattern(len,space,back_space,len_num);
 
-			len=0;air=0;back_air=0;
+			len=0;space=0;back_space=0;
 			for(int j=0;j<9-i;j++){
 				type=chess_board->get(i+j,j);
-				operate(type,len,air,back_air,total_score,len_num);
+				operate(type,len,space,back_space,total_score,len_num);
 			}
-			if(len!=0)if(len!=0)get_pattern(len,air,back_air,len_num);
+			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
 		for(int i=4;i<8;i++){
-			len=0;air=0;back_air=0;
+			len=0;space=0;back_space=0;
 			for(int j=0;j<=i;j++){
 				type=chess_board->get(i-j,j);
-				operate(type,len,air,back_air,total_score,len_num);
+				operate(type,len,space,back_space,total_score,len_num);
 			}
-			if(len!=0)if(len!=0)get_pattern(len,air,back_air,len_num);
+			if(len!=0)get_pattern(len,space,back_space,len_num);
 
-			len=0;air=0;back_air=0;
+			len=0;space=0;back_space=0;
 			for(int j=0;j<=i;j++){
 				type=chess_board->get(i-j,8-j);
-				operate(type,len,air,back_air,total_score,len_num);
+				operate(type,len,space,back_space,total_score,len_num);
 			}
-			if(len!=0)if(len!=0)get_pattern(len,air,back_air,len_num);
+			if(len!=0)get_pattern(len,space,back_space,len_num);
 
 		}
 

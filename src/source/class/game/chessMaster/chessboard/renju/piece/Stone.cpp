@@ -1,4 +1,5 @@
 #include "class/game/chessMaster/chessboard/renju/piece/Stone.h"
+#include "class/game/chessMaster/chessboard/renju/Renju.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 namespace CM {
 
@@ -17,8 +18,8 @@ void Stone::next_step(CM::Board<short int> *chess_board,
 	}
 	CM::Step cur_step;
 	cur_step.add_move(0,0,player,1);
-	for(int i=0;i<9;i++){
-		for(int j=0;j<9;j++){
+	for(int i=0;i<Renju::board_size;i++){
+		for(int j=0;j<Renju::board_size;j++){
 			if(chess_board->get(i,j)==0){
 				cur_step.moves[0].x=i;
 				cur_step.moves[0].y=j;

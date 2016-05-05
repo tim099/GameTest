@@ -1,5 +1,5 @@
 #include "class/game/chessMaster/chessboard/renju/RenjuRule.h"
-
+#include "class/game/chessMaster/chessboard/renju/Renju.h"
 namespace CM {
 
 RenjuRule::RenjuRule() {
@@ -10,9 +10,9 @@ RenjuRule::~RenjuRule() {
 }
 int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 	int len,type;
-	for(int i=0;i<9;i++){
+	for(int i=0;i<Renju::board_size;i++){
 		len=0;
-		for(int j=0;j<9;j++){
+		for(int j=0;j<Renju::board_size;j++){
 			type=chess_board->get(i,j);
 			if(type>0){
 				if(len<0)len=0;
@@ -27,7 +27,7 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 			}
 		}
 		len=0;
-		for(int j=0;j<9;j++){
+		for(int j=0;j<Renju::board_size;j++){
 			type=chess_board->get(j,i);
 			if(type>0){
 				if(len<0)len=0;

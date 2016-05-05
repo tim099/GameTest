@@ -77,23 +77,23 @@ public:
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
-		for(int i=0;i<5;i++){
+		for(int i=0;i<=(board_size-5);i++){
 			len=0;space=0;back_space=0;
-			for(int j=0;j<9-i;j++){
-				type=chess_board->get(i+j,8-j);
+			for(int j=0;j<board_size-i;j++){
+				type=chess_board->get(i+j,board_size-j-1);
 				operate(type,len,space,back_space,total_score,len_num);
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 
 			len=0;space=0;back_space=0;
-			for(int j=0;j<9-i;j++){
+			for(int j=0;j<board_size-i;j++){
 				type=chess_board->get(i+j,j);
 				operate(type,len,space,back_space,total_score,len_num);
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
-		for(int i=4;i<8;i++){
+		for(int i=4;i<board_size-1;i++){
 			len=0;space=0;back_space=0;
 			for(int j=0;j<=i;j++){
 				type=chess_board->get(i-j,j);
@@ -103,7 +103,7 @@ public:
 
 			len=0;space=0;back_space=0;
 			for(int j=0;j<=i;j++){
-				type=chess_board->get(i-j,8-j);
+				type=chess_board->get(i-j,board_size-j-1);
 				operate(type,len,space,back_space,total_score,len_num);
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);

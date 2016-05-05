@@ -43,10 +43,10 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 		}
 	}
 	//================1=====================
-	for(int i=0;i<5;i++){
+	for(int i=0;i<=(Renju::board_size-5);i++){
 		len=0;
-		for(int j=0;j<9-i;j++){
-			type=chess_board->get(i+j,8-j);
+		for(int j=0;j<Renju::board_size-i;j++){
+			type=chess_board->get(i+j,Renju::board_size-j-1);
 			if(type>0){
 				if(len<0)len=0;
 				len++;
@@ -60,7 +60,7 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 			}
 		}
 		len=0;
-		for(int j=0;j<9-i;j++){
+		for(int j=0;j<Renju::board_size-i;j++){
 			type=chess_board->get(i+j,j);
 			if(type>0){
 				if(len<0)len=0;
@@ -76,7 +76,7 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 		}
 	}
 
-	for(int i=4;i<8;i++){
+	for(int i=4;i<Renju::board_size-1;i++){
 		len=0;
 		for(int j=0;j<=i;j++){
 			type=chess_board->get(i-j,j);
@@ -94,7 +94,7 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 		}
 		len=0;
 		for(int j=0;j<=i;j++){
-			type=chess_board->get(i-j,8-j);
+			type=chess_board->get(i-j,Renju::board_size-j-1);
 			if(type>0){
 				if(len<0)len=0;
 				len++;

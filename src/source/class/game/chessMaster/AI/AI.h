@@ -18,22 +18,25 @@ class AI {
 public:
 	AI();
 	virtual ~AI();
-
+	//search_start execute in thread and stored result in best_step
 	void search_start(Tim::ThreadPool *pool,
 			CM::ChessBoard* chess_board,int player,int depth,int pruning);
 
-
+	CM::Step find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* chess_board,
+			int player,int depth,int pruning);
+	inline bool is_searching()const{
+		return searching;
+	}
 	bool search_done;
-	bool searching;
+	bool traning_mode;
 	CM::Step best_step;
 	unsigned total_compute;
 	float start_time;
 protected:
-	CM::Step find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* chess_board,
-			int player,int depth,int pruning);
+
 	int evaluate_score(CM::Board<short int>* chess_board,
 			int player,int depth,int pruning,bool max
-			,Tim::ObjPool<Tim::vector<CM::Step> >*steps_pool);
+			,Tim::ObjPool<Tim::vector<CM::Step> >* steps_pool);
 	struct cmpmax{
 	    inline bool operator() (const CM::Step& s1, const CM::Step& s2){
 	        return (s1.score < s2.score);
@@ -44,13 +47,17 @@ protected:
 	        return (s1.score > s2.score);
 	    }
 	};
+	void get_node_scores(Tim::vector<CM::Step> &next_step,
+			CM::Board<short int> *chess_board,std::vector<int>&node_scores,
+			float &SD,float &avg_node_score);
 	CM::Step find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_board,
 			int player,int depth,int pruning,bool max);
-
+	double get_node_score(int wins,int simulations);
 	Tim::ObjPool<Tim::ObjPool<Tim::vector<CM::Step> > >*steps_pool;
 	CM::ChessBoard* board;
 	void test(CM::Board<short int> *chess_board,int player,int depth,Tim::ObjPool<Tim::vector<CM::Step> >*steps_pool);
 	int total_test;
+	bool searching;
 };
 
 } /* namespace CM */

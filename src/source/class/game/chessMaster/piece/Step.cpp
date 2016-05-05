@@ -12,20 +12,13 @@ Step::Step() {
 Step::Step(Step *step){
 	init(*step);
 }
-void Step::init(const Step &step){
-	score=step.score;
-	move_num=step.move_num;
-	for(unsigned i=0;i<move_num;i++){
-		moves[i]=step.moves[i];
-	}
-}
 Step::~Step() {
 	//std::cout<<"Step::~Step()"<<std::endl;
 }
 void Step::save(FILE * file){
 	fprintf(file,"%d\n",score);
 	fprintf(file,"%u\n",move_num);
-	Math::vec4<int> *move;
+	Math::vec4<short int> *move;
 	for(unsigned i=0;i<move_num;i++){
 		move=&moves[i];
 		fprintf(file,"%d,%d,%d,%d\n",move->x,move->y,move->z,move->w);
@@ -34,13 +27,11 @@ void Step::save(FILE * file){
 void Step::load(FILE * file){
 	fscanf(file,"%d\n",&score);
 	fscanf(file,"%u\n",&move_num);
+	int x,y,z,w;
 	for(unsigned i=0;i<move_num;i++){
-		fscanf(file,"%d,%d,%d,%d\n",&moves[i].x,&moves[i].y,&moves[i].z,&moves[i].w);
+		fscanf(file,"%d,%d,%d,%d\n",&x,&y,&z,&w);
+		moves[i].x=x;moves[i].y=y;moves[i].z=z;moves[i].w=w;
 	}
-}
-Step& Step::operator=(const Step& step){
-	init(step);
-	return (*this);
 }
 bool Step::operator==(const Step& step){
 	if(step.move_num!=move_num){

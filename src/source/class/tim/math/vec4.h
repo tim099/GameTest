@@ -15,7 +15,7 @@ public:
 	virtual ~vec4(){
 
 	}
-	vec4& operator=(const vec4& vec){
+	inline vec4& operator=(const vec4& vec){
 		x=vec.x;y=vec.y;z=vec.z;w=vec.w;
 		return *this;
 	}

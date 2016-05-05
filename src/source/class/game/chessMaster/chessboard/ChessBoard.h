@@ -56,7 +56,9 @@ public:
 	void undo();
 	void clear();
 	void clear_steps();
+
 	void next_turn(CM::Step step);
+	void prev_turn();
 
 	inline void find_next_step(CM::Board<short int> *chess_board,
 			int x,int y,int player,Tim::vector<CM::Step> &next_steps){
@@ -77,39 +79,31 @@ public:
 		}
 	}
 	static int get_board(lua_State *L);
+	//return the chess number difference between players
+	static int get_chess_num_delta(lua_State *L);
+
 	static int find_board(lua_State *L);
 
 	bool bound_check(int x,int y);
 	void backpropagation();
+	void draw_backpropagation();
 	inline int check_winner(CM::Board<short int> *chess_board){
 		return rule->check_winner(chess_board);
 	}
-	inline int evaluate_score(CM::Board<short int> *chess_board,int player){
+	virtual int evaluate_score(CM::Board<short int> *chess_board,int player){
 		int total_score=0;
 		for(int i=0;i<chess_board->piece_type_num;i++){
 			total_score+=pieces_weight[i]*chess_board->piece_num[i];
 		}
-
-		/*
-		short int type,flag;
-		int sx=chess_board->sizex,sy=chess_board->sizey;
-		for(int i=0;i<sx;i++){
-			for(int j=0;j<sy;j++){
-				type=chess_board->get(i,j);
-				if(type!=0){
-					if(type>0){
-						flag=1;
-					}else{
-						type=-type;
-						flag=-1;
-					}
-					total_score+=flag*pieces_weight[type-1];
-				}
-			}
-		}
-		*/
 		return player*total_score;
 	}
+	inline Tim::Array2D<short int>* get_cur()const{
+		return cur_board;
+	}
+	inline CM::StepNode *get_cur_node(){
+		return cur_node;
+	}
+
 
 	//cube being selected by mouse
 	glm::ivec3 selected_cube;
@@ -126,12 +120,8 @@ public:
 	std::vector<CM::Step*> steps;
 	int cube_type_num;//number of cube type
 
-	inline Tim::Array2D<short int>* get_cur()const{
-		return cur_board;
-	}
-	inline CM::StepNode *get_cur_node(){
-		return cur_node;
-	}
+
+	std::string game_name;
 	CM::Rule *rule;
 	CM::BoardMCT *mct;
 	std::string dir_path;

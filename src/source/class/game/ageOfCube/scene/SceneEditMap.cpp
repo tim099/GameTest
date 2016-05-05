@@ -97,20 +97,6 @@ void SceneEditMap::camera_control(){
 				* input->mouse->pos_delta().x)
 				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
 	}
-	if (input->mouse->left_clicked()) {//->left_pressed()
-		if(!destruct_mode){
-			map->set_cube_type(map->selected_on.x,
-							   map->selected_on.y,
-							   map->selected_on.z,
-							   Cube::dirt);
-		}else{
-			map->set_cube_type(map->selected_cube.x,
-							   map->selected_cube.y,
-							   map->selected_cube.z,
-							   Cube::cubeNull);
-		}
-
-	}
 	if (input->mouse->scroll) {
 		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
 				* (0.05 * input->mouse->scroll);
@@ -141,6 +127,20 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 }
 void SceneEditMap::handle_input() {
 	camera_control();
+	if (input->mouse->left_clicked()) {//->left_pressed()
+		if(!destruct_mode){
+			map->set_cube_type(map->selected_on.x,
+							   map->selected_on.y,
+							   map->selected_on.z,
+							   Cube::dirt);
+		}else{
+			map->set_cube_type(map->selected_cube.x,
+							   map->selected_cube.y,
+							   map->selected_cube.z,
+							   Cube::cubeNull);
+		}
+
+	}
 	if (input->keyboard->pressed_char('w')) {
 		map->dp_map->display_height_alter(1, thread_pool);
 	}

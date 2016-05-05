@@ -1,6 +1,9 @@
 dir_path:
 	files/game/chessMaster/game/chineseChess/
 
+game_name:
+	ChineseChess
+
 texture:
 	chineseChess/board_textures
 normal_texture:	

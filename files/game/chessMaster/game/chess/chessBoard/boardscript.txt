@@ -1,6 +1,9 @@
 dir_path:
 	files/game/chessMaster/game/chess/
 
+game_name:
+	Chess
+
 texture:
 	chess/board_textures
 normal_texture:	

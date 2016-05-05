@@ -11,7 +11,7 @@ public:
 	void load(FILE * file);
 
 	int wins,simulations;
-	int score,depth;
+	//int score,depth;
 };
 
 } /* namespace CM */

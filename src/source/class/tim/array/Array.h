@@ -8,7 +8,7 @@ public:
 	inline static void size_alter(Type *&arr,unsigned len,unsigned new_len){
 		Type* new_arr=new Type[new_len];
 		std::copy(arr,arr+len,new_arr);
-		delete arr;
+		delete[] arr;
 		arr=new_arr;
 		//std::swap(arr,new_arr);
 		//delete new_arr;

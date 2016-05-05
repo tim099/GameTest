@@ -1,0 +1,131 @@
+#LOAD_TEXTUREMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/game/chessMaster/game/renju/textures/
+Name:
+	renju
+#HEADER_END
+
+Texture2DArr:
+	TextureName:
+		board_textures
+	TextureSize:
+		256
+		256
+
+	TexturePath:
+		chessBoard/01.bmp
+	TexturePath:
+		chessBoard/02.bmp
+	TexturePath:
+		chessBoard/03.bmp
+	TexturePath:
+		chessBoard/04.bmp
+	TexturePath:
+		chessBoard/05.bmp
+	TexturePath:
+		chessBoard/06.bmp
+	TexturePath:
+		chessBoard/07.bmp
+	TexturePath:
+		chessBoard/08.bmp
+	TexturePath:
+		chessBoard/09.bmp
+	TexturePath:
+		chessBoard/10.bmp
+	TexturePath:
+		chessBoard/11.bmp
+	TexturePath:
+		chessBoard/12.bmp
+	TexturePath:
+		chessBoard/13.bmp
+	TexturePath:
+		chessBoard/14.bmp
+	TexturePath:
+		chessBoard/15.bmp
+	TexturePath:
+		chessBoard/16.bmp
+	TexturePath:
+		chessBoard/17.bmp
+	TexturePath:
+		chessBoard/18.bmp
+	TexturePath:
+		chessBoard/19.bmp
+	TexturePath:
+		chessBoard/20.bmp
+	TexturePath:
+		chessBoard/21.bmp
+	TexturePath:
+		chessBoard/22.bmp
+	#Load_texture2DArr_END
+Texture2DArr:
+	TextureName:
+		board_normals
+	TextureSize:
+		256
+		256
+
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	TexturePath:
+		chessBoard/dirtNor.bmp
+	#Load_texture2DArr_END
+
+Texture:
+	TextureName:
+		black
+	TexturePath:
+		chess/black.bmp
+Texture:
+	TextureName:
+		white
+	TexturePath:
+		chess/white.bmp
+Texture:
+	TextureName:
+		normal
+	TexturePath:
+		chess/dirtNor.bmp
+#END	

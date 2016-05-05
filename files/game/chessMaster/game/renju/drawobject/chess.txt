@@ -1,0 +1,34 @@
+#LOAD_DRAWOBJECTMAP_SCRIPT
+
+#HEADER
+
+Name:
+	renju
+	
+#HEADER_END
+
+DrawObject:
+	Name:
+		black
+	ModelBuffer:
+		renju/piece
+	Texture:
+		renju/black	
+
+	Material:
+		0.4 0.8 0.02 0.25
+#load_end
+
+DrawObject:
+	Name:
+		white
+	ModelBuffer:
+		renju/piece
+	Texture:
+		renju/white
+
+	Material:
+		0.4 0.8 0.02 0.25
+#load_end
+
+#END

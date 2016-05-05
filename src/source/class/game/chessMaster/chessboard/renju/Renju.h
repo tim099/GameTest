@@ -14,20 +14,20 @@ public:
 	virtual ~Renju();
 	void create_pieces();
 	inline void get_pattern(int &len,int &space,int &back_space,
-			int len_num[2][6]){
+			int len_num[2][win_lenth+1]){
 		//std::cout<<"get_pattern len="<<len<<"air="<<air<<"back air="<<back_air<<std::endl;
 		bool p1=true;
 		if(len<0){
 			len=-len;
 			p1=false;
 		}
-		if(space+len+back_space<5){
-			len=0;
+		if(space+len+back_space<win_lenth){
+			len=0;//can't form win length
 		}else{
 			if(space&&back_space)len++;
 		}
 		len--;
-		if(len>5)len=5;
+		if(len>win_lenth)len=win_lenth;
 		if(len<0)len=0;
 		len_num[p1?0:1][len]++;
 
@@ -36,12 +36,23 @@ public:
 		len=0;
 	}
 	inline void operate(int &type,int &len,int &space,int &back_space,
-			int &total_score,int len_num[2][6]){
+			int &total_score,int len_num[2][win_lenth+1]){
 		if(type!=0){
 			if(type*len<0){
 				get_pattern(len,space,back_space,len_num);
 			}else if(type*len>0&&back_space){//separated!!
-				get_pattern(len,space,back_space,len_num);
+				if(back_space>1){
+					get_pattern(len,space,back_space,len_num);
+				}else{
+					 if(type*len>1){
+						 if(type*len==2){
+							 len+=type;
+							 len_num[type>0?0:1][2]--;
+						 }
+						 get_pattern(len,space,back_space,len_num);
+					 }
+				}
+
 			}
 			len+=type;
 		}else{
@@ -56,8 +67,8 @@ public:
 		//std::cout<<"==============="<<std::endl;
 		int total_score=0;
 		int len,type;
-		int len_num[2][6];
-		for(int i=0;i<6;i++){
+		int len_num[2][win_lenth+1];
+		for(int i=0;i<win_lenth+1;i++){
 			len_num[0][i]=0;
 			len_num[1][i]=0;
 		}
@@ -108,11 +119,11 @@ public:
 				operate(type,len,space,back_space,total_score,len_num);
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);
-
 		}
 
+
 		if(player==1){
-			for(int i=4;i>0;i--){
+			for(int i=win_lenth-1;i>0;i--){
 				if(len_num[0][i]>0){
 					//std::cout<<"p1 find:"<<i<<std::endl;
 					len_num[0][i]-=2;
@@ -121,7 +132,7 @@ public:
 				}
 			}
 		}else{
-			for(int i=4;i>0;i--){
+			for(int i=win_lenth-1;i>0;i--){
 				if(len_num[1][i]>0){
 					len_num[1][i]-=2;
 					len_num[1][i+1]++;
@@ -129,7 +140,7 @@ public:
 				}
 			}
 		}
-		for(int i=0;i<6;i++){
+		for(int i=0;i<win_lenth+1;i++){
 			if(i==3){
 				if(len_num[0][i]>=2){
 					len_num[0][i]-=3;

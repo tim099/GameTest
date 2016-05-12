@@ -50,7 +50,7 @@ private:
 	void handle_signal();
 
 	glm::vec3 sun_col1,sun_col2;
-	Tim::ObjPool<Position>*position_pool;
+	Tim::ObjPool<math::Position>*position_pool;
 
 
 	Display::Draw *draw;

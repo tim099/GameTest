@@ -60,7 +60,9 @@ void Texture2D::draw(Shader2D* shader2D,DrawData *data){
 	Buffer::bind_uvbuffer(tex_uv);
 
 	sent_uniform(shader2D,0,"Texture");
-	glm::vec2 pos=2.0f*(dat->pos)+glm::vec2(tsize.x,-tsize.y)-glm::vec2(1.0,1.0);
+	math::vec2<float> pos=(dat->pos)*2.0f+
+			math::vec2<float>(tsize.x,-tsize.y)-
+			math::vec2<float>(1.0,1.0);
 	shader2D->sent_Uniform("position",pos);
 	shader2D->sent_Uniform("alpha",dat->alpha);
 

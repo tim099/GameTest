@@ -31,7 +31,7 @@ void Tree::load_landscape(FILE * file){
 }
 void Tree::set_pos(int x,int y,int z){
 	if(!pos){
-		pos=new Position(glm::vec3(AOC::Map::CUBE_SIZE*x+0.45,AOC::Map::CUBE_SIZE*y+0.45,
+		pos=new math::Position(glm::vec3(AOC::Map::CUBE_SIZE*x+0.45,AOC::Map::CUBE_SIZE*y+0.45,
 				AOC::Map::CUBE_SIZE*z+0.45));
 		pos->set_scale(glm::vec3(1.3,1.0,1.3));
 	}

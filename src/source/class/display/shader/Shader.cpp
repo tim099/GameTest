@@ -43,11 +43,14 @@ void Shader::sent_Uniform(std::string name,glm::vec4 pos){
 void Shader::sent_Uniform(std::string name,glm::vec3 pos){
 	glUniform3f(glGetUniformLocation(programID,name.c_str()),pos.x,pos.y,pos.z);
 }
-void Shader::sent_Uniform(std::string name,glm::vec2 pos){
+void Shader::sent_Uniform(std::string name,math::vec2<float> pos){
 	glUniform2f(glGetUniformLocation(programID,name.c_str()),pos.x,pos.y);
 }
-void Shader::sent_Uniform(std::string name,GLfloat val){
+void Shader::sent_Uniform(std::string name,float val){
 	glUniform1f(glGetUniformLocation(programID,name.c_str()),val);
+}
+void Shader::sent_Uniform(std::string name,float x,float y){
+	glUniform2f(glGetUniformLocation(programID,name.c_str()),x,y);
 }
 void Shader::active_shader(){
 	glUseProgram(programID);

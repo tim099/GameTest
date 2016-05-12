@@ -5,6 +5,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
+namespace math {
 class Position {
 public:
 	Position();
@@ -50,5 +51,5 @@ protected:
 	glm::mat4 pos_matrix;
 
 };
-
+}
 #endif /* POSITION_H_ */

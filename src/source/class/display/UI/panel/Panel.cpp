@@ -61,9 +61,11 @@ void Panel::start_draw(Display::Draw* draw) {
 	Display::DrawData* data = new Display::DrawData2D(1.0, get_pos(), size.x, height);
 	if(check_mode(UI::Mode::EDIT)){
 		if (state == Selectable::state_on) {
-			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
+			data->ex_datas.push_back(
+					new Display::drawDataEX::ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
 		} else if (state == Selectable::state_selected) {
-			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
+			data->ex_datas.push_back(
+					new Display::drawDataEX::ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
 		}
 	}
 	draw->push(new Display::DrawTexture(tex2D, data));

@@ -119,21 +119,6 @@ void UIObject::clear_child() {
 	}
 	//childs.clear();//just for safety, all child should already removed
 }
-void UIObject::init(glm::vec2 _pos, glm::vec2 _size) {
-	set_pos(_pos);
-	size = _size;
-}
-glm::vec2 UIObject::get_middle_pos() const {
-	return get_pos() + glm::vec2(0.5 * size.x, -0.5 * size.y);
-}
-//==========SelectableRec implement========
-glm::vec2 UIObject::get_rec_pos() const {
-	return get_pos();
-}
-glm::vec2 UIObject::get_rec_size() const {
-	return size;
-}
-//========================================
 void UIObject::draw_UIObject(Display::Draw* draw) {
 	if (hide)
 		return;
@@ -222,23 +207,6 @@ UIObject* UIObject::get_root() {
 	}
 	return this;
 }
-void UIObject::set_relative_pos(glm::vec2 _pos){
-	pos = _pos;
-}
-void UIObject::set_pos(glm::vec2 _pos) {
-	pos = _pos;
-	if (parent)
-		pos -= parent->get_pos();
-}
-glm::vec2 UIObject::get_pos() const {
-	if (parent) {
-		return pos + parent->get_pos();
-	}
-	return pos;
-}
-glm::vec2 UIObject::get_relative_pos()const{
-	return pos;
-}
 void UIObject::set_receiver(std::string receiver_name) {
 	if (receiver) {
 		Input::Input::get_cur_object()->remove_receiver(receiver->get_name());
@@ -249,8 +217,5 @@ void UIObject::set_receiver(std::string receiver_name) {
 UIObject* UIObject::copy_UIObject(){
 	std::cerr<<"UIObject:"<<get_type()<<"not implement UIObject::copy_UIObject()"<<std::endl;
 	return 0;
-}
-glm::vec2 UIObject::get_size()const{
-	return size;
 }
 } /* namespace UI */

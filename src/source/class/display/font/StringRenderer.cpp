@@ -33,27 +33,27 @@ void StringRenderer::render(Shader2D* shader2D, RenderString* render_str) {
 	//std::cout<<"render string:"<<renderStr->str<<std::endl;
 	float aspect = 1.0 / targetaspect;
 
-	glm::vec2 tsize = Tim::Math::get_size(render_str->size, aspect);
+	math::vec2<float> tsize = math::vec2<float>(
+			Tim::Math::get_size(render_str->size, aspect));
 
-	glm::vec2 pos;
+	math::vec2<float> pos;
 	Vertex::gen_quad_vt(vertex_buffer_data, glm::vec3(0, 0, 0),
 			glm::vec3(tsize.x, tsize.y, 0), true);
 	vtbuffer->update_buffer(vertex_buffer_data, sizeof(vertex_buffer_data));
 	vtbuffer->bind_buffer();
 	int col = 0, line = 0;
 	unsigned c;
-	glm::vec2 render_pos = render_str->pos;
+	math::vec2<float> render_pos = render_str->pos;
 	if (render_str->render_at_middle) {
-		glm::vec2 str_size = render_str->string_size();
+		math::vec2<float> str_size = render_str->string_size();
 		render_pos += glm::vec2(-0.5 * str_size.x, 0.5*str_size.y/aspect);
 	}
 	for (unsigned i = 0; i < render_str->str.size(); i++) {
-		pos = 2.0f
-				* (render_pos
-						+ glm::vec2(
+		pos = (render_pos
+						+ math::vec2<float>(
 								tsize.x * RenderString::Font_Interval
 										* (col + 0.5) - 0.5,
-								-tsize.y * (line + 0.5) - 0.5));
+								-tsize.y * (line + 0.5) - 0.5))*2.0f;
 
 		shader2D->sent_Uniform("position", pos);
 		c = render_str->str.at(i);
@@ -89,10 +89,10 @@ void StringRenderer::render(Shader2D* shader2D, RenderString* render_str) {
 			}
 
 		}
-		pos = 2.0f* (render_pos+ glm::vec2(
+		pos = (render_pos+ math::vec2<float>(
 						tsize.x * RenderString::Font_Interval
 						* (col) - 0.5,
-						-tsize.y * (line + 0.5) - 0.5));
+						-tsize.y * (line + 0.5) - 0.5))*2.0f;
 
 		shader2D->sent_Uniform("position", pos);
 		render_text('|');

@@ -31,7 +31,7 @@ Test::Test() {
 	display_time = false;
 
 	thread_pool = new Tim::ThreadPool(8);
-	position_pool = new Tim::ObjPool<Position>(100);
+	position_pool = new Tim::ObjPool<math::Position>(100);
 	position_pool->register_cur();
 	controller_system = new ControllerSystem();
 	controller_system->push(new Input::SelectableControl());
@@ -248,7 +248,7 @@ void Test::handle_input() {
 	camera_control();
 
 	if (input->keyboard->pressed('Q')) {
-		Position *pos = Tim::ObjPool<Position>::mycreate();
+		math::Position *pos = Tim::ObjPool<math::Position>::mycreate();
 		if (pos)
 			pos->init(input->mouse->world_pos, glm::vec3());
 		//drawObjects->get("test/ico")->push_drawdata(new DrawDataObj(pos));
@@ -330,7 +330,7 @@ void Test::handle_input() {
 			//lightControl->shadow_dis *= 1.01;
 	}
 	if (input->keyboard->get('C')) {
-		Position *pos = position_pool->create();
+		math::Position *pos = position_pool->create();
 		if (pos)
 			pos->init(camera->look_at + glm::vec3(0, 0.1, 0),
 					glm::vec3(0, camera->look_ry(), 0));
@@ -397,8 +397,8 @@ void Test::handle_input() {
 	}
 }
 void Test::update_obj_pos(Display::Camera *camera) {
-	static Position starpos(glm::vec3(0, 0, 0), glm::vec3());
-	static Position sunpos(glm::vec3(50.1, 800.6, 0.1), glm::vec3());
+	static math::Position starpos(glm::vec3(0, 0, 0), glm::vec3());
+	static math::Position sunpos(glm::vec3(50.1, 800.6, 0.1), glm::vec3());
 	//obj move
 
 	starpos.set_ry(360.0f * ((float) timeloop / loop_time));
@@ -421,7 +421,7 @@ void Test::update_obj_pos(Display::Camera *camera) {
 	//tiger_pos.set_pos(camera->look_at);
 	//drawObjects->get("test/tiger")->push_temp_drawdata(
 			//new DrawDataObj(&tiger_pos));
-	static Position cam_look_at;
+	static math::Position cam_look_at;
 	cam_look_at.init(camera->look_at, glm::vec3(0, camera->look_ry(), 0));
 	drawObjects->get("test/look_at")->push_temp_drawdata(
 			new Display::DrawDataObj(&cam_look_at));

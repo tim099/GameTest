@@ -5,7 +5,7 @@ DrawDataObj::DrawDataObj() {
 	draw_shadow=false;
 	delete_pos=false;
 }
-DrawDataObj::DrawDataObj(Position* _pos,bool _draw_shadow,bool _delete_pos) {
+DrawDataObj::DrawDataObj(math::Position* _pos,bool _draw_shadow,bool _delete_pos) {
 	set_pos(_pos);
 	draw_shadow=_draw_shadow;
 	delete_pos=_delete_pos;
@@ -16,7 +16,7 @@ DrawDataObj::~DrawDataObj() {
  * don't delete pos!! handle by outside
  */
 }
-void DrawDataObj::set_pos(Position* _pos){
+void DrawDataObj::set_pos(math::Position* _pos){
 	pos=_pos;
 }
 }

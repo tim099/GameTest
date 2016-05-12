@@ -12,12 +12,12 @@
 #include <iostream>
 namespace UI {
 
-PictureButton::PictureButton(glm::vec2 _pos, std::string _tex_path, float width,
+PictureButton::PictureButton(math::vec2<float> _pos, std::string _tex_path, float width,
 		float _height) {
 	init(_pos, _tex_path, width, _height);
 
 }
-void PictureButton::init(glm::vec2 _pos, std::string _tex_path,
+void PictureButton::init(math::vec2<float> _pos, std::string _tex_path,
 		float width, float _height) {
 	set_pos(_pos);
 	set_texture(_tex_path, width, _height);
@@ -136,7 +136,7 @@ void PictureButton::set_string(std::string* _str, float _font_size) {
 	if (font_size == auto_Size) {
 
 		static const float edgex = 0.9, edgey = 0.8;
-		glm::vec2 max_size(edgex * size.x, edgey * size.y);
+		math::vec2<float> max_size(edgex * size.x, edgey * size.y);
 
 		font_size = 1.0;
 		Display::RenderString* rstr = new Display::RenderString(*str, font_size);
@@ -149,9 +149,9 @@ void PictureButton::start_draw(Display::Draw* draw) {
 	Display::DrawData* data = new Display::DrawData2D(1.0, get_pos(), size.x, height);
 
 	if (state == Selectable::state_on) {
-		data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
+		data->ex_datas.push_back(new Display::drawDataEX::ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
 	} else if (state == Selectable::state_selected) {
-		data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
+		data->ex_datas.push_back(new Display::drawDataEX::ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
 	}
 	draw->push(new Display::DrawTexture(tex2D, data));
 
@@ -160,9 +160,9 @@ void PictureButton::start_draw(Display::Draw* draw) {
 		data = draw->push_as_tex(
 				new Display::RenderString(*str, font_size, get_middle_pos(), true));
 		if (state == Selectable::state_on) {
-			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
+			data->ex_datas.push_back(new Display::drawDataEX::ColorAlter(glm::vec3(0.3, 0.3, 0.3)));
 		} else if (state == Selectable::state_selected) {
-			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
+			data->ex_datas.push_back(new Display::drawDataEX::ColorAlter(glm::vec3(0.7, 0.7, 0.7)));
 		}
 	}
 }

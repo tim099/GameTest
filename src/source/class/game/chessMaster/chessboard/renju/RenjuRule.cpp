@@ -17,7 +17,7 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 			if(type!=0){
 				if(len*type<0)len=0;
 				len+=type;
-				if(len*type>=Renju::win_lenth)return type;
+				if(len*type>=Renju::win_length)return type;
 			}else{
 				len=0;
 			}
@@ -28,21 +28,21 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 			if(type!=0){
 				if(len*type<0)len=0;
 				len+=type;
-				if(len*type>=Renju::win_lenth)return type;
+				if(len*type>=Renju::win_length)return type;
 			}else{
 				len=0;
 			}
 		}
 	}
 
-	for(int i=0;i<=(Renju::board_size-Renju::win_lenth);i++){
+	for(int i=0;i<=(Renju::board_size-Renju::win_length);i++){
 		len=0;
 		for(int j=0;j<Renju::board_size-i;j++){
 			type=chess_board->get(i+j,Renju::board_size-j-1);
 			if(type!=0){
 				if(len*type<0)len=0;
 				len+=type;
-				if(len*type>=Renju::win_lenth)return type;
+				if(len*type>=Renju::win_length)return type;
 			}else{
 				len=0;
 			}
@@ -53,21 +53,21 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 			if(type!=0){
 				if(len*type<0)len=0;
 				len+=type;
-				if(len*type>=Renju::win_lenth)return type;
+				if(len*type>=Renju::win_length)return type;
 			}else{
 				len=0;
 			}
 		}
 	}
 
-	for(int i=Renju::win_lenth-1;i<Renju::board_size-1;i++){
+	for(int i=Renju::win_length-1;i<Renju::board_size-1;i++){
 		len=0;
 		for(int j=0;j<=i;j++){
 			type=chess_board->get(i-j,j);
 			if(type!=0){
 				if(len*type<0)len=0;
 				len+=type;
-				if(len*type>=Renju::win_lenth)return type;
+				if(len*type>=Renju::win_length)return type;
 			}else{
 				len=0;
 			}
@@ -78,7 +78,7 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 			if(type!=0){
 				if(len*type<0)len=0;
 				len+=type;
-				if(len*type>=Renju::win_lenth)return type;
+				if(len*type>=Renju::win_length)return type;
 			}else{
 				len=0;
 			}

@@ -9,34 +9,37 @@ class Renju: public ChessBoard {
 	static const int MAX=10000000;
 public:
 	static const int board_size=9;
-	static const int win_lenth=5;
+	static const int win_length=5;
+	//static const int arr_size=win_lenth+1;
 	Renju();
 	virtual ~Renju();
 	void create_pieces();
 	inline void get_pattern(int &len,int &space,int &back_space,
-			int len_num[2][win_lenth+1]){
+			int len_num[4][win_length]){
 		//std::cout<<"get_pattern len="<<len<<"air="<<air<<"back air="<<back_air<<std::endl;
 		bool p1=true;
+		bool alive=false;
 		if(len<0){
 			len=-len;
 			p1=false;
 		}
-		if(space+len+back_space<win_lenth){
+		if(space+len+back_space<win_length){
 			len=0;//can't form win length
 		}else{
-			if(space&&back_space)len++;
+			if(space&&back_space){
+				alive=true;
+			}
 		}
 		len--;
-		if(len>win_lenth)len=win_lenth;
+		if(len>=win_length)len=win_length-1;
 		if(len<0)len=0;
-		len_num[p1?0:1][len]++;
-
+		len_num[(p1?0:1)+(alive?2:0)][len]++;
 		space=back_space;
 		back_space=0;
 		len=0;
 	}
 	inline void operate(int &type,int &len,int &space,int &back_space,
-			int &total_score,int len_num[2][win_lenth+1]){
+			int &total_score,int len_num[4][win_length]){
 		if(type!=0){
 			if(type*len<0){
 				get_pattern(len,space,back_space,len_num);
@@ -67,10 +70,12 @@ public:
 		//std::cout<<"==============="<<std::endl;
 		int total_score=0;
 		int len,type;
-		int len_num[2][win_lenth+1];
-		for(int i=0;i<win_lenth+1;i++){
+		int len_num[4][win_length];
+		for(int i=0;i<win_length;i++){
 			len_num[0][i]=0;
 			len_num[1][i]=0;
+			len_num[2][i]=0;
+			len_num[3][i]=0;
 		}
 		int space,back_space;
 		for(int i=0;i<board_size;i++){
@@ -89,7 +94,7 @@ public:
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
-		for(int i=0;i<=(board_size-win_lenth);i++){
+		for(int i=0;i<=(board_size-win_length);i++){
 			len=0;space=0;back_space=0;
 			for(int j=0;j<board_size-i;j++){
 				type=chess_board->get(i+j,board_size-j-1);
@@ -105,7 +110,7 @@ public:
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
-		for(int i=(win_lenth-1);i<board_size-1;i++){
+		for(int i=(win_length-1);i<board_size-1;i++){
 			len=0;space=0;back_space=0;
 			for(int j=0;j<=i;j++){
 				type=chess_board->get(i-j,j);
@@ -121,43 +126,61 @@ public:
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
-
 		if(player==1){
-			for(int i=win_lenth-1;i>0;i--){
+			for(int i=win_length-1;i>0;i--){
+				if(len_num[2][i]>0){
+					len_num[2][i]--;//alive
+					len_num[2][i+1]++;
+					break;
+				}
 				if(len_num[0][i]>0){
-					//std::cout<<"p1 find:"<<i<<std::endl;
-					len_num[0][i]-=2;
+					len_num[0][i]--;//dead
 					len_num[0][i+1]++;
 					break;
 				}
 			}
 		}else{
-			for(int i=win_lenth-1;i>0;i--){
+			for(int i=win_length-1;i>0;i--){
+				if(len_num[3][i]>0){
+					len_num[3][i]--;//alive
+					len_num[3][i+1]++;
+					break;
+				}
 				if(len_num[1][i]>0){
-					len_num[1][i]-=2;
+					len_num[1][i]--;//dead
 					len_num[1][i+1]++;
 					break;
 				}
 			}
 		}
-		for(int i=0;i<win_lenth+1;i++){
-			if(i==3){
+		for(int i=0;i<win_length;i++){
+			///*
+			if(i<win_length-1&&i>=3){
 				if(len_num[0][i]>=2){
-					len_num[0][i]-=3;
+					//std::cout<<"add0:"<<i<<std::endl;
+					len_num[0][i]-=2;
 					len_num[0][i+1]++;
 				}
 				if(len_num[1][i]>=2){
-					len_num[1][i]-=3;
+					//std::cout<<"add1:"<<i<<std::endl;
+					len_num[1][i]-=2;
 					len_num[1][i+1]++;
 				}
-				total_score+=100*(len_num[0][i]-len_num[1][i]);
-			}else if(i==4){
-				total_score+=1000*(len_num[0][i]-len_num[1][i]);
-			}else if(i>=5){
-				total_score+=10000*(len_num[0][i]-len_num[1][i]);
-			}else{
-				total_score+=(i+1)*(i+1)*(len_num[0][i]-len_num[1][i]);
+				if(len_num[2][i]>=2){
+					//std::cout<<"add2:"<<i<<std::endl;
+					len_num[2][i]-=2;
+					len_num[2][i+1]++;
+				}
+				if(len_num[3][i]>=2){
+					//std::cout<<"add3:"<<i<<std::endl;
+					len_num[3][i]-=2;
+					len_num[3][i+1]++;
+				}
 			}
+
+			//*/
+			total_score+=pow(10,i)*(len_num[0][i]-len_num[1][i]);
+			total_score+=5*pow(10,i)*(len_num[2][i]-len_num[3][i]);
 		}
 		return player*total_score;
 	}

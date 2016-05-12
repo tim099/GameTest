@@ -6,6 +6,7 @@
 #include <iostream>
 #include "class/input/mouse/selectable/rectangle/SelectableRec.h"
 #include "class/tim/string/String.h"
+#include "class/tim/math/vec2.h"
 namespace Display{
 class Draw;
 }
@@ -25,7 +26,10 @@ public:
 	UIObject();
 	virtual ~UIObject();
 
-	void init(glm::vec2 pos, glm::vec2 size);
+	void init(math::vec2<float> _pos, math::vec2<float> _size){
+		set_pos(_pos);
+		size = _size;
+	}
 	//=========pure virtual function============
 
 	//return a new create object of inherit type
@@ -48,14 +52,25 @@ public:
 	void draw_UIObject(Display::Draw* draw);
 
 
-	glm::vec2 get_size()const;
+	math::vec2<float> get_size()const{
+		return size;
+	}
 	//get position
-	glm::vec2 get_pos()const;
+	math::vec2<float> get_pos()const{
+		if (parent) {
+			return pos + parent->get_pos();
+		}
+		return pos;
+	}
 	//get relative position to parent
-	glm::vec2 get_relative_pos()const;
+	math::vec2<float> get_relative_pos()const{
+		return pos;
+	}
 
 	//return the middle position of UIObject
-	glm::vec2 get_middle_pos() const;
+	math::vec2<float> get_middle_pos() const{
+		return get_pos() + math::vec2<float>(0.5 * size.x, -0.5 * size.y);
+	}
 
 	UIObject* get_parent()const;
 	UIObject* get_root();
@@ -67,10 +82,16 @@ public:
 	UIObject* search_root(std::string name);
 
 	//set relative position to parent
-	void set_relative_pos(glm::vec2 pos);
+	void set_relative_pos(math::vec2<float> _pos){
+		pos = _pos;
+	}
 
 	//set texture space position
-	void set_pos(glm::vec2 pos);
+	void set_pos(math::vec2<float> _pos){
+		pos = _pos;
+		if (parent)
+			pos -= parent->get_pos();
+	}
 
 	//set cur parent to UIObject* parent
 	void set_parent(UIObject* parent);
@@ -114,17 +135,21 @@ protected:
 	virtual void update();
 	virtual void start_draw(Display::Draw* draw);
 	//==========SelectableRec implement========
-	virtual glm::vec2 get_rec_pos()const;
-	virtual glm::vec2 get_rec_size()const;
+	virtual math::vec2<float> get_rec_pos()const{
+		return get_pos();
+	}
+	virtual math::vec2<float> get_rec_size()const{
+		return size;
+	}
 	//=======================================
 	UIObject* parent;
 	std::vector<UIObject*>childs;
 	std::string name;
-	glm::vec2 size;
+	math::vec2<float> size;
 	Input::Receiver *receiver;
 	UIObjectCreator* creator;
 private:
-	glm::vec2 pos;
+	math::vec2<float> pos;
 	int mode;
 };
 

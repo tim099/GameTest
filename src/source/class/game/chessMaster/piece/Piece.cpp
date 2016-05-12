@@ -84,7 +84,7 @@ void Piece::next_step(CM::Board<short int> *chess_board,
 		next_steps.push_back(next_step);
 	}
 }
-void Piece::draw(Position* pos,int player){
+void Piece::draw(math::Position* pos,int player){
 	if(player==1){
 		draw_piece1->push_temp_drawdata(new Display::DrawDataObj(pos,true,true));
 	}else{

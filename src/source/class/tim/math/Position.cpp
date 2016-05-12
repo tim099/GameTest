@@ -4,6 +4,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
 #include <iostream>
+namespace math {
 Position::Position() {
 	init(glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), 0);
 }
@@ -129,4 +130,5 @@ glm::mat4 Position::PosMat() {
 	}else{
 		return pos_matrix;
 	}
+}
 }

@@ -2,6 +2,7 @@
 #define DRAWDATAEX_H_
 namespace Display{
 class Shader;
+namespace drawDataEX{
 class DrawDataEX {
 public:
 	DrawDataEX();
@@ -15,5 +16,6 @@ public:
 	 */
 	virtual void draw_end(Shader* shader);
 };
+}
 }
 #endif /* DRAWDATAEX_H_ */

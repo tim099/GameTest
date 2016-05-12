@@ -9,6 +9,7 @@
 #include "class/display/window/ViewPort.h"
 #include "class/display/camera/Camera.h"
 #include "class/input/mouse/Mouse.h"
+#include "class/display/texture/texture2D/drawDataEX/SobelData.h"
 #include <cstdio>
 #include <iostream>
 namespace Display{
@@ -19,15 +20,15 @@ Renderer::Renderer(Draw *_d_obj, Window *_window) {
 	window = _window;
 	VertexArrayID = Buffer::GenVertexArray();
 
-	FBO = new FrameBuffer(window->get_size());
-	FBO->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
+	FBO3D = new FrameBuffer(window->get_size());
+	FBO3D->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
 	//FBO->gen_color_texture(GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_Linear); //just test!!
-	FBO->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
+	FBO3D->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
 			P_Linear);
 
-	FBO2 = new FrameBuffer(window->get_size());
-	FBO2->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
-	FBO2->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
+	FBO2D = new FrameBuffer(window->get_size());
+	FBO2D->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
+	FBO2D->gen_depth_texture(GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT,
 			P_Linear);
 	waterReflectFBO = new FrameBuffer(window->get_size());
 	waterReflectFBO->gen_color_texture(GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE, P_Linear);
@@ -46,8 +47,8 @@ Renderer::Renderer(Draw *_d_obj, Window *_window) {
 }
 Renderer::~Renderer() {
 	//delete texarr;
-	delete FBO;
-	delete FBO2;
+	delete FBO3D;
+	delete FBO2D;
 	delete waterReflectFBO;
 	delete waterRefractFBO;
 	delete shader2D;
@@ -112,17 +113,21 @@ void Renderer::render() {
 
 	draw->update();
 
-	draw->draw3D(shader,shaderWater,shaderShadowMapping,shader2D,FBO,
+	draw->draw3D(shader,shaderWater,shaderShadowMapping,shader2D,FBO3D,
 			waterReflectFBO,waterRefractFBO);
 
-	draw->draw2D(shader2D,FBO2);
+	draw->draw2D(shader2D,FBO2D);
 
 	FrameBuffer::unbind_buffer(window->get_size()); //start draw on window buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    //clear window buffer
 
 	//draw 3D
-	FBO->color_textures.at(0)->draw_texture(shader2D,
-			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
+	DrawData2D* data_2d;
+
+	data_2d=new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0);
+	//data_2d->push_ex_data(new Display::drawDataEX::SobelData(0.3,0.5));
+	//data_2d->ex_datas.push_back()
+	FBO3D->color_textures.at(0)->draw_texture(shader2D,data_2d);
 
 	/*
 	shader2D->Enable(SobelMode | AddOnMode);
@@ -132,8 +137,9 @@ void Renderer::render() {
 	shader2D->Disable(SobelMode | AddOnMode);
 	*/
 	//draw 2D
-	FBO2->color_textures.at(0)->draw_texture(shader2D,
-			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
+	data_2d=new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0);
+	FBO2D->color_textures.at(0)->draw_texture(shader2D,data_2d);
+
 	rendering = false;
 	//window->swap_buffer();
 	//window->render_off();    //release thread using this window

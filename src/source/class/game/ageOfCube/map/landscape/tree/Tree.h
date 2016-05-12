@@ -24,7 +24,7 @@ public:
 	}
 	virtual void set_pos(int x,int y,int z);
 	virtual void draw();
-	Position *pos;
+	math::Position *pos;
 	unsigned char tree_type;
 protected:
 	virtual void save_landscape(FILE * file);

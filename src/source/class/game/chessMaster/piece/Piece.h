@@ -9,8 +9,9 @@
 #include "class/tim/lua/Lua.h"
 #include "class/tim/array/vector.h"
 #include <string>
+namespace math{
 class Position;
-
+}
 namespace Display{
 class DrawObject;
 }
@@ -26,7 +27,7 @@ public:
 	virtual void next_step(CM::Board<short int> *chess_board,
 			int x,int y,Tim::vector<CM::Step> &next_step,int player);
 	void load_script(std::string dir_path,std::string path);
-	void draw(Position* pos,int player);
+	void draw(math::Position* pos,int player);
 	//unsigned char type;
 	int weight;
 protected:

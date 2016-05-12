@@ -147,7 +147,7 @@ protected:
 
 	Display::DynamicDrawObject *dboard;
 	Display::CubeModel *cube;
-	Position *pos;
+	math::Position *pos;
 	Display::ModelBufferMap* model_map;
 	Display::TextureMap * tex_map;
 	Display::DrawObjectMap *draw_map;

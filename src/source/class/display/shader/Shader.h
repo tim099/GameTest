@@ -4,6 +4,7 @@
 #include <string>
 #include <GL/glew.h>
 #include "class/display/uniform/Uniform.h"
+#include "class/tim/math/vec2.h"
 namespace Display{
 const int NormalMapping=1<<0;
 const int LayerTexture=1<<1;
@@ -26,9 +27,10 @@ public:
 	void sent_Uniform(std::string name,int i);
 	void sent_Uniform(std::string name,glm::vec4 pos);
 	void sent_Uniform(std::string name,glm::vec3 pos);
-	void sent_Uniform(std::string name,glm::vec2 pos);
-	void sent_Uniform(std::string name,GLfloat val);
+	void sent_Uniform(std::string name,math::vec2<float> pos);
+	void sent_Uniform(std::string name,float val);
 
+	void sent_Uniform(std::string name,float x,float y);
 	std::string Name()const;
 	GLuint programID;
 protected:

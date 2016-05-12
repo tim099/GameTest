@@ -30,7 +30,7 @@ void UIString::initialize(std::string* _str, float _font_size) {
 	str = _str;
 	cur_insert_at=str->size();
 	font_size = _font_size;
-	size = glm::vec2(1,2)*Display::RenderString::string_size(str,font_size);
+	size = math::vec2<float>(1,2)*Display::RenderString::string_size(str,font_size);
 }
 UIObject* UIString::create_UIObject() {
 	return new UIString();
@@ -65,7 +65,7 @@ void UIString::start_draw(Display::Draw* draw) {
 		Display::DrawData* data=draw->push_as_tex(rstr);
 		if(input_mode&&cur_input_str==this){
 			rstr->insert_at=insert_at;
-			data->ex_datas.push_back(new Display::ColorAlter(glm::vec3(0.2, 0.2, 0.2)));
+			data->ex_datas.push_back(new Display::drawDataEX::ColorAlter(glm::vec3(0.2, 0.2, 0.2)));
 		}
 	}
 }
@@ -97,7 +97,7 @@ void UIString::update() {
 				//str->erase(cur_insert_at-1);
 				*str+=tmp;
 				cur_insert_at--;
-				size = glm::vec2(1,2)*Display::RenderString::string_size(str,font_size);
+				size = math::vec2<float>(1,2)*Display::RenderString::string_size(str,font_size);
 			}
 		}else{
 			unsigned c=keyboard->get_char();
@@ -108,7 +108,7 @@ void UIString::update() {
 				str->push_back((char)c);
 				*str+=tmp;
 				cur_insert_at++;
-				size = glm::vec2(1,2)*Display::RenderString::string_size(str,font_size);
+				size = math::vec2<float>(1,2)*Display::RenderString::string_size(str,font_size);
 			}
 		}
 		keyboard->clear_keys();

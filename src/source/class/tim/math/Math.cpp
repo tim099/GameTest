@@ -9,7 +9,7 @@ Math::Math() {
 Math::~Math() {
 
 }
-float Math::fit_in_maxsize(glm::vec2 size,glm::vec2 maxsize){
+float Math::fit_in_maxsize(math::vec2<float> size,math::vec2<float> maxsize){
 	float alter=1.0;
 	if(size.x>maxsize.x){
 		alter=(maxsize.x/size.x);

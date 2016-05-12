@@ -2,7 +2,7 @@
 #define SOURCE_CLASS_TIM_MATH_VEC4_CPP_
 #include "class/tim/math/vec4.h"
 
-namespace Math {
+namespace math {
 
 
 } /* namespace Math */

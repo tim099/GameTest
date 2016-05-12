@@ -1,6 +1,7 @@
 #ifndef MATH_H_
 #define MATH_H_
 #include <glm/glm.hpp>
+#include "class/tim/math/vec2.h"
 #define Max(a,b) a>b?a:b
 #define Min(a,b) a<b?a:b
 namespace Tim {
@@ -19,7 +20,7 @@ public:
 	static glm::mat4 BiasMat();
 	static float aspect(glm::ivec2 size);
 	static int pow(int base,int power);
-	static float fit_in_maxsize(glm::vec2 size,glm::vec2 maxsize);
+	static float fit_in_maxsize(math::vec2<float> size,math::vec2<float> maxsize);
 	static glm::vec2 convert_to_texcoord(glm::vec2 pos);
 	static glm::vec2 convert_to_wincoord(glm::vec2 pos);
 };

@@ -16,8 +16,9 @@ class Window;
 }
 
 
-
+namespace math{
 class Position;
+}
 namespace AOC{
 class Map;
 class DisplayMap {
@@ -49,7 +50,7 @@ protected:
 	Tim::Array2D<WaterDrawObject*>*water_dmaps;
 	Display::CubeModel *cube;
 	AOC::Map *map;
-	Position *pos;
+	math::Position *pos;
 
 	glm::ivec3 seg;
 	glm::ivec3 segsize;

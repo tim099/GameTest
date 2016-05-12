@@ -18,7 +18,10 @@ public:
 	 * clear sent data in shader
 	 */
 	void draw_end(Shader* shader);
-	std::vector<DrawDataEX*>ex_datas;
+	inline void push_ex_data(drawDataEX::DrawDataEX* data){
+		ex_datas.push_back(data);
+	}
+	std::vector<drawDataEX::DrawDataEX*>ex_datas;
 };
 }
 #endif /* DRAWDATA_H_ */

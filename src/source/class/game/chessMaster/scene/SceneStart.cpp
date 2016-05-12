@@ -444,59 +444,59 @@ void SceneStart::scene_draw(){
 	if(ai->is_searching()){
 		float time_used=(glfwGetTime()-ai->start_time);
 		draw->push(new Display::RenderString("AI thinking time:"+Tim::String::to_string(time_used),
-				0.02,glm::vec2(0,0.95)));
+				0.02,math::vec2<float>(0,0.95)));
 	}else{
 		if(AI_mode==AI_MODE::AUTO_AI_VS_AI||AI_mode==AI_MODE::AI_VS_AI){
 
 		}else{
 			if(chess_board->cur_player==1){
-				draw->push(new Display::RenderString("player1's turn",0.02,glm::vec2(0,0.95)));
+				draw->push(new Display::RenderString("player1's turn",0.02,math::vec2<float>(0,0.95)));
 			}else{
-				draw->push(new Display::RenderString("player2's turn",0.02,glm::vec2(0,0.95)));
+				draw->push(new Display::RenderString("player2's turn",0.02,math::vec2<float>(0,0.95)));
 			}
 		}
 	}
 	if(difficulty==1){
-		draw->push(new Display::RenderString("Hyper AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Hyper AI",0.02,math::vec2<float>(0.4,0.95)));
 	}else if(difficulty==2){
-		draw->push(new Display::RenderString("Super Easy AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Super Easy AI",0.02,math::vec2<float>(0.4,0.95)));
 	}else if(difficulty==3){
-		draw->push(new Display::RenderString("Easy AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Easy AI",0.02,math::vec2<float>(0.4,0.95)));
 	}else if(difficulty==4){
-		draw->push(new Display::RenderString("Normal AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Normal AI",0.02,math::vec2<float>(0.4,0.95)));
 	}else if(difficulty==5){
-		draw->push(new Display::RenderString("Normal+ AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Normal+ AI",0.02,math::vec2<float>(0.4,0.95)));
 	}else if(difficulty==6){
-		draw->push(new Display::RenderString("Hard AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("Hard AI",0.02,math::vec2<float>(0.4,0.95)));
 	}else if(difficulty==7){
-		draw->push(new Display::RenderString("super Hard AI",0.02,glm::vec2(0.4,0.95)));
+		draw->push(new Display::RenderString("super Hard AI",0.02,math::vec2<float>(0.4,0.95)));
 	}
 	//draw->push(new Display::RenderString("Game:"+chess_board->game_name,
-			//0.02,glm::vec2(0.0,0.985)));
+			//0.02,math::vec2<float>(0.0,0.985)));
 	draw->push(new Display::RenderString(Tim::String::to_string(chess_board->selected_piece.x)+","+
-	Tim::String::to_string(chess_board->selected_piece.y),0.02,glm::vec2(0.6,0.95)));
+	Tim::String::to_string(chess_board->selected_piece.y),0.02,math::vec2<float>(0.6,0.95)));
 	if(edit_mode){
 		if(edit_chess){
-			static Position pos=Position(glm::vec3(), glm::vec3());
+			static math::Position pos=math::Position(glm::vec3(), glm::vec3());
 			pos.set_pos(glm::vec3((chess_board->selected_on.x+0.5f)*chess_board->cube_size,
 					  (chess_board->selected_on.y+0.5f)*chess_board->cube_size,
 					  (chess_board->selected_on.z+0.5f)*chess_board->cube_size));
 
 			if(chess_type>0)chess_board->pieces.at(chess_type-1)->draw(&pos,!destruct_mode);
-			draw->push(new Display::RenderString("Edit Chess",0.02,glm::vec2(0.7,0.95)));
+			draw->push(new Display::RenderString("Edit Chess",0.02,math::vec2<float>(0.7,0.95)));
 		}else{
-			draw->push(new Display::RenderString("Edit Board",0.02,glm::vec2(0.7,0.95)));
+			draw->push(new Display::RenderString("Edit Board",0.02,math::vec2<float>(0.7,0.95)));
 		}
 	}
 
 
 	int score=chess_board->evaluate_score(chess_board->chess_board,chess_board->cur_player);
-	draw->push(new Display::RenderString("score:"+Tim::String::to_string(score),0.02,glm::vec2(0,0.85)));
+	draw->push(new Display::RenderString("score:"+Tim::String::to_string(score),0.02,math::vec2<float>(0,0.85)));
 	draw->push(new Display::RenderString("turn:"+Tim::String::to_string((int)chess_board->steps.size()),
-			0.02,glm::vec2(0.2,0.85)));
+			0.02,math::vec2<float>(0.2,0.85)));
 	if(chess_board->winner!=0){
-		if(chess_board->winner==1)draw->push(new Display::RenderString("player1 win!!",0.05,glm::vec2(0.3,0.5)));
-		else draw->push(new Display::RenderString("player2 win!!",0.05,glm::vec2(0.3,0.5)));
+		if(chess_board->winner==1)draw->push(new Display::RenderString("player1 win!!",0.05,math::vec2<float>(0.3,0.5)));
+		else draw->push(new Display::RenderString("player2 win!!",0.05,math::vec2<float>(0.3,0.5)));
 	}
 	UI->draw_UIObject(draw);
 	chess_board->draw();
@@ -520,10 +520,10 @@ void SceneStart::scene_draw(){
 	CM::Step *step;
 	if(!chess_board->steps.empty()){
 		step=chess_board->steps.back();
-		step->draw_step(glm::vec3(0.4,0.4,0.6));
+		step->draw_step(0.4,0.4,0.6);
 		if(chess_board->steps.size()>=2){
 			step=chess_board->steps.at(chess_board->steps.size()-2);
-			step->draw_step(glm::vec3(0.4,0.6,0.4));
+			step->draw_step(0.4,0.6,0.4);
 		}
 	}
 	if(selected){

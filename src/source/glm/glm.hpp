@@ -75,7 +75,7 @@
 /// @ingroup core
 ///////////////////////////////////////////////////////////////////////////////////
 
-#include "detail/_fixes.hpp"
+//#include "detail/_fixes.hpp"
 
 #ifndef GLM_INCLUDED
 #define GLM_INCLUDED

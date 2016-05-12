@@ -10,12 +10,12 @@ public:
 	 * not handle the delete of pos
 	 */
 	DrawDataObj();
-	DrawDataObj(Position* pos,bool draw_shadow=true,bool delete_pos=false);
+	DrawDataObj(math::Position* pos,bool draw_shadow=true,bool delete_pos=false);
 	virtual ~DrawDataObj();
-	void set_pos(Position* pos);
+	void set_pos(math::Position* pos);
 	bool draw_shadow;
 	bool delete_pos;
-	Position* pos;
+	math::Position* pos;
 protected:
 
 };

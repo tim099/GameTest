@@ -19,7 +19,7 @@ DisplayMap::DisplayMap(AOC::Map *_map) {
 	cube = new Display::CubeModel(0.5 * Map::CUBE_SIZE);
 	gen_display_map_seg();
 
-	pos = new Position(glm::vec3(0, 0, 0), glm::vec3());
+	pos = new math::Position(glm::vec3(0, 0, 0), glm::vec3());
 
 	dmaps=new Tim::Array2D<MapDrawObject*>(seg.x,seg.z);
 	water_dmaps=new Tim::Array2D<WaterDrawObject*>(seg.x,seg.z);

@@ -26,7 +26,7 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	game_name="unknown chess game";
 	dboard = new Display::DynamicDrawObject();
 	Display::Draw::get_cur_object()->push(dboard);//remember to remove before delete dboard
-	pos = new Position(glm::vec3(0, 0, 0), glm::vec3());
+	pos = new math::Position(glm::vec3(0, 0, 0), glm::vec3());
 	cube = new Display::CubeModel(0.5*cube_size);
 
 	dboard->init_drawObject("","","",true);
@@ -687,12 +687,12 @@ void ChessBoard::draw(){
 	dboard->draw=true;
 	dboard->push_temp_drawdata(new Display::DrawDataObj(pos,true));
 	int type;
-	Position* pos;
+	math::Position* pos;
 	for(int i=0;i<chess_board->sizex;i++){
 		for(int j=0;j<chess_board->sizey;j++){
 			type=chess_board->get(i,j);
 			if(type!=0){
-				pos=new Position(glm::vec3((i+0.5f)*cube_size,
+				pos=new math::Position(glm::vec3((i+0.5f)*cube_size,
 						  (2.5f)*cube_size,
 						  (j+0.5f)*cube_size));
 				if(type>0){

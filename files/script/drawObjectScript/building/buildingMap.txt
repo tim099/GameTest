@@ -1,0 +1,20 @@
+#LOAD_DRAWOBJECTMAP_SCRIPT
+
+#HEADER
+
+Name:
+	building
+	
+#HEADER_END
+
+DrawObject:
+	Name:
+		basic_cube_tower_1
+	ModelBuffer:
+		landscape/basic_cube_tower_1
+	Texture:
+		landscape/basic_cube_tower_1
+
+#load_end
+
+#END

@@ -10,8 +10,8 @@ Name:
 
 Texture:
 	TextureName:
-		pinetree
+		basic_cube_tower_1
 	TexturePath:
-		tree/pinetree.bmp
+		tree/basic_cube_tower_1.bmp
 
 #END

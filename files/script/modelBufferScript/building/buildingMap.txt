@@ -1,0 +1,20 @@
+#LOAD_MODELBUFFERMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/obj/
+Name:
+	building
+#HEADER_END
+
+ModelBuffer:
+	Name:
+		basic_cube_tower_1
+	Path:
+		basic_cube_tower_1.obj
+	Size:
+		0.9
+#load_end
+
+#END

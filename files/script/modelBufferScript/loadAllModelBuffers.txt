@@ -15,7 +15,9 @@ Map:
 	ScriptPath:
 		landscape/landscapeMap.txt
 
-
+Map:
+	ScriptPath:
+		building/buildingeMap.txt
 
 
 #END

@@ -25,21 +25,21 @@
 #include "class/game/chessMaster/piece/Step.h"
 #include "class/tim/array/vector.h"
 int main(){
-	/*
+
 	//while(true){
 	AOC::AgeOfCubes* ageOfCubes=new AOC::AgeOfCubes();
 	ageOfCubes->initialize();
 	ageOfCubes->mainloop();
 	delete ageOfCubes;
 	//}
-	*/
+
 	///*
 	//while(true){
-	ChessMaster* cm=new ChessMaster();
+	/*ChessMaster* cm=new ChessMaster();
 	cm->initialize();
 
 	cm->mainloop();
-	delete cm;
+	delete cm;*/
 	//}
 	//*/
 

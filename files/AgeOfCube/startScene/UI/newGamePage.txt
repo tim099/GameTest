@@ -136,6 +136,31 @@ CreateUIObject:
 	Name:
 		default
 	Position:
+		0.733529 0.50119
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Play"
+	String_size:
+		0.0176471
+	Set_signal:
+		Data:
+			play
+		Receiver:
+			SceneStart
+	Parent:
+		newGamePage
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
 		0.131772 0.324556
 	Texture:
 		UI/UI/button2

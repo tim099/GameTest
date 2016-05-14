@@ -17,7 +17,7 @@ Map:
 
 Map:
 	ScriptPath:
-		building/buildingeMap.txt
+		building/buildingMap.txt
 
 
 #END

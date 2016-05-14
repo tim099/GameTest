@@ -17,6 +17,6 @@ Map:
 
 Map:
 	ScriptPath:
-		files/script/drawObjectScript/building/buildingeMap.txt
+		files/script/drawObjectScript/building/buildingMap.txt
 
 #END

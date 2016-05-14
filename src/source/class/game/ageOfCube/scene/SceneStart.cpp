@@ -64,6 +64,8 @@ void SceneStart::handle_signal(Input::Signal* sig){
 		load_map();
 	}else if(sig->get_data()=="delete_map"){
 		delete_map();
+	}else if(sig->get_data()=="play"){
+		load_map();
 	}
 }
 void SceneStart::load_map(){

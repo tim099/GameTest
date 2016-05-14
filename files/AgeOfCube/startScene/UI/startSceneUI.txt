@@ -1,59 +1,3 @@
-<<<<<<< Updated upstream
-#LOAD_UI_SCRIPT
-#HEADER
-	Name:
-		root
-#HEADER_END
-CreateUIObject:
-		PageControl
-	Name:
-		pageControl
-	Position:
-		0 0
-	Parent:
-		root
-	Set_receiver:
-		pageControl
-#create_end
-
-CreateUIObject:
-		UI
-	Name:
-		startPage
-	Position:
-		0 0
-	ScriptPath:
-		files/AgeOfCube/startScene/UI/startPage.txt
-	Parent:
-		pageControl
-#create_end
-
-CreateUIObject:
-		UI
-	Name:
-		newGamePage
-	Position:
-		0 0
-	ScriptPath:
-		files/AgeOfCube/startScene/UI/newGamePage.txt
-	Parent:
-		pageControl
-#create_end
-
-CreateUIObject:
-		UI
-	Name:
-		createNewMap
-	Position:
-		0 0
-	ScriptPath:
-		files/AgeOfCube/startScene/UI/createNewMap/createNewMap.txt
-	Parent:
-		pageControl
-#create_end
-
-#END
-=======
 #LOAD_UI_SCRIPT
 #HEADER
 	Name:
@@ -120,4 +64,3 @@ CreateUIObject:
 #create_end
 
 #END
->>>>>>> Stashed changes

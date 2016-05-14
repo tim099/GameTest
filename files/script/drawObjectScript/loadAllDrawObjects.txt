@@ -15,8 +15,5 @@ Map:
 	ScriptPath:
 		files/script/drawObjectScript/landscape/landscapeMap.txt
 
-Map:
-	ScriptPath:
-		files/script/drawObjectScript/building/buildingMap.txt
 
 #END

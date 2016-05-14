@@ -22,10 +22,6 @@ TextureMap:
 TextureMap:
 	ScriptPath:
 		loadLandscapeTexture/loadLandscapeTexture.txt	
-TextureMap:
-	ScriptPath:
-		loadBuildingTexture/loadBuildingTexture.txt	
-
 
 //load a new dir script(load a #LOAD_ALL_TEXTURES_SCRIPT as directory under this)
 TextureDir:

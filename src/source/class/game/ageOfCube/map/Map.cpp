@@ -75,7 +75,7 @@ void Map::gen_map_seg(){
 	map_segs=new Tim::Array2D<MapSeg>(seg.x,seg.z);
 	for(int i=0;i<seg.x;i++){
 		for(int j=0;j<seg.z;j++){
-			map_segs->get(i,j).init(this,glm::ivec2(i*segsize.x,j*segsize.z));
+			map_segs->get(i,j).init(this,math::vec2<int>(i*segsize.x,j*segsize.z));
 		}
 	}
 }
@@ -247,7 +247,7 @@ glm::ivec3 Map::convert_position(glm::vec3 pos){
 void Map::save_update_pos(FILE * file){
 	unsigned cur_update_pos_size=cur_update_pos->size();
 	fprintf(file,"%u\n",cur_update_pos_size);
-	glm::ivec3 *p;
+	math::vec3<int> *p;
 	for(unsigned i=0;i<cur_update_pos_size;i++){
 		p=&(cur_update_pos->at(i));
 		fprintf(file,"%d %d %d\n",p->x,p->y,p->z);
@@ -266,7 +266,7 @@ void Map::load_update_pos(FILE * file){
 	prev_update_pos=&update_pos2;
 	unsigned cur_update_pos_size;
 	fscanf(file,"%u\n",&cur_update_pos_size);
-	glm::ivec3 p;
+	math::vec3<int> p;
 	for(unsigned i=0;i<cur_update_pos_size;i++){
 		fscanf(file,"%d %d %d\n",&p.x,&p.y,&p.z);
 		cur_update_pos->push_back(p);
@@ -338,7 +338,7 @@ void Map::push_CubeEX(int x,int y,int z,CubeEX *cube){
 		return;
 	}
 	map->get(x,y,z)=cube->get_type();//.set(Cube::CubeEX);
-	get_map_seg_by_pos(x,z)->push_cube(glm::ivec3(x,y,z),cube);
+	get_map_seg_by_pos(x,z)->push_cube(math::vec3<int>(x,y,z),cube);
 }
 bool Map::remove_cube(int x,int y,int z){
 	return set_cube_type(x,y,z,Cube::cubeNull);
@@ -349,23 +349,24 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 		return false;
 	}
 	unsigned char perv_type=map->get(x,y,z);
-	if(perv_type==Cube::cubeEX){//.type
-		get_map_seg_by_pos(x,z)->remove_cube(glm::ivec3(x,y,z));
-	}
 	if(perv_type==type){
 		return false;
 	}
+	if(perv_type==Cube::cubeEX){//.type
+		get_map_seg_by_pos(x,z)->remove_cube(math::vec3<int>(x,y,z));
+	}
+
 	map->get(x,y,z)=type;
 	push_update_cube(x,y,z);
 
-	dp_map->update_map(glm::ivec3(x,y,z));
+	dp_map->update_map(math::vec3<int>(x,y,z));
 	return true;
 }
 void Map::push_update_cube(int x,int y,int z){
 	//for(unsigned i=0;i<prev_update_pos->size();i++){
 		//if(glm::ivec3(x,y,z)==prev_update_pos->at(i))return;
 	//}
-	prev_update_pos->push_back(glm::ivec3(x,y,z));
+	prev_update_pos->push_back(math::vec3<int>(x,y,z));
 }
 Cube* Map::get_cube(int x,int y,int z){
 	int type=get_cube_type(x,y,z);
@@ -470,19 +471,19 @@ void Map::find_selected_on(glm::vec3 pos){
 		}
 	}
 	if(dir==down){
-		selected_on=glm::ivec3(pos.x,pos.y-1,pos.z);
+		selected_on=math::vec3<int>(pos.x,pos.y-1,pos.z);
 	}else if(dir==up){
-		selected_on=glm::ivec3(pos.x,pos.y+1,pos.z);
+		selected_on=math::vec3<int>(pos.x,pos.y+1,pos.z);
 	}else if(dir==left){
-		selected_on=glm::ivec3(pos.x-1,pos.y,pos.z);
+		selected_on=math::vec3<int>(pos.x-1,pos.y,pos.z);
 	}else if(dir==right){
-		selected_on=glm::ivec3(pos.x+1,pos.y,pos.z);
+		selected_on=math::vec3<int>(pos.x+1,pos.y,pos.z);
 	}else if(dir==back){
-		selected_on=glm::ivec3(pos.x,pos.y,pos.z-1);
+		selected_on=math::vec3<int>(pos.x,pos.y,pos.z-1);
 	}else if(dir==front){
-		selected_on=glm::ivec3(pos.x,pos.y,pos.z+1);
+		selected_on=math::vec3<int>(pos.x,pos.y,pos.z+1);
 	}else{
-		selected_on=glm::ivec3(-1,-1,-1);
+		selected_on=math::vec3<int>(-1,-1,-1);
 	}
 }
 void Map::find_selected_cube(glm::vec3 pos){
@@ -552,19 +553,19 @@ void Map::find_selected_cube(glm::vec3 pos){
 	}
 
 	if(dir==down){
-		selected_cube=glm::ivec3(pos.x,pos.y-1,pos.z);
+		selected_cube=math::vec3<int>(pos.x,pos.y-1,pos.z);
 	}else if(dir==up){
-		selected_cube=glm::ivec3(pos.x,pos.y+1,pos.z);
+		selected_cube=math::vec3<int>(pos.x,pos.y+1,pos.z);
 	}else if(dir==left){
-		selected_cube=glm::ivec3(pos.x-1,pos.y,pos.z);
+		selected_cube=math::vec3<int>(pos.x-1,pos.y,pos.z);
 	}else if(dir==right){
-		selected_cube=glm::ivec3(pos.x+1,pos.y,pos.z);
+		selected_cube=math::vec3<int>(pos.x+1,pos.y,pos.z);
 	}else if(dir==back){
-		selected_cube=glm::ivec3(pos.x,pos.y,pos.z-1);
+		selected_cube=math::vec3<int>(pos.x,pos.y,pos.z-1);
 	}else if(dir==front){
-		selected_cube=glm::ivec3(pos.x,pos.y,pos.z+1);
+		selected_cube=math::vec3<int>(pos.x,pos.y,pos.z+1);
 	}else{
-		selected_on=glm::ivec3(-1,-1,-1);
+		selected_on=math::vec3<int>(-1,-1,-1);
 	}
 }
 void Map::find_select_cube(){
@@ -572,7 +573,7 @@ void Map::find_select_cube(){
 	pos=glm::vec3((pos.x/Map::CUBE_SIZE),
 			      (pos.y/Map::CUBE_SIZE),
 			      (pos.z/Map::CUBE_SIZE));
-	glm::ivec3 p=glm::ivec3(pos.x,pos.y,pos.z);
+	math::vec3<int> p(pos.x,pos.y,pos.z);
 	if(get_cube_type(p.x,p.y,p.z)==Cube::cubeNull
 			||p.y>=dp_map->display_height){//can't be selected
 		selected_on=p;

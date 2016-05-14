@@ -32,6 +32,7 @@ public:
 	CM::Step best_step;
 	unsigned total_compute;
 	float start_time;
+	bool searching;
 protected:
 
 	int evaluate_score(CM::Board<short int>* chess_board,
@@ -57,7 +58,7 @@ protected:
 	CM::ChessBoard* board;
 	void test(CM::Board<short int> *chess_board,int player,int depth,Tim::ObjPool<Tim::vector<CM::Step> >*steps_pool);
 	int total_test;
-	bool searching;
+
 };
 
 } /* namespace CM */

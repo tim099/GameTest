@@ -1,18 +1,16 @@
 #ifndef MAP_H_
 #define MAP_H_
-
-#include "class/tim/array/Array3D.h"
-#include "class/tim/array/Array2D.h"
-#include <glm/glm.hpp>
 #include <string>
 #include <cmath>
+#include "class/tim/array/Array3D.h"
+#include "class/tim/array/Array2D.h"
 #include "class/tim/math/PerlinNoise.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/game/ageOfCube/map/cube/Cube.h"
 #include "class/game/ageOfCube/map/MapSeg.h"
 #include "class/game/ageOfCube/map/DisplayMap.h"
 #include "class/game/ageOfCube/map/landscape/LandscapeCreator.h"
-
+#include "class/tim/math/vec3.h"
 class LandscapeCreator;
 class Timer;
 
@@ -92,13 +90,13 @@ public:
 		return ground_height*water_height;
 	}
 	//cube being selected by mouse
-	glm::ivec3 selected_cube;
+	math::vec3<int> selected_cube;
 
 	//cube being selected on(may near by the selected cube or equal to selected cube
-	glm::ivec3 selected_on;
+	math::vec3<int> selected_on;
 
-	glm::ivec3 seg;
-	glm::ivec3 segsize;
+	math::vec3<int> seg;
+	math::vec3<int> segsize;
 
 
 	AOC::DisplayMap* dp_map;
@@ -135,10 +133,10 @@ protected:
 	//Tim::Array3D<Cube> *map;
 	Tim::Array3D<unsigned char> *map;
 	Tim::Array2D<MapSeg>* map_segs;
-	std::vector<glm::ivec3>* cur_update_pos;
-	std::vector<glm::ivec3>* prev_update_pos;
-	std::vector<glm::ivec3> update_pos1;
-	std::vector<glm::ivec3> update_pos2;
+	std::vector<math::vec3<int> >* cur_update_pos;
+	std::vector<math::vec3<int> >* prev_update_pos;
+	std::vector<math::vec3<int> > update_pos1;
+	std::vector<math::vec3<int> > update_pos2;
 	glm::ivec3 map_size;
 
 	int times;

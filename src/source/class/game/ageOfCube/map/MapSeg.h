@@ -1,6 +1,7 @@
 #ifndef SOURCE_CLASS_GAME_MAP_MAPSEG_H_
 #define SOURCE_CLASS_GAME_MAP_MAPSEG_H_
-#include <glm/glm.hpp>
+#include "class/tim/math/vec3.h"
+#include "class/tim/math/vec2.h"
 #include <vector>
 
 #include "class/tim/map/MapContainer.h"
@@ -15,21 +16,21 @@ public:
 	void save(FILE * file);
 	void load(FILE * file);
 
-	void init(Map* map,glm::ivec2 seg_at);
+	void init(Map* map,math::vec2<int> seg_at);
 	void draw(int display_height);
-	void push_cube(glm::ivec3 pos,CubeEX *cube);
-	void remove_cube(glm::ivec3 pos);
+	void push_cube(math::vec3<int> pos,CubeEX *cube);
+	void remove_cube(math::vec3<int> pos);
 	CubeEX* get_cube(int x,int y,int z);
-	glm::ivec2 seg_at;//start position's x and z
+	math::vec2<int> seg_at;//start position's x and z
 	bool updated;
 protected:
 	void save_landscape(FILE * file);
 	void load_landscape(FILE * file);
-	unsigned convert_pos(const glm::ivec3 &pos);
-	glm::ivec3 convert_pos(unsigned p);
+	unsigned convert_pos(const math::vec3<int> &pos);
+	math::vec3<int> convert_pos(unsigned p);
 	Tim::MapContainer<unsigned,CubeEX>cubes;
 	Map* map;
-	glm::ivec3 segsize;
+	math::vec3<int> segsize;
 };
 }
 #endif /* SOURCE_CLASS_GAME_MAP_MAPSEG_H_ */

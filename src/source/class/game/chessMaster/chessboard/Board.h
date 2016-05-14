@@ -26,19 +26,7 @@ public:
 		for(int i=0;i<piece_type_num;i++){
 			piece_num[i]=board->piece_num[i];
 		}
-		/*
-		for(int i=0;i<this->sizex;i++){
-			for(int j=0;j<this->sizey;j++){
-				std::cout<<board->get(i,j)<<" ";
-			}std::cout<<std::endl;
-		}
-		std::cout<<std::endl;
-		std::cout<<"piece_num=";
-		for(int i=0;i<piece_type_num;i++){
-			std::cout<<piece_num[i]<<" ";
-		}
-		std::cout<<std::endl;
-		*/
+
 	}
 	virtual ~Board(){
 		delete[] piece_num;

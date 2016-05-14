@@ -5,7 +5,7 @@
 #include "class/display/model/cube/CubeModel.h"
 #include "class/tim/thread/mutex/Mutex.h"
 #include "class/tim/array/Array2D.h"
-#include <glm/glm.hpp>
+#include "class/tim/math/vec3.h"
 #include <queue>
 namespace Tim{
 	class ThreadPool;
@@ -40,7 +40,7 @@ public:
 	void draw_map(Display::Camera *camera,Tim::ThreadPool* threadpool);
 
 	void display_height_alter(int val,Tim::ThreadPool* threadpool);
-	void update_map(glm::ivec3 pos);
+	void update_map(math::vec3<int> pos);
 
 	Tim::Mutex* createMapObjectMutex;
 	int range,display_height;
@@ -52,8 +52,8 @@ protected:
 	AOC::Map *map;
 	math::Position *pos;
 
-	glm::ivec3 seg;
-	glm::ivec3 segsize;
+	math::vec3<int> seg;
+	math::vec3<int> segsize;
 };
 }
 #endif /* DISPLAYMAP_H_ */

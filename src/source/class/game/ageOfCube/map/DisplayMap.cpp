@@ -128,7 +128,7 @@ void DisplayMap::display_height_alter(int val, Tim::ThreadPool* threadpool) {
 	}
 	update_whole_map();
 }
-void DisplayMap::update_map(glm::ivec3 pos) {
+void DisplayMap::update_map(math::vec3<int> pos) {
 	if ((pos.x / segsize.x) >= seg.x || (pos.x / segsize.x) < 0
 			|| (pos.z / segsize.z) >= seg.z || (pos.z / segsize.z) < 0) {
 		std::cerr << "DisplayMap::update_map out of range" << std::endl;

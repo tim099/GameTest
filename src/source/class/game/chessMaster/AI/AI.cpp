@@ -55,7 +55,7 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,i
 		int depth,int pruning){
 	total_compute=0;
 	board=_chess_board;
-	std::cout<<"AI::find_best_step start"<<std::endl;
+	//std::cout<<"AI::find_best_step start"<<std::endl;
 	/*
 	total_test=0;
 	start_time=glfwGetTime();
@@ -85,7 +85,7 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,i
 	std::cout<<"best score="<<best.score<<std::endl;
 	search_done=true;
 	searching=false;
-	std::cout<<"AI::find_best_step end"<<std::endl;
+	//std::cout<<"AI::find_best_step end"<<std::endl;
 	return best;
 }
 int AI::evaluate_score(CM::Board<short int> *chess_board,

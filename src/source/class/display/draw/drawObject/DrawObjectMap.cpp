@@ -56,7 +56,7 @@ void DrawObjectMap::Parse_DrawObject(std::istream &is){
 	bool have_mat=false;
 	bool draw_shadow=true;
 	bool sky_map=false;
-	glm::vec4 mat;
+	math::vec4<float> mat;
 	Display::Draw* cur_draw=Display::Draw::get_cur_object();
 
 	if(!cur_draw){

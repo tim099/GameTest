@@ -15,7 +15,7 @@ protected:
 	virtual void scene_draw();
 	virtual void scene_initialize();
 	virtual	void scene_terminate();
-	int timer;
+	int timer,loop_time;
 	Display::Texture2D *texture;
 };
 

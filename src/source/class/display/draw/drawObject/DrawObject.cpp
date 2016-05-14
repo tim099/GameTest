@@ -50,7 +50,7 @@ void DrawObject::init_drawObject(ModelBuffer* _obj, Texture* _texture,
 	NormalMap = _NormalMap;
 	draw_shadow = true;
 	layer_texture = _layer_texture;
-	mat = glm::vec4(0.3, 0.4, 0.01, 0.15); //x=diffuse,y=specular_value,z=ambient,w=emissive
+	mat = math::vec4<float>(0.3, 0.4, 0.01, 0.15); //x=diffuse,y=specular_value,z=ambient,w=emissive
 	/*
 	Draw* cur_draw=Draw::get_cur_object();
 	if(cur_draw){

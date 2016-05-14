@@ -10,7 +10,7 @@ MapDrawObject::~MapDrawObject() {
 }
 void MapDrawObject::init(std::string tex_str,std::string Nor_str){
 	init_drawObject("",tex_str,Nor_str,true);
-	mat=glm::vec4(0.3,0.2,0.1,0.15);
+	mat=math::vec4<float>(0.3,0.2,0.1,0.15);
 }
 
 

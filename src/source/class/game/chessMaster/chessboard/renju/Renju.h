@@ -50,7 +50,7 @@ public:
 					 if(type*len>1){
 						 if(type*len==2){
 							 len+=type;
-							 len_num[type>0?0:1][2]--;
+							 len_num[type>0?0:1][1]--;
 						 }
 						 get_pattern(len,space,back_space,len_num);
 					 }
@@ -125,16 +125,16 @@ public:
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
-
+		///*
 		if(player==1){
 			for(int i=win_length-1;i>0;i--){
 				if(len_num[2][i]>0){
-					len_num[2][i]--;//alive
+					len_num[2][i]-=4;//alive
 					len_num[2][i+1]++;
 					break;
 				}
 				if(len_num[0][i]>0){
-					len_num[0][i]--;//dead
+					len_num[0][i]-=4;//dead
 					len_num[0][i+1]++;
 					break;
 				}
@@ -142,42 +142,52 @@ public:
 		}else{
 			for(int i=win_length-1;i>0;i--){
 				if(len_num[3][i]>0){
-					len_num[3][i]--;//alive
+					len_num[3][i]-=4;//alive
 					len_num[3][i+1]++;
 					break;
 				}
 				if(len_num[1][i]>0){
-					len_num[1][i]--;//dead
+					len_num[1][i]-=4;//dead
 					len_num[1][i+1]++;
 					break;
 				}
 			}
 		}
+		//*/
 		for(int i=0;i<win_length;i++){
+			//std::cout<<"b"<<i+1<<","<<len_num[0][i]<<","<<len_num[2][i]<<std::endl;
+			//std::cout<<"w"<<i+1<<","<<len_num[1][i]<<","<<len_num[3][i]<<std::endl;
 			///*
-			if(i<win_length-1&&i>=3){
-				if(len_num[0][i]>=2){
-					//std::cout<<"add0:"<<i<<std::endl;
-					len_num[0][i]-=2;
+			if(i==win_length-2||i==win_length-3){
+				if (len_num[0][i] >= 2) {
+					len_num[0][i] -= 6;
 					len_num[0][i+1]++;
 				}
-				if(len_num[1][i]>=2){
-					//std::cout<<"add1:"<<i<<std::endl;
-					len_num[1][i]-=2;
+				if (len_num[1][i] >= 2) {
+					len_num[1][i] -= 6;
 					len_num[1][i+1]++;
 				}
-				if(len_num[2][i]>=2){
-					//std::cout<<"add2:"<<i<<std::endl;
-					len_num[2][i]-=2;
+				if(len_num[2][i]>=1&&len_num[0][i+1]>=1){
+					len_num[2][i]--;
+					len_num[0][i+1]--;
+					len_num[2][i+1]++;
+					//std::cout<<"p1 d4a3!!"<<std::endl;
+				}else if(len_num[2][i]>=2) {
+					//std::cout<<"p1 2a3!!"<<std::endl;
+					len_num[2][i]-=6;
 					len_num[2][i+1]++;
 				}
-				if(len_num[3][i]>=2){
-					//std::cout<<"add3:"<<i<<std::endl;
-					len_num[3][i]-=2;
+				if(len_num[3][i]>=1&&len_num[1][i+1]>=1){
+					len_num[3][i]--;
+					len_num[1][i+1]--;
 					len_num[3][i+1]++;
+					//std::cout<<"p2 d4a3!!"<<std::endl;
+				}else if(len_num[3][i]>=2) {
+					len_num[3][i]-=6;
+					len_num[3][i+1]++;
+					//std::cout<<"p2 2a3!!"<<std::endl;
 				}
 			}
-
 			//*/
 			total_score+=pow(10,i)*(len_num[0][i]-len_num[1][i]);
 			total_score+=5*pow(10,i)*(len_num[2][i]-len_num[3][i]);

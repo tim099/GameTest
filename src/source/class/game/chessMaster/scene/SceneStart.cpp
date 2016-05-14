@@ -282,6 +282,10 @@ void SceneStart::handle_input(){
 			player_move=false;
 		}
 	}
+	if(input->keyboard->get('R')){
+		std::cout<<"AI reboot"<<std::endl;
+		ai->searching=false;
+	}
 	if(input->keyboard->get('E')){
 		edit_mode^=1;
 	}
@@ -307,18 +311,21 @@ void SceneStart::handle_input(){
 		chess_board->load_board(chess_board->dir_path+"chessBoard/board.txt");
 	}
 	if(input->keyboard->get(Input::KeyCode::Plus)){
-		if(edit_chess&&chess_type<(int)chess_board->pieces.size()){
-			chess_type++;
-		}else if(type<chess_board->cube_type_num){
-			type++;
+
+		if(edit_chess){
+			if(chess_type<(int)chess_board->pieces.size()){
+				chess_type++;
+			}
+		}else{
+			if(type<chess_board->cube_type_num)type++;
 		}
 
 	}
-	if(input->keyboard->get(Input::KeyCode::Minus)&&type>0){
-		if(edit_chess&&chess_type>0){
-			chess_type--;
-		}else if(type>0){
-			type--;
+	if(input->keyboard->get(Input::KeyCode::Minus)){
+		if(edit_chess){
+			if(chess_type>0)chess_type--;
+		}else{
+			if(type>0)type--;
 		}
 	}
 	camera_control();
@@ -369,7 +376,7 @@ void SceneStart::scene_update(){
 
 	if (chess_board->winner == 0) {	//no player win yet
 		if(ai->search_done){
-			std::cout<<"AI next turn:"<<chess_board->steps.size()<<std::endl;
+			//std::cout<<"AI next turn:"<<chess_board->steps.size()<<std::endl;
 			ai->search_done=false;
 			next_turn(ai->best_step);
 		}
@@ -443,7 +450,8 @@ void SceneStart::scene_update(){
 void SceneStart::scene_draw(){
 	if(ai->is_searching()){
 		float time_used=(glfwGetTime()-ai->start_time);
-		draw->push(new Display::RenderString("AI thinking time:"+Tim::String::to_string(time_used),
+		draw->push(new Display::RenderString("AI thinking time:"+
+				Tim::String::to_string(time_used),
 				0.02,math::vec2<float>(0,0.95)));
 	}else{
 		if(AI_mode==AI_MODE::AUTO_AI_VS_AI||AI_mode==AI_MODE::AI_VS_AI){

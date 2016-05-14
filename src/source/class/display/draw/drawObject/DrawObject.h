@@ -1,11 +1,10 @@
 #ifndef DRAWOBJECT_H_
 #define DRAWOBJECT_H_
 #include <vector>
-#include <class/display/model/modelBuffer/ModelBuffer.h>
-#include <class/tim/math/Position.h>
-#include <GL/glew.h>
-#include <glm/glm.hpp>
+#include "class/display/model/modelBuffer/ModelBuffer.h"
+//#include "class/tim/math/Position.h"
 #include "class/display/draw/drawObject/drawData/DrawDataObj.h"
+#include "class/tim/math/vec4.h"
 #include <string>
 
 namespace Display{
@@ -40,7 +39,7 @@ public:
 	bool draw_shadow;
 	bool sky_map;
 	//x=diffuse,y=specular_value,z=ambient,w=emissive
-	glm::vec4 mat;
+	math::vec4<float> mat;
 protected:
 	bool layer_texture;
 	bool alpha_drawobject;

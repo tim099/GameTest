@@ -51,16 +51,4 @@ CreateUIObject:
 		pageControl
 #create_end
 
-CreateUIObject:
-		UI
-	Name:
-		option
-	Position:
-		0 0
-	ScriptPath:
-		files/AgeOfCube/startScene/UI/option.txt
-	Parent:
-		pageControl
-#create_end
-
 #END

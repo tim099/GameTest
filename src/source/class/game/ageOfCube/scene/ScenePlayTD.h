@@ -17,6 +17,10 @@
 
 namespace AOC {
 
+enum playMode{
+	normal, constructing, removing
+};
+
 class ScenePlayTD : public Scene{
 public:
 	ScenePlayTD(std::string _map_name, glm::ivec3 _map_size);
@@ -45,8 +49,8 @@ protected:
 	Display::CubeLight* cl;
 	UI::UI *UI;
 	Timer timer;
-	bool destruct_mode;
 	std::string map_name;
+	playMode mode;
 	glm::ivec3 map_size;
 };
 

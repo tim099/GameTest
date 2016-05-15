@@ -3,6 +3,7 @@
 #include "class/display/UI/string/UIString.h"
 #include "class/tim/string/String.h"
 #include "class/game/ageOfCube/scene/SceneEditMap.h"
+#include "class/game/ageOfCube/scene/ScenePlayTD.h"
 
 namespace AOC{
 SceneStart::SceneStart() {
@@ -61,21 +62,27 @@ void SceneStart::handle_signal(Input::Signal* sig){
 	}else if(sig->get_data()=="CreateMap"){
 		create_map();
 	}else if(sig->get_data()=="edit_map"){
-		load_map();
+		load_map("edit");
 	}else if(sig->get_data()=="delete_map"){
 		delete_map();
 	}else if(sig->get_data()=="play"){
-		load_map();
+		load_map("play");
 	}
 }
-void SceneStart::load_map(){
+void SceneStart::load_map(std::string mode){
 	std::string map_name=((UI::UIString*)UI->get_child("Selected_Map"))->get_string();
 	if(map_name=="Null")return;
 	Input::Signal *sig=new Input::Signal("push_scene","Game");
 
-
-	sig->ex_data=new AOC::SceneEditMap(map_folder_path+map_name,
+	if(mode == "edit"){
+		sig->ex_data=new AOC::SceneEditMap(map_folder_path+map_name,
 			glm::ivec3(1,1,1));
+	}
+	else if(mode == "play"){
+		sig->ex_data=new AOC::ScenePlayTD(map_folder_path+map_name,
+					glm::ivec3(1,1,1));
+	}
+
 	sig->sent();
 }
 void SceneStart::delete_map(){

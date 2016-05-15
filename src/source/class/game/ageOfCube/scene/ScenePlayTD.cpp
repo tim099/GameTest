@@ -17,8 +17,8 @@ ScenePlayTD::ScenePlayTD(std::string _map_name, glm::ivec3 _map_size) {
 	camera = 0;
 	lightControl = 0;
 	UI = 0;
-	destruct_mode=false;
 	cl=0;
+	mode = normal;
 }
 void ScenePlayTD::loading(){
 	if(Tim::File::check_if_file_exist(map_name)){
@@ -41,7 +41,7 @@ void ScenePlayTD::scene_initialize() {
 					glm::vec3(1.9, 1.9, 1.9), true));
 
 	UI = new UI::UI();
-	UI->Load_script("files/AgeOfCube/editMap/UI/editMapUI.txt");
+	UI->Load_script("files/AgeOfCube/playTD/UI/playTD_UI.txt");
 
 	//UI->Load_script("files/script/UIscript/saveUI.txt");
 
@@ -128,23 +128,36 @@ void ScenePlayTD::camera_control(){
 	}
 }
 void ScenePlayTD::handle_signal(Input::Signal *sig){
-	if(sig->get_data()=="save_map"){
+	if(sig->get_data() == "save_map"){
 		map->save_map(map_name);
 	}
+	else if(sig->get_data() == "build"){
+		mode = constructing;
+	}
+
 }
 void ScenePlayTD::handle_input() {
 	camera_control();
 	if (input->mouse->left_clicked()) {//->left_pressed()
-		if(!destruct_mode){
-			map->set_cube_type(map->selected_on.x,
+		if(mode == constructing){
+
+			LandscapeCreator* creator=LandscapeCreator::get_cur_object();
+			Landscape *lc=creator->create("Tree");
+			map->push_CubeEX(map->selected_on.x,
 							   map->selected_on.y,
 							   map->selected_on.z,
-							   Cube::dirt);
-		}else{
+							   lc);
+			mode = normal;
+		}else if(mode == removing){
 			map->set_cube_type(map->selected_cube.x,
 							   map->selected_cube.y,
 							   map->selected_cube.z,
 							   Cube::cubeNull);
+		}else{
+			map->set_cube_type(map->selected_on.x,
+							   map->selected_on.y,
+							   map->selected_on.z,
+							   Cube::dirt);
 		}
 
 	}
@@ -167,7 +180,12 @@ void ScenePlayTD::handle_input() {
 	}
 	*/
 	if (input->keyboard->get('V')) {
-		destruct_mode^=1;
+		if(mode == normal){
+			mode = removing;
+		}
+		else if(mode == removing){
+			mode = normal;
+		}
 	}
 	if (input->keyboard->get('K')) {
 		if (map->dp_map->range > 1)
@@ -221,7 +239,7 @@ void ScenePlayTD::scene_update_end(){
 void ScenePlayTD::scene_draw() {
 	UI->draw_UIObject(draw);
 	map->dp_map->draw_map(camera,thread_pool); //push position
-	if(destruct_mode){
+	if(mode == removing){
 		cl->color=glm::vec3(1,0,0);
 		cl->pos=glm::vec3((map->selected_cube.x+0.5f)*Map::CUBE_SIZE,
 						  (map->selected_cube.y+0.5f)*Map::CUBE_SIZE,

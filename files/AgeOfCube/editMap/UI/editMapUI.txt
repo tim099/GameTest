@@ -69,4 +69,29 @@ CreateUIObject:
 		ButPanel
 #create_end
 
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.586281 -0.0136429
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		0
+	Set_string:
+"Build"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			build
+		Receiver:
+			Game
+	Parent:
+		ButPanel
+#create_end
+
 #END

@@ -1,6 +1,7 @@
 #ifndef SOURCE_CLASS_GAME_SCENE_AGEOFCUBESCENE_SCENESTART_H_
 #define SOURCE_CLASS_GAME_SCENE_AGEOFCUBESCENE_SCENESTART_H_
 
+#include <string>
 #include "class/game/scene/Scene.h"
 #include "class/display/UI/UI.h"
 #include "class/display/UI/page/PageControl.h"
@@ -29,7 +30,7 @@ protected:
 
 	void create_new_map();
 	void create_map();
-	void load_map();
+	void load_map(std::string mode);
 	void delete_map();
 
 	void handle_input();

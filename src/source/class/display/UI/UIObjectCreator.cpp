@@ -1,5 +1,7 @@
 #include "class/display/UI/UIObjectCreator.h"
 #include "class/display/UI/UI.h"
+
+#include "class/display/UI/button/pictureButton/ToggleButton.h"
 #include "class/display/UI/button/pictureButton/PictureButton.h"
 
 #include "class/display/UI/panel/Panel.h"
@@ -34,6 +36,7 @@ void UIObjectCreator::initial_creator(){
 	push(new UI());
 
 	push(new PictureButton());
+	push(new ToggleButton());
 
 	push(new Panel());
 

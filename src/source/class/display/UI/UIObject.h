@@ -119,7 +119,7 @@ public:
 	//set_receiver for this UIObject
 	void set_receiver(std::string receiver_name);
 
-
+	void display_all_child(bool);
 
 	//hide this UIObject and it's childs if hide = ture
 	bool hide;

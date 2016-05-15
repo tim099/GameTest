@@ -218,4 +218,10 @@ UIObject* UIObject::copy_UIObject(){
 	std::cerr<<"UIObject:"<<get_type()<<"not implement UIObject::copy_UIObject()"<<std::endl;
 	return 0;
 }
+void UIObject::display_all_child(bool flag){
+	for (unsigned int i=0; i<childs.size(); i++) {
+	    childs[i]->hide = flag;
+	}
+}
+
 } /* namespace UI */

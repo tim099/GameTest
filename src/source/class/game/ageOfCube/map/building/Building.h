@@ -5,7 +5,7 @@
 
 namespace AOC {
 
-class Building {
+class Building: public CubeEX  {
 public:
 	Building();
 	virtual ~Building();

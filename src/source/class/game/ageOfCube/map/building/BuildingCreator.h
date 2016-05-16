@@ -5,8 +5,8 @@
  *      Author: LukeWu
  */
 
-#ifndef SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_BUILDINGCREATER_H_
-#define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_BUILDINGCREATER_H_
+#ifndef SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_BUILDINGCREATOR_H_
+#define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_BUILDINGCREATOR_H_
 
 #include "class/game/ageOfCube/map/building/Building.h"
 #include "class/tim/map/MapContainer.h"
@@ -15,10 +15,10 @@
 
 namespace AOC {
 
-class BuildingCreater :public Tim::GlobalObject<BuildingCreater> {
+class BuildingCreator :public Tim::GlobalObject<BuildingCreator> {
 public:
-	BuildingCreater();
-	virtual ~BuildingCreater();
+	BuildingCreator();
+	virtual ~BuildingCreator();
 	AOC::Building* create(std::string type_name);
 protected:
 	void push(AOC::Building* obj);
@@ -27,4 +27,4 @@ protected:
 
 } /* namespace AOC */
 
-#endif /* SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_BUILDINGCREATER_H_ */
+#endif /* SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_BUILDINGCREATOR_H_ */

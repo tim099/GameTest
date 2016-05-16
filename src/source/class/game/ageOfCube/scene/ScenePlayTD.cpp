@@ -5,6 +5,7 @@
  *      Author: LukeWu
  */
 
+#include "class/game/ageOfCube/map/building/BuildingCreator.h"
 #include "class/game/ageOfCube/scene/ScenePlayTD.h"
 #include "class/display/UI/page/PageControl.h"
 #include "class/tim/file/File.h"
@@ -141,12 +142,19 @@ void ScenePlayTD::handle_input() {
 	if (input->mouse->left_clicked()) {//->left_pressed()
 		if(mode == constructing){
 
-			LandscapeCreator* creator=LandscapeCreator::get_cur_object();
+			/*LandscapeCreator* creator=LandscapeCreator::get_cur_object();
 			Landscape *lc=creator->create("Tree");
 			map->push_CubeEX(map->selected_on.x,
 							   map->selected_on.y,
 							   map->selected_on.z,
-							   lc);
+							   lc);*/
+
+			BuildingCreator* creator2=BuildingCreator::get_cur_object();
+			Building *building = creator2->create("Tower");
+			map->push_CubeEX(map->selected_on.x,
+							   map->selected_on.y,
+							   map->selected_on.z,
+							   building);
 			mode = normal;
 		}else if(mode == removing){
 			map->set_cube_type(map->selected_cube.x,

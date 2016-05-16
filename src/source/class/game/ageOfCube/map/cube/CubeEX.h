@@ -5,6 +5,7 @@
 #include <string>
 namespace AOC{
 class Landscape;
+class Building;
 class CubeEX : public Cube{
 public:
 	CubeEX();
@@ -29,6 +30,9 @@ public:
 		return Cube::cubeEX;
 	}
 	virtual AOC::Landscape* get_landscape(){
+		return 0;
+	}
+	virtual AOC::Building* get_building(){
 		return 0;
 	}
 	//this function will be called by out side when needed to draw this cube

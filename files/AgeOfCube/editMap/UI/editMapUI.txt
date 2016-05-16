@@ -39,7 +39,7 @@ CreateUIObject:
 		Data:
 			save_map
 		Receiver:
-			SceneEditMap
+			ScenePlayTD
 	Parent:
 		ButPanel
 #create_end
@@ -72,9 +72,9 @@ CreateUIObject:
 CreateUIObject:
 		PictureButton
 	Name:
-		default
+		BuildButton
 	Position:
-		0.586281 -0.0136429
+		0.256281 -0.0136429
 	Texture:
 		UI/UI/button2
 	Width:
@@ -89,9 +89,84 @@ CreateUIObject:
 		Data:
 			build
 		Receiver:
-			Game
+			ScenePlayTD
 	Parent:
 		ButPanel
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		building1
+	Position:
+		0 -0.0496429
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		2
+	Set_string:
+"Building1"
+	String_size:
+		0.01
+	Set_signal:
+		Data:
+			building1
+		Receiver:
+			ScenePlayTD
+	Parent:
+		BuildButton
+#create_end
+
+CreateUIObject:
+		ToggleButton
+	Name:
+		ToggleBuilding
+	Position:
+		0.145281 -0.0136429
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		0
+	Set_string:
+"ToggleBuilding"
+	String_size:
+		0.01
+	Set_signal:
+		Data:
+			build
+		Receiver:
+			ScenePlayTD
+	Parent:
+		ButPanel
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		building2
+	Position:
+		0 -0.0496429
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		2
+	Set_string:
+"Building2"
+	String_size:
+		0.01
+	Set_signal:
+		Data:
+			building1
+		Receiver:
+			ScenePlayTD
+	Parent:
+		ToggleBuilding
 #create_end
 
 #END

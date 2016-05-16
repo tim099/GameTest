@@ -10,6 +10,7 @@
 #include "class/game/ageOfCube/map/MapSeg.h"
 #include "class/game/ageOfCube/map/DisplayMap.h"
 #include "class/game/ageOfCube/map/landscape/LandscapeCreator.h"
+#include "class/game/ageOfCube/map/building/BuildingCreator.h"
 #include "class/tim/math/vec3.h"
 class LandscapeCreator;
 class Timer;
@@ -147,6 +148,7 @@ protected:
 	CubeNull *cube_null;
 	CubeError *cube_error;
 	LandscapeCreator landscape_creator;
+	BuildingCreator building_creator;
 	Water *cube_water;
 
 	AllCubes *all_cubes;

@@ -17,7 +17,11 @@ public:
 	ToggleButton(math::vec2<float> pos,std::string tex_path,float width,float height=AutoHeight);
 	ToggleButton();
 	virtual ~ToggleButton();
-	virtual void selected();
+	virtual void selected(Input::Mouse* mou);
+	virtual std::string get_type()const {
+		return "ToggleButton";
+	}
+	virtual UIObject* create_UIObject();
 };
 
 } /* namespace AOC */

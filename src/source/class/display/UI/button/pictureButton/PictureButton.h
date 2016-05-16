@@ -16,7 +16,7 @@ public:
 	 */
 	PictureButton(math::vec2<float> pos,std::string tex_path,float width,float height=AutoHeight);
 	PictureButton();
-	void init(math::vec2<float>,std::string tex_path,float width,float height=AutoHeight);
+	virtual void init(math::vec2<float>,std::string tex_path,float width,float height=AutoHeight);
 
 	void set_texture(std::string tex_path,float width,float height=AutoHeight);
 

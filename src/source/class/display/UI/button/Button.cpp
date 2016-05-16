@@ -22,6 +22,7 @@ void Button::selected(Input::Mouse* mou){
 	if(sig){
 		sig->sent();
 	}
+	std::cout<<"selected : "<<get_type()<<std::endl;
 }
 void Button::set_signal(Input::Signal* _signal){
 	if(signal)delete signal;

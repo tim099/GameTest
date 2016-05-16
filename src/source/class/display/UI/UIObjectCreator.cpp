@@ -22,6 +22,7 @@ UIObjectCreator::~UIObjectCreator() {
 
 }
 UIObject* UIObjectCreator::create(std::string type_name){
+	//std::cout<<"create:"<<type_name<<std::endl;
 	if (!creator.get(type_name)) {
 		std::cerr << "UIOBject name:" << type_name
 				<< " not exist in this UIObjectCreator" << std::endl;

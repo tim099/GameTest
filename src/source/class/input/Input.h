@@ -30,6 +30,7 @@ public:
 	 */
 	void remove_receiver(std::string name);
 	void push_receiver(Receiver* receiver);
+	void clear_receiver();
 	void sent_signal(Signal* signal);
 
 	KeyBoard *keyboard;

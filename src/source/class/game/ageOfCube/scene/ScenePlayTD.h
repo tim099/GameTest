@@ -32,6 +32,7 @@ public:
 	virtual void pause();
 	virtual void resume();
 	virtual void scene_update_end();
+	void reload_map();
 protected:
 	virtual void scene_update();
 	virtual void scene_draw();

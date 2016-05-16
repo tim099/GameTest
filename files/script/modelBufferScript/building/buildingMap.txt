@@ -14,7 +14,7 @@ ModelBuffer:
 	Path:
 		basic_cube_tower_1.obj
 	Size:
-		0.9
+		3
 #load_end
 
 #END

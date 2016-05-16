@@ -42,6 +42,9 @@ Signal* Input::get_signal(std::string name){
 void Input::remove_receiver(std::string name){
 	receiver_map.remove(name);
 }
+void Input::clear_receiver(){
+	receiver_map = Tim::MapContainer<std::string,Receiver>();
+}
 Receiver* Input::get_receiver(std::string name){
 	if(!receiver_map.find(name)){
 		std::cerr<<"Receiver name:"<<name<<" not exist in Input."<<std::endl;

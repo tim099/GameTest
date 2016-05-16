@@ -135,6 +135,9 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 	else if(sig->get_data() == "build"){
 		mode = constructing;
 	}
+	else if(sig->get_data() == "reload"){
+		reload_map();
+	}
 
 }
 void ScenePlayTD::handle_input() {
@@ -267,4 +270,16 @@ void ScenePlayTD::resume() {
 	draw->set_camera(camera);
 	draw->set_lightControl(lightControl);
 }
+
+void ScenePlayTD::reload_map(){
+
+	Input::Signal *sig=new Input::Signal("push_scene","Game");
+	Input::Signal *sig2=new Input::Signal("pop_scene","Game");
+
+	sig2->sent();
+
+	sig->ex_data=new AOC::ScenePlayTD(map_name,glm::ivec3(1,1,1));
+	sig->sent();
+}
+
 }

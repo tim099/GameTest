@@ -6,6 +6,7 @@
 #include "class/display/UI/UI.h"
 #include "class/game/timer/Timer.h"
 #include "class/display/light/LightControl.h"
+
 namespace AOC{
 class SceneEditMap : public Scene{
 public:

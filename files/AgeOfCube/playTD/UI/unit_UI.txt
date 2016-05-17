@@ -1,0 +1,51 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		unit_ui_root
+#HEADER_END
+CreateUIObject:
+		Panel
+	Name:
+		UnitPanel
+	Position:
+		0.35 0.2
+	Texture:
+		UI/UI/panel1
+	Width:
+		0.3
+	Height:
+		3
+	Parent:
+		unit_ui_root
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		name_string
+	Position:
+		0.38 0.18
+	String:
+"name"
+	String_size:
+		0.015
+	Parent:
+		newGamePage
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		hp_string
+	Position:
+		0.45 0.18
+	String:
+"hp"
+	String_size:
+		0.015
+	Parent:
+		newGamePage
+#create_end
+
+
+#END

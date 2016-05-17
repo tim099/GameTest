@@ -14,6 +14,7 @@
 #include "class/display/UI/UI.h"
 #include "class/game/timer/Timer.h"
 #include "class/display/light/LightControl.h"
+#include "class/controller/UnitController.h"
 
 namespace AOC {
 
@@ -53,6 +54,7 @@ protected:
 	std::string map_name;
 	playMode mode;
 	glm::ivec3 map_size;
+	UnitController unit_controller;
 };
 
 } /* namespace AOC */

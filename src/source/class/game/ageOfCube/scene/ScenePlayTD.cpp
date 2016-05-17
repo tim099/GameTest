@@ -43,8 +43,9 @@ void ScenePlayTD::scene_initialize() {
 
 	UI = new UI::UI();
 	UI->Load_script("files/AgeOfCube/playTD/UI/playTD_UI.txt");
-
 	//UI->Load_script("files/script/UIscript/saveUI.txt");
+
+	unit_controller.init_UI("files/AgeOfCube/playTD/UI/unit_UI.txt", UI);
 
 	cl=new Display::CubeLight();
 	cl->color=glm::vec3(1,0.5,0);
@@ -143,15 +144,20 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 void ScenePlayTD::handle_input() {
 	camera_control();
 	if (input->mouse->left_clicked()) {//->left_pressed()
+
+		Cube *selected_cube =  map->get_cube(map->selected_cube.x,
+					   	   	   	   	   	   	   map->selected_cube.y,
+											   map->selected_cube.z);
+
+
+		if(Building *selected_building = dynamic_cast<Building *>(selected_cube) ){
+			std::cout<<"building selected. hp="<<selected_building->get_hp()
+					<<"/"<<selected_building->get_max_hp()<<std::endl;
+			unit_controller.select_unit(selected_building);
+			return;
+		}
+
 		if(mode == constructing){
-
-			/*LandscapeCreator* creator=LandscapeCreator::get_cur_object();
-			Landscape *lc=creator->create("Tree");
-			map->push_CubeEX(map->selected_on.x,
-							   map->selected_on.y,
-							   map->selected_on.z,
-							   lc);*/
-
 			BuildingCreator* creator2=BuildingCreator::get_cur_object();
 			Building *building = creator2->create("Tower");
 			map->push_CubeEX(map->selected_on.x,

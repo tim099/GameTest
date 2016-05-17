@@ -124,6 +124,7 @@ void UIObject::draw_UIObject(Display::Draw* draw) {
 		return;
 	start_draw(draw);
 	for (unsigned i = 0; i < childs.size(); i++) {
+		//std::cout<<"UI object "<<get_name()<<" draw child : "<<childs.at(i)->get_name()<<std::endl;
 		childs.at(i)->draw_UIObject(draw);
 	}
 }
@@ -172,7 +173,7 @@ void UIObject::remove_child(UIObject* child) {
 			return;
 		}
 	}
-	std::cout << this << "remove child fail!!can't find the child" << std::endl;
+	std::cout << get_name() << ": remove child fail!!can't find the child" << std::endl;
 }
 void UIObject::push_child(UIObject* child) {
 	if (child == this || child == get_root()) {
@@ -218,10 +219,6 @@ UIObject* UIObject::copy_UIObject(){
 	std::cerr<<"UIObject:"<<get_type()<<"not implement UIObject::copy_UIObject()"<<std::endl;
 	return 0;
 }
-void UIObject::display_all_child(bool flag){
-	for (unsigned int i=0; i<childs.size(); i++) {
-	    childs[i]->hide = flag;
-	}
-}
+
 
 } /* namespace UI */

@@ -14,7 +14,9 @@ ModelBuffer:
 	Path:
 		basic_cube_tower_1.obj
 	Size:
-		3
+		1
+	Align_center:
+		true
 #load_end
 
 #END

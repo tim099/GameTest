@@ -12,6 +12,7 @@ namespace AOC {
 UnitController::UnitController() {
 	// TODO Auto-generated constructor stub
 	building_UI = new UI::BuildingUI();
+	selected_unit = 0;
 }
 
 UnitController::~UnitController() {

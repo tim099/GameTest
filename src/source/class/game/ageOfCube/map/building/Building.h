@@ -23,6 +23,7 @@ public:
 		return "Building";
 	}
 protected:
+	int size;
 	virtual void save_cubeEX(FILE * file);
 	virtual void load_cubeEX(FILE * file);
 	virtual void save_building(FILE * file);

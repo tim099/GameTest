@@ -6,7 +6,7 @@ void Building::building_pre_init(){
 
 }
 Building::Building() {
-
+	size = 1.0;
 }
 Building::~Building() {
 

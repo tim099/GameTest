@@ -139,7 +139,7 @@ void SceneStart::handle_input(){
 		UI->Save_script("files/AgeOfCube/startScene/UI/startSceneUI.txt");
 	}else if(input->keyboard->get('L')){
 		//delete UI;
-		//UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
+		UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
 	}
 	//*/
 }

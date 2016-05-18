@@ -39,7 +39,7 @@ void ModelBufferMap::Parse_ModelBuffer(std::istream &is){
 	std::string line;
 	std::string name, path;
 	float size=1.0f;
-	bool Align_center=false;
+	bool Align_center=true;
 	while(Tim::String::get_line(is, line, true, true)){
 		if(line=="#load_end"){
 			push(name,new ModelBuffer(folder_path+path,size,Align_center));

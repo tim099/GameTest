@@ -187,15 +187,22 @@ void ScenePlayTD::handle_input() {
 	if (input->keyboard->get('I')) {
 		map->dp_map->range += 1;
 	}
-	/*
+
 	if (input->keyboard->get('E')) {
-		if(UI->check_mode(UI::Mode::EDIT)){
-			UI->Disable_Mode(UI::Mode::EDIT);
-		}else{
+		if(!UI->check_mode(UI::Mode::EDIT)){
 			UI->Enable_Mode(UI::Mode::EDIT);
+		}else{
+			UI->Disable_Mode(UI::Mode::EDIT);
 		}
 	}
-	*/
+	if(input->keyboard->get('S')){
+		UI->Save_script("files/AgeOfCube/playTD/UI/playTD_UI.txt");
+		unit_controller.init_UI("files/AgeOfCube/playTD/UI/unit_UI.txt", UI);
+	}else if(input->keyboard->get('L')){
+			//delete UI;
+		unit_controller.init_UI("files/AgeOfCube/playTD/UI/unit_UI.txt", UI);
+		UI = new UI::UI("files/AgeOfCube/playTD/UI/playTD_UI.txt");
+	}
 	if (input->keyboard->get('V')) {
 		if(mode == normal){
 			mode = removing;

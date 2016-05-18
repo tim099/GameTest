@@ -35,8 +35,6 @@ int main(){
 	delete ageOfCubes;
 	//}
 
-	///*
-
 	//*/
 	/*
 	//while(true){

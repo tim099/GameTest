@@ -3,7 +3,7 @@
 namespace physic {
 
 RigidBody::RigidBody() {
-
+	size=1.0;
 }
 RigidBody::~RigidBody() {
 

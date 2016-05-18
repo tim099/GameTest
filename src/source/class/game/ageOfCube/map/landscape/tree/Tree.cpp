@@ -7,17 +7,19 @@ namespace AOC{
 void Tree::landscape_pre_init(){
 	//std::cout<<"Tree::pre_init()"<<std::endl;
 	tree_Drawobj=Display::AllDrawObjects::get_cur_object()->get("landscape/pinetree");
-	//tree_Drawobj=AllDrawObjects::get_cur_object()->get("landscape/broadleaftree");
+	//tree_Drawobj=Display::AllDrawObjects::get_cur_object()->get("landscape/broadleaftree");
 }
 Tree::Tree() {
 	tree_type=pine_tree;
 	tree_Drawobj=0;
 	pos=0;
+	size=1.0;
 }
 Tree::Tree(Tree* tree) {
 	tree_type=tree->tree_type;
 	tree_Drawobj=tree->tree_Drawobj;
 	pos=0;
+	size=tree->size;
 }
 Tree::~Tree() {
 	if(pos)delete pos;
@@ -31,9 +33,10 @@ void Tree::load_landscape(FILE * file){
 }
 void Tree::set_pos(int x,int y,int z){
 	if(!pos){
-		pos=new math::Position(glm::vec3(AOC::Map::CUBE_SIZE*x+0.45,AOC::Map::CUBE_SIZE*y+0.45,
-				AOC::Map::CUBE_SIZE*z+0.45));
-		pos->set_scale(glm::vec3(1.3,1.0,1.3));
+		pos=new math::Position(glm::vec3(AOC::Map::CUBE_SIZE*x+0.45*size
+				,AOC::Map::CUBE_SIZE*y+0.45*size,
+				AOC::Map::CUBE_SIZE*z+0.45*size));
+		pos->set_scale(glm::vec3(size,size,size));
 	}
 }
 void Tree::draw(){

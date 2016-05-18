@@ -1,9 +1,10 @@
 #ifndef SOURCE_CLASS_GAME_MAP_LANDSCAPE_LANDSCAPE_H_
 #define SOURCE_CLASS_GAME_MAP_LANDSCAPE_LANDSCAPE_H_
 
-#include "class/game/ageOfCube/map/cube/CubeEX.h"
+#include "class/game/ageOfCube/map/cube/CubeLarge.h"
 namespace AOC{
-class Landscape: public CubeEX {
+class Map;
+class Landscape: public CubeLarge {
 public:
 	/*
 	 * this function is prepare for the initialization of static class member
@@ -22,6 +23,7 @@ public:
 	virtual std::string get_name()const{
 		return "Landscape";
 	}
+	virtual bool build(Map *map,int x,int y,int z);
 protected:
 	virtual void save_cubeEX(FILE * file);
 	virtual void load_cubeEX(FILE * file);

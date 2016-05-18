@@ -29,6 +29,7 @@ public:
 protected:
 	virtual void save_landscape(FILE * file);
 	virtual void load_landscape(FILE * file);
+	float size;
 	Display::DrawObject *tree_Drawobj;
 };
 }

@@ -141,7 +141,12 @@ void Map::gen_land_scape(int i,int j,int k,
 		type_val+=0.2*noise.noise(x,y,z,0.6);
 		type_val+=0.1*noise.noise(x,y,z,1.0);
 		type_val+=0.1*get_wetness(i,k,height);
-		if(type_val>0.65)push_CubeEX(i,j,k,landscape_creator.create("Tree"));
+		Landscape* landscape=0;
+		if(type_val>0.65){
+			landscape=landscape_creator.create("Tree");
+			landscape->build(this,i,j,k);
+			//push_CubeEX(i,j,k,landscape);
+		}
 	}
 
 }

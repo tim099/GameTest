@@ -34,7 +34,7 @@ void SceneEditMap::scene_initialize() {
 					glm::vec3(1.9, 1.9, 1.9), true));
 
 	UI = new UI::UI();
-	UI->Load_script("files/AgeOfCube/editMap/UI/editMapUI.txt");
+	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
 
 	cl=new Display::CubeLight();
 	cl->color=glm::vec3(1,0.5,0);

@@ -102,7 +102,7 @@ math::vec3<int> MapSeg::convert_pos(unsigned p){
 	return pos;
 }
 CubeEX* MapSeg::get_cube(int x,int y,int z){
-	return cubes.get(convert_pos(math::vec3<int>(x,y,z)));
+	return cubes.get(convert_pos(math::vec3<int>(x,y,z)))->get_real_cube();
 }
 void MapSeg::draw(int display_height){
 	CubeEX* cube;
@@ -123,7 +123,7 @@ void MapSeg::push_cube(math::vec3<int> pos,CubeEX *cube){
 	cubes.push(convert_pos(pos),cube);
 }
 void MapSeg::remove_cube(math::vec3<int> pos){
-	CubeEX* cube=get_cube(pos.x,pos.y,pos.z);
+	CubeEX* cube=cubes.get(convert_pos(pos));
 	if(cube){
 		cube->remove();
 		cubes.remove(convert_pos(pos));

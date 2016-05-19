@@ -1,0 +1,54 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		createNewMap
+#HEADER_END
+CreateUIObject:
+		PageControl
+	Name:
+		createNewMap_pageControl
+	Position:
+		0 0
+	Parent:
+		createNewMap
+	Set_receiver:
+		createNewMap_pageControl
+#create_end
+
+CreateUIObject:
+		UI
+	Name:
+		enterMapName
+	Position:
+		0 0
+	ScriptPath:
+		files/AgeOfCube/scenes/startScene/UI/createNewMap/enterMapNamePage.txt
+	Parent:
+		createNewMap_pageControl
+#create_end
+
+CreateUIObject:
+		UI
+	Name:
+		enterMapSize
+	Position:
+		0 0
+	ScriptPath:
+		files/AgeOfCube/scenes/startScene/UI/createNewMap/enterMapSizePage.txt
+	Parent:
+		createNewMap_pageControl
+#create_end
+
+CreateUIObject:
+		UI
+	Name:
+		newMap
+	Position:
+		0 0
+	ScriptPath:
+		files/AgeOfCube/scenes/startScene/UI/createNewMap/newMapPage.txt
+	Parent:
+		createNewMap_pageControl
+#create_end
+
+#END

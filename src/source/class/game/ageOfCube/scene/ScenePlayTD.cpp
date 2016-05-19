@@ -19,6 +19,7 @@ ScenePlayTD::ScenePlayTD(std::string _map_name, glm::ivec3 _map_size) {
 	lightControl = 0;
 	UI = 0;
 	cl=0;
+	constructing_building=0;
 	mode = normal;
 }
 void ScenePlayTD::loading(){
@@ -154,16 +155,22 @@ void ScenePlayTD::handle_input() {
 			std::cout<<"building selected. hp="<<selected_building->get_hp()
 					<<"/"<<selected_building->get_max_hp()<<std::endl;
 			unit_controller.select_unit(selected_building);
-			return;
+			//return;
 		}
 
 		if(mode == constructing){
+
 			BuildingCreator* creator2=BuildingCreator::get_cur_object();
-			Building *building = creator2->create("Tower");
+			constructing_building = creator2->create("Tower");
+			constructing_building->build(map,map->selected_on.x,
+					map->selected_on.y,
+					map->selected_on.z);
+			/*
 			map->push_CubeEX(map->selected_on.x,
 							   map->selected_on.y,
 							   map->selected_on.z,
 							   building);
+			*/
 			mode = normal;
 		}else if(mode == removing){
 			map->set_cube_type(map->selected_cube.x,

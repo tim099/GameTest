@@ -12,7 +12,7 @@ public:
 	static const unsigned char cubeNull=0;
 	static const unsigned char cubeEX=1;
 	static const unsigned char water=2;
-	static const unsigned char startcube=3;//has the number at the start of the basic cube
+	static const unsigned char startcube=3;//the number at the start of the basic cube
 	static unsigned char stone;
 	static unsigned char dirt;
 	static unsigned char sand;

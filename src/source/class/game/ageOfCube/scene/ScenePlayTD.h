@@ -21,7 +21,7 @@ namespace AOC {
 enum playMode{
 	normal, constructing, removing
 };
-
+class Building;
 class ScenePlayTD : public Scene{
 public:
 	ScenePlayTD(std::string _map_name, glm::ivec3 _map_size);
@@ -52,6 +52,7 @@ protected:
 	UI::UI *UI;
 	Timer timer;
 	std::string map_name;
+	Building* constructing_building;
 	playMode mode;
 	glm::ivec3 map_size;
 	UnitController unit_controller;

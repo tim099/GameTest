@@ -44,7 +44,7 @@ void SceneStart::resume(){
 		delete UI;
 		UI=0;
 	}
-	UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
+	UI = new UI::UI("files/AgeOfCube/scenes/startScene/UI/startSceneUI.txt");
 	p_control=(UI::PageControl*)UI->get_child("pageControl");
 	auto_p_control=(UI::AutoPageControl*)UI->get_child("newGame_autoPageControl");
 	//if(UI)delete UI;

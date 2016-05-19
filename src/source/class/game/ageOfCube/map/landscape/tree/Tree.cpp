@@ -76,8 +76,11 @@ void Tree::update(){
 	}
 	*/
 }
+math::vec3<int> Tree::cube_large_size(){
+	return math::vec3<int>(ceil(0.33*size),ceil(size),ceil(0.33*size));
+}
 void Tree::rand_tree_size(){
-	size=0.25*sqrt((rand()%101))+0.4;
+	size=1.25*sqrt((rand()%101))+0.4;
 	if(size>max_tree_size)size=max_tree_size;
 }
 void Tree::save_landscape(FILE * file){
@@ -86,16 +89,11 @@ void Tree::save_landscape(FILE * file){
 void Tree::load_landscape(FILE * file){
 	fscanf(file,"%c %f\n",(char*)&tree_type,&size);
 }
-void Tree::get_attach_cube(std::vector<AttachCube*> &attach_cubes){
-	for(int i=1;i<=size;i++){
-		attach_cubes.push_back(new AttachCube(0,i,0,this));
-	}
-
-}
 void Tree::gen_pos(){
-	pos->set_pos(glm::vec3(AOC::Map::CUBE_SIZE*(x+0.5)
-			,AOC::Map::CUBE_SIZE*y+0.45*size,
-			AOC::Map::CUBE_SIZE*(z+0.5)));
+	math::vec3<int> real_size=cube_large_size();
+	pos->set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
+			AOC::Map::CUBE_SIZE*y+0.5*size,
+			AOC::Map::CUBE_SIZE*z+0.5*real_size.z));
 	pos->set_scale(glm::vec3(0.6*size,size,0.6*size));
 }
 void Tree::set_pos(int x,int y,int z){
@@ -105,13 +103,6 @@ void Tree::set_pos(int x,int y,int z){
 	}
 }
 void Tree::draw(){
-	/*
-	if(!pos){
-		pos=new Position(glm::vec3(Map::CUBE_SIZE*x+0.45,Map::CUBE_SIZE*y+0.45,
-				Map::CUBE_SIZE*z+0.45));
-		//pos->set_scale(glm::vec3(2.0,2.0,2.0));
-	}
-	*/
 	tree_Drawobj->push_temp_drawdata(new Display::DrawDataObj(pos));
 	//std::cout<<"draw tree"<<std::endl;
 }

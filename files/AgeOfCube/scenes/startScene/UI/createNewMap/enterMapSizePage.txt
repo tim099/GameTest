@@ -1,0 +1,101 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		enterMapSize
+#HEADER_END
+CreateUIObject:
+		Panel
+	Name:
+		ButPanel
+	Position:
+		0 1
+	Texture:
+		UI/UI/panel2
+	Width:
+		1
+	Height:
+		0.55
+	Parent:
+		enterMapSize
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.138361 0.133697
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Back"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			enterMapName
+		Receiver:
+			createNewMap_pageControl
+	Parent:
+		enterMapSize
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.634701 0.132333
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Next"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			CreateNewMap
+		Receiver:
+			SceneStart
+	Parent:
+		enterMapSize
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		default_UIObject
+	Position:
+		0.0512442 0.580286
+	String:
+"Enter Map size(X*Y*Z):"
+	String_size:
+		0.04
+	Parent:
+		enterMapSize
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		NewMapSize
+	Position:
+		0.621082 0.574829
+	String:
+"300*100*300"
+	String_size:
+		0.04
+	#EnableInputMode
+	Parent:
+		enterMapSize
+#create_end
+
+#END

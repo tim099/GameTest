@@ -1,12 +1,12 @@
 #ifndef SOURCE_CLASS_GAME_MAP_BUILDING_BUILDING_H_
 #define SOURCE_CLASS_GAME_MAP_BUILDING_BUILDING_H_
 
-#include "class/game/ageOfCube/map/cube/CubeEX.h"
+#include "class/game/ageOfCube/map/cube/CubeLarge.h"
 #include "class/game/ageOfCube/unit/Unit.h"
 
 namespace AOC {
 
-class Building: public CubeEX ,
+class Building: public CubeLarge ,
 				public Unit
 {
 public:

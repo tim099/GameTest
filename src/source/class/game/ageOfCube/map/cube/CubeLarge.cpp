@@ -14,7 +14,9 @@ void CubeLarge::remove(){
 	AttachCube* cube;
 	for(unsigned i=0;i<attach_cubes.size();i++){
 		cube=attach_cubes.at(i);
-		if(!cube->removing)map->remove_cube(x+cube->x,y+cube->y,z+cube->z);
+		if(!cube->removing){
+			map->remove_cube(x+cube->x,y+cube->y,z+cube->z);
+		}
 	}
 }
 bool CubeLarge::buildable(Map *map,int x,int y,int z){
@@ -68,13 +70,13 @@ bool CubeLarge::build(Map *map,int _x,int _y,int _z){
 	if(map->get_cube_type(x,y,z)!=Cube::cubeNull)return false;
 	for(unsigned i=0;i<build_on.size();i++){
 		on=&(build_on.at(i));
-		if(map->get_cube_type(x+on->x,y+on->y,z+on->x)<Cube::startcube){
+		if(map->get_cube_type(x+on->x,y+on->y,z+on->z)<Cube::startcube){
 			return false;
 		}
 	}
 	for(unsigned i=0;i<attach_cubes.size();i++){
 		cube=attach_cubes.at(i);
-		if(map->get_cube_type(x+cube->x,y+cube->y,z+cube->x)!=Cube::cubeNull){
+		if(map->get_cube_type(x+cube->x,y+cube->y,z+cube->z)!=Cube::cubeNull){
 			return false;
 		}
 	}
@@ -83,7 +85,7 @@ bool CubeLarge::build(Map *map,int _x,int _y,int _z){
 	map->push_CubeEX(x,y,z,this);
 	for(unsigned i=0;i<attach_cubes.size();i++){
 		cube=attach_cubes.at(i);
-		map->push_CubeEX(x+cube->x,y+cube->y,z+cube->x,cube);
+		map->push_CubeEX(x+cube->x,y+cube->y,z+cube->z,cube);
 	}
 	return true;
 }

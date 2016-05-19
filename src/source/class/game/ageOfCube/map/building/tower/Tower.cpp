@@ -27,7 +27,7 @@ Tower::Tower(Tower* tower) {
 	tower_type=tower->tower_type;
 	tower_Drawobj=tower->tower_Drawobj;
 	pos=0;
-	size = 3.0;
+	size = 6.0;
 }
 Tower::~Tower() {
 	if(pos)delete pos;
@@ -41,19 +41,15 @@ void Tower::load_building(FILE * file){
 }
 void Tower::set_pos(int x,int y,int z){
 	if(!pos){
-		pos=new math::Position(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5,AOC::Map::CUBE_SIZE*y+size*0.5,
-				AOC::Map::CUBE_SIZE*z+0.5));
-		pos->set_scale(glm::vec3(size,size,size));
+		pos=new math::Position();
 	}
+	math::vec3<int> real_size=cube_large_size();
+	pos->set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
+			AOC::Map::CUBE_SIZE*y+0.5*real_size.y,
+			AOC::Map::CUBE_SIZE*z+0.5*real_size.z));
+	pos->set_scale(glm::vec3(size,size,size));
 }
 void Tower::draw(){
-	/*
-	if(!pos){
-		pos=new Position(glm::vec3(Map::CUBE_SIZE*x+0.45,Map::CUBE_SIZE*y+0.45,
-				Map::CUBE_SIZE*z+0.45));
-		//pos->set_scale(glm::vec3(2.0,2.0,2.0));
-	}
-	*/
 	tower_Drawobj->push_temp_drawdata(new Display::DrawDataObj(pos));
 	//std::cout<<"draw tree"<<std::endl;
 }

@@ -14,7 +14,7 @@ ModelBuffer:
 	Path:
 		pinetree.obj
 	Size:
-		0.9
+		1.0
 #load_end
 ModelBuffer:
 	Name:
@@ -22,6 +22,6 @@ ModelBuffer:
 	Path:
 		broadleaftree.obj
 	Size:
-		0.9
+		1.0
 #load_end
 #END

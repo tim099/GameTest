@@ -9,7 +9,7 @@ class DrawObject;
 }
 namespace AOC{
 class Tree : public AOC::Landscape{
-	static const float max_tree_size=3.0;
+	static const float max_tree_size=10.0;
 	static const unsigned char pine_tree=0;
 public:
 	Tree();
@@ -22,7 +22,7 @@ public:
 	virtual std::string get_name()const{
 		return "Tree";
 	}
-	virtual void get_attach_cube(std::vector<AttachCube*> &attach_cubes);
+	virtual math::vec3<int> cube_large_size();
 	virtual bool draw_cube(){
 		return true;
 	}

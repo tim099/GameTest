@@ -3,14 +3,17 @@
 namespace AOC {
 
 CubeLarge::CubeLarge() {
-	x=0,y=0,z=0;
+	x=0,y=0,z=0;destructing=false;
 }
 CubeLarge::~CubeLarge() {
+	destructing=true;
 	Map *map=Map::get_cur_object();
 	AttachCube* cube;
 	for(unsigned i=0;i<attach_cubes.size();i++){
 		cube=attach_cubes.at(i);
-		map->remove_cube(x+cube->x,y+cube->y,z+cube->z);
+		if(!cube->destructing){
+			map->remove_cube(x+cube->x,y+cube->y,z+cube->z);
+		}
 	}
 }
 bool CubeLarge::build(Map *map,int _x,int _y,int _z){

@@ -60,7 +60,8 @@ void MapSeg::load_landscape(FILE * file){
 		//std::cout<<"MapSeg::load_landscape name:"<<name<<std::endl;
 		lc=creator->create(name);
 		lc->load(file);
-		map->push_CubeEX(pos.x,pos.y,pos.z,lc);
+		lc->build(map,pos.x,pos.y,pos.z);
+		//map->push_CubeEX(pos.x,pos.y,pos.z,lc);
 	}
 }
 unsigned MapSeg::convert_pos(const math::vec3<int> &pos){

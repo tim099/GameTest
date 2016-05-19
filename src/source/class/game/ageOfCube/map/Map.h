@@ -48,12 +48,12 @@ public:
 
 	//get map_seg by position x and z
 	inline MapSeg* get_map_seg_by_pos(int x,int z){
-		return &(map_segs->get((x/segsize.x),(z/segsize.z)));
+		return (map_segs->get((x/segsize.x),(z/segsize.z)));
 	}
 
 	//directly get map_seg
 	inline MapSeg* get_map_seg(int x,int z){
-		return &(map_segs->get(x,z));
+		return (map_segs->get(x,z));
 	}
 
 	void update(Timer* timer);
@@ -133,7 +133,7 @@ protected:
 	void find_selected_cube(glm::vec3 pos);
 	//Tim::Array3D<Cube> *map;
 	Tim::Array3D<unsigned char> *map;
-	Tim::Array2D<MapSeg>* map_segs;
+	Tim::Array2D<MapSeg*>* map_segs;
 	std::vector<math::vec3<int> >* cur_update_pos;
 	std::vector<math::vec3<int> >* prev_update_pos;
 	std::vector<math::vec3<int> > update_pos1;

@@ -22,6 +22,7 @@ public:
 	}
 	virtual bool build(Map *map,int x,int y,int z);
 	std::vector<AttachCube*> attach_cubes;
+	bool destructing;
 	int x,y,z;
 };
 

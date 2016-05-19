@@ -2,6 +2,7 @@
 #define SOURCE_CLASS_GAME_MAP_LANDSCAPE_TREE_H_
 #include "class/game/ageOfCube/map/landscape/Landscape.h"
 #include "class/tim/math/Position.h"
+#include <iostream>
 namespace Display{
 class DrawObject;
 }
@@ -18,6 +19,9 @@ public:
 	}
 	virtual std::string get_name()const{
 		return "Tree";
+	}
+	virtual void get_attach_cube(std::vector<AttachCube*> &attach_cubes){
+		attach_cubes.push_back(new AttachCube(0,1,0,this));
 	}
 	virtual bool draw_cube(){
 		return true;

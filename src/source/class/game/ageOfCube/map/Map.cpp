@@ -37,8 +37,15 @@ Map::Map() {
 }
 Map::~Map() {
 	if(dp_map)delete dp_map;
+	if(map_segs){
+		for(int i=0;i<seg.x;i++){
+			for(int j=0;j<seg.z;j++){
+				delete map_segs->get(i,j);
+			}
+		}
+		delete map_segs;
+	}
 	if(map)delete map;
-	if(map_segs)delete map_segs;
 	delete cube_out_of_edge;
 	delete cube_null;
 	delete cube_error;
@@ -72,10 +79,11 @@ void Map::gen_map_seg(){
 	segsize.y = get_size().y;
 	segsize.z = ceil((double)get_size().z / (double)seg.z);
 	if(map_segs)delete map_segs;
-	map_segs=new Tim::Array2D<MapSeg>(seg.x,seg.z);
+	map_segs=new Tim::Array2D<MapSeg*>(seg.x,seg.z);
 	for(int i=0;i<seg.x;i++){
 		for(int j=0;j<seg.z;j++){
-			map_segs->get(i,j).init(this,math::vec2<int>(i*segsize.x,j*segsize.z));
+			map_segs->get(i,j)=new MapSeg();
+			map_segs->get(i,j)->init(this,math::vec2<int>(i*segsize.x,j*segsize.z));
 		}
 	}
 }
@@ -302,7 +310,7 @@ void Map::save_map(std::string path){
 	}
 	for(int i=0;i<seg.x;i++){
 		for(int j=0;j<seg.z;j++){
-			map_segs->get(i,j).save(file);
+			map_segs->get(i,j)->save(file);
 		}
 	}
 	save_update_pos(file);
@@ -329,7 +337,7 @@ void Map::load_map(std::string path){
 	}
 	for(int i=0;i<seg.x;i++){
 		for(int j=0;j<seg.z;j++){
-			map_segs->get(i,j).load(file);
+			map_segs->get(i,j)->load(file);
 		}
 	}
 	load_update_pos(file);

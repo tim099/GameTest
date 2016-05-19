@@ -396,7 +396,7 @@ Cube* Map::get_cube(int x,int y,int z){
 int Map::get_cube_type(const int &x,const int &y,const int &z)const{
 	if(x<0||x>=map_size.x||y<0||y>=map_size.y||z<0||z>=map_size.z){
 		//std::cout<<"get out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
-		return -1;
+		return Cube::cubeOutofEdge;
 	}
 	return map->get(x,y,z);//.type
 	//return map->arr[map->size.y*map->size.z*pos.x+map->size.z*pos.y+pos.z].type;//for better performance

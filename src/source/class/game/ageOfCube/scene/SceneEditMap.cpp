@@ -36,15 +36,12 @@ void SceneEditMap::scene_initialize() {
 	UI = new UI::UI();
 	UI->Load_script("files/AgeOfCube/editMap/UI/editMapUI.txt");
 
-	//UI->Load_script("files/script/UIscript/saveUI.txt");
-
 	cl=new Display::CubeLight();
 	cl->color=glm::vec3(1,0.5,0);
 	cl->size=1.01f*Map::CUBE_SIZE;
 	lightControl->push_light(cl);
+
 	resume();
-	//========================
-	//std::cout << "SceneEditMap::scene_initialize()" << std::endl;
 }
 void SceneEditMap::scene_terminate() {
 	delete lightControl;

@@ -43,7 +43,7 @@ public:
 	}
 	Type x,y,z;
 };
-
+#include "class/tim/math/vec3.cpp"
 } /* namespace math */
 
 #endif /* SOURCE_CLASS_TIM_MATH_VEC3_H_ */

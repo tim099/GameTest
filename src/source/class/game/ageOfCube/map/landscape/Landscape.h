@@ -23,7 +23,7 @@ public:
 	virtual std::string get_name()const{
 		return "Landscape";
 	}
-	virtual bool build(Map *map,int x,int y,int z);
+
 protected:
 	virtual void save_cubeEX(FILE * file);
 	virtual void load_cubeEX(FILE * file);

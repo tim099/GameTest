@@ -40,7 +40,6 @@ public:
 	virtual void set_pos(int x,int y,int z){
 
 	}
-
 protected:
 	virtual void save_cubeEX(FILE * file){
 

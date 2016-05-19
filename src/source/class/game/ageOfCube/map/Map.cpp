@@ -11,7 +11,7 @@
 #include "class/game/ageOfCube/map/cube/water/Water.h"
 #include "class/input/Input.h"
 #include "class/game/timer/Timer.h"
-
+#include "class/game/ageOfCube/map/landscape/tree/Tree.h"
 #include <cstdio>
 #include <ctime>
 #include <cstdlib>
@@ -38,8 +38,8 @@ Map::Map() {
 Map::~Map() {
 	if(dp_map)delete dp_map;
 	if(map_segs){
-		for(int i=0;i<seg.x;i++){
-			for(int j=0;j<seg.z;j++){
+		for(int i=0;i<seg_num.x;i++){
+			for(int j=0;j<seg_num.z;j++){
 				delete map_segs->get(i,j);
 			}
 		}
@@ -66,22 +66,22 @@ void Map::init(){
 void Map::gen_map_seg(){
 	static const int size_per_sig=15;
 	//seg.x=((double)map->get_size().x/size_per_sig)+0.5;
-	seg.x=ceil((double)get_size().x/size_per_sig);
-	seg.y=1;
+	seg_num.x=ceil((double)get_size().x/size_per_sig);
+	seg_num.y=1;
 	//seg.z=((double)map->get_size().z/size_per_sig)+0.5;
-	seg.z=ceil((double)get_size().z/size_per_sig);
+	seg_num.z=ceil((double)get_size().z/size_per_sig);
 
-	if(seg.x<1)seg.x=1;
-	if(seg.y<1)seg.y=1;
-	if(seg.z<1)seg.z=1;
+	if(seg_num.x<1)seg_num.x=1;
+	if(seg_num.y<1)seg_num.y=1;
+	if(seg_num.z<1)seg_num.z=1;
 
-	segsize.x = ceil((double)get_size().x / (double)seg.x);
+	segsize.x = ceil((double)get_size().x / (double)seg_num.x);
 	segsize.y = get_size().y;
-	segsize.z = ceil((double)get_size().z / (double)seg.z);
+	segsize.z = ceil((double)get_size().z / (double)seg_num.z);
 	if(map_segs)delete map_segs;
-	map_segs=new Tim::Array2D<MapSeg*>(seg.x,seg.z);
-	for(int i=0;i<seg.x;i++){
-		for(int j=0;j<seg.z;j++){
+	map_segs=new Tim::Array2D<MapSeg*>(seg_num.x,seg_num.z);
+	for(int i=0;i<seg_num.x;i++){
+		for(int j=0;j<seg_num.z;j++){
 			map_segs->get(i,j)=new MapSeg();
 			map_segs->get(i,j)->init(this,math::vec2<int>(i*segsize.x,j*segsize.z));
 		}
@@ -149,10 +149,11 @@ void Map::gen_land_scape(int i,int j,int k,
 		type_val+=0.2*noise.noise(x,y,z,0.6);
 		type_val+=0.1*noise.noise(x,y,z,1.0);
 		type_val+=0.1*get_wetness(i,k,height);
-		Landscape* landscape=0;
 		if(type_val>0.65){
-			landscape=landscape_creator.create("Tree");
-			landscape->build(this,i,j,k);
+			Tree *tree;
+			tree=(Tree*)landscape_creator.create("Tree");
+			tree->rand_tree_size();
+			tree->build(this,i,j,k);
 			//push_CubeEX(i,j,k,landscape);
 		}
 	}
@@ -308,8 +309,8 @@ void Map::save_map(std::string path){
 			}
 		}
 	}
-	for(int i=0;i<seg.x;i++){
-		for(int j=0;j<seg.z;j++){
+	for(int i=0;i<seg_num.x;i++){
+		for(int j=0;j<seg_num.z;j++){
 			map_segs->get(i,j)->save(file);
 		}
 	}
@@ -335,8 +336,8 @@ void Map::load_map(std::string path){
 			}
 		}
 	}
-	for(int i=0;i<seg.x;i++){
-		for(int j=0;j<seg.z;j++){
+	for(int i=0;i<seg_num.x;i++){
+		for(int j=0;j<seg_num.z;j++){
 			map_segs->get(i,j)->load(file);
 		}
 	}
@@ -597,7 +598,23 @@ void Map::find_select_cube(){
 	}
 }
 void Map::update(Timer* timer){
-	if(timer->second%29==0){
+	///*
+	int update_num=seg_num.x*seg_num.z/10;
+	for(int i=0;i<update_num;i++){
+		get_map_seg(update_at.x,update_at.y)->update();
+		if(update_at.x<seg_num.x-1){
+			update_at.x++;
+		}else{
+			update_at.x=0;
+			if(update_at.y<seg_num.z-1){
+				update_at.y++;
+			}else{
+				update_at.y=0;
+			}
+		}
+	}
+	//*/
+	if(timer->second==0){
 		int x,y,z;
 		swap_update_pos();
 		for(unsigned i=0;i<cur_update_pos->size();i++){

@@ -6,6 +6,7 @@
 namespace AOC{
 class Landscape;
 class Building;
+class AttachCube;
 class CubeEX : public Cube{
 public:
 	CubeEX();
@@ -20,8 +21,17 @@ public:
 	virtual bool draw_cube(){
 		return false;
 	}
-	virtual AOC::CubeEX* get_cubeEX(){
+
+	//action before being removed
+	virtual void remove(){
+
+	}
+
+	virtual CubeEX* get_cubeEX(){
 		return this;
+	}
+	virtual AttachCube* get_attachCube(){
+		return 0;
 	}
 	virtual std::string get_name()const{
 		return "CubeEX";
@@ -34,6 +44,9 @@ public:
 	}
 	virtual AOC::Building* get_building(){
 		return 0;
+	}
+	virtual CubeEX* get_real_cube(){
+		return this;
 	}
 	//this function will be called by out side when needed to draw this cube
 	virtual void draw();

@@ -23,7 +23,9 @@ public:
 	virtual std::string get_name()const{
 		return "Landscape";
 	}
+	virtual void update(){
 
+	}
 protected:
 	virtual void save_cubeEX(FILE * file);
 	virtual void load_cubeEX(FILE * file);

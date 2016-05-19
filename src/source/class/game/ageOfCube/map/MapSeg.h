@@ -20,10 +20,12 @@ public:
 	void draw(int display_height);
 	void push_cube(math::vec3<int> pos,CubeEX *cube);
 	void remove_cube(math::vec3<int> pos);
+	void update();
 	CubeEX* get_cube(int x,int y,int z);
 	math::vec2<int> seg_at;//start position's x and z
 	bool updated;
 protected:
+	void update_landscape();
 	void save_landscape(FILE * file);
 	void load_landscape(FILE * file);
 	unsigned convert_pos(const math::vec3<int> &pos);

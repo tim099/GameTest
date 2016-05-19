@@ -39,7 +39,7 @@ CreateUIObject:
 		Data:
 			save_map
 		Receiver:
-			ScenePlayTD
+			SceneEditMap
 	Parent:
 		ButPanel
 #create_end

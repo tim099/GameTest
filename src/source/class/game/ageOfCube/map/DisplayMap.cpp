@@ -58,7 +58,7 @@ DisplayMap::~DisplayMap() {
 	delete water_dmaps;
 }
 void DisplayMap::gen_display_map_seg(){
-	seg=map->seg;
+	seg=map->seg_num;
 	segsize=map->segsize;
 	std::cout<<"map_size="<<map->get_size().x<<","<<map->get_size().y<<","
 			<<map->get_size().z<<std::endl;

@@ -3,6 +3,8 @@
 #include "class/game/ageOfCube/map/cube/CubeEX.h"
 #include "class/game/ageOfCube/map/landscape/Landscape.h"
 #include "class/game/ageOfCube/map/landscape/LandscapeCreator.h"
+#include "class/game/ageOfCube/map/cube/CubeLarge.h"
+#include "class/game/ageOfCube/map/cube/AttachCube.h"
 #include <cstdio>
 namespace AOC{
 MapSeg::MapSeg() {
@@ -22,6 +24,27 @@ void MapSeg::save(FILE * file){
 }
 void MapSeg::load(FILE * file){
 	load_landscape(file);
+}
+void MapSeg::update(){
+	//std::cout<<"MapSeg::update() 1"<<std::endl;
+	update_landscape();
+	//std::cout<<"MapSeg::update() 2"<<std::endl;
+}
+void MapSeg::update_landscape(){
+	CubeEX* cube;
+	Landscape* lc;
+	std::vector<Landscape*> lcs;
+	std::vector<math::vec3<int> > lcs_pos;
+	std::map<unsigned,CubeEX*>*map=cubes.get_map();
+	typename std::map<unsigned,CubeEX*>::iterator it = map->begin();
+	while(it!=map->end()){
+		cube=it->second;
+		lc=cube->get_landscape();
+		if(lc){
+			lc->update();
+		}
+		it++;
+	}
 }
 void MapSeg::save_landscape(FILE * file){
 	CubeEX* cube;
@@ -100,6 +123,11 @@ void MapSeg::push_cube(math::vec3<int> pos,CubeEX *cube){
 	cubes.push(convert_pos(pos),cube);
 }
 void MapSeg::remove_cube(math::vec3<int> pos){
-	cubes.remove(convert_pos(pos));
+	CubeEX* cube=get_cube(pos.x,pos.y,pos.z);
+	if(cube){
+		cube->remove();
+		cubes.remove(convert_pos(pos));
+	}
+
 }
 }

@@ -36,6 +36,15 @@ public:
 	inline double get_second()const{
 		return (double)second;
 	}
+	inline Timer& operator=(const Timer& timer){
+		second=timer.second,max_second=timer.max_second;
+		minute=timer.minute,max_minute=timer.max_minute;
+		hour=timer.hour,max_hour=timer.max_hour;
+		day=timer.day,max_day=timer.max_day;
+		month=timer.month,max_month=timer.max_month;
+		year=timer.year,max_year=timer.max_year;
+		return *this;
+	}
 	int second;
 	int minute;
 	int hour;

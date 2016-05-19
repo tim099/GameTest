@@ -4,16 +4,21 @@
 #include <iostream>
 namespace AOC{
 AttachCube::AttachCube(int _x,int _y,int _z,CubeLarge *_parent) {
-	x=_x;y=_y;z=_z;parent=_parent;destructing=false;
+	x=_x;y=_y;z=_z;parent=_parent;removing=false;
+}
+void AttachCube::remove(){
+	removing=true;
+	if(!parent->removing){
+		Map::get_cur_object()->remove_cube(parent->x,parent->y,parent->z);
+		//std::cout<<"AttachCube::remove() 1"<<std::endl;
+		//parent->remove();
+	}
+}
+CubeEX* AttachCube::get_real_cube(){
+	return parent;
 }
 AttachCube::~AttachCube() {
-	//std::cout<<"AttachCube::~AttachCube() start"<<std::endl;
-	destructing=true;
-	if(!parent->destructing){
-		std::cout<<"AttachCube::~AttachCube() delete parent"<<std::endl;
-		Map *map=Map::get_cur_object();
-		map->remove_cube(parent->x,parent->y,parent->z);
-	}
+
 	//std::cout<<"AttachCube::~AttachCube() end"<<std::endl;
 }
 }

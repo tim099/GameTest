@@ -3,11 +3,13 @@
 #include "class/game/ageOfCube/map/landscape/Landscape.h"
 #include "class/tim/math/Position.h"
 #include <iostream>
+
 namespace Display{
 class DrawObject;
 }
 namespace AOC{
 class Tree : public AOC::Landscape{
+	static const float max_tree_size=3.0;
 	static const unsigned char pine_tree=0;
 public:
 	Tree();
@@ -20,20 +22,22 @@ public:
 	virtual std::string get_name()const{
 		return "Tree";
 	}
-	virtual void get_attach_cube(std::vector<AttachCube*> &attach_cubes){
-		attach_cubes.push_back(new AttachCube(0,1,0,this));
-	}
+	virtual void get_attach_cube(std::vector<AttachCube*> &attach_cubes);
 	virtual bool draw_cube(){
 		return true;
 	}
+	virtual void update();
 	virtual void set_pos(int x,int y,int z);
 	virtual void draw();
+	void rand_tree_size();
 	math::Position *pos;
 	unsigned char tree_type;
 protected:
+	void gen_pos();
 	virtual void save_landscape(FILE * file);
 	virtual void load_landscape(FILE * file);
 	float size;
+	//int reproduce_time,age,max_age;
 	Display::DrawObject *tree_Drawobj;
 };
 }

@@ -12,6 +12,7 @@
 #include "class/game/ageOfCube/map/landscape/LandscapeCreator.h"
 #include "class/game/ageOfCube/map/building/BuildingCreator.h"
 #include "class/tim/math/vec3.h"
+
 class LandscapeCreator;
 class Timer;
 
@@ -96,7 +97,7 @@ public:
 	//cube being selected on(may near by the selected cube or equal to selected cube
 	math::vec3<int> selected_on;
 
-	math::vec3<int> seg;
+	math::vec3<int> seg_num;
 	math::vec3<int> segsize;
 
 
@@ -154,6 +155,7 @@ protected:
 	AllCubes *all_cubes;
 	//LandscapeCreator *landscapeCreator;
 	PerlinNoise noise;
+	math::vec2<int>update_at;
 };
 }
 #endif /* MAP_H_ */

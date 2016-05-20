@@ -9,6 +9,9 @@
 #include "class/display/UI/button/pictureButton/PictureButton.h"
 #include "class/game/ageOfCube/map/TaskGenMap.h"
 #include "class/game/ageOfCube/map/cube/CubeEX.h"
+
+#include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
+
 #include <iostream>
 #include <cstdio>
 #include <cmath>
@@ -77,9 +80,9 @@ Test::Test() {
 	creat_light();
 
 	map = new AOC::Map();
-	map->load_map("files/AgeOfCube/maps/maptest");
+	//map->load_map("files/AgeOfCube/maps/maptest");
 
-	//map->gen_map(glm::ivec3(250,150,250),time(NULL),80);//0
+	map->gen_map(glm::ivec3(250,150,250),time(NULL),80);//0
 	//map->save_map("files/maps/maptest");
 
 
@@ -410,9 +413,11 @@ void Test::update_obj_pos(Display::Camera *camera) {
 
 	s_light->color = (1.0f - ((float) timeloop / loop_time)) * sun_col1
 			+ ((float) timeloop / loop_time) * sun_col2;
-
+	Display::DrawDataObj* data;
 	sunpos.set_pos(sun_pos);
-	drawObjects->get("test/sun")->push_temp_drawdata(new Display::DrawDataObj(&sunpos));
+	data=new Display::DrawDataObj(&sunpos);
+	//data->push_ex_data(new Display::drawDataEX::SkyMap());
+	drawObjects->get("test/sun")->push_temp_drawdata(data);
 
 	//float tiger_ry = 360.0f * ((float) timeloop / loop_time);
 	//static Position tiger_pos;
@@ -428,9 +433,9 @@ void Test::update_obj_pos(Display::Camera *camera) {
 
 	drawObjects->get("test/stars")->push_temp_drawdata(
 			new Display::DrawDataObj(&starpos));
-
-	drawObjects->get("test/galaxy")->push_temp_drawdata(
-			new Display::DrawDataObj(&starpos));
+	data=new Display::DrawDataObj(&starpos);
+	data->push_ex_data(new Display::drawDataEX::SkyMap());
+	drawObjects->get("test/galaxy")->push_temp_drawdata(data);
 
 }
 void Test::update_map(Display::Camera *camera) {

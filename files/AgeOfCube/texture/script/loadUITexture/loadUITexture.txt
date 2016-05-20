@@ -1,0 +1,38 @@
+#LOAD_TEXTUREMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/texture/UI/
+Name:
+	UI
+#HEADER_END
+
+Texture:
+	TextureName:
+		button1
+	TexturePath:
+		button1.png
+Texture:
+	TextureName:
+		button2
+	TexturePath:
+		button2.png
+Texture:
+	TextureName:
+		button3
+	TexturePath:
+		button3.png
+				
+Texture:
+	TextureName:
+		panel1
+	TexturePath:
+		panel1.png
+Texture:
+	TextureName:
+		panel2
+	TexturePath:
+		panel2.png
+
+#END

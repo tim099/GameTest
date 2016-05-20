@@ -1,0 +1,17 @@
+#LOAD_TEXTUREMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/texture/landscape/
+Name:
+	landscape
+#HEADER_END
+
+Texture:
+	TextureName:
+		pinetree
+	TexturePath:
+		tree/pinetree.bmp
+
+#END

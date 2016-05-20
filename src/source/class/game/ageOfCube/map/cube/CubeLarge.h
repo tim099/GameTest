@@ -14,12 +14,12 @@ public:
 	virtual ~CubeLarge();
 	virtual void remove();
 
-	virtual math::vec3<int> cube_large_size(){
+	virtual math::vec3<int> get_cube_large_size(){
 		return math::vec3<int>(1,1,1);
 	}
 	//return the cube that CubeLarge take place,except the original place(0,0,0)
 	virtual void get_attach_cube(std::vector<AttachCube*> &attach_cubes){
-		math::vec3<int> size=cube_large_size();
+		math::vec3<int> size=get_cube_large_size();
 		for(int i=0;i<size.x;i++){
 			for(int j=0;j<size.y;j++){
 				for(int k=0;k<size.z;k++){
@@ -32,7 +32,7 @@ public:
 	}
 	//the ground that should build on
 	virtual void get_build_on(std::vector<math::vec3<int> > &build_on){
-		math::vec3<int> size=cube_large_size();
+		math::vec3<int> size=get_cube_large_size();
 		for(int i=0;i<size.x;i++){
 			for(int j=0;j<size.z;j++){
 				build_on.push_back(math::vec3<int>(i,-1,j));

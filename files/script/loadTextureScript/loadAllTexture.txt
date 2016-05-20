@@ -10,6 +10,9 @@ FolderPath:
 //create textureMap container under this directory
 TextureMap:
 	ScriptPath:
+		default.txt	
+TextureMap:
+	ScriptPath:
 		test/loadTestTexture.txt
 
 TextureMap:

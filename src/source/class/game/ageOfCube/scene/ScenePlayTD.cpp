@@ -135,6 +135,8 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 		map->save_map(map_name);
 	}
 	else if(sig->get_data() == "build"){
+		BuildingCreator* creator2=BuildingCreator::get_cur_object();
+		constructing_building = creator2->create("Tower");
 		mode = constructing;
 	}
 	else if(sig->get_data() == "reload"){
@@ -160,11 +162,17 @@ void ScenePlayTD::handle_input() {
 
 		if(mode == constructing){
 
-			BuildingCreator* creator2=BuildingCreator::get_cur_object();
-			constructing_building = creator2->create("Tower");
-			constructing_building->build(map,map->selected_on.x,
+			//BuildingCreator* creator2=BuildingCreator::get_cur_object();
+			//constructing_building = creator2->create("Tower");
+			if(constructing_building->build(map,map->selected_on.x,
 					map->selected_on.y,
-					map->selected_on.z);
+					map->selected_on.z)){
+				constructing_building=0;
+			}else{
+				delete constructing_building;
+				constructing_building=0;
+			}
+
 			/*
 			map->push_CubeEX(map->selected_on.x,
 							   map->selected_on.y,
@@ -270,6 +278,13 @@ void ScenePlayTD::scene_update_end(){
 void ScenePlayTD::scene_draw() {
 	UI->draw_UIObject(draw);
 	map->dp_map->draw_map(camera,thread_pool); //push position
+
+	if(constructing_building){
+
+		constructing_building->draw_buildable(map,map->selected_on.x,
+				map->selected_on.y,
+				map->selected_on.z);
+	}
 	if(mode == removing){
 		cl->color=glm::vec3(1,0,0);
 		cl->pos=glm::vec3((map->selected_cube.x+0.5f)*Map::CUBE_SIZE,

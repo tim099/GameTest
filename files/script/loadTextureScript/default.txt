@@ -1,0 +1,31 @@
+#LOAD_TEXTUREMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/texture/
+Name:
+	default
+#HEADER_END
+
+
+TextureCubeMap:
+	TextureName:
+		skybox
+	TextureSize:
+		256
+		256
+	TexturePath:
+		sky/sky0.bmp		
+	TexturePath:
+		sky/sky1.bmp
+	TexturePath:
+		sky/sky2.bmp
+	TexturePath:
+		sky/sky3.bmp					
+	TexturePath:
+		sky/sky4.bmp
+	TexturePath:
+		sky/sky5.bmp
+
+#END

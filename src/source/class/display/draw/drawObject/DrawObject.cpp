@@ -6,7 +6,7 @@
 #include "class/display/texture/Texture.h"
 #include "class/display/texture/AllTextures.h"
 #include "class/display/model/modelBuffer/AllModelBuffers.h"
-
+#include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
 
 #include "class/display/draw/Draw.h"
 #include <iostream>
@@ -22,7 +22,7 @@ DrawObject::DrawObject(){
 	draw_shadow = false;
 	layer_texture = 0;
 	alpha_drawobject=false;
-	sky_map=false;
+	//sky_map=false;
 }
 void DrawObject::init_drawObject(std::string _obj_str, std::string _tex_str,
 		std::string _normalTex_str, bool _layer_texture) {
@@ -133,9 +133,7 @@ void DrawObject::draw_object(Shader *shader) {
 		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 		//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_DST_ALPHA);
 	}
-	if(sky_map){
-		shader->Enable(SkyMap);
-	}
+
 	if (texture) {
 		if(texture->format==GL_RGBA){
 			shader->Enable(AlphaTexture);
@@ -156,13 +154,12 @@ void DrawObject::draw_object(Shader *shader) {
 	}
 	draw_vec(shader, temp_datas);
 	model_buffer->unbind_buffer(shader);
-	shader->Disable(SkyMap);
+
 	shader->Disable(NormalMapping);
 	shader->Disable(AlphaTexture);
 	if (alpha_drawobject){
 		glDisable(GL_BLEND);
 	}
-
 	//Buffer::disable_all_buffer();
 }
 }

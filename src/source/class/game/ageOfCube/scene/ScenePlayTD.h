@@ -49,6 +49,7 @@ protected:
 	Display::Camera *camera;
 	Display::LightControl* lightControl;
 	Display::CubeLight* cl;
+
 	UI::UI *UI;
 	Timer timer;
 	std::string map_name;

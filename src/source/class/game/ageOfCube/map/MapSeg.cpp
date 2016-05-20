@@ -31,15 +31,13 @@ void MapSeg::update(){
 	//std::cout<<"MapSeg::update() 2"<<std::endl;
 }
 void MapSeg::update_landscape(){
-	CubeEX* cube;
 	Landscape* lc;
 	std::vector<Landscape*> lcs;
 	std::vector<math::vec3<int> > lcs_pos;
 	std::map<unsigned,CubeEX*>*map=cubes.get_map();
 	typename std::map<unsigned,CubeEX*>::iterator it = map->begin();
 	while(it!=map->end()){
-		cube=it->second;
-		lc=cube->get_landscape();
+		lc=dynamic_cast<Landscape*>(it->second);
 		if(lc){
 			lc->update();
 		}

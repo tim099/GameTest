@@ -55,7 +55,7 @@ void DrawObjectMap::Parse_DrawObject(std::istream &is){
 	std::string modelbuffer;
 	bool have_mat=false;
 	bool draw_shadow=true;
-	bool sky_map=false;
+	//bool sky_map=false;
 	math::vec4<float> mat;
 	Display::Draw* cur_draw=Display::Draw::get_cur_object();
 
@@ -68,7 +68,7 @@ void DrawObjectMap::Parse_DrawObject(std::istream &is){
 			DrawObject* d_obj=new DrawObject(modelbuffer,texture,normalmap);
 			if(have_mat)d_obj->mat=mat;
 			d_obj->draw_shadow=draw_shadow;
-			d_obj->sky_map=sky_map;
+			//d_obj->sky_map=sky_map;
 			push(name,d_obj);
 
 			cur_draw->push(d_obj);
@@ -96,7 +96,7 @@ void DrawObjectMap::Parse_DrawObject(std::istream &is){
 		}else if(line=="SkyMap:"){
 			Tim::String::get_line(is, line, true, true);
 			if(line=="true"){
-				sky_map=true;
+				//sky_map=true;
 			}
 		}
 	}

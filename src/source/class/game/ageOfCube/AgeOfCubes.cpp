@@ -14,11 +14,13 @@ Display::Window* AgeOfCubes::create_window(){
 void AgeOfCubes::initialize_game(){
 
 	//============================
-	textures = new Display::AllTextures("files/script/loadTextureScript/loadAllTexture.txt");
+	//textures = new Display::AllTextures("files/script/loadTextureScript/loadAllTexture.txt");
+	textures = new Display::AllTextures("files/AgeOfCube/texture/script/loadAllTexture.txt");
 	textures->register_cur();	//set as cur using textures
-	modelBuffers = new Display::AllModelBuffers("files/script/modelBufferScript/loadAllModelBuffers.txt");
+	modelBuffers=new Display::AllModelBuffers("files/script/modelBufferScript/loadAllModelBuffers.txt");
 	modelBuffers->register_cur();
-	drawObjects = new Display::AllDrawObjects("files/script/drawObjectScript/loadAllDrawObjects.txt");
+	//drawObjects = new Display::AllDrawObjects("files/script/drawObjectScript/loadAllDrawObjects.txt");
+	drawObjects = new Display::AllDrawObjects("files/AgeOfCube/drawObject/loadAllDrawObjects.txt");
 	drawObjects->register_cur();
 
 	push_scene(new AOC::SceneStart());

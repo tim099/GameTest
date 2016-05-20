@@ -74,7 +74,7 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 	//sent uniform
-	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shader, 30, "skybox");
+	AllTextures::get_cur_tex("default/skybox")->sent_uniform(shader, 30, "skybox");
 	camera->sent_uniform(shader->programID, FBO->aspect());
 	sent_shadow_uniform(shader);
     for(unsigned i=0;i<d_objs.size();i++){//100
@@ -159,7 +159,11 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 
 
 	//sent uniform
-	AllTextures::get_cur_object()->get_cur_tex("test/texcube")->sent_uniform(shaderWater, 30, "skybox");
+	Texture*skybox_tex=AllTextures::get_cur_tex("default/skybox");
+	if(skybox_tex){
+		skybox_tex->sent_uniform(shaderWater, 30, "skybox");
+	}
+
 
 	camera->sent_uniform(shaderWater->programID, FBO->aspect());
 	sent_shadow_uniform(shaderWater);

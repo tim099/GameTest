@@ -22,7 +22,7 @@ public:
 	virtual std::string get_name()const{
 		return "Tree";
 	}
-	virtual math::vec3<int> cube_large_size();
+	virtual math::vec3<int> get_cube_large_size();
 	virtual bool draw_cube(){
 		return true;
 	}

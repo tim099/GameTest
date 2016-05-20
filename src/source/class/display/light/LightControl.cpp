@@ -18,6 +18,7 @@ LightControl::~LightControl() {
 	if(draw->lightControl==this){
 		draw->set_lightControl(0);
 	}
+	clear_temp_data();
 	for(unsigned i=0;i<point_lights.size();i++){
 		delete point_lights.at(i);
 	}

@@ -76,7 +76,7 @@ void Tree::update(){
 	}
 	*/
 }
-math::vec3<int> Tree::cube_large_size(){
+math::vec3<int> Tree::get_cube_large_size(){
 	return math::vec3<int>(ceil(0.33*size),ceil(size),ceil(0.33*size));
 }
 void Tree::rand_tree_size(){
@@ -90,7 +90,7 @@ void Tree::load_landscape(FILE * file){
 	fscanf(file,"%c %f\n",(char*)&tree_type,&size);
 }
 void Tree::gen_pos(){
-	math::vec3<int> real_size=cube_large_size();
+	math::vec3<int> real_size=get_cube_large_size();
 	pos->set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
 			AOC::Map::CUBE_SIZE*y+0.5*size,
 			AOC::Map::CUBE_SIZE*z+0.5*real_size.z));

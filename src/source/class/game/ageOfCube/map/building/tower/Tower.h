@@ -24,7 +24,7 @@ public:
 	Tower(Tower *tower);
 	virtual ~Tower();
 	virtual void building_pre_init();
-	virtual math::vec3<int> cube_large_size(){
+	virtual math::vec3<int> get_cube_large_size(){
 		return math::vec3<int>(2,6,2);
 	}
 	virtual AOC::Building* create_building(){

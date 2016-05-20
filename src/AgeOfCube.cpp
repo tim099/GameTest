@@ -44,7 +44,7 @@ int main(){
 	cm->mainloop();
 	delete cm;
 	//}
-	//*/
+	*/
 
 	/*
 	Test *test=new Test();

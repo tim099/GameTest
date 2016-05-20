@@ -43,7 +43,7 @@ void Tower::set_pos(int x,int y,int z){
 	if(!pos){
 		pos=new math::Position();
 	}
-	math::vec3<int> real_size=cube_large_size();
+	math::vec3<int> real_size=get_cube_large_size();
 	pos->set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
 			AOC::Map::CUBE_SIZE*y+0.5*real_size.y,
 			AOC::Map::CUBE_SIZE*z+0.5*real_size.z));

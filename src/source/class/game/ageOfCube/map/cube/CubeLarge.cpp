@@ -33,7 +33,7 @@ bool CubeLarge::buildable(Map *map,int x,int y,int z){
 	if(buildable){
 		for(unsigned i=0;i<build_on.size();i++){
 			on=&(build_on.at(i));
-			if(map->get_cube_type(x+on->x,y+on->y,z+on->x)<Cube::startcube){
+			if(map->get_cube_type(x+on->x,y+on->y,z+on->z)<Cube::startcube){
 				buildable=false;
 				break;
 			}
@@ -43,7 +43,7 @@ bool CubeLarge::buildable(Map *map,int x,int y,int z){
 	if(buildable){
 		for(unsigned i=0;i<attach_cubes.size();i++){
 			cube=attach_cubes.at(i);
-			if(map->get_cube_type(x+cube->x,y+cube->y,z+cube->x)!=Cube::cubeNull){
+			if(map->get_cube_type(x+cube->x,y+cube->y,z+cube->z)!=Cube::cubeNull){
 				buildable=false;
 				break;
 			}
@@ -55,6 +55,7 @@ bool CubeLarge::buildable(Map *map,int x,int y,int z){
 	return buildable;
 }
 bool CubeLarge::build(Map *map,int _x,int _y,int _z){
+	/*
 	x=_x,y=_y,z=_z;
 	std::vector<math::vec3<int> > build_on;
 	for(unsigned i=0;i<attach_cubes.size();i++){
@@ -81,8 +82,17 @@ bool CubeLarge::build(Map *map,int _x,int _y,int _z){
 		}
 	}
 
+	*/
+	x=_x,y=_y,z=_z;
+	if(!buildable(map,x,y,z))return false;
+	for(unsigned i=0;i<attach_cubes.size();i++){
+		delete attach_cubes.at(i);
+	}
+	attach_cubes.clear();
+	get_attach_cube(attach_cubes);
 
 	map->push_CubeEX(x,y,z,this);
+	AttachCube* cube;
 	for(unsigned i=0;i<attach_cubes.size();i++){
 		cube=attach_cubes.at(i);
 		map->push_CubeEX(x+cube->x,y+cube->y,z+cube->z,cube);

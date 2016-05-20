@@ -5,7 +5,7 @@
 #include "class/game/ageOfCube/unit/Unit.h"
 
 namespace AOC {
-
+class Map;
 class Building: public CubeLarge ,
 				public Unit
 {
@@ -22,6 +22,7 @@ public:
 	virtual std::string get_name()const{
 		return "Building";
 	}
+	void draw_buildable(Map *map,int x,int y,int z);
 protected:
 	int size;
 	virtual void save_cubeEX(FILE * file);

@@ -24,10 +24,6 @@ public:
 	Draw();
 	virtual ~Draw();
 
-	void sent_shadow_uniform(Shader *shader);
-	void gen_shadow(Shader *shaderShadowMapping);
-
-
 	//render all object(3D Models)
 	void draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,
 			Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterReflectFBO,

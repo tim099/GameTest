@@ -22,7 +22,7 @@ uniform int parallellight_shadow[MAX_PARALLELLIGHT];
 uniform int pointlight_num;
 uniform vec3 pointlight_pos[MAX_POINTLIGHT];
 uniform vec3 pointlight_color[MAX_POINTLIGHT];
-uniform int pointlight_shadow[MAX_PARALLELLIGHT];
+uniform int pointlight_shadow[MAX_POINTLIGHT];
 
 uniform int cubelight_num;
 uniform vec3 cubelight_pos[MAX_CUBELIGHT];

@@ -157,7 +157,7 @@ void ScenePlayTD::handle_input() {
 			std::cout<<"building selected. hp="<<selected_building->get_hp()
 					<<"/"<<selected_building->get_max_hp()<<std::endl;
 			unit_controller.select_unit(selected_building);
-			//return;
+			return;
 		}
 
 		if(mode == constructing){

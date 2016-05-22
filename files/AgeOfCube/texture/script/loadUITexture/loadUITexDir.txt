@@ -3,10 +3,12 @@
 #HEADER
 Name:
 	UI
+FolderPath:
+	files/AgeOfCube/texture/script/
 #HEADER_END
 
 TextureMap:
 	ScriptPath:
-		files/script/loadTextureScript/loadUITexture/loadUITexture.txt	
+		loadUITexture/loadUITexture.txt	
 
 #END

@@ -40,12 +40,21 @@ static const int MAX_POINT_LIGHT=100;
 	void push_light(Display::PointLight* l);
 	void push_light(Display::ParallelLight* l);
 	void push_light(Display::CubeLight* l);
+
+	void push_temp_light(Display::PointLight* l);
+	void push_temp_light(Display::ParallelLight* l);
 	void push_temp_light(Display::CubeLight* l);
+
+	void remove_light(Display::PointLight* l);
+	void remove_light(Display::ParallelLight* l);
+	void remove_light(Display::CubeLight* l);
 
 	void clear_temp_data();
 	std::vector<ParallelLight*>parallel_lights;
 	std::vector<PointLight*>point_lights;
 	std::vector<CubeLight*>cube_lights;
+	std::vector<ParallelLight*>temp_parallel_lights;
+	std::vector<PointLight*>temp_point_lights;
 	std::vector<CubeLight*>temp_cube_lights;
 	ShadowData *shadowData;
 	double shadow_dis;

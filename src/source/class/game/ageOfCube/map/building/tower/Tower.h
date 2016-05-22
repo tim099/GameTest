@@ -25,7 +25,7 @@ public:
 	virtual ~Tower();
 	virtual void building_pre_init();
 	virtual math::vec3<int> get_cube_large_size(){
-		return math::vec3<int>(2,6,2);
+		return math::vec3<int>(1,3,1);
 	}
 	virtual AOC::Building* create_building(){
 		return new Tower(this);
@@ -44,6 +44,7 @@ protected:
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);
 	Display::DrawObject *tower_Drawobj;
+	int timer;
 };
 
 }

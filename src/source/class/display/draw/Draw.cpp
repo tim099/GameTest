@@ -44,18 +44,6 @@ void Draw::set_lightControl(Display::LightControl* _lightControl){
 void Draw::set_camera(Camera *_camera){
 	camera=_camera;
 }
-void Draw::sent_shadow_uniform(Shader *shader){
-	if(!lightControl){
-		std::cerr<<"Draw::sent_shadow_uniform fail no lightControl"<<std::endl;
-	}
-	lightControl->sent_uniform(shader,camera->pos);
-}
-void Draw::gen_shadow(Shader *shaderShadowMapping){
-	if(!lightControl){
-		std::cerr<<"Draw::gen_shadow fail no lightControl"<<std::endl;
-	}
-	lightControl->gen_shadow(shaderShadowMapping,camera,this);
-}
 void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping,
 		Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterReflectFBO,
 		FrameBuffer * waterRefractFBO){
@@ -69,14 +57,14 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 		std::cerr<<"Draw::draw3D fail,light control or camera no set yet!!"<<std::endl;
 		return;
 	}
-	gen_shadow(shaderShadowMapping);
+	lightControl->gen_shadow(shaderShadowMapping,camera,this);
 	shader->active_shader();
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 	//sent uniform
 	AllTextures::get_cur_tex("default/skybox")->sent_uniform(shader, 30, "skybox");
 	camera->sent_uniform(shader->programID, FBO->aspect());
-	sent_shadow_uniform(shader);
+	lightControl->sent_uniform(shader,camera->pos);
     for(unsigned i=0;i<d_objs.size();i++){//100
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
@@ -105,7 +93,7 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 		reflect_cam.fovy+=10;
 		//reflect_cam.up.y=-1.0;
 		reflect_cam.sent_uniform(shader->programID, waterReflectFBO->aspect());
-		sent_shadow_uniform(shader);
+		lightControl->sent_uniform(shader,camera->pos);
 	    for(unsigned i=0;i<d_objs.size();i++){//100
 	    	d_objs.at(i)->draw_object(shader);//draw all obj
 	    }
@@ -123,7 +111,7 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 		refract_cam.dis_alter(1.0);
 		refract_cam.fovy+=10;
 		refract_cam.sent_uniform(shader->programID, waterRefractFBO->aspect());
-		sent_shadow_uniform(shader);
+		lightControl->sent_uniform(shader,camera->pos);
 	    for(unsigned i=0;i<d_objs.size();i++){//100
 	    	d_objs.at(i)->draw_object(shader);//draw all obj
 	    }
@@ -166,7 +154,7 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 
 
 	camera->sent_uniform(shaderWater->programID, FBO->aspect());
-	sent_shadow_uniform(shaderWater);
+	lightControl->sent_uniform(shaderWater,camera->pos);
     for(unsigned i=0;i<water_d_objs.size();i++){//100
     	//std::cout<<"draw water"<<std::endl;
     	water_d_objs.at(i)->draw_object(shaderWater);//draw all obj

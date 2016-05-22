@@ -31,8 +31,9 @@ LightControl::~LightControl() {
 	delete shadowData;
 }
 void LightControl::gen_shadow(Shader *shaderShadowMapping,Camera *camera,Draw *d_obj){
+	choose_point_light(camera->pos);
 	shadowData->gen_shadow_map(shaderShadowMapping,
-			point_lights,parallel_lights,camera,shadow_dis,d_obj);
+			selected_point_lights,parallel_lights,camera,shadow_dis,d_obj);
 }
 PointLight* LightControl::get_point_light(int i)const{
 	return point_lights.at(i);
@@ -46,6 +47,33 @@ unsigned LightControl::parallel_light_size()const{
 unsigned LightControl::point_light_size()const{
 	return point_lights.size();
 }
+void LightControl::remove_light(Display::PointLight* l){
+	for(unsigned i=0;i<point_lights.size();i++){
+		if(point_lights.at(i)==l){
+			delete l;
+			point_lights.at(i)=point_lights.back();
+			point_lights.pop_back();
+		}
+	}
+}
+void LightControl::remove_light(Display::ParallelLight* l){
+	for(unsigned i=0;i<parallel_lights.size();i++){
+		if(parallel_lights.at(i)==l){
+			delete l;
+			parallel_lights.at(i)=parallel_lights.back();
+			parallel_lights.pop_back();
+		}
+	}
+}
+void LightControl::remove_light(Display::CubeLight* l){
+	for(unsigned i=0;i<cube_lights.size();i++){
+		if(cube_lights.at(i)==l){
+			delete l;
+			cube_lights.at(i)=cube_lights.back();
+			cube_lights.pop_back();
+		}
+	}
+}
 void LightControl::push_light(Display::PointLight* l){
 	point_lights.push_back(l);//lights.size()<MAX_LIGHT
 }
@@ -58,8 +86,17 @@ void LightControl::push_light(Display::CubeLight* l){
 void LightControl::push_temp_light(Display::CubeLight* l){
 	temp_cube_lights.push_back(l);
 }
+void LightControl::push_temp_light(Display::PointLight* l){
+	temp_point_lights.push_back(l);
+}
+void LightControl::push_temp_light(Display::ParallelLight* l){
+	temp_parallel_lights.push_back(l);
+}
 void LightControl::choose_point_light(glm::vec3 camera_pos){
     selected_point_lights.clear();
+    for(unsigned i=0;i<temp_point_lights.size();i++){
+    	selected_point_lights.push_back(temp_point_lights.at(i));
+    }
     for(unsigned i=0;i<point_lights.size();i++){
     	if(glm::length(camera_pos-point_lights.at(i)->pos)<draw_dis&&selected_point_lights.size()<MAX_POINT_LIGHT){
     		selected_point_lights.push_back(point_lights.at(i));
@@ -67,6 +104,15 @@ void LightControl::choose_point_light(glm::vec3 camera_pos){
     }
 }
 void LightControl::clear_temp_data(){
+    for(unsigned i=0;i<temp_parallel_lights.size();i++){
+    	delete temp_parallel_lights.at(i);
+    }
+    temp_parallel_lights.clear();
+    for(unsigned i=0;i<temp_point_lights.size();i++){
+    	delete temp_point_lights.at(i);
+    }
+    temp_point_lights.clear();
+
     for(unsigned i=0;i<temp_cube_lights.size();i++){
     	//std::cout<<"test temp cube light"<<std::endl;
     	delete temp_cube_lights.at(i);
@@ -84,7 +130,7 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
     std::vector<glm::vec3>parallellight_color;
     std::vector<GLint>parallellight_shadow;
 
-    unsigned pointlight_shadow_num=0;
+
     unsigned parallellight_shadow_num=0;
     for(unsigned i=0;i<parallel_lights.size();i++){
     	parallellight_vec.push_back(parallel_lights.at(i)->vec);
@@ -103,6 +149,8 @@ void LightControl::sent_uniform(Shader *shader,glm::vec3 camera_pos){
     std::vector<glm::vec3>pointlight_color;
     std::vector<GLint>pointlight_shadow;
     PointLight *p_light;
+    unsigned pointlight_shadow_num=0;
+
     for(unsigned i=0;i<selected_point_lights.size();i++){
     	p_light=selected_point_lights.at(i);
 		pointlight_pos.push_back(p_light->pos);

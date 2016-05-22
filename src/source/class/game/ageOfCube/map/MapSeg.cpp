@@ -21,9 +21,11 @@ MapSeg::~MapSeg() {
 }
 void MapSeg::save(FILE * file){
 	save_landscape(file);
+	save_building(file);
 }
 void MapSeg::load(FILE * file){
 	load_landscape(file);
+	load_building(file);
 }
 void MapSeg::update(){
 	//std::cout<<"MapSeg::update() 1"<<std::endl;
@@ -45,15 +47,13 @@ void MapSeg::update_landscape(){
 	}
 }
 void MapSeg::save_landscape(FILE * file){
-	CubeEX* cube;
 	Landscape* lc;
 	std::vector<Landscape*> lcs;
 	std::vector<math::vec3<int> > lcs_pos;
 	std::map<unsigned,CubeEX*>*map=cubes.get_map();
 	typename std::map<unsigned,CubeEX*>::iterator it = map->begin();
 	while(it!=map->end()){
-		cube=it->second;
-		lc=cube->get_landscape();
+		lc=dynamic_cast<Landscape*>(it->second);
 		if(lc){
 			lcs_pos.push_back(convert_pos(it->first));
 			lcs.push_back(lc);
@@ -63,6 +63,7 @@ void MapSeg::save_landscape(FILE * file){
 	fprintf(file,"%u\n",lcs.size());
 	for(unsigned i=0;i<lcs.size();i++){
 		fprintf(file,"%d,%d,%d\n",lcs_pos.at(i).x,lcs_pos.at(i).y,lcs_pos.at(i).z);
+		fprintf(file,"%s\n",lcs.at(i)->get_name().c_str());
 		lcs.at(i)->save(file);
 	}
 }
@@ -70,19 +71,54 @@ void MapSeg::load_landscape(FILE * file){
 	LandscapeCreator* creator=LandscapeCreator::get_cur_object();
 	unsigned landscape_size;
 	fscanf(file,"%u\n",&landscape_size);
-	//std::cout<<"MapSeg::load_landscape size="<<landscape_size<<std::endl;
 	char name[100];
 	Landscape* lc;
 	glm::ivec3 pos;
 	for(unsigned i=0;i<landscape_size;i++){
 		fscanf(file,"%d,%d,%d\n",&pos.x,&pos.y,&pos.z);
-		//std::cout<<"MapSeg::load_landscape pos:"<<pos.x<<","<<pos.y<<","<<pos.z<<std::endl;
 		fscanf(file,"%s\n",name);
-		//std::cout<<"MapSeg::load_landscape name:"<<name<<std::endl;
 		lc=creator->create(name);
 		lc->load(file);
 		lc->build(map,pos.x,pos.y,pos.z);
-		//map->push_CubeEX(pos.x,pos.y,pos.z,lc);
+	}
+}
+void MapSeg::save_building(FILE * file){
+	Building* building;
+	std::vector<Building*> buildings;
+	std::vector<math::vec3<int> > buildings_pos;
+	std::map<unsigned,CubeEX*>*map=cubes.get_map();
+	typename std::map<unsigned,CubeEX*>::iterator it = map->begin();
+	while(it!=map->end()){
+		building=dynamic_cast<Building*>(it->second);
+		if(building){
+			buildings_pos.push_back(convert_pos(it->first));
+			buildings.push_back(building);
+		}
+		it++;
+	}
+	fprintf(file,"%u\n",buildings.size());
+	for(unsigned i=0;i<buildings.size();i++){
+		fprintf(file,"%d,%d,%d\n",
+				buildings_pos.at(i).x,
+				buildings_pos.at(i).y,
+				buildings_pos.at(i).z);
+		fprintf(file,"%s\n",buildings.at(i)->get_name().c_str());
+		buildings.at(i)->save(file);
+	}
+}
+void MapSeg::load_building(FILE * file){
+	BuildingCreator *building_creator=BuildingCreator::get_cur_object();
+	unsigned building_size;
+	fscanf(file,"%u\n",&building_size);
+	char name[100];
+	Building* building;
+	glm::ivec3 pos;
+	for(unsigned i=0;i<building_size;i++){
+		fscanf(file,"%d,%d,%d\n",&pos.x,&pos.y,&pos.z);
+		fscanf(file,"%s\n",name);
+		building=building_creator->create(name);
+		building->load(file);
+		building->build(map,pos.x,pos.y,pos.z);
 	}
 }
 unsigned MapSeg::convert_pos(const math::vec3<int> &pos){

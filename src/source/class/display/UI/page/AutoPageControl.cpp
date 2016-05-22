@@ -35,8 +35,8 @@ void AutoPageControl::Parse_button_template(std::istream &is,std::string &line){
 	}
 }
 void AutoPageControl::create_pages(std::vector<std::string> &names){
-	if(names.empty())return;
 	clear_child();
+	if(names.empty())return;
 	int page_num=(names.size()/button_per_page);
 	int cur_name=0;
 	PictureButton *cur_but;

@@ -40,9 +40,11 @@ Tower::~Tower() {
 }
 void Tower::save_building(FILE * file){
 	fprintf(file,"%c\n",(char)tower_type);
+	fprintf(file,"%d\n",timer);
 }
 void Tower::load_building(FILE * file){
 	fscanf(file,"%c\n",(char*)&tower_type);
+	fscanf(file,"%d\n",&timer);
 }
 void Tower::set_pos(int x,int y,int z){
 	if(!pos){

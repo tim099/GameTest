@@ -21,7 +21,6 @@ void Building::load_building(FILE * file){
 
 }
 void Building::save_cubeEX(FILE * file){
-	fprintf(file,"%s\n",get_name().c_str());
 	save_building(file);
 }
 void Building::load_cubeEX(FILE * file){

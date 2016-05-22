@@ -43,10 +43,10 @@ void ScenePlayTD::scene_initialize() {
 					glm::vec3(1.9, 1.9, 1.9), true));
 
 	UI = new UI::UI();
-	UI->Load_script("files/AgeOfCube/playTD/UI/playTD_UI.txt");
+	UI->Load_script("files/AgeOfCube/scenes/playTD/UI/playTD_UI.txt");
 	//UI->Load_script("files/script/UIscript/saveUI.txt");
 
-	unit_controller.init_UI("files/AgeOfCube/playTD/UI/unit_UI.txt", UI);
+	unit_controller.init_UI("files/AgeOfCube/scenes/playTD/UI/unit_UI.txt", UI);
 
 	cl=new Display::CubeLight();
 	cl->color=glm::vec3(1,0.5,0);

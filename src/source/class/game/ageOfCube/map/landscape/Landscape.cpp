@@ -19,7 +19,7 @@ void Landscape::load_landscape(FILE * file){
 
 }
 void Landscape::save_cubeEX(FILE * file){
-	fprintf(file,"%s\n",get_name().c_str());
+	//fprintf(file,"%s\n",get_name().c_str());
 	save_landscape(file);
 }
 void Landscape::load_cubeEX(FILE * file){

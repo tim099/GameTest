@@ -28,6 +28,8 @@ protected:
 	void update_landscape();
 	void save_landscape(FILE * file);
 	void load_landscape(FILE * file);
+	void save_building(FILE * file);
+	void load_building(FILE * file);
 	unsigned convert_pos(const math::vec3<int> &pos);
 	math::vec3<int> convert_pos(unsigned p);
 	Tim::MapContainer<unsigned,CubeEX>cubes;

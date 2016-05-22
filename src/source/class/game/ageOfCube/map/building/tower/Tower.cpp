@@ -24,7 +24,7 @@ Tower::Tower() {
 	tower_type=tower;
 	tower_Drawobj=0;
 	pos=0;
-	size = 3.0;
+	size = 1.0;
 	timer=0;
 }
 Tower::Tower(Tower* tower) {

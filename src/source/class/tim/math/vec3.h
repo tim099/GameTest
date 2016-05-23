@@ -1,6 +1,13 @@
 #ifndef SOURCE_CLASS_TIM_MATH_VEC3_H_
 #define SOURCE_CLASS_TIM_MATH_VEC3_H_
-
+#include "glm/detail/precision.hpp"
+namespace glm{
+namespace detail{
+template <typename T, precision P> struct tvec3;
+}
+typedef detail::tvec3<float, highp> highp_vec3;
+typedef highp_vec3 vec3;
+}
 namespace math {
 template <class Type>
 class vec3 {
@@ -43,7 +50,11 @@ public:
 	}
 	Type x,y,z;
 };
-#include "class/tim/math/vec3.cpp"
-} /* namespace math */
+template <class Type>
+inline vec3<Type> operator*(const float& val,const vec3<Type> &vec){
+	return vec*val;
+}
 
+} /* namespace math */
+#include "class/tim/math/vec3.cpp"
 #endif /* SOURCE_CLASS_TIM_MATH_VEC3_H_ */

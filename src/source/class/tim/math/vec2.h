@@ -8,7 +8,6 @@ template <typename T, precision P> struct tvec2;
 }
 typedef detail::tvec2<float, highp> highp_vec2;
 typedef highp_vec2 vec2;
-
 }
 
 namespace math {
@@ -63,7 +62,10 @@ public:
 	}
 	Type x,y;
 };
-
+template <class Type>
+inline vec2<Type> operator*(const float& val,const vec2<Type> &vec){
+	return vec*val;
+}
 } /* namespace Math */
 #include "class/tim/math/vec2.cpp"
 #endif /* SOURCE_CLASS_TIM_MATH_VEC2_H_ */

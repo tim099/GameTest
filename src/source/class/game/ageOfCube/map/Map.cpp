@@ -37,6 +37,10 @@ Map::Map() {
 }
 Map::~Map() {
 	if(dp_map)delete dp_map;
+	for(unsigned i=0;i<players.size();i++){
+		delete players.at(i);
+	}
+	players.clear();
 	if(map_segs){
 		for(int i=0;i<seg_num.x;i++){
 			for(int j=0;j<seg_num.z;j++){

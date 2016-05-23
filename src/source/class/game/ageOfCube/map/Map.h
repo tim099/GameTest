@@ -11,6 +11,7 @@
 #include "class/game/ageOfCube/map/DisplayMap.h"
 #include "class/game/ageOfCube/map/landscape/LandscapeCreator.h"
 #include "class/game/ageOfCube/map/building/BuildingCreator.h"
+#include "class/game/ageOfCube/player/Player.h"
 #include "class/tim/math/vec3.h"
 
 class LandscapeCreator;
@@ -102,6 +103,7 @@ public:
 
 
 	AOC::DisplayMap* dp_map;
+	std::vector<Player*>players;
 protected:
 	//generate the shape of the map(only generate the cube type=1,and empty space type=0
 	void gen_map_seg();

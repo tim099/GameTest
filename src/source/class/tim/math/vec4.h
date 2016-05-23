@@ -44,7 +44,10 @@ public:
 	}
 	Type x,y,z,w;
 };
-
+template <class Type>
+inline vec4<Type> operator*(const float& val,const vec4<Type> &vec){
+	return vec*val;
+}
 } /* namespace Math */
 #include "class/tim/math/vec4.cpp"
 #endif /* SOURCE_CLASS_TIM_MATH_VEC4_H_ */

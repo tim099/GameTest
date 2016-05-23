@@ -22,6 +22,9 @@ public:
 		return "ToggleButton";
 	}
 	virtual UIObject* create_UIObject();
+protected:
+	virtual void update();
+	bool hide_children;
 };
 
 } /* namespace AOC */

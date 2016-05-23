@@ -24,7 +24,6 @@ void BuildingCreator::push(AOC::Building* obj){
 	creator.push(obj->get_name(),obj);
 }
 AOC::Building* BuildingCreator::create(std::string type_name){
-	std::cout<<"BuildingCreator::create:"<<type_name<<std::endl;
 	if (!creator.get(type_name)) {
 		std::cerr << "Building name:" << type_name
 				<< " not exist in this BuildingCreator" << std::endl;

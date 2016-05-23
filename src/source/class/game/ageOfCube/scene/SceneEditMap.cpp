@@ -11,7 +11,7 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	lightControl = 0;
 	UI = 0;
 	destruct_mode=false;
-	cl=0;
+	constructing_building=0;
 }
 void SceneEditMap::loading(){
 	if(Tim::File::check_if_file_exist(map_name)){
@@ -36,10 +36,7 @@ void SceneEditMap::scene_initialize() {
 	UI = new UI::UI();
 	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
 
-	cl=new Display::CubeLight();
-	cl->color=glm::vec3(1,0.5,0);
-	cl->size=1.01f*Map::CUBE_SIZE;
-	lightControl->push_light(cl);
+
 
 	resume();
 }
@@ -47,7 +44,7 @@ void SceneEditMap::scene_terminate() {
 	delete lightControl;
 	//draw->set_lightControl(0);
 	delete camera;
-
+	if(constructing_building)delete constructing_building;
 	if(map)delete map;
 	if (UI) {
 		delete UI;
@@ -120,22 +117,38 @@ void SceneEditMap::camera_control(){
 void SceneEditMap::handle_signal(Input::Signal *sig){
 	if(sig->get_data()=="save_map"){
 		map->save_map(map_name);
+	}else if(sig->get_data()=="build"){
+		if(constructing_building)delete constructing_building;
+		BuildingCreator* creator=BuildingCreator::get_cur_object();
+		constructing_building = creator->create("Tower");
 	}
 }
 void SceneEditMap::handle_input() {
 	camera_control();
 	if (input->mouse->left_clicked()) {//->left_pressed()
-		if(!destruct_mode){
-			map->set_cube_type(map->selected_on.x,
-							   map->selected_on.y,
-							   map->selected_on.z,
-							   Cube::dirt);
+		if(constructing_building){
+			if(constructing_building->build(map,
+					map->selected_on.x,
+					map->selected_on.y,
+					map->selected_on.z)){
+			}else{
+				delete constructing_building;
+			}
+			constructing_building=0;
 		}else{
-			map->set_cube_type(map->selected_cube.x,
-							   map->selected_cube.y,
-							   map->selected_cube.z,
-							   Cube::cubeNull);
+			if(!destruct_mode){
+				map->set_cube_type(map->selected_on.x,
+								   map->selected_on.y,
+								   map->selected_on.z,
+								   Cube::dirt);
+			}else{
+				map->set_cube_type(map->selected_cube.x,
+								   map->selected_cube.y,
+								   map->selected_cube.z,
+								   Cube::cubeNull);
+			}
 		}
+
 
 	}
 	if (input->keyboard->pressed_char('w')) {
@@ -211,17 +224,32 @@ void SceneEditMap::scene_update_end(){
 void SceneEditMap::scene_draw() {
 	UI->draw_UIObject(draw);
 	map->dp_map->draw_map(camera,thread_pool); //push position
-	if(destruct_mode){
-		cl->color=glm::vec3(1,0,0);
-		cl->pos=glm::vec3((map->selected_cube.x+0.5f)*Map::CUBE_SIZE,
-						  (map->selected_cube.y+0.5f)*Map::CUBE_SIZE,
-						  (map->selected_cube.z+0.5f)*Map::CUBE_SIZE);
+	if(constructing_building){
+		constructing_building->draw_buildable(map,
+				map->selected_on.x,
+				map->selected_on.y,
+				map->selected_on.z);
 	}else{
-		cl->color=glm::vec3(0,1,0);
-		cl->pos=glm::vec3((map->selected_on.x+0.5f)*Map::CUBE_SIZE,
-				  (map->selected_on.y+0.5f)*Map::CUBE_SIZE,
-				  (map->selected_on.z+0.5f)*Map::CUBE_SIZE);
+		if(destruct_mode){
+			Display::CubeLight*cl=new Display::CubeLight();
+			cl->size=1.01f*Map::CUBE_SIZE;
+			cl->color=glm::vec3(1,0,0);
+			cl->pos=glm::vec3((map->selected_cube.x+0.5f)*Map::CUBE_SIZE,
+							  (map->selected_cube.y+0.5f)*Map::CUBE_SIZE,
+							  (map->selected_cube.z+0.5f)*Map::CUBE_SIZE);
+			lightControl->push_temp_light(cl);
+		}else{
+			Display::CubeLight*cl=new Display::CubeLight();
+			cl->size=1.01f*Map::CUBE_SIZE;
+			cl->color=glm::vec3(0,1,0);
+			cl->pos=glm::vec3((map->selected_on.x+0.5f)*Map::CUBE_SIZE,
+					  (map->selected_on.y+0.5f)*Map::CUBE_SIZE,
+					  (map->selected_on.z+0.5f)*Map::CUBE_SIZE);
+			lightControl->push_temp_light(cl);
+		}
 	}
+
+
 }
 void SceneEditMap::pause() {
 

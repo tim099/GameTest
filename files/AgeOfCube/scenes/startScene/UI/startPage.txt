@@ -113,9 +113,9 @@ CreateUIObject:
 		0.02
 	Set_signal:
 		Data:
-			Option
+			option
 		Receiver:
-			SceneStart
+			pageControl
 	Parent:
 		sortGroup
 #create_end

@@ -135,6 +135,7 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 		map->save_map(map_name);
 	}
 	else if(sig->get_data() == "build"){
+		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator2=BuildingCreator::get_cur_object();
 		constructing_building = creator2->create("Tower");
 		mode = constructing;
@@ -280,7 +281,6 @@ void ScenePlayTD::scene_draw() {
 	map->dp_map->draw_map(camera,thread_pool); //push position
 
 	if(constructing_building){
-
 		constructing_building->draw_buildable(map,map->selected_on.x,
 				map->selected_on.y,
 				map->selected_on.z);

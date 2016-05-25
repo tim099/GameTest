@@ -40,6 +40,7 @@ void ScenePlayTD::scene_initialize() {
 	UI->Load_script("files/AgeOfCube/scenes/playTD/UI/playTD_UI.txt");
 	//UI->Load_script("files/script/UIscript/saveUI.txt");
 	unit_controller=new UnitController();
+	unit_controller->register_cur();
 
 	cl=new Display::CubeLight();
 	cl->color=glm::vec3(1,0.5,0);
@@ -297,6 +298,7 @@ void ScenePlayTD::resume() {
 	draw->Enable3D = true;
 	draw->set_camera(camera);
 	draw->set_lightControl(lightControl);
+	unit_controller->register_cur();
 }
 
 void ScenePlayTD::reload_map(){

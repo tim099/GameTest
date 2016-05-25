@@ -7,6 +7,7 @@
 #include "class/game/ageOfCube/unit/Unit.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/input/signal/Receiver.h"
+#include "class/display/UI/string/UIString.h"
 namespace Display{
 class Draw;
 }
@@ -27,6 +28,10 @@ protected:
 	Unit *selected_unit;
 	std::vector<Unit *>units;
 	UI::BuildingUI *building_UI;
+	UI::UIString *name_str;
+	UI::UIString *atk_str;
+	UI::UIString *armor_str;
+	UI::UIString *hp_str;
 	Input::Receiver* receiver;
 };
 

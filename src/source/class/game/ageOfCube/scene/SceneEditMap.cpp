@@ -120,7 +120,8 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 	}else if(sig->get_data()=="build"){
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
-		constructing_building = creator->create("Tower");
+		//constructing_building = creator->create("Tower");
+		constructing_building = creator->create("BallSpawnTower");
 	}
 }
 void SceneEditMap::handle_input() {

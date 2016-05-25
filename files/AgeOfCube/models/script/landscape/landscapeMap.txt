@@ -1,0 +1,27 @@
+#LOAD_MODELBUFFERMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/AgeOfCube/models/landscape/
+Name:
+	landscape
+#HEADER_END
+
+ModelBuffer:
+	Name:
+		pinetree
+	Path:
+		pinetree.obj
+	Size:
+		1.0
+#load_end
+ModelBuffer:
+	Name:
+		broadleaftree
+	Path:
+		broadleaftree.obj
+	Size:
+		1.0
+#load_end
+#END

@@ -1,10 +1,3 @@
-/*
- * UnitController.h
- *
- *  Created on: 2016¦~5¤ë17¤é
- *      Author: LukeWu
- */
-
 #ifndef SOURCE_CLASS_CONTROLLER_UNITCONTROLLER_H_
 #define SOURCE_CLASS_CONTROLLER_UNITCONTROLLER_H_
 
@@ -12,22 +5,29 @@
 #include "class/controller/Controller.h"
 #include "class/display/UI/unitUI/BuildingUI.h"
 #include "class/game/ageOfCube/unit/Unit.h"
-
+#include "class/tim/globalObject/GlobalObject.h"
+#include "class/input/signal/Receiver.h"
+namespace Display{
+class Draw;
+}
 namespace AOC {
 
-class UnitController: public Controller {
+class UnitController: public Controller ,public Tim::GlobalObject<UnitController>{
 public:
 	UnitController();
 	virtual ~UnitController();
-	void init_UI(std::string _path, UI::UIObject *_parent);
 	void display_unit_UI();
 	void hide_unit_UI();
 	void select_unit(Unit *_unit);
 	void deselect_unit();
+	virtual void update();
+	void draw(Display::Draw* draw);
 protected:
+	void handle_signal();
 	Unit *selected_unit;
 	std::vector<Unit *>units;
 	UI::BuildingUI *building_UI;
+	Input::Receiver* receiver;
 };
 
 } /* namespace AOC */

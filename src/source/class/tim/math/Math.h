@@ -19,6 +19,8 @@ public:
 	static glm::vec2 get_size(float width,float aspect);
 	static glm::mat4 BiasMat();
 	static float aspect(glm::ivec2 size);
+	static float aspect(math::vec2<int> size);
+
 	static int pow(int base,int power);
 	static float fit_in_maxsize(math::vec2<float> size,math::vec2<float> maxsize);
 	static glm::vec2 convert_to_texcoord(glm::vec2 pos);

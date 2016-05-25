@@ -1,16 +1,9 @@
-/*
- * Tower.h
- *
- *  Created on: 2016¦~5¤ë14¤é
- *      Author: LukeWu
- */
-
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_TOWER_TOWER_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_TOWER_TOWER_H_
 
 #include "class/game/ageOfCube/map/building/Building.h"
 #include "class/tim/math/Position.h"
-
+#include <cmath>
 namespace Display{
 class DrawObject;
 }
@@ -25,7 +18,7 @@ public:
 	virtual ~Tower();
 	virtual void building_pre_init();
 	virtual math::vec3<int> get_cube_large_size(){
-		return math::vec3<int>(1,3,1);
+		return math::vec3<int>(ceil(size/3.0),ceil(size),ceil(size/3.0));
 	}
 	virtual AOC::Building* create_building(){
 		return new Tower(this);

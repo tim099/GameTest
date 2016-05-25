@@ -21,6 +21,9 @@ class BuildingUI : public UI{
 public:
 	BuildingUI();
 	virtual ~BuildingUI();
+	virtual UIObject* create_UIObject(){
+		return new BuildingUI();
+	}
 	virtual std::string get_type()const{
 		return "BuildingUI";
 	}

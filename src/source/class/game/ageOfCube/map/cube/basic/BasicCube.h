@@ -9,6 +9,9 @@ class BasicCube : public Cube{
 public:
 	BasicCube();
 	virtual ~BasicCube();
+	virtual bool standable(){
+		return true;
+	}
 };
 }
 #endif /* SOURCE_CLASS_GAME_MAP_CUBE_BASIC_BASICCUBE_H_ */

@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GL/glfw3.h>
 #include <glm/glm.hpp>
+#include "class/tim/math/vec2.h"
 namespace Display{
 class FrameBuffer;
 }
@@ -24,7 +25,7 @@ public:
 
 	void clear();
 	void update();
-	glm::vec2 get_screen_space_pos(glm::ivec2 screen_size);
+	glm::vec2 get_screen_space_pos(math::vec2<int> screen_size);
 
 	glm::vec2 get_tex_space_pos();
 

@@ -50,6 +50,9 @@ glm::mat4 Math::BiasMat(){
 float Math::aspect(glm::ivec2 size){
 	return ((float)size.x/(float)size.y);
 }
+float Math::aspect(math::vec2<int> size){
+	return ((float)size.x/(float)size.y);
+}
 float Math::max(glm::vec3 v){
 	if(v.x>v.y){
 		if(v.x>v.z){

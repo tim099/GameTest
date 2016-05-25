@@ -1,24 +1,24 @@
-/*
- * Unit.cpp
- *
- *  Created on: 2016¦~5¤ë17¤é
- *      Author: LukeWu
- */
-
 #include "class/game/ageOfCube/unit/Unit.h"
-
+#include <cstdio>
 namespace AOC {
 
 Unit::Unit(int _max_hp) {
-	// TODO Auto-generated constructor stub
+	init(_max_hp,0);
+}
+Unit::~Unit() {
+
+}
+void Unit::init(int _max_hp,int _player){
 	max_hp = _max_hp;
 	hp = max_hp;
-	speed = 0.0f;
 	is_dead = false;
+	set_player(_player);
 }
-
-Unit::~Unit() {
-	// TODO Auto-generated destructor stub
+void Unit::save_unit(FILE * file){
+	fprintf(file,"%d %d %d %d\n",max_hp,hp,player,is_dead);
 }
-
+void Unit::load_unit(FILE * file){
+	//fscanf(file,"%d %d %d\n",&max_hp,&hp,(int*)&is_dead);
+	fscanf(file,"%d %d %d %d\n",&max_hp,&hp,&player,(int*)&is_dead);
+}
 } /* namespace AOC */

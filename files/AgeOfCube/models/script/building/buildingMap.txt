@@ -1,0 +1,76 @@
+#LOAD_MODELBUFFERMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/AgeOfCube/models/building/
+Name:
+	building
+#HEADER_END
+
+ModelBuffer:
+	Name:
+		basic_cube_tower_1
+	Path:
+		basic_cube_tower_1.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		ball_spawn_tower
+	Path:
+		ballSpawnTower/ballSpawnTower.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		ball_spawn_tower_part_1
+	Path:
+		ballSpawnTower/ballSpawnTowerPart1.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		ball_spawn_tower_part_2
+	Path:
+		ballSpawnTower/ballSpawnTowerPart2.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		ball_spawn_tower_part_3
+	Path:
+		ballSpawnTower/ballSpawnTowerPart3.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		ball_spawn_tower_part_4
+	Path:
+		ballSpawnTower/ballSpawnTowerPart4.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+#END

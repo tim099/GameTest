@@ -23,6 +23,7 @@
 #include "class/tim/thread/ThreadPool.h"
 
 #include "class/game/SceneInitTask.h"
+#include "class/tim/math/vec2.h"
 #include <vector>
 
 class Game {
@@ -38,7 +39,17 @@ protected:
 	virtual void initialize_game()=0;
 	virtual void terminate_game()=0;
 	virtual void game_update()=0;
-	virtual Display::Window* create_window()=0;
+	virtual math::vec2<int> window_size(){
+		return math::vec2<int>(1366,733);
+	}
+	virtual std::string window_name(){
+		return std::string("default window name");
+	}
+	virtual bool full_screen(){
+		return false;
+	}
+	virtual Display::Window* create_window();
+
 	virtual Tim::ThreadPool* create_thread_pool();
 	Scene* get_cur_scene();
 	void handle_game_signal();
@@ -61,6 +72,7 @@ protected:
 	UI::UIObjectCreator *UIObj_Creator;
 
 	LoadingScene* s_loading;
+
 	bool loading;
 	bool end,terminated;
 	double fps,max_fps;

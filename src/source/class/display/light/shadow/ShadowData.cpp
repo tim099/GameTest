@@ -19,8 +19,8 @@ ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow,unsigned _
 	LVP=new glm::mat4[max_l_shadow];
 	PLVP=new glm::mat4[6*max_pl_shadow];
 
-	SFBO=new FrameBuffer(glm::ivec2(shadow_quality,shadow_quality));
-	PSFBO=new FrameBuffer(glm::ivec2(shadow_quality/8,shadow_quality/8));
+	SFBO=new FrameBuffer(math::vec2<int>(shadow_quality,shadow_quality));
+	PSFBO=new FrameBuffer(math::vec2<int>(shadow_quality/8,shadow_quality/8));
 
     SFBO->push_depth_texture(Texture2DArr::gen_texture2DArr(glm::ivec3(SFBO->size.x,SFBO->size.y,max_l_shadow),
     		GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear));

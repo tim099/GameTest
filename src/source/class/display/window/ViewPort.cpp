@@ -7,7 +7,7 @@ GLint ViewPort::x=0;
 GLint ViewPort::y=0;
 GLsizei ViewPort::width=0;
 GLsizei ViewPort::height=0;
-glm::ivec2 ViewPort::window_size=glm::ivec2(0,0);
+math::vec2<int> ViewPort::window_size=math::vec2<int>(0,0);
 ViewPort::ViewPort() {
 
 }
@@ -17,10 +17,10 @@ ViewPort::~ViewPort() {
 float ViewPort::get_cur_window_aspect(){
 	return Tim::Math::aspect(get_cur_window_size());
 }
-void ViewPort::set_window_size(glm::ivec2 size){
+void ViewPort::set_window_size(math::vec2<int> size){
 	window_size=size;
 }
-glm::ivec2 ViewPort::get_cur_window_size(){
+math::vec2<int> ViewPort::get_cur_window_size(){
 	return window_size;
 }
 void ViewPort::set_viewport(GLint _x, GLint _y, GLsizei _width, GLsizei _height){
@@ -35,10 +35,10 @@ float ViewPort::get_cur_viewport_aspect(){
 	//std::cout<<"cur aspect="<<aspect<<std::endl;
 	return aspect;
 }
-glm::ivec2 ViewPort::get_cur_viewport_size(){
+math::vec2<int> ViewPort::get_cur_viewport_size(){
 	//GLint viewport[4];
 	//glGetIntegerv( GL_VIEWPORT, viewport );
 	//return glm::ivec2(viewport[2]-viewport[0],viewport[3]-viewport[1]);
-	return glm::ivec2(width-x,height-y);
+	return math::vec2<int>(width-x,height-y);
 }
 }

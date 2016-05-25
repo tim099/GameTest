@@ -34,7 +34,7 @@ Tree::~Tree() {
 	if(pos)delete pos;
 	//std::cout<<"delete tree"<<std::endl;
 }
-void Tree::update(){
+void Tree::landscape_update(){
 	//std::cout<<"Tree::update()"<<std::endl;
 	/*
 	if(size<max_tree_size){
@@ -77,7 +77,7 @@ void Tree::update(){
 	*/
 }
 math::vec3<int> Tree::get_cube_large_size(){
-	return math::vec3<int>(ceil(0.33*size),ceil(size),ceil(0.33*size));
+	return math::vec3<int>(ceil(0.35*size),ceil(size),ceil(0.35*size));
 }
 void Tree::rand_tree_size(){
 	size=1.25*sqrt((rand()%101))+0.4;
@@ -94,7 +94,7 @@ void Tree::gen_pos(){
 	pos->set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
 			AOC::Map::CUBE_SIZE*y+0.5*size,
 			AOC::Map::CUBE_SIZE*z+0.5*real_size.z));
-	pos->set_scale(glm::vec3(0.6*size,size,0.6*size));
+	pos->set_scale(glm::vec3(size,size,size));
 }
 void Tree::set_pos(int x,int y,int z){
 	if(!pos){

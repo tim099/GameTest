@@ -1,12 +1,6 @@
-/*
- * BuildingCreater.cpp
- *
- *  Created on: 2016¦~5¤ë14¤é
- *      Author: LukeWu
- */
-
 #include "class/game/ageOfCube/map/building/BuildingCreator.h"
 #include "class/game/ageOfCube/map/building/tower/Tower.h"
+#include "class/game/ageOfCube/map/building/tower/BallSpawnTower.h"
 #include <iostream>
 
 
@@ -14,6 +8,7 @@ namespace AOC{
 BuildingCreator::BuildingCreator() {
 	//std::cout<<"BuildingCreator::BuildingCreator()"<<std::endl;
 	push(new AOC::Tower());
+	push(new AOC::BallSpawnTower());
 	register_cur();
 }
 BuildingCreator::~BuildingCreator() {

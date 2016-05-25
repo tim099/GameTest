@@ -12,11 +12,6 @@ TextureMap:
 	ScriptPath:
 		default.txt	
 
-
-TextureMap:
-	ScriptPath:
-		loadUITexture/loadUITexture.txt	
-
 TextureMap:
 	ScriptPath:
 		loadCubeTexture/loadCubeTexMap.txt	

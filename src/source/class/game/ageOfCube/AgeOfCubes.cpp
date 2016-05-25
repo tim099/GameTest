@@ -7,19 +7,19 @@ AgeOfCubes::AgeOfCubes() {
 	modelBuffers = 0;
 	drawObjects = 0;
 }
+/*
 Display::Window* AgeOfCubes::create_window(){
 	return (new Display::Window(glm::ivec2(1366, 733), "Age of Cube", false));
 	//return (new Window(glm::ivec2(900, 900), "Age of Cube", false));
 }
+*/
 void AgeOfCubes::initialize_game(){
 
 	//============================
-	//textures = new Display::AllTextures("files/script/loadTextureScript/loadAllTexture.txt");
 	textures = new Display::AllTextures("files/AgeOfCube/texture/script/loadAllTexture.txt");
 	textures->register_cur();	//set as cur using textures
-	modelBuffers=new Display::AllModelBuffers("files/script/modelBufferScript/loadAllModelBuffers.txt");
+	modelBuffers=new Display::AllModelBuffers("files/AgeOfCube/models/script/loadAllModelBuffers.txt");
 	modelBuffers->register_cur();
-	//drawObjects = new Display::AllDrawObjects("files/script/drawObjectScript/loadAllDrawObjects.txt");
 	drawObjects = new Display::AllDrawObjects("files/AgeOfCube/drawObject/loadAllDrawObjects.txt");
 	drawObjects->register_cur();
 

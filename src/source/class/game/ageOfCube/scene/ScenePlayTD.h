@@ -56,7 +56,7 @@ protected:
 	Building* constructing_building;
 	playMode mode;
 	glm::ivec3 map_size;
-	UnitController unit_controller;
+	UnitController* unit_controller;
 };
 
 } /* namespace AOC */

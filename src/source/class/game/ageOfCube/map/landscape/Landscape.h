@@ -23,7 +23,7 @@ public:
 	virtual std::string get_name()const{
 		return "Landscape";
 	}
-	virtual void update(){
+	virtual void landscape_update(){
 
 	}
 protected:

@@ -10,7 +10,7 @@ ChessMaster::~ChessMaster() {
 
 }
 Display::Window* ChessMaster::create_window(){
-	return (new Display::Window(glm::ivec2(1366, 733), "Chess Master", false));
+	return (new Display::Window(math::vec2<int>(1366, 733), "Chess Master", false));
 	//return new Display::Window(glm::ivec2(1920, 1080), "Age of Cube", true);
 }
 void ChessMaster::initialize_game(){

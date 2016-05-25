@@ -41,7 +41,7 @@ void MapSeg::update_landscape(){
 	while(it!=map->end()){
 		lc=dynamic_cast<Landscape*>(it->second);
 		if(lc){
-			lc->update();
+			lc->landscape_update();
 		}
 		it++;
 	}

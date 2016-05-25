@@ -3,17 +3,19 @@
 #include <vector>
 #include "class/display/buffer/Buffer.h"
 #include "class/display/texture/Texture.h"
+#include "class/tim/math/vec2.h"
+#include "class/tim/math/vec4.h"
 namespace Display{
 class FrameBuffer {
 public:
-	FrameBuffer(glm::ivec2 size);
+	FrameBuffer(math::vec2<int> size);
 	virtual ~FrameBuffer();
 
-	static void unbind_buffer(glm::ivec2 size);
+	static void unbind_buffer(math::vec2<int> size);
 	void bind_buffer(bool attach_all_texture=true);
 	void bind_depth_texture(int i);
 	void ReadPixels(glm::ivec2 pos,glm::ivec2 size,GLenum format,GLenum type,GLvoid * data);
-	glm::vec4 get_world_space_pos(glm::vec2 screen_space_pos,glm::mat4 inverseMat);
+	glm::vec4 get_world_space_pos(math::vec2<float> screen_space_pos,glm::mat4 inverseMat);
 	float aspect()const;
 
 	GLuint GenFramebuffer();

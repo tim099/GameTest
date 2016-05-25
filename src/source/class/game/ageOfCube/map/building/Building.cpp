@@ -9,7 +9,7 @@ void Building::building_pre_init(){
 
 }
 Building::Building() {
-	size = 1.0;
+	size=1.0;
 }
 Building::~Building() {
 
@@ -21,10 +21,15 @@ void Building::load_building(FILE * file){
 
 }
 void Building::save_cubeEX(FILE * file){
+	save_unit(file);
 	save_building(file);
 }
 void Building::load_cubeEX(FILE * file){
+	load_unit(file);
 	load_building(file);
+}
+void Building::unit_update(){
+	building_update();
 }
 void Building::draw_buildable(Map *map,int x,int y,int z){
 	set_pos(x,y,z);

@@ -40,11 +40,10 @@ glm::vec2 Mouse::get_screen_pos_delta()const{
 
 	return screen_pos-prev_screen_pos;
 }
-glm::vec2 Mouse::get_screen_space_pos(glm::ivec2 screen_size){
+glm::vec2 Mouse::get_screen_space_pos(math::vec2<int> screen_size){
 	prev_screen_pos=screen_pos;
 	screen_pos.x=(((double)2*(pos.x)/(double)screen_size.x)-1.0f);
 	screen_pos.y=(((double)2*(screen_size.y-pos.y)/(double)screen_size.y)-1.0f);
-
 	return screen_pos;
 }
 void Mouse::update(){
@@ -54,7 +53,7 @@ glm::vec2 Mouse::get_tex_space_pos(){
 	return Tim::Math::convert_to_texcoord(screen_pos);
 }
 glm::vec3 Mouse::get_world_space_pos(Display::FrameBuffer* FBO,glm::mat4 inverseMat){
-	glm::ivec2 screen_size=Display::ViewPort::get_cur_window_size();
+	math::vec2<int> screen_size=Display::ViewPort::get_cur_window_size();
 	glm::vec4 mwpos=FBO->get_world_space_pos(get_screen_space_pos(screen_size),inverseMat);
 	world_pos=glm::vec3(mwpos.x,mwpos.y,mwpos.z);
 	return glm::vec3(mwpos.x,mwpos.y,mwpos.z);

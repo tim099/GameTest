@@ -3,7 +3,6 @@
 
 #include "class/game/ageOfCube/map/cube/CubeLarge.h"
 #include "class/game/ageOfCube/unit/Unit.h"
-
 namespace AOC {
 class Map;
 class Building: public CubeLarge ,
@@ -23,12 +22,17 @@ public:
 		return "Building";
 	}
 	void draw_buildable(Map *map,int x,int y,int z);
+	virtual void unit_update();
 protected:
-	int size;
+	virtual void building_update(){
+
+	}
+
 	virtual void save_cubeEX(FILE * file);
 	virtual void load_cubeEX(FILE * file);
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);
+	float size;
 };
 }
 

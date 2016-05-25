@@ -12,6 +12,7 @@
 #include "class/display/UI/page/AutoPageControl.h"
 
 #include "class/display/UI/string/UIString.h"
+#include "class/display/UI/unitUI/BuildingUI.h"
 #include <iostream>
 namespace UI {
 
@@ -35,6 +36,7 @@ void UIObjectCreator::push(UIObject* obj){
 }
 void UIObjectCreator::initial_creator(){
 	push(new UI());
+	push(new BuildingUI());
 
 	push(new PictureButton());
 	push(new ToggleButton());
@@ -47,5 +49,6 @@ void UIObjectCreator::initial_creator(){
 	push(new AutoPageControl());
 
 	push(new UIString());
+
 }
 } /* namespace UI */

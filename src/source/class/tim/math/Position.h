@@ -16,7 +16,12 @@ public:
 
 	void init(const Position &p);
 	void init(glm::vec3 pos,glm::vec3 r,Position *parent_pos=0);
+
 	glm::mat4 PosMat();
+
+	void set_parent(Position *_parent_pos){
+		parent_pos=_parent_pos;
+	}
 
 	void set_ry(float ry);
 	/*

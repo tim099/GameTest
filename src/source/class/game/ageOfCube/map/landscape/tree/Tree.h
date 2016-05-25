@@ -26,7 +26,7 @@ public:
 	virtual bool draw_cube(){
 		return true;
 	}
-	virtual void update();
+	virtual void landscape_update();
 	virtual void set_pos(int x,int y,int z);
 	virtual void draw();
 	void rand_tree_size();

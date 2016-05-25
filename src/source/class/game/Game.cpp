@@ -28,6 +28,9 @@ Game::~Game() {
 	//std::cout<<"delete window"<<std::endl;
 
 }
+Display::Window* Game::create_window(){
+	return (new Display::Window(window_size(),window_name(),full_screen()));
+}
 Tim::ThreadPool* Game::create_thread_pool(){
 	return new Tim::ThreadPool(8,REALTIME_PRIORITY_CLASS);
 }

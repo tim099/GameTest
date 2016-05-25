@@ -8,13 +8,13 @@ CreateUIObject:
 	Name:
 		UnitPanel
 	Position:
-		0.35 0.2
+		0.23 0.2
 	Texture:
 		UI/UI/panel1
 	Width:
-		0.3
+		0.75
 	Height:
-		3
+		1.1
 	Parent:
 		unit_ui_root
 #create_end
@@ -24,13 +24,13 @@ CreateUIObject:
 	Name:
 		name_string
 	Position:
-		0.38 0.18
+		0.03 -0.02
 	String:
 "name"
 	String_size:
 		0.015
 	Parent:
-		unit_ui_root
+		UnitPanel
 #create_end
 
 CreateUIObject:
@@ -38,13 +38,13 @@ CreateUIObject:
 	Name:
 		hp_string
 	Position:
-		0.45 0.18
+		0.1 -0.12
 	String:
 "hp"
 	String_size:
 		0.015
 	Parent:
-		unit_ui_root
+		UnitPanel
 #create_end
 
 CreateUIObject:
@@ -52,13 +52,13 @@ CreateUIObject:
 	Name:
 		atk_string
 	Position:
-		0.38 0.08
+		0.03 -0.12
 	String:
 "atk"
 	String_size:
 		0.015
 	Parent:
-		unit_ui_root
+		UnitPanel
 #create_end
 
 CreateUIObject:
@@ -66,13 +66,13 @@ CreateUIObject:
 	Name:
 		armor_string
 	Position:
-		0.45 0.08
+		0.1 -0.02
 	String:
 "armor"
 	String_size:
 		0.015
 	Parent:
-		unit_ui_root
+		UnitPanel
 #create_end
 
 CreateUIObject:
@@ -80,7 +80,7 @@ CreateUIObject:
 	Name:
 		upgrade_button
 	Position:
-		0.53 0.18
+		0.18 -0.02
 	Texture:
 		UI/UI/button2
 	Width:
@@ -92,7 +92,7 @@ CreateUIObject:
 	String_size:
 		0.015
 	Parent:
-		unit_ui_root
+		UnitPanel
 #create_end
 
 CreateUIObject:
@@ -100,7 +100,7 @@ CreateUIObject:
 	Name:
 		remove_button
 	Position:
-		0.53 0.08
+		0.18 -0.12
 	Texture:
 		UI/UI/button2
 	Width:
@@ -112,7 +112,8 @@ CreateUIObject:
 	String_size:
 		0.015
 	Parent:
-		unit_ui_root
+		UnitPanel
 #create_end
+
 
 #END

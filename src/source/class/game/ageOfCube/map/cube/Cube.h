@@ -35,6 +35,9 @@ public:
 	virtual unsigned char get_type(){
 		return 0;
 	}
+	virtual bool standable(){
+		return false;
+	}
 	/*
 	 * x,y,z is the position of this cube and
 	 * ux,uy,uz is the position of the update cube

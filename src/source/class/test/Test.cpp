@@ -43,7 +43,7 @@ Test::Test() {
 
 	//map->load_map("files/maps/map011");
 
-	window = new Display::Window(glm::ivec2(1366, 733), "Age of Cube", false);
+	window = new Display::Window(math::vec2<int>(1366, 733), "Age of Cube", false);
 	//window = new Window(glm::ivec2(1920, 1080), "Age of Cube", true);
 	draw = new Display::Draw();
 	draw->register_cur();

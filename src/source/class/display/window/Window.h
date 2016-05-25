@@ -1,23 +1,23 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 class GLFWwindow;
-#include <glm/glm.hpp>
-
+//#include <glm/glm.hpp>
+#include "class/tim/math/vec2.h"
 
 class HDC__;
 class HGLRC__;
 #include "class/tim/globalObject/GlobalObject.h"
-
+#include <string>
 namespace Display{
 class Window : public Tim::GlobalObject<Window>{
 	static bool glewinitial;
 	static bool glfwinitial;
 public:
-	Window(glm::ivec2 size,const char* name,bool full_screen);
+	Window(math::vec2<int> size,std::string name,bool full_screen);
 	virtual ~Window();
 
 	void set_veiwport();
-	void creat_window(const char* name,bool full_screen);
+	void creat_window(std::string name,bool full_screen);
 	float get_aspect()const;
 	int WindowShouldClose()const;
 	void swap_buffer()const;
@@ -32,14 +32,14 @@ public:
 	 * release this window for other thread
 	 */
 	void render_off();
-	glm::ivec2 get_size()const;
+	math::vec2<int> get_size()const;
 	GLFWwindow* get_window()const;
 
 protected:
 	void glewinit();
 	void glfwinit();
 	GLFWwindow* window;
-	glm::ivec2 size;
+	math::vec2<int> size;
 	HDC__ *dc;
 	HGLRC__ *lrc;
 };

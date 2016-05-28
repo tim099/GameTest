@@ -4,15 +4,17 @@
 #include <iostream>
 namespace Tim {
 template<class Key,class Type>
-MapContainer<Key,Type>::MapContainer() {
-
+MapContainer<Key,Type>::MapContainer(bool _auto_delete) {
+	auto_delete=_auto_delete;
 }
 template<class Key,class Type>
 MapContainer<Key,Type>::~MapContainer() {
-	typename std::map<Key, Type*>::iterator it = map.begin();
-	while (it != map.end()) {
-		delete (it->second);
-		it++;
+	if(auto_delete){
+		typename std::map<Key, Type*>::iterator it = map.begin();
+		while (it != map.end()) {
+			delete (it->second);
+			it++;
+		}
 	}
 }
 template<class Key,class Type>
@@ -20,7 +22,7 @@ void MapContainer<Key,Type>::remove(Key key){
 	Type* obj=get(key);
 	if(obj){
 		map.erase(key);
-		delete obj;
+		if(auto_delete)delete obj;
 	}else{
 		std::cerr << "MapContainer remove fail key:" << key
 				<< " not exist in this MapContainer" << std::endl;

@@ -7,7 +7,6 @@ class Controller {
 public:
 	Controller();
 	virtual ~Controller();
-	void push(Component* component);
 	/*
 	 * update the controller
 	 */

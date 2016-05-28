@@ -374,13 +374,13 @@ void Test::handle_input() {
 				((rand() % 10000) / 4000.0), ((rand() % 10000) / 4000.0));
 	}
 	if (input->keyboard->get('I')) {
-		map->dp_map->range += 1;
+		map->dp_map->display_range += 1;
 	}
 	if (input->keyboard->get('K')) {
-		if (map->dp_map->range > 1)
-			map->dp_map->range -= 1;
+		if (map->dp_map->display_range > 1)
+			map->dp_map->display_range -= 1;
 		else
-			map->dp_map->range = 0;
+			map->dp_map->display_range = 0;
 	}
 
 	if (input->keyboard->pressed('T')) {

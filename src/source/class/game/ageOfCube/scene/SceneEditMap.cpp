@@ -42,7 +42,6 @@ void SceneEditMap::scene_initialize() {
 }
 void SceneEditMap::scene_terminate() {
 	delete lightControl;
-	//draw->set_lightControl(0);
 	delete camera;
 	if(constructing_building)delete constructing_building;
 	if(map)delete map;
@@ -159,7 +158,7 @@ void SceneEditMap::handle_input() {
 		map->dp_map->display_height_alter(-1, thread_pool);
 	}
 	if (input->keyboard->get('I')) {
-		map->dp_map->range += 1;
+		map->dp_map->display_range += 1;
 	}
 	/*
 	if (input->keyboard->get('E')) {
@@ -174,10 +173,10 @@ void SceneEditMap::handle_input() {
 		destruct_mode^=1;
 	}
 	if (input->keyboard->get('K')) {
-		if (map->dp_map->range > 1)
-			map->dp_map->range -= 1;
+		if (map->dp_map->display_range > 1)
+			map->dp_map->display_range -= 1;
 		else
-			map->dp_map->range = 0;
+			map->dp_map->display_range = 0;
 	}
 	if (input->keyboard->pressed('B')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
@@ -224,7 +223,7 @@ void SceneEditMap::scene_update_end(){
 }
 void SceneEditMap::scene_draw() {
 	UI->draw_UIObject(draw);
-	map->dp_map->draw_map(camera,thread_pool); //push position
+	map->draw(draw,camera,thread_pool); //push position
 	if(constructing_building){
 		constructing_building->draw_buildable(map,
 				map->selected_on.x,
@@ -249,8 +248,6 @@ void SceneEditMap::scene_draw() {
 			lightControl->push_temp_light(cl);
 		}
 	}
-
-
 }
 void SceneEditMap::pause() {
 

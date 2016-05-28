@@ -1,10 +1,3 @@
-/*
- * ScenePlayTD.h
- *
- *  Created on: 2016¦~5¤ë14¤é
- *      Author: LukeWu
- */
-
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_SCENEPLAYTD_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_SCENEPLAYTD_H_
 
@@ -14,7 +7,7 @@
 #include "class/display/UI/UI.h"
 #include "class/game/timer/Timer.h"
 #include "class/display/light/LightControl.h"
-#include "class/controller/UnitController.h"
+#include "class/game/ageOfCube/unit/UnitController.h"
 
 namespace AOC {
 
@@ -56,7 +49,6 @@ protected:
 	Building* constructing_building;
 	playMode mode;
 	glm::ivec3 map_size;
-	UnitController* unit_controller;
 };
 
 } /* namespace AOC */

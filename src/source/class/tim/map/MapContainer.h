@@ -8,7 +8,7 @@ namespace Tim {
 template<class Key,class Type>
 class MapContainer {
 public:
-	MapContainer();
+	MapContainer(bool auto_delete=true);
 	virtual ~MapContainer();
 	/*
 	 * check if key valid(object inside this map)
@@ -22,6 +22,7 @@ public:
 	}
 protected:
 	std::map<Key,Type*>map;
+	bool auto_delete;
 };
 
 } /* namespace Tim */

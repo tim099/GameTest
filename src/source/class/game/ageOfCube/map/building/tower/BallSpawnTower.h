@@ -32,6 +32,7 @@ public:
 protected:
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);
+	virtual void building_update();
 	void init_BallSpawnTower();
 	Display::DrawObject *tower_Drawobj;
 	Display::DrawObject *tower_part1;

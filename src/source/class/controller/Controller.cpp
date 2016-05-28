@@ -14,8 +14,4 @@ Controller::~Controller() {
 void Controller::update(){
 
 }
-
-void Controller::push(Component* component){
-
-}
 #endif /* SOURCE_CLASS_GAME_MAP_CONTROLLER_CPP_ */

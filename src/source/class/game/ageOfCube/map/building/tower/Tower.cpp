@@ -71,4 +71,7 @@ void Tower::draw(){
 	tower_Drawobj->push_temp_drawdata(new Display::DrawDataObj(pos));
 
 }
+void Tower::building_update(){
+
+}
 }

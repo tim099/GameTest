@@ -34,6 +34,7 @@ public:
 	math::Position *pos;
 	unsigned char tower_type;
 protected:
+	virtual void building_update();
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);
 	Display::DrawObject *tower_Drawobj;

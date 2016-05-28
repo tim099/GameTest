@@ -1,10 +1,3 @@
-/*
- * BuildingCreater.h
- *
- *  Created on: 2016¦~5¤ë14¤é
- *      Author: LukeWu
- */
-
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_BUILDINGCREATOR_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_BUILDING_BUILDINGCREATOR_H_
 

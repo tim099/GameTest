@@ -14,7 +14,6 @@ ScenePlayTD::ScenePlayTD(std::string _map_name, glm::ivec3 _map_size) {
 	cl=0;
 	constructing_building=0;
 	mode = normal;
-	unit_controller=0;
 }
 void ScenePlayTD::loading(){
 	if(Tim::File::check_if_file_exist(map_name)){
@@ -39,8 +38,7 @@ void ScenePlayTD::scene_initialize() {
 	UI = new UI::UI();
 	UI->Load_script("files/AgeOfCube/scenes/playTD/UI/playTD_UI.txt");
 	//UI->Load_script("files/script/UIscript/saveUI.txt");
-	unit_controller=new UnitController();
-	unit_controller->register_cur();
+
 
 	cl=new Display::CubeLight();
 	cl->color=glm::vec3(1,0.5,0);
@@ -53,7 +51,6 @@ void ScenePlayTD::scene_initialize() {
 void ScenePlayTD::scene_terminate() {
 	delete lightControl;
 	delete camera;
-	if(unit_controller)delete unit_controller;
 	if(map)delete map;
 	if (UI) {
 		delete UI;
@@ -150,8 +147,10 @@ void ScenePlayTD::handle_input() {
 		if(Building *selected_building = dynamic_cast<Building *>(selected_cube) ){
 			std::cout<<"building selected. hp="<<selected_building->get_hp()
 					<<"/"<<selected_building->get_max_hp()<<std::endl;
-			unit_controller->select_unit(selected_building);
+			map->unit_controller->select_unit(selected_building);
 			return;
+		}else{
+			map->unit_controller->deselect_unit();
 		}
 
 		if(mode == constructing){
@@ -194,7 +193,7 @@ void ScenePlayTD::handle_input() {
 		map->dp_map->display_height_alter(-1, thread_pool);
 	}
 	if (input->keyboard->get('I')) {
-		map->dp_map->range += 1;
+		map->dp_map->display_range += 1;
 	}
 
 	if (input->keyboard->get('E')) {
@@ -219,10 +218,10 @@ void ScenePlayTD::handle_input() {
 		}
 	}
 	if (input->keyboard->get('K')) {
-		if (map->dp_map->range > 1)
-			map->dp_map->range -= 1;
+		if (map->dp_map->display_range > 1)
+			map->dp_map->display_range -= 1;
 		else
-			map->dp_map->range = 0;
+			map->dp_map->display_range = 0;
 	}
 	if (input->keyboard->pressed('B')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
@@ -257,7 +256,6 @@ void ScenePlayTD::handle_input() {
 }
 void ScenePlayTD::scene_update() {
 	//std::cout<<"scene_update()"<<std::endl;
-	unit_controller->update();
 	UI->update_UIObject();
 	timer.tic(1);
 	camera->update();
@@ -269,10 +267,9 @@ void ScenePlayTD::scene_update_end(){
 	handle_input();
 }
 void ScenePlayTD::scene_draw() {
-	unit_controller->draw(draw);
 	UI->draw_UIObject(draw);
 
-	map->dp_map->draw_map(camera,thread_pool); //push position
+	map->draw(draw,camera,thread_pool); //push position
 
 	if(constructing_building){
 		constructing_building->draw_buildable(map,map->selected_on.x,
@@ -298,7 +295,7 @@ void ScenePlayTD::resume() {
 	draw->Enable3D = true;
 	draw->set_camera(camera);
 	draw->set_lightControl(lightControl);
-	unit_controller->register_cur();
+	map->unit_controller->register_cur();
 }
 
 void ScenePlayTD::reload_map(){

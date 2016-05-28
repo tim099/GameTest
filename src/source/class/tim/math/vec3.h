@@ -1,6 +1,7 @@
 #ifndef SOURCE_CLASS_TIM_MATH_VEC3_H_
 #define SOURCE_CLASS_TIM_MATH_VEC3_H_
 #include "glm/detail/precision.hpp"
+#include <cmath>
 namespace glm{
 namespace detail{
 template <typename T, precision P> struct tvec3;
@@ -21,8 +22,17 @@ public:
 	virtual ~vec3(){
 
 	}
+	inline double length()const{
+		return sqrt(x*x+y*y+z*z);
+	}
 	inline bool operator==(const vec3& vec){
 		return (x==vec.x&&y==vec.y&&z==vec.z);
+	}
+	inline bool operator>=(const vec3& vec){
+		return (x>=vec.x&&y>=vec.y&&z>=vec.z);
+	}
+	inline bool operator<=(const vec3& vec){
+		return (x<=vec.x&&y<=vec.y&&z<=vec.z);
 	}
 	inline vec3& operator=(const vec3& vec){
 		x=vec.x;y=vec.y;z=vec.z;

@@ -3,6 +3,7 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/Draw.h"
+#include "class/game/ageOfCube/map/minion/MinionCreator.h"
 #include <cstdio>
 #include <iostream>
 #include <cmath>
@@ -25,7 +26,7 @@ BallSpawnTower::BallSpawnTower() {
 	tower_part4=0;
 	timer=0;
 	size = 3.0;
-	loop_time=200;
+	loop_time=400;
 	init_BallSpawnTower();
 }
 BallSpawnTower::BallSpawnTower(BallSpawnTower* tower) {
@@ -73,7 +74,7 @@ void BallSpawnTower::set_pos(int x,int y,int z){
 	part1_pos2.set_scale(glm::vec3(0.5,0.5,0.5));
 	part2_pos.set_pos(glm::vec3(0.2,0,0));
 	part2_pos.set_scale(glm::vec3(0.75,0.75,0.75));
-	part3_pos.set_scale(glm::vec3(0.26,0.26,0.26));
+	part3_pos.set_scale(glm::vec3(0.28,0.28,0.28));
 	part3_pos.set_pos(glm::vec3(0.2,0.4,0));
 
 	part4_pos.set_pos(glm::vec3(0.2,0,0));
@@ -85,13 +86,23 @@ void BallSpawnTower::set_pos(int x,int y,int z){
 	ball3.set_scale(glm::vec3(0.18,0.18,0.18));
 	ball4.set_scale(glm::vec3(0.18,0.18,0.18));
 }
-void BallSpawnTower::draw(){
-
+void BallSpawnTower::building_update(){
+	if((timer)%(loop_time/8)==(loop_time/8)-1){
+		AOC::Minion* ball=MinionCreator::get_cur_object()->create("Ball");
+		ball->set_position(math::vec3<double>(x*Map::CUBE_SIZE-0.15*size,
+											  y*Map::CUBE_SIZE+0.09*size,
+											  z*Map::CUBE_SIZE+0.5*size));
+		ball->recruit();
+		std::cout<<"BallSpawnTower::building_update() recruit"<<std::endl;
+	}
 	if(timer<loop_time){
 		timer++;
 	}else{
 		timer=0;
+		//loop_time*=1.5;
 	}
+}
+void BallSpawnTower::draw(){
 	float light_val=sqrt(fabs(((float)((8*timer)%loop_time)/(float)loop_time)-0.5));
 	math::vec3<int> real_size=get_cube_large_size();
 	Display::PointLight *light=new Display::PointLight(
@@ -117,7 +128,7 @@ void BallSpawnTower::draw(){
 	float x_val=((float)((8*timer)%loop_time)/(float)loop_time);
 	part4_pos.set_r(glm::vec3(0,0,45*((double)((8*timer)%loop_time)/loop_time)));
 	ball3.set_pos(glm::vec3(-0.2-0.28*x_val,0,0));
-	ball4.set_pos(glm::vec3(-0.48-0.24*x_val,-0.5*x_val*x_val,0));
+	ball4.set_pos(glm::vec3(-0.48-0.24*x_val,-0.491*x_val*x_val,0));
 	tower_part4->push_temp_drawdata(new Display::DrawDataObj(&ball1));
 	tower_part4->push_temp_drawdata(new Display::DrawDataObj(&ball2));
 	tower_part4->push_temp_drawdata(new Display::DrawDataObj(&ball3));

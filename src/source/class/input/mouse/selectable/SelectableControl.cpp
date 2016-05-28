@@ -4,19 +4,12 @@
 #include "class/input/Input.h"
 #include <iostream>
 namespace Input{
-SelectableControl* SelectableControl::cur_SelectableControl=0;
 SelectableControl::SelectableControl() {
 	cur_selected=0;
-	cur_SelectableControl=this;
+	register_cur();
 }
 SelectableControl::~SelectableControl() {
 
-}
-SelectableControl* SelectableControl::get_cur_selectableControl(){
-	if(!cur_SelectableControl){
-		std::cout<<"cur_SelectableControl not create yet"<<std::endl;
-	}
-	return cur_SelectableControl;
 }
 void SelectableControl::push(Selectable* selectable){
 	selectables.push_back(selectable);

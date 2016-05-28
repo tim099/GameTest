@@ -41,9 +41,14 @@ public:
 	}
 	bool buildable(Map *map,int x,int y,int z);
 	bool build(Map *map,int x,int y,int z);
-	std::vector<AttachCube*> attach_cubes;
 	bool removing;
 	int x,y,z;
+protected:
+	virtual void build_cube_large(){
+
+	}
+	std::vector<AttachCube*> attach_cubes;
+
 };
 
 } /* namespace AOC */

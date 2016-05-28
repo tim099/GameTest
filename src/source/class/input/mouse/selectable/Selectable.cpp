@@ -8,7 +8,7 @@ Selectable::~Selectable() {
 
 }
 void Selectable::detect_selection(){
-	SelectableControl::get_cur_selectableControl()->push(this);
+	SelectableControl::get_cur_object()->push(this);
 }
 void Selectable::mouse_on(Mouse* mou){
 

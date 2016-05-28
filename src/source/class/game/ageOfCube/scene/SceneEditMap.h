@@ -33,8 +33,8 @@ protected:
 	AOC::Map *map;
 	Display::Camera *camera;
 	Display::LightControl* lightControl;
-	//Display::CubeLight* cl;
 	Building* constructing_building;
+
 	UI::UI *UI;
 	Timer timer;
 	bool destruct_mode;

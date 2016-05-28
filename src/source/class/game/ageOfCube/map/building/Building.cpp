@@ -14,11 +14,8 @@ Building::Building() {
 Building::~Building() {
 
 }
-void Building::save_building(FILE * file){
-
-}
-void Building::load_building(FILE * file){
-
+void Building::build_cube_large(){
+	push_to_controller();//create when build success
 }
 void Building::save_cubeEX(FILE * file){
 	save_unit(file);

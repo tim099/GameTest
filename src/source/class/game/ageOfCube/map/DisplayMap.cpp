@@ -14,7 +14,7 @@ namespace AOC{
 DisplayMap::DisplayMap(AOC::Map *_map) {
 	map = _map;
 	display_height = map->get_size().y;
-	range = 3;
+	display_range = 3;
 	createMapObjectMutex = new Tim::Mutex();
 	cube = new Display::CubeModel(0.5 * Map::CUBE_SIZE);
 	gen_display_map_seg();
@@ -318,30 +318,46 @@ void DisplayMap::create_water_object(int px, int pz) {
 	water_dobj->update_model();
 	//water_dobj->updated=false;
 }
-void DisplayMap::draw_map(Display::Camera *camera,Tim::ThreadPool* threadpool) {
-	glm::ivec2 dp_pos(camera->look_at.x/Map::CUBE_SIZE, camera->look_at.z/Map::CUBE_SIZE);
+math::vec2<int> DisplayMap::get_seg_pos(Display::Camera *camera){
+	math::vec2<int> dp_pos(camera->look_at.x/Map::CUBE_SIZE, camera->look_at.z/Map::CUBE_SIZE);
 
 	if (dp_pos.x < 0)dp_pos.x = 0;
 	if (dp_pos.y < 0)dp_pos.y = 0;
 	if (dp_pos.x >= map->get_size().x)dp_pos.x = map->get_size().x - 1;
 	if (dp_pos.y >= map->get_size().z)dp_pos.y = map->get_size().z - 1;
+	return math::vec2<int>((dp_pos.x/segsize.x),(dp_pos.y/segsize.z));
+}
+void DisplayMap::get_draw_range(Display::Camera *camera,math::vec2<int> &start,math::vec2<int> &end){
+	math::vec2<int> seg_pos=get_seg_pos(camera);
+	start=seg_pos-math::vec2<int>(display_range,display_range);
 
-	glm::ivec2 seg_pos=glm::ivec2((dp_pos.x/segsize.x),(dp_pos.y/segsize.z));
+	if(start.x<0)start.x=0;
+	if(start.y<0)start.y=0;
 
-	glm::ivec2 s=seg_pos-glm::ivec2(range,range);
-	if(s.x<0)s.x=0;
-	if(s.y<0)s.y=0;
-	glm::ivec2 e=s+glm::ivec2(2*range+1,2*range+1);
-	if(e.x>seg.x)e.x=seg.x;
-	if(e.y>seg.z)e.y=seg.z;
+	end=start+math::vec2<int>(2*display_range+1,2*display_range+1);
+	if(end.x>seg.x)end.x=seg.x;
+	if(end.y>seg.z)end.y=seg.z;
+}
+void DisplayMap::get_draw_range(Display::Camera *camera,math::vec3<double> &dp_start,
+		math::vec3<double> &dp_end){
+	dp_start.x=dp_s.x*segsize.x*Map::CUBE_SIZE;
+	dp_start.y=0;
+	dp_start.z=dp_s.y*segsize.z*Map::CUBE_SIZE;
+
+	dp_end.x=dp_e.x*segsize.x*Map::CUBE_SIZE;
+	dp_end.y=(display_height+1)*Map::CUBE_SIZE;
+	dp_end.z=dp_e.y*segsize.z*Map::CUBE_SIZE;
+}
+void DisplayMap::draw_map(Display::Camera *camera,Tim::ThreadPool* threadpool) {
 	//std::cout<<"range="<<range<<std::endl;
-
+	get_draw_range(camera,dp_s,dp_e);
+	get_draw_range(camera,dp_start,dp_end);
 	std::vector<glm::ivec2> update_maps;//test
 	std::vector<glm::ivec2> update_waters;//test
 	MapDrawObject* dmap;
 	WaterDrawObject* dwater;
-	for (int i = s.x; i<e.x; i++) {
-		for (int j = s.y; j<e.y; j++) {
+	for (int i = dp_s.x; i<dp_e.x; i++) {
+		for (int j = dp_s.y; j<dp_e.y; j++) {
 			dmap=dmaps->get(i,j);
 			dwater=water_dmaps->get(i,j);
 			//std::cout<<"drawmap at="<<i<<","<<j<<std::endl;

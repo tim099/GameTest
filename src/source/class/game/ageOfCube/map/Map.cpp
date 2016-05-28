@@ -24,6 +24,7 @@ Map::Map() {
 	map_segs=0;
 	seed=0;
 	times=0;
+	player_num=4;
 	water_height=0.5;
 	ground_height=80;
 	cube_out_of_edge=new CubeOutOfEdge();
@@ -33,6 +34,8 @@ Map::Map() {
 	all_cubes=new AllCubes();
 	cur_update_pos=&update_pos1;
 	prev_update_pos=&update_pos2;
+	unit_controller=new UnitController();
+	unit_controller->register_cur();
 	register_cur();
 }
 Map::~Map() {
@@ -55,6 +58,8 @@ Map::~Map() {
 	delete cube_error;
 	delete cube_water;
 	delete all_cubes;
+	delete unit_controller;
+
 }
 void Map::swap_update_pos(){
 	std::swap(update_pos1,update_pos2);
@@ -319,6 +324,7 @@ void Map::save_map(std::string path){
 		}
 	}
 	save_update_pos(file);
+	unit_controller->save(file);
 	fclose(file);
 }
 void Map::load_map(std::string path){
@@ -346,6 +352,7 @@ void Map::load_map(std::string path){
 		}
 	}
 	load_update_pos(file);
+	unit_controller->load(file);
 	dp_map->update_whole_map();
 	fclose(file);
 }
@@ -601,8 +608,13 @@ void Map::find_select_cube(){
 		find_selected_on(pos);
 	}
 }
+void Map::draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool){
+	dp_map->draw_map(camera,threadpool);
+	unit_controller->draw(draw);
+}
 void Map::update(Timer* timer){
-	///*
+	unit_controller->update();
+
 	int update_num=seg_num.x*seg_num.z/10;
 	for(int i=0;i<update_num;i++){
 		get_map_seg(update_at.x,update_at.y)->update();
@@ -617,7 +629,7 @@ void Map::update(Timer* timer){
 			}
 		}
 	}
-	//*/
+
 	if(timer->second==0){
 		int x,y,z;
 		swap_update_pos();

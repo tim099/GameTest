@@ -55,34 +55,6 @@ bool CubeLarge::buildable(Map *map,int x,int y,int z){
 	return buildable;
 }
 bool CubeLarge::build(Map *map,int _x,int _y,int _z){
-	/*
-	x=_x,y=_y,z=_z;
-	std::vector<math::vec3<int> > build_on;
-	for(unsigned i=0;i<attach_cubes.size();i++){
-		delete attach_cubes.at(i);
-	}
-	attach_cubes.clear();
-
-	get_build_on(build_on);
-	get_attach_cube(attach_cubes);
-
-	AttachCube* cube;
-	math::vec3<int>*on;
-	if(map->get_cube_type(x,y,z)!=Cube::cubeNull)return false;
-	for(unsigned i=0;i<build_on.size();i++){
-		on=&(build_on.at(i));
-		if(map->get_cube_type(x+on->x,y+on->y,z+on->z)<Cube::startcube){
-			return false;
-		}
-	}
-	for(unsigned i=0;i<attach_cubes.size();i++){
-		cube=attach_cubes.at(i);
-		if(map->get_cube_type(x+cube->x,y+cube->y,z+cube->z)!=Cube::cubeNull){
-			return false;
-		}
-	}
-
-	*/
 	x=_x,y=_y,z=_z;
 	if(!buildable(map,x,y,z))return false;
 	for(unsigned i=0;i<attach_cubes.size();i++){
@@ -97,6 +69,9 @@ bool CubeLarge::build(Map *map,int _x,int _y,int _z){
 		cube=attach_cubes.at(i);
 		map->push_CubeEX(x+cube->x,y+cube->y,z+cube->z,cube);
 	}
+
+
+	build_cube_large();
 	return true;
 }
 } /* namespace AOC */

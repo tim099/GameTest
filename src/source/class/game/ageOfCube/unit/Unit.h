@@ -13,6 +13,7 @@ public:
 	virtual std::string get_name()const{
 		return "Unit";
 	}
+	void push_to_controller();//create this unit will push it into UnitController
 	inline int get_hp()const{return hp;}
 	inline int get_max_hp()const{return max_hp;}
 	inline int get_player_hp()const{return player;}
@@ -27,6 +28,7 @@ protected:
 	int hp;
 	int player;
 	bool is_dead;
+	bool created;
 };
 
 } /* namespace AOC */

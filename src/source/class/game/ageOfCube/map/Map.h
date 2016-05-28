@@ -12,6 +12,7 @@
 #include "class/game/ageOfCube/map/landscape/LandscapeCreator.h"
 #include "class/game/ageOfCube/map/building/BuildingCreator.h"
 #include "class/game/ageOfCube/player/Player.h"
+#include "class/game/ageOfCube/unit/UnitController.h"
 #include "class/tim/math/vec3.h"
 
 class LandscapeCreator;
@@ -92,6 +93,11 @@ public:
 	int get_water_height()const{
 		return ground_height*water_height;
 	}
+	void draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool);
+
+	AOC::DisplayMap* dp_map;
+	UnitController* unit_controller;
+
 	//cube being selected by mouse
 	math::vec3<int> selected_cube;
 
@@ -100,10 +106,8 @@ public:
 
 	math::vec3<int> seg_num;
 	math::vec3<int> segsize;
-
-
-	AOC::DisplayMap* dp_map;
 	std::vector<Player*>players;
+	int player_num;
 protected:
 	//generate the shape of the map(only generate the cube type=1,and empty space type=0
 	void gen_map_seg();
@@ -147,6 +151,8 @@ protected:
 	int ground_height;
 	unsigned seed;
 	double water_height;
+
+
 	CubeOutOfEdge *cube_out_of_edge;
 	CubeNull *cube_null;
 	CubeError *cube_error;

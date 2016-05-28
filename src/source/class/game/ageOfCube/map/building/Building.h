@@ -21,17 +21,18 @@ public:
 	virtual std::string get_name()const{
 		return "Building";
 	}
-	void draw_buildable(Map *map,int x,int y,int z);
 	virtual void unit_update();
+
+	void draw_buildable(Map *map,int x,int y,int z);
 protected:
 	virtual void building_update(){
 
 	}
-
+	void build_cube_large();
 	virtual void save_cubeEX(FILE * file);
 	virtual void load_cubeEX(FILE * file);
-	virtual void save_building(FILE * file);
-	virtual void load_building(FILE * file);
+	virtual void save_building(FILE * file){}
+	virtual void load_building(FILE * file){}
 	float size;
 };
 }

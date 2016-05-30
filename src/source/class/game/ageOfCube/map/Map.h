@@ -14,7 +14,7 @@
 #include "class/game/ageOfCube/player/Player.h"
 #include "class/game/ageOfCube/unit/UnitController.h"
 #include "class/tim/math/vec3.h"
-
+#include "class/game/ageOfCube/map/MapRigidBody.h"
 class LandscapeCreator;
 class Timer;
 
@@ -152,6 +152,7 @@ protected:
 	unsigned seed;
 	double water_height;
 
+	MapRigidBody* map_rigid_body;
 
 	CubeOutOfEdge *cube_out_of_edge;
 	CubeNull *cube_null;

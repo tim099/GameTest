@@ -25,14 +25,39 @@ public:
 	inline double length()const{
 		return sqrt(x*x+y*y+z*z);
 	}
-	inline bool operator==(const vec3& vec){
+	inline double dot(const vec3& vec)const{
+		return (x*vec.x+y*vec.y+z*vec.z);
+	}
+	inline vec3 cross(const vec3& vec)const{
+		return vec3(y*vec.z+z*vec.y,
+				    x*vec.z+z*vec.x,
+				    x*vec.y+y*vec.x);
+	}
+	static inline vec3 normalize(vec3 vec){
+		double len=vec.length();
+		if(len>0){
+			vec.x/=len;vec.y/=len;vec.z/=len;
+		}
+		return vec;
+	}
+	inline vec3& normalize(){
+		*this=normalize(*this);
+		return *this;
+	}
+	inline bool operator==(const vec3& vec)const{
 		return (x==vec.x&&y==vec.y&&z==vec.z);
 	}
-	inline bool operator>=(const vec3& vec){
+	inline bool operator>=(const vec3& vec)const{
 		return (x>=vec.x&&y>=vec.y&&z>=vec.z);
 	}
-	inline bool operator<=(const vec3& vec){
+	inline bool operator<=(const vec3& vec)const{
 		return (x<=vec.x&&y<=vec.y&&z<=vec.z);
+	}
+	inline bool operator>(const vec3& vec)const{
+		return (x>vec.x&&y>vec.y&&z>vec.z);
+	}
+	inline bool operator<(const vec3& vec)const{
+		return (x<vec.x&&y<vec.y&&z<vec.z);
 	}
 	inline vec3& operator=(const vec3& vec){
 		x=vec.x;y=vec.y;z=vec.z;
@@ -58,10 +83,23 @@ public:
 	inline vec3 operator/(const vec3& vec)const{
 		return vec3(x/vec.x,y/vec.y,z/vec.z);
 	}
+
+	inline vec3 operator*(const double& val)const{
+		return vec3(x*val,y*val,z*val);
+	}
+	inline vec3 operator/(const double& val)const{
+		return vec3(x/val,y/val,z/val);
+	}
+	inline vec3 operator+(const double& val)const{
+		return vec3(x+val,y+val,z+val);
+	}
+	inline vec3 operator-(const double& val)const{
+		return vec3(x-val,y-val,z-val);
+	}
 	Type x,y,z;
 };
 template <class Type>
-inline vec3<Type> operator*(const float& val,const vec3<Type> &vec){
+inline vec3<Type> operator*(const double& val,const vec3<Type> &vec){
 	return vec*val;
 }
 

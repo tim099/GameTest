@@ -51,6 +51,7 @@ void Game::initialize(){
 	input->register_cur();
 	game_receiver=new Input::Receiver("Game");
 	input->push_receiver(game_receiver);
+
 	controller_system=new ControllerSystem();
 	controller_system->push(new Input::SelectableControl());
 	controller_system->push(new physic::RigidBodyController());

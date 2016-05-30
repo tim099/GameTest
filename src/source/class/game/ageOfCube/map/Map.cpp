@@ -27,6 +27,7 @@ Map::Map() {
 	player_num=4;
 	water_height=0.5;
 	ground_height=80;
+	map_rigid_body=new MapRigidBody(this);
 	cube_out_of_edge=new CubeOutOfEdge();
 	cube_null=new CubeNull();
 	cube_error=new CubeError();
@@ -40,6 +41,7 @@ Map::Map() {
 }
 Map::~Map() {
 	if(dp_map)delete dp_map;
+	delete map_rigid_body;
 	for(unsigned i=0;i<players.size();i++){
 		delete players.at(i);
 	}
@@ -395,7 +397,7 @@ void Map::push_update_cube(int x,int y,int z){
 }
 Cube* Map::get_cube(int x,int y,int z){
 	int type=get_cube_type(x,y,z);
-	if(type==-1){
+	if(type==Cube::cubeOutofEdge){
 		return cube_out_of_edge;
 	}else if(type==Cube::cubeNull){
 		return cube_null;
@@ -614,7 +616,7 @@ void Map::draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* thre
 }
 void Map::update(Timer* timer){
 	unit_controller->update();
-
+	map_rigid_body->set_detect_special_collision();
 	int update_num=seg_num.x*seg_num.z/10;
 	for(int i=0;i<update_num;i++){
 		get_map_seg(update_at.x,update_at.y)->update();

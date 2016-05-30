@@ -20,10 +20,13 @@ public:
 	}
 
 protected:
+	virtual void save_minion(FILE * file);
+	virtual void load_minion(FILE * file);
 	virtual void draw_minion();
 	virtual void minion_update();
 	Display::DrawObject *ball_Drawobj;
 	math::Position dp_pos;
+	int timer;
 };
 
 } /* namespace AOC */

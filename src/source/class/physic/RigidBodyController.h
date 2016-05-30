@@ -17,22 +17,13 @@ public:
 	void push_special_collision(RigidBody* rigid_body){
 		special_collisions.push_back(rigid_body);
 	}
-	void push(RigidBody* rigid_body){
-		rigid_bodys.push_back(rigid_body);
-	}
-	void remove(RigidBody* rigid_body){
-		for(unsigned i=0;i<rigid_bodys.size();i++){
-			if(rigid_bodys.at(i)==rigid_body){
-				rigid_bodys.at(i)=rigid_bodys.back();
-				rigid_bodys.pop_back();
-			}
-		}
-	}
+	bool check_collision(RigidBody* rigid_body);
 	virtual void update();
 protected:
 	void check_collision();
-	void check_collision(RigidBody* rigid_body);
-	std::vector<RigidBody*>rigid_bodys;
+	void detect_collision(RigidBody* rigid_body,bool stop_when_collide);
+
+	//std::vector<RigidBody*>rigid_bodys;
 	std::vector<RigidBody*>collisions;
 	std::vector<RigidBody*>special_collisions;
 };

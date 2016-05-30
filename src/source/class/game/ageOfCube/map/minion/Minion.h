@@ -25,7 +25,8 @@ public:
 
 	inline math::vec3<double>get_position()const{return rigid_body.pos;}
 	inline void set_position(math::vec3<double> pos){rigid_body.pos=pos;}
-
+	inline void set_vel(math::vec3<double> vel){rigid_body.vel=vel;}
+	inline void set_size(double size){rigid_body.radius=0.5*size;}
 protected:
 	virtual void save_minion(FILE * file){}
 	virtual void load_minion(FILE * file){}

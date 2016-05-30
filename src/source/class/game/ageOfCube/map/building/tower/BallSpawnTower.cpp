@@ -58,9 +58,11 @@ void BallSpawnTower::init_BallSpawnTower(){
 }
 void BallSpawnTower::save_building(FILE * file){
 	fprintf(file,"%d\n",timer);
+	fprintf(file,"%f\n",size);
 }
 void BallSpawnTower::load_building(FILE * file){
 	fscanf(file,"%d\n",&timer);
+	fscanf(file,"%f\n",&size);
 }
 void BallSpawnTower::set_pos(int x,int y,int z){
 	math::vec3<int> real_size=get_cube_large_size();
@@ -90,10 +92,12 @@ void BallSpawnTower::building_update(){
 	if((timer)%(loop_time/8)==(loop_time/8)-1){
 		AOC::Minion* ball=MinionCreator::get_cur_object()->create("Ball");
 		ball->set_position(math::vec3<double>(x*Map::CUBE_SIZE-0.15*size,
-											  y*Map::CUBE_SIZE+0.09*size,
+											  y*Map::CUBE_SIZE+0.093*size,
 											  z*Map::CUBE_SIZE+0.5*size));
+		ball->set_vel(math::vec3<double>(-0.04,0,0));
+		ball->set_size(0.15f*size);
 		ball->recruit();
-		std::cout<<"BallSpawnTower::building_update() recruit"<<std::endl;
+		//std::cout<<"BallSpawnTower::building_update() recruit"<<std::endl;
 	}
 	if(timer<loop_time){
 		timer++;

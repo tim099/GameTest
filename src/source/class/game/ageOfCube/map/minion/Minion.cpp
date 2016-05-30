@@ -34,6 +34,7 @@ void Minion::draw(){
 	if(pos>=s&&pos<=e){
 		draw_minion();
 	}else{
+		//draw_minion();
 		//std::cout<<"Minion::draw() not display"<<std::endl;
 	}
 
@@ -44,6 +45,8 @@ void Minion::push_minion_to_controller(){
 	minion_created=true;
 }
 void Minion::unit_update(){
+	//std::cout<<"unit_update()"<<std::endl;
+	rigid_body.set_detect_collision();
 	minion_update();
 }
 } /* namespace AOC */

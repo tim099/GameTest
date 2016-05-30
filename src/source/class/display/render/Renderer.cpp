@@ -126,7 +126,6 @@ void Renderer::render() {
 
 	data_2d=new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0);
 	//data_2d->push_ex_data(new Display::drawDataEX::SobelData(0.3,0.5));
-	//data_2d->ex_datas.push_back()
 	FBO3D->color_textures.at(0)->draw_texture(shader2D,data_2d);
 
 	/*

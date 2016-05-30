@@ -1,5 +1,5 @@
 #version 400 core
-#include <files/shader/header2D/option>
+
 #include <files/shader/header2D/commondata2D.fragh>
 
 

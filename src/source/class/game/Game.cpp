@@ -66,7 +66,7 @@ void Game::initialize(){
 	//window->render_off();
 }
 void Game::terminate(){
-	std::cout<<"terminate start"<<std::endl;
+	//std::cout<<"terminate start"<<std::endl;
 	//window->render_on();
 	while(!scenes.empty()){
 		pop_scene();
@@ -87,7 +87,7 @@ void Game::terminate(){
 	delete UIObj_Creator;
 	delete draw;
 	delete window;
-	std::cout<<"terminate end"<<std::endl;
+	//std::cout<<"terminate end"<<std::endl;
 }
 Scene* Game::get_cur_scene(){
 	if(scenes.empty()){

@@ -1,6 +1,8 @@
 #include "class/game/ageOfCube/scene/SceneEditMap.h"
 #include "class/display/UI/page/PageControl.h"
 #include "class/tim/file/File.h"
+#include "class/display/draw/drawObject/AllDrawObjects.h"
+#include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
 #include <ctime>
 namespace AOC{
 SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
@@ -11,6 +13,7 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	lightControl = 0;
 	UI = 0;
 	destruct_mode=false;
+	pause_timer=false;
 	constructing_building=0;
 }
 void SceneEditMap::loading(){
@@ -172,6 +175,17 @@ void SceneEditMap::handle_input() {
 	if (input->keyboard->get('V')) {
 		destruct_mode^=1;
 	}
+	if(input->keyboard->get('P')){
+		pause_timer^=1;
+	}
+	if (input->keyboard->get('Q')) {
+		draw->real_water^=1;
+	}
+	if(input->keyboard->get('T')){
+		timer.tic(1);
+		map->update(&timer);
+	}
+
 	if (input->keyboard->get('K')) {
 		if (map->dp_map->display_range > 1)
 			map->dp_map->display_range -= 1;
@@ -212,9 +226,16 @@ void SceneEditMap::handle_input() {
 void SceneEditMap::scene_update() {
 	//std::cout<<"scene_update()"<<std::endl;
 	UI->update_UIObject();
-	timer.tic(1);
 	camera->update();
-	map->update(&timer);
+	if(!pause_timer){
+		timer.tic(1);
+		map->update(&timer);
+	}else{
+		//std::cout<<"pause"<<std::endl;
+	}
+
+
+
 
 
 }
@@ -224,6 +245,17 @@ void SceneEditMap::scene_update_end(){
 void SceneEditMap::scene_draw() {
 	UI->draw_UIObject(draw);
 	map->draw(draw,camera,thread_pool); //push position
+
+	Display::DrawObject* galaxy=Display::AllDrawObjects::get_cur_object()->get("default/galaxy");
+	Display::DrawDataObj* data=new Display::DrawDataObj(new math::Position(),false,true);
+	data->push_ex_data(new Display::drawDataEX::SkyMap());
+	galaxy->push_temp_drawdata(data);
+
+	Display::DrawObject* stars=Display::AllDrawObjects::get_cur_object()->get("default/stars");
+	data=new Display::DrawDataObj(new math::Position(glm::vec3(),
+			glm::vec3(0.0f,3.0f*timer.get_minute(),0.0f)),
+			false,true);
+	stars->push_temp_drawdata(data);
 	if(constructing_building){
 		constructing_building->draw_buildable(map,
 				map->selected_on.x,

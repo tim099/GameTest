@@ -9,11 +9,11 @@ ColorAlter::~ColorAlter() {
 
 }
 void ColorAlter::prepare_to_draw(Shader *shader2D){
-	shader2D->Enable(ColorAlterMode);
+	shader2D->Enable(Shader::ColorAlterMode);
 	shader2D->sent_Uniform("alter_value",alter_value);
 }
 void ColorAlter::draw_end(Shader* shader2D){
-	shader2D->Disable(ColorAlterMode);
+	shader2D->Disable(Shader::ColorAlterMode);
 }
 }
 }

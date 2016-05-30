@@ -1,0 +1,8 @@
+#include <files/shader/header/option>
+
+const int Type_RGB=0;
+const int Type_RGBA=1;
+const int Type_GrayScale=2;
+
+uniform int textureData;
+uniform int textureType;

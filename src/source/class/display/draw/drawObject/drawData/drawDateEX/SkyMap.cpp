@@ -11,10 +11,10 @@ SkyMap::~SkyMap() {
 
 }
 void SkyMap::prepare_to_draw(Shader* shader){
-	shader->Enable(Display::SkyMap);
+	shader->Enable(Display::Shader::SkyMap);
 }
 void SkyMap::draw_end(Shader* shader){
-	shader->Disable(Display::SkyMap);
+	shader->Disable(Display::Shader::SkyMap);
 }
 } /* namespace drawDataEX */
 } /* namespace Display */

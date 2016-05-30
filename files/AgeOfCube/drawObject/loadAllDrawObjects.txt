@@ -8,6 +8,9 @@ FolderPath:
 	files/AgeOfCube/drawObject/
 #HEADER_END
 
+Map:
+	ScriptPath:
+		default.txt
 
 Map:
 	ScriptPath:

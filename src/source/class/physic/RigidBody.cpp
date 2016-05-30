@@ -44,23 +44,21 @@ void RigidBody::collide(RigidBody* b){
 
 	math::vec3<double> o_pos=0.5*(b->pos+pos);
 	math::vec3<double> o_v=(mass*vel+b->mass*b->vel)/(mass+b->mass);
-	static const int range=100;
+
 	vel-=2.0*math::vec3<double>::normalize(pos-o_pos)*
 			((vel-o_v).dot(math::vec3<double>::normalize(pos-o_pos)));
-
-
-	vel+=math::vec3<double>(0.1*((rand()%range)-range/2)/(double)range,
-							   0.1*((rand()%range)-range/2)/(double)range,
-							   0.1*((rand()%range)-range/2)/(double)range)*vel.length();
-
-
 	b->vel-=2.0*math::vec3<double>::normalize(b->pos-o_pos)*
 			((b->vel-o_v).dot(math::vec3<double>::normalize(b->pos-o_pos)));
+	///*
+	static const int range=100;
+	vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
+							   0.01*((rand()%range)-range/2)/(double)range,
+							   0.01*((rand()%range)-range/2)/(double)range)*vel.length();
 
-	b->vel+=math::vec3<double>(0.1*((rand()%range)-range/2)/(double)range,
-							   0.1*((rand()%range)-range/2)/(double)range,
-							   0.1*((rand()%range)-range/2)/(double)range)*b->vel.length();
-
+	b->vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
+							   0.01*((rand()%range)-range/2)/(double)range,
+							   0.01*((rand()%range)-range/2)/(double)range)*b->vel.length();
+	//*/
 	bool flag=false;
 	for(int i=0;i<4;i++){
 		pos=0.5*(prev_pos+pos);
@@ -71,6 +69,7 @@ void RigidBody::collide(RigidBody* b){
 	}
 	if(!flag){
 		pos=prev_pos;
+		///*
 		if(RigidBodyController::get_cur_object()->check_collision(this)){//handle stuck
 			math::vec3<double> vec=math::vec3<double>::normalize(
 					((pos+math::vec3<double>(0.0001,0.0001,0.0001))-o_pos));
@@ -78,6 +77,7 @@ void RigidBody::collide(RigidBody* b){
 			b->pos=o_pos-(1.01*b->radius)*vec;
 
 		}
+		//*/
 	}
 }
 void RigidBody::be_collide(RigidBody* b){

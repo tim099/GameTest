@@ -38,6 +38,7 @@ protected:
 	UI::UI *UI;
 	Timer timer;
 	bool destruct_mode;
+	bool pause_timer;
 	std::string map_name;
 	glm::ivec3 map_size;
 };

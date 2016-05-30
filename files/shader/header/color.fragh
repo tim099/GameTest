@@ -1,0 +1,5 @@
+
+
+void set_color(vec4 _color){
+	color=_color;
+}

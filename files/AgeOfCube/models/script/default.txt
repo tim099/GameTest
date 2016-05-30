@@ -1,0 +1,30 @@
+#LOAD_MODELBUFFERMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/obj/
+Name:
+	default
+#HEADER_END
+
+ModelBuffer:
+	Name:
+		galaxy
+	Path:
+		celestialSphere.obj
+	Size:
+		16000.0
+#load_end
+
+ModelBuffer:
+	Name:
+		stars
+	Path:
+		stars.obj
+	Size:
+		10000.0	
+#load_end
+
+
+#END

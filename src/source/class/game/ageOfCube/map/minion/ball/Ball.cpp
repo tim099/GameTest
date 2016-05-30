@@ -27,9 +27,9 @@ void Ball::minion_update(){
 	//rigid_body.vel.x=-0.04f;
 	rigid_body.vel+=0.0001*math::vec3<double>::normalize(rigid_body.vel);
 	rigid_body.vel.y-=0.002f;
-
+	timer++;
 	if(timer<500){
-		timer++;
+
 	}else{
 		/*
 		if(rigid_body.radius>0.75){
@@ -52,7 +52,7 @@ void Ball::minion_update(){
 		*/
 	}
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
-	if(timer>1000)delete this;
+	if(timer>2500)delete this;
 	//set_position(get_position()+math::vec3<double>(0.05,0,0));
 }
 void Ball::draw_minion(){

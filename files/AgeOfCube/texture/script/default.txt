@@ -8,6 +8,11 @@ Name:
 	default
 #HEADER_END
 
+Texture:
+	TextureName:
+		stars
+	TexturePath:
+		test3.BMP
 
 TextureCubeMap:
 	TextureName:

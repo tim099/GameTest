@@ -6,14 +6,18 @@
 #include "class/display/uniform/Uniform.h"
 #include "class/tim/math/vec2.h"
 namespace Display{
-const int NormalMapping=1<<0;
-const int LayerTexture=1<<1;
-const int AlphaTexture=1<<2;
-const int Clipping=1<<3;
-const int SkyMap=1<<4;
-
 class Shader {
 public:
+	static const int NormalMapping=1<<0;
+	static const int LayerTexture=1<<1;
+	static const int AlphaTexture=1<<2;
+	static const int Clipping=1<<3;
+	static const int SkyMap=1<<4;
+
+	static const int SobelMode=1<<10;
+	static const int AddOnMode=1<<11;
+	static const int ColorAlterMode=1<<12;
+
 	Shader(std::string name=std::string("default"));
 	virtual ~Shader();
 	void LoadShader(const char* vertex,const char* fragment);

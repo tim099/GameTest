@@ -1,3 +1,5 @@
+#include <files/shader/header2D/option2D>
+
 in vec2 UV;
 flat in ivec2 size;
 layout(location = 0)out vec4 color;
@@ -7,13 +9,12 @@ uniform float alpha;
 
 #include <files/shader/header2D/sobel/sobel.fragh>
 #include <files/shader/header2D/colorAlter/colorAlter.fragh>
+#include <files/shader/header/color.fragh>
 vec3 get_color(){
-	vec3 temp_color;
+	vec3 temp_color=texture(Texture,UV).xyz;
 	if((shaderData&SobelMode)!=0){
 		float val=sobel(sobel_dv);		
 		temp_color=vec3(val,val,val);
-	}else{
-		temp_color=texture(Texture,UV).xyz;
 	}
 	
 	if((shaderData&ColorAlterMode)!=0){

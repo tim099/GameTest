@@ -81,7 +81,7 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 
 	    //float water_height=Map::get_cur_object()->get_water_height()*Map::CUBE_SIZE;
-	    shader->Enable(Clipping);
+	    shader->Enable(Shader::Clipping);
 	    glm::vec4 clip_plane(0,1.0,0,-water_height+0.01);
 	    shader->sent_Uniform("clipping_plane",clip_plane);
 	    //glCullFace(GL_FRONT);
@@ -97,13 +97,13 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 	    for(unsigned i=0;i<d_objs.size();i++){//100
 	    	d_objs.at(i)->draw_object(shader);//draw all obj
 	    }
-	    shader->Disable(Clipping);
+	    shader->Disable(Shader::Clipping);
 	    //glDisable(GL_CLIP_PLANE0);
 	    //glCullFace(GL_BACK);
 
 	    waterRefractFBO->bind_buffer();
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
-	    shader->Enable(Clipping);
+	    shader->Enable(Shader::Clipping);
 	    clip_plane=glm::vec4(0,-1.0,0,water_height-0.01);
 	    shader->sent_Uniform("clipping_plane",clip_plane);
 		//sent uniform
@@ -115,7 +115,7 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 	    for(unsigned i=0;i<d_objs.size();i++){//100
 	    	d_objs.at(i)->draw_object(shader);//draw all obj
 	    }
-	    shader->Disable(Clipping);
+	    shader->Disable(Shader::Clipping);
 	}
 
 

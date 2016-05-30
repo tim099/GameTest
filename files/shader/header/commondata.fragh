@@ -27,6 +27,7 @@ uniform mat4 VP;
 uniform vec4 clipping_plane;
 #include <files/shader/header/light/light>
 #include <files/shader/header/normalMapping.fragh>
+#include <files/shader/header/color.fragh>
 vec3 get_skybox();
 void clipping(){
 	if((shaderData&Clipping)==0)return;

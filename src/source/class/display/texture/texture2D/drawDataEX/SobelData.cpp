@@ -11,11 +11,11 @@ SobelData::~SobelData() {
 
 }
 void SobelData::prepare_to_draw(Shader *shader2D){
-	shader2D->Enable(SobelMode);
+	shader2D->Enable(Shader::SobelMode);
 	shader2D->sent_Uniform("sobel_dv",sobel_dvx,sobel_dvy);
 }
 void SobelData::draw_end(Shader* shader2D){
-	shader2D->Disable(SobelMode);
+	shader2D->Disable(Shader::SobelMode);
 }
 }
 }

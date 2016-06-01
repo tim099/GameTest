@@ -33,7 +33,7 @@ protected:
 	virtual void draw_minion()=0;
 	virtual void minion_update(){}
 
-	void push_minion_to_controller();
+	//void push_minion_to_controller();
 	physic::RigidBody rigid_body;
 	bool minion_created;
 };

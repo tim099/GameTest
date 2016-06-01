@@ -9,9 +9,11 @@ Minion::Minion() {
 	minion_created=false;
 }
 Minion::~Minion() {
+	/*
 	if(minion_created){
 		UnitController::get_cur_object()->remove_minion(this);
 	}
+	*/
 }
 void Minion::save(FILE * file){
 	save_unit(file);
@@ -24,7 +26,8 @@ void Minion::load(FILE * file){
 	load_minion(file);
 }
 void Minion::recruit(){
-	push_minion_to_controller();
+	//push_minion_to_controller();
+	minion_created=true;
 	push_to_controller();
 }
 void Minion::draw(){
@@ -39,11 +42,13 @@ void Minion::draw(){
 	}
 
 }
+/*
 void Minion::push_minion_to_controller(){
 	if(minion_created)return;
-	UnitController::get_cur_object()->push_minion(this);
+	//UnitController::get_cur_object()->push_minion(this);
 	minion_created=true;
 }
+*/
 void Minion::unit_update(){
 	//std::cout<<"unit_update()"<<std::endl;
 	rigid_body.set_detect_collision();

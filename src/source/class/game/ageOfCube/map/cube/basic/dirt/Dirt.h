@@ -13,6 +13,7 @@ public:
 	virtual unsigned char get_type(){
 		return Cube::dirt;
 	}
+	virtual void collide(physic::RigidBody *b);
 };
 }
 #endif /* SOURCE_CLASS_GAME_MAP_CUBE_BASIC_DIRT_H_ */

@@ -20,8 +20,10 @@ UnitController::UnitController() {
 }
 UnitController::~UnitController() {
 	delete minion_creator;
-	for(unsigned i=0;i<minions.size();i++){
-		delete minions.at(i);
+	for(unsigned i=0;i<units.size();i++){
+		if(Minion* minion=dynamic_cast<Minion*>(units.at(i))){
+			delete minion;
+		}
 	}
 	delete building_UI;
 	Input::Input::get_cur_object()->remove_receiver(receiver->get_name());
@@ -34,6 +36,12 @@ void UnitController::load(FILE * file){
 	load_minion(file);
 }
 void UnitController::save_minion(FILE * file){
+	std::vector<Minion*>minions;
+	for(unsigned i=0;i<units.size();i++){
+		if(Minion* minion=dynamic_cast<Minion*>(units.at(i))){
+			minions.push_back(minion);
+		}
+	}
 	fprintf(file,"%u\n",minions.size());
 	for(unsigned i=0;i<minions.size();i++){
 		fprintf(file,"%s\n",minions.at(i)->get_name().c_str());
@@ -90,8 +98,15 @@ void UnitController::update(){
 }
 void UnitController::draw(Display::Draw* draw){
 	building_UI->draw_UIObject(draw);
+	for(unsigned i=0;i<units.size();i++){
+		if(Minion* minion=dynamic_cast<Minion*>(units.at(i))){
+			minion->draw();
+		}
+	}
+	/*
 	for(unsigned i=0;i<minions.size();i++){
 		minions.at(i)->draw();
 	}
+	*/
 }
 } /* namespace AOC */

@@ -10,18 +10,27 @@ void Building::building_pre_init(){
 }
 Building::Building() {
 	size=1.0;
+	rotate=0;
 }
 Building::~Building() {
 
+}
+void Building::set_pos(int x,int y,int z){
+	if(rotate!=0){
+		pos.set_r(glm::vec3(0,90*rotate,0));
+	}
+	building_set_pos(x,y,z);
 }
 void Building::build_cube_large(){
 	push_to_controller();//create when build success
 }
 void Building::save_cubeEX(FILE * file){
+	fprintf(file,"%d %f\n",rotate,size);
 	save_unit(file);
 	save_building(file);
 }
 void Building::load_cubeEX(FILE * file){
+	fscanf(file,"%d %f\n",&rotate,&size);
 	load_unit(file);
 	load_building(file);
 }

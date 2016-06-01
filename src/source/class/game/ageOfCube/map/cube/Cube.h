@@ -2,6 +2,7 @@
 #define _CUBE_H_
 #include <vector>
 #include <string>
+#include "class/physic/RigidBody.h"
 namespace AOC{
 class CubeEX;
 class Cube {
@@ -38,6 +39,7 @@ public:
 	virtual bool standable(){
 		return false;
 	}
+	virtual void collide(physic::RigidBody *b){}
 	/*
 	 * x,y,z is the position of this cube and
 	 * ux,uy,uz is the position of the update cube

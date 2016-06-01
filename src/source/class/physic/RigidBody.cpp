@@ -18,6 +18,7 @@ void RigidBody::save(FILE * file){
 	fprintf(file,"%lf %lf %lf\n",acc.x,acc.y,acc.z);
 	fprintf(file,"%lf %lf %lf\n",vel.x,vel.y,vel.z);
 	fprintf(file,"%lf %lf %lf\n",pos.x,pos.y,pos.z);
+	fprintf(file,"%lf %lf %lf\n",prev_pos.x,prev_pos.y,prev_pos.z);
 	fprintf(file,"%lf %lf\n",radius,mass);
 
 }
@@ -25,6 +26,7 @@ void RigidBody::load(FILE * file){
 	fscanf(file,"%lf %lf %lf\n",&acc.x,&acc.y,&acc.z);
 	fscanf(file,"%lf %lf %lf\n",&vel.x,&vel.y,&vel.z);
 	fscanf(file,"%lf %lf %lf\n",&pos.x,&pos.y,&pos.z);
+	fscanf(file,"%lf %lf %lf\n",&prev_pos.x,&prev_pos.y,&prev_pos.z);
 	fscanf(file,"%lf %lf\n",&radius,&mass);
 }
 void RigidBody::set_detect_collision(){

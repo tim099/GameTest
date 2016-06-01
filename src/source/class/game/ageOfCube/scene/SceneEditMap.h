@@ -34,7 +34,8 @@ protected:
 	Display::Camera *camera;
 	Display::LightControl* lightControl;
 	Building* constructing_building;
-
+	math::Position galaxy_pos_o;
+	math::Position galaxy_pos;
 	UI::UI *UI;
 	Timer timer;
 	bool destruct_mode;

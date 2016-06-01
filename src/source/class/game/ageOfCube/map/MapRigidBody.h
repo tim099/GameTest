@@ -4,6 +4,7 @@
 #include "class/physic/RigidBody.h"
 
 namespace AOC {
+class Cube;
 class Map;
 class MapRigidBody: public physic::RigidBody {
 public:
@@ -15,6 +16,7 @@ public:
 	virtual bool check_collision(physic::RigidBody* b);
 	virtual void collide(RigidBody* b);
 protected:
+	bool check_collision(physic::RigidBody* b,bool &c_x,bool &c_y,bool &c_z,Cube* &collide_cube);
 	bool check_stuck(physic::RigidBody* b);
 	bool handle_stuck(physic::RigidBody* b);
 	Map *map;

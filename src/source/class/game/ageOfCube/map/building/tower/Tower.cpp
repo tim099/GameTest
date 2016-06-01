@@ -18,7 +18,6 @@ void Tower::building_pre_init(){
 Tower::Tower() {
 	tower_type=tower;
 	tower_Drawobj=0;
-	pos=0;
 	size = 3.0;
 	timer=0;
 	init(1000,0);
@@ -27,12 +26,10 @@ Tower::Tower(Tower* tower) {
 	tower_type=tower->tower_type;
 	tower_Drawobj=tower->tower_Drawobj;
 	timer=0;
-	pos=0;
 	size = tower->size;
 	init(1000,0);
 }
 Tower::~Tower() {
-	if(pos)delete pos;
 	//std::cout<<"delete tree"<<std::endl;
 }
 void Tower::save_building(FILE * file){
@@ -43,15 +40,12 @@ void Tower::load_building(FILE * file){
 	fscanf(file,"%c\n",(char*)&tower_type);
 	fscanf(file,"%d\n",&timer);
 }
-void Tower::set_pos(int x,int y,int z){
-	if(!pos){
-		pos=new math::Position();
-	}
+void Tower::building_set_pos(int x,int y,int z){
 	math::vec3<int> real_size=get_cube_large_size();
-	pos->set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
+	pos.set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
 			AOC::Map::CUBE_SIZE*y+0.5*real_size.y,
 			AOC::Map::CUBE_SIZE*z+0.5*real_size.z));
-	pos->set_scale(glm::vec3(size,size,size));
+	pos.set_scale(glm::vec3(size,size,size));
 }
 void Tower::draw(){
 	static const int loop_time=200;
@@ -68,7 +62,7 @@ void Tower::draw(){
 			AOC::Map::CUBE_SIZE*z+0.5*real_size.z),
 			glm::vec3(50*light_val,50*light_val,50*light_val),false);
 	Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
-	tower_Drawobj->push_temp_drawdata(new Display::DrawDataObj(pos));
+	tower_Drawobj->push_temp_drawdata(new Display::DrawDataObj(&pos));
 
 }
 void Tower::building_update(){

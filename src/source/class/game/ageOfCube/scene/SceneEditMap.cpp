@@ -64,6 +64,34 @@ void SceneEditMap::camera_control(){
 	if(input->keyboard->pressed('F')){
 		camera->v.y -= 0.01f* sqrt(camera->look_dis() + 0.001);
 	}
+	if(input->keyboard->get('A')&&constructing_building){
+		std::cout<<"rotate!!"<<std::endl;
+		int cur_rotate=constructing_building->get_rotate();
+		if(cur_rotate<4)cur_rotate++;
+		else cur_rotate=0;
+		constructing_building->set_rotate(cur_rotate);
+	}
+	if(input->keyboard->get('1')&&constructing_building){
+		constructing_building->size=1.0;
+	}
+	if(input->keyboard->get('2')&&constructing_building){
+		constructing_building->size=2.0;
+	}
+	if(input->keyboard->get('3')&&constructing_building){
+		constructing_building->size=3.0;
+	}
+	if(input->keyboard->get('4')&&constructing_building){
+		constructing_building->size=4.0;
+	}
+	if(input->keyboard->get('5')&&constructing_building){
+		constructing_building->size=5.0;
+	}
+	if(input->keyboard->get('6')&&constructing_building){
+		constructing_building->size=6.0;
+	}
+	if(input->keyboard->get('7')&&constructing_building){
+		constructing_building->size=10.0;
+	}
 	if (input->mouse->mid_pressed()||input->keyboard->pressed('Z')) {
 		//std::cout<<"move"<<(int)(mouse->pos.x)<<","<<(int)mouse->prev_pos.x<<std::endl;
 		camera->rotate(glm::vec3(0, 1, 0), -0.15 * input->mouse->pos_delta().x);
@@ -247,14 +275,16 @@ void SceneEditMap::scene_draw() {
 	map->draw(draw,camera,thread_pool); //push position
 
 	Display::DrawObject* galaxy=Display::AllDrawObjects::get_cur_object()->get("default/galaxy");
-	Display::DrawDataObj* data=new Display::DrawDataObj(new math::Position(),false,true);
+	Display::DrawDataObj* data=new Display::DrawDataObj(&galaxy_pos_o,false,false);
 	data->push_ex_data(new Display::drawDataEX::SkyMap());
 	galaxy->push_temp_drawdata(data);
+	galaxy_pos_o.set_r(glm::vec3(60,0,0));
+	galaxy_pos.set_parent(&galaxy_pos_o);
+	galaxy_pos.set_r(glm::vec3(0.0f,180.0f*timer.get_hour(),0.0f));
+
 
 	Display::DrawObject* stars=Display::AllDrawObjects::get_cur_object()->get("default/stars");
-	data=new Display::DrawDataObj(new math::Position(glm::vec3(),
-			glm::vec3(0.0f,3.0f*timer.get_minute(),0.0f)),
-			false,true);
+	data=new Display::DrawDataObj(&galaxy_pos,false,false);
 	stars->push_temp_drawdata(data);
 	if(constructing_building){
 		constructing_building->draw_buildable(map,

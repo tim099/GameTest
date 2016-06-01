@@ -304,7 +304,7 @@ void Map::load_update_pos(FILE * file){
 	}
 	//*/
 }
-void Map::save_map(std::string path){
+void Map::save_map(const std::string& path){
 	FILE * file = fopen(path.c_str(),"w+t");
 	fprintf(file,"%d %d %d\n",map_size.x,map_size.y,map_size.z);
 	fprintf(file,"%d %lf\n",ground_height,water_height);
@@ -329,7 +329,7 @@ void Map::save_map(std::string path){
 	unit_controller->save(file);
 	fclose(file);
 }
-void Map::load_map(std::string path){
+void Map::load_map(const std::string& path){
 	FILE * file = fopen(path.c_str(),"r");
 	fscanf(file,"%d %d %d\n",&map_size.x,&map_size.y,&map_size.z);
 	fscanf(file,"%d %lf\n",&ground_height,&water_height);

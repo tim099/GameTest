@@ -23,15 +23,14 @@ public:
 		parent_pos=_parent_pos;
 	}
 
-	void set_ry(float ry);
-	/*
-	 * r =rotate angle in Euler angle
-	 */
+	void set_ry(float ry);//r =rotate angle in Euler angle
 	void set_r(glm::vec3 r);
 	glm::vec3 get_r()const;
 
 	void set_pos(glm::vec3 pos);
 	glm::vec3 get_pos()const;
+
+	glm::mat4 get_rotate_mat()const{return r_mat;}
 
 	void set_scale(glm::vec3 scale);
 protected:

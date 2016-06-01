@@ -25,8 +25,8 @@ BallSpawnTower::BallSpawnTower() {
 	tower_part3=0;
 	tower_part4=0;
 	timer=0;
-	size = 3.0;
-	loop_time=600;
+	size = 2.0;
+	loop_time=800;
 	init_BallSpawnTower();
 }
 BallSpawnTower::BallSpawnTower(BallSpawnTower* tower) {
@@ -58,13 +58,11 @@ void BallSpawnTower::init_BallSpawnTower(){
 }
 void BallSpawnTower::save_building(FILE * file){
 	fprintf(file,"%d\n",timer);
-	fprintf(file,"%f\n",size);
 }
 void BallSpawnTower::load_building(FILE * file){
 	fscanf(file,"%d\n",&timer);
-	fscanf(file,"%f\n",&size);
 }
-void BallSpawnTower::set_pos(int x,int y,int z){
+void BallSpawnTower::building_set_pos(int x,int y,int z){
 	math::vec3<int> real_size=get_cube_large_size();
 	pos.set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
 			AOC::Map::CUBE_SIZE*y+0.5*real_size.y,
@@ -91,11 +89,22 @@ void BallSpawnTower::set_pos(int x,int y,int z){
 void BallSpawnTower::building_update(){
 	if((timer)%(loop_time/8)==(loop_time/8)-1){
 		AOC::Minion* ball=MinionCreator::get_cur_object()->create("Ball");
-		ball->set_position(math::vec3<double>(x*Map::CUBE_SIZE-0.15*size,
-											  y*Map::CUBE_SIZE+0.093*size,
-											  z*Map::CUBE_SIZE+0.5*size));
-		ball->set_vel(math::vec3<double>(-0.04,0,0));
-		ball->set_size(0.15f*size);
+		glm::vec3 recruit_pos(x*Map::CUBE_SIZE-0.15*size,
+				  y*Map::CUBE_SIZE+0.093*size,
+				  z*Map::CUBE_SIZE+0.5*size);
+		glm::vec3 relative_pos=recruit_pos-pos.get_pos();
+		if(rotate){
+			float angle=0.5*rotate*M_PI;
+			float nx=relative_pos.x*cosf(angle)+relative_pos.z*sinf(angle);
+			float nz=-relative_pos.x*sinf(angle)+relative_pos.z*cosf(angle);
+			relative_pos.x=nx;relative_pos.z=nz;
+		}
+		ball->set_position(math::vec3<double>(pos.get_pos().x+relative_pos.x,
+				pos.get_pos().y+relative_pos.y,
+				pos.get_pos().z+relative_pos.z));
+		ball->set_vel(0.04*math::vec3<double>::normalize(
+				math::vec3<double>(relative_pos.x,0,relative_pos.z)));
+		ball->set_size(0.17f*size);
 		ball->recruit();
 		//std::cout<<"BallSpawnTower::building_update() recruit"<<std::endl;
 	}

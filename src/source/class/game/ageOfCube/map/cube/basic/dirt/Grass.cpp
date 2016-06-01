@@ -6,4 +6,8 @@ Grass::Grass() {
 Grass::~Grass() {
 
 }
+void Grass::collide(physic::RigidBody *b){
+
+}
+
 }

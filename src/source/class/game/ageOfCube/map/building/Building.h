@@ -3,6 +3,7 @@
 
 #include "class/game/ageOfCube/map/cube/CubeLarge.h"
 #include "class/game/ageOfCube/unit/Unit.h"
+#include "class/tim/math/Position.h"
 namespace AOC {
 class Map;
 class Building: public CubeLarge ,
@@ -22,18 +23,22 @@ public:
 		return "Building";
 	}
 	virtual void unit_update();
-
+	virtual void set_pos(int x,int y,int z);
+	inline void set_rotate(int _rotate){rotate=_rotate;}
+	inline int get_rotate()const{return rotate;}
 	void draw_buildable(Map *map,int x,int y,int z);
+	float size;
 protected:
-	virtual void building_update(){
-
-	}
+	virtual void building_set_pos(int x,int y,int z){}
+	virtual void building_update(){}
 	void build_cube_large();
 	virtual void save_cubeEX(FILE * file);
 	virtual void load_cubeEX(FILE * file);
 	virtual void save_building(FILE * file){}
 	virtual void load_building(FILE * file){}
-	float size;
+	int rotate;
+
+	math::Position pos;
 };
 }
 

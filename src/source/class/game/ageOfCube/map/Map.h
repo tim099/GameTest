@@ -40,8 +40,8 @@ public:
 	//ground height limited the max height of the ground
 	void regen_map();
 	static glm::ivec3 convert_position(glm::vec3 pos);
-	void save_map(std::string path);
-	void load_map(std::string path);
+	void save_map(const std::string& path);
+	void load_map(const std::string& path);
 	void push_CubeEX(int x,int y,int z,CubeEX *cube);
 
 	bool set_cube_type(int x,int y,int z,int val);

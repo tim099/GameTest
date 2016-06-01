@@ -9,6 +9,7 @@
 #include "class/input/signal/Receiver.h"
 #include "class/display/UI/string/UIString.h"
 #include "class/game/ageOfCube/map/minion/MinionCreator.h"
+#include "class/tim/pointer/SmartPointer.h"
 namespace Display{
 class Draw;
 }
@@ -36,7 +37,7 @@ public:
 			}
 		}
 	}
-
+	/*
 	void push_minion(Minion* unit){
 		minions.push_back(unit);
 	}
@@ -48,6 +49,7 @@ public:
 			}
 		}
 	}
+	*/
 	void save(FILE *file);
 	void load(FILE *file);
 	MinionCreator* minion_creator;
@@ -56,8 +58,8 @@ protected:
 	void save_minion(FILE *file);
 	void load_minion(FILE *file);
 	Unit *selected_unit;
-	std::vector<Unit *>units;
-	std::vector<Minion*>minions;
+	std::vector<Unit*>units;
+	//std::vector<Minion*>minions;
 	UI::BuildingUI *building_UI;
 	UI::UIString *name_str;
 	UI::UIString *atk_str;

@@ -67,30 +67,30 @@ void SceneEditMap::camera_control(){
 	if(input->keyboard->get('A')&&constructing_building){
 		std::cout<<"rotate!!"<<std::endl;
 		int cur_rotate=constructing_building->get_rotate();
-		if(cur_rotate<4)cur_rotate++;
+		if(cur_rotate<3)cur_rotate++;
 		else cur_rotate=0;
 		constructing_building->set_rotate(cur_rotate);
 	}
 	if(input->keyboard->get('1')&&constructing_building){
-		constructing_building->size=1.0;
+		constructing_building->set_size(1.0);
 	}
 	if(input->keyboard->get('2')&&constructing_building){
-		constructing_building->size=2.0;
+		constructing_building->set_size(2.0);
 	}
 	if(input->keyboard->get('3')&&constructing_building){
-		constructing_building->size=3.0;
+		constructing_building->set_size(3.0);
 	}
 	if(input->keyboard->get('4')&&constructing_building){
-		constructing_building->size=4.0;
+		constructing_building->set_size(4.0);
 	}
 	if(input->keyboard->get('5')&&constructing_building){
-		constructing_building->size=5.0;
+		constructing_building->set_size(5.0);
 	}
 	if(input->keyboard->get('6')&&constructing_building){
-		constructing_building->size=6.0;
+		constructing_building->set_size(6.0);
 	}
 	if(input->keyboard->get('7')&&constructing_building){
-		constructing_building->size=10.0;
+		constructing_building->set_size(10.0);
 	}
 	if (input->mouse->mid_pressed()||input->keyboard->pressed('Z')) {
 		//std::cout<<"move"<<(int)(mouse->pos.x)<<","<<(int)mouse->prev_pos.x<<std::endl;
@@ -287,10 +287,16 @@ void SceneEditMap::scene_draw() {
 	data=new Display::DrawDataObj(&galaxy_pos,false,false);
 	stars->push_temp_drawdata(data);
 	if(constructing_building){
-		constructing_building->draw_buildable(map,
-				map->selected_on.x,
-				map->selected_on.y,
-				map->selected_on.z);
+		if(input->mouse->_pos_delta==glm::ivec2(0,0)){
+			constructing_building->draw_buildable(map);
+		}else{
+			constructing_building->set_pos(map->selected_on.x,
+					map->selected_on.y,
+					map->selected_on.z);
+			//std::cout<<"pos_delta"<<
+					//input->mouse->pos_delta().x<<","<<input->mouse->pos_delta().y<<std::endl;
+		}
+
 	}else{
 		if(destruct_mode){
 			Display::CubeLight*cl=new Display::CubeLight();

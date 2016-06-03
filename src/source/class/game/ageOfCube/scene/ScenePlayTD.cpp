@@ -272,9 +272,14 @@ void ScenePlayTD::scene_draw() {
 	map->draw(draw,camera,thread_pool); //push position
 
 	if(constructing_building){
-		constructing_building->draw_buildable(map,map->selected_on.x,
-				map->selected_on.y,
-				map->selected_on.z);
+		if(input->mouse->pos_delta()==glm::ivec2(0,0)){
+			constructing_building->draw_buildable(map);
+		}else{
+			constructing_building->set_pos(map->selected_on.x,
+					map->selected_on.y,
+					map->selected_on.z);
+		}
+
 	}
 	if(mode == removing){
 		cl->color=glm::vec3(1,0,0);

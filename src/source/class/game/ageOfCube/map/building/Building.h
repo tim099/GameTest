@@ -24,10 +24,11 @@ public:
 	}
 	virtual void unit_update();
 	virtual void set_pos(int x,int y,int z);
-	inline void set_rotate(int _rotate){rotate=_rotate;}
+	void set_rotate(int _rotate);
 	inline int get_rotate()const{return rotate;}
-	void draw_buildable(Map *map,int x,int y,int z);
-	float size;
+	void draw_buildable(Map *map);
+	void set_size(float size);
+
 protected:
 	virtual void building_set_pos(int x,int y,int z){}
 	virtual void building_update(){}
@@ -37,7 +38,7 @@ protected:
 	virtual void save_building(FILE * file){}
 	virtual void load_building(FILE * file){}
 	int rotate;
-
+	float size;
 	math::Position pos;
 };
 }

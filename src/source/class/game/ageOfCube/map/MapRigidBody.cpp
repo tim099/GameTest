@@ -141,7 +141,9 @@ bool MapRigidBody::MapRigidBody::check_collision(physic::RigidBody* b){
 	bool c_x=false,c_y=false,c_z=false;
 	bool c_x_col=false,c_y_col=false,c_z_col=false;
 	Cube* collide_cube=0;
+	bool collision=false;;
 	bool collided=check_collision(b,c_x,c_y,c_z,collide_cube);
+	if(collided)collision=true;
 	for(int i=0;i<3&&collided;i++){
 		if(!c_x_col&&c_x){
 			b->pos.x=b->prev_pos.x;
@@ -171,10 +173,7 @@ bool MapRigidBody::MapRigidBody::check_collision(physic::RigidBody* b){
 	}
 
 
-
-
-
-	return collided;
+	return collision;
 }
 bool MapRigidBody::check_stuck(physic::RigidBody* b){
 	math::vec3<int> pos((b->pos.x)/Map::CUBE_SIZE,

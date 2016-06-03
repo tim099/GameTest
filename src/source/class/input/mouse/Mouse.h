@@ -37,7 +37,7 @@ public:
 
 	glm::ivec2 pos;
 	glm::ivec2 prev_pos;
-
+	glm::ivec2 _pos_delta;
 	glm::vec2 screen_pos;
 	glm::vec2 prev_screen_pos;
 	glm::vec3 world_pos;

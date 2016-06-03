@@ -9,6 +9,7 @@ public:
 	glm::vec3 pos;
 	glm::vec3 color;
 	float size;
+	glm::vec3 cube_size;
 };
 }
 #endif /* SOURCE_CLASS_DISPLAY_LIGHT_CUBELIGHT_H_ */

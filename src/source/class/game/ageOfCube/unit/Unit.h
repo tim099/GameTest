@@ -27,6 +27,7 @@ protected:
 	int max_hp;
 	int hp;
 	int player;
+	int dead_timer;
 	bool is_dead;
 	bool created;
 };

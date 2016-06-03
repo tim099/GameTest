@@ -25,8 +25,11 @@ void Ball::load_minion(FILE * file){
 }
 void Ball::minion_update(){
 	//rigid_body.vel.x=-0.04f;
-	rigid_body.vel+=0.0001*math::vec3<double>::normalize(rigid_body.vel);
-	rigid_body.vel.y-=0.002f;
+	if(rigid_body.vel.length()<0.1f){
+		rigid_body.vel+=0.0001*math::vec3<double>::normalize(rigid_body.vel+
+				math::vec3<double>(0.000001,0.000001,0.000001));
+	}
+	rigid_body.acc.y=-0.003f;
 	timer++;
 	if(timer<500){
 
@@ -52,7 +55,7 @@ void Ball::minion_update(){
 		*/
 	}
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
-	if(timer>800)delete this;
+	if(timer>2500)delete this;
 	//set_position(get_position()+math::vec3<double>(0.05,0,0));
 }
 void Ball::draw_minion(){

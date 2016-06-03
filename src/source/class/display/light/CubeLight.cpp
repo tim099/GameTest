@@ -2,7 +2,7 @@
 #include <iostream>
 namespace Display{
 CubeLight::CubeLight() {
-	size=1.0f;
+	size=0.0f;
 }
 CubeLight::~CubeLight() {
 	//std::cout<<"CubeLight::~CubeLight()"<<std::endl;

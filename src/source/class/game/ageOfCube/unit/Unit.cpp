@@ -21,13 +21,13 @@ void Unit::init(int _max_hp,int _player){
 	hp = max_hp;
 	is_dead = false;
 	created=false;
+	dead_timer=0;
 	set_player(_player);
 }
 void Unit::save_unit(FILE * file){
-	fprintf(file,"%d %d %d %d\n",max_hp,hp,player,is_dead);
+	fprintf(file,"%d %d %d %d %d\n",max_hp,hp,player,is_dead,dead_timer);
 }
 void Unit::load_unit(FILE * file){
-	//fscanf(file,"%d %d %d\n",&max_hp,&hp,(int*)&is_dead);
-	fscanf(file,"%d %d %d %d\n",&max_hp,&hp,&player,(int*)&is_dead);
+	fscanf(file,"%d %d %d %d %d\n",&max_hp,&hp,&player,(int*)&is_dead,&dead_timer);
 }
 } /* namespace AOC */

@@ -27,7 +27,7 @@ uniform int pointlight_shadow[MAX_POINTLIGHT];
 uniform int cubelight_num;
 uniform vec3 cubelight_pos[MAX_CUBELIGHT];
 uniform vec3 cubelight_color[MAX_CUBELIGHT];
-uniform float cubelight_size[MAX_CUBELIGHT];
+uniform vec3 cubelight_size[MAX_CUBELIGHT];
 
 
 uniform mat4 pointLVP[MAX_POINTLIGHT_SHADOW*6];
@@ -230,9 +230,9 @@ vec3 light_scattering(vec4 pos){
 vec3 cube_light(vec4 position){
 	vec3 total_light=vec3(0,0,0);
 	for(int i=0;i<cubelight_num;i++){
-		if(abs(position.x-cubelight_pos[i].x)<0.5f*cubelight_size[i]){
-			if(abs(position.y-cubelight_pos[i].y)<0.5f*cubelight_size[i]){
-				if(abs(position.z-cubelight_pos[i].z)<0.5f*cubelight_size[i]){
+		if(abs(position.x-cubelight_pos[i].x)<0.5f*cubelight_size[i].x){
+			if(abs(position.y-cubelight_pos[i].y)<0.5f*cubelight_size[i].y){
+				if(abs(position.z-cubelight_pos[i].z)<0.5f*cubelight_size[i].z){
 					total_light+=cubelight_color[i];
 				}
 			}

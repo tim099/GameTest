@@ -36,7 +36,7 @@ void RigidBody::set_detect_special_collision(){
 	RigidBodyController::get_cur_object()->push_special_collision(this);
 }
 bool RigidBody::check_collision(RigidBody* b){
-	if(math::vec3<double>(pos-b->pos).length()<=(radius+b->radius)){
+	if(math::vec3<double>(pos-b->pos).get_length()<=(radius+b->radius)){
 		return true;
 	}
 	return false;
@@ -55,11 +55,11 @@ void RigidBody::collide(RigidBody* b){
 	static const int range=100;
 	vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
 							   0.01*((rand()%range)-range/2)/(double)range,
-							   0.01*((rand()%range)-range/2)/(double)range)*vel.length();
+							   0.01*((rand()%range)-range/2)/(double)range)*vel.get_length();
 
 	b->vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
 							   0.01*((rand()%range)-range/2)/(double)range,
-							   0.01*((rand()%range)-range/2)/(double)range)*b->vel.length();
+							   0.01*((rand()%range)-range/2)/(double)range)*b->vel.get_length();
 	//*/
 	bool flag=false;
 	for(int i=0;i<4;i++){

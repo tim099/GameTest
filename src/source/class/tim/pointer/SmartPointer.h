@@ -4,9 +4,6 @@
 namespace Tim {
 template <class Type>
 class SmartPointer {
-	struct pair{
-
-	};
 public:
 	SmartPointer(){
 		//std::cout<<"SmartPointer()"<<std::endl;

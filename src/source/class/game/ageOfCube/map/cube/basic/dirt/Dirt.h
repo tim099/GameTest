@@ -13,6 +13,9 @@ public:
 	virtual unsigned char get_type(){
 		return Cube::dirt;
 	}
+	virtual bool jumpable(){
+		return true;
+	}
 	virtual void collide(physic::RigidBody *b);
 };
 }

@@ -8,6 +8,7 @@ Thread::Thread(int priority,Tim::ExecuteDone *_done) {
 	threadhandle=CreateThread(NULL,0,Execute,this,CREATE_SUSPENDED,&ThreadID);
 	//threadhandle=CreateThread(NULL,0,Execute,this,0,&ThreadID);
 	threadMutex=new Mutex();
+	endMutex=new Mutex();
 	thread_start=false;
 	set_priority(priority);
 	done=_done;
@@ -16,12 +17,17 @@ Thread::~Thread() {
 	if(!terminate)std::cout<<"thread delete error not terminated yet!!"<<std::endl;
 	//else std::cout<<"thread delete success!!"<<std::endl;
 	delete threadMutex;
+	delete endMutex;
 	//if(done)delete done; dont!!if done=thread pool
 
 }
 void Thread::Terminate(){
 	end=true;
-	if(DONE())ResumeThread(threadhandle);//return to active state to terminate
+	if(DONE()){
+		ResumeThread(threadhandle);//return to active state to terminate
+	}
+	endMutex->wait_for_this();
+	endMutex->release();
 }
 void Thread::join(DWORD time){
 	while(!thread_start&&!DONE());//waste time until thread_start
@@ -101,11 +107,13 @@ void Thread::Execute(){
 	terminate=true;
 }
 DWORD WINAPI Thread::Execute(LPVOID lpParameter){
+
 	Thread* thread=(Thread*)lpParameter;
+	thread->endMutex->wait_for_this();
 	//std::cout<<"Execute start"<<std::endl;
 	thread->Execute();
 	//std::cout<<"Execute end"<<std::endl;
-
+	thread->endMutex->release();
 	delete thread;
 	return 0;
 }

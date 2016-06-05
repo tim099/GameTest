@@ -26,7 +26,7 @@ BallSpawnTower::BallSpawnTower() {
 	tower_part4=0;
 	timer=0;
 	size = 2.0;
-	loop_time=200;
+	loop_time=800;
 	init_BallSpawnTower();
 }
 BallSpawnTower::BallSpawnTower(BallSpawnTower* tower) {
@@ -99,10 +99,10 @@ void BallSpawnTower::building_update(){
 			float nz=-relative_pos.x*sinf(angle)+relative_pos.z*cosf(angle);
 			relative_pos.x=nx;relative_pos.z=nz;
 		}
-		ball->set_position(math::vec3<double>(pos.get_pos().x+relative_pos.x,
+		ball->set_pos(math::vec3<double>(pos.get_pos().x+relative_pos.x,
 				pos.get_pos().y+relative_pos.y,
 				pos.get_pos().z+relative_pos.z));
-		ball->set_vel(0.02*size*math::vec3<double>::normalize(
+		ball->set_vel((200/loop_time)*0.02*size*math::vec3<double>::normalize(
 				math::vec3<double>(relative_pos.x,0,relative_pos.z)));
 		ball->set_size(0.16f*size);
 		ball->recruit();

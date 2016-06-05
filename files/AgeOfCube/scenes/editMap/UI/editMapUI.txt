@@ -99,7 +99,7 @@ CreateUIObject:
 	Name:
 		building2
 	Position:
-		0.00000000 -0.0496429
+		0.00000000 -0.05
 	Texture:
 		UI/UI/button2
 	Width:
@@ -107,16 +107,40 @@ CreateUIObject:
 	Height:
 		0
 	Set_string:
-"Basic Tower 1"
+"BallSpawnTower"
 	String_size:
 		0.01
 	Set_signal:
 		Data:
-			build
+			build_BallSpawnTower
 		Receiver:
 			SceneEditMap
 	Parent:
 		ToggleBuilding
 #create_end
 
+CreateUIObject:
+		PictureButton
+	Name:
+		building2
+	Position:
+		0.00000000 -0.1
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		0
+	Set_string:
+"Tower"
+	String_size:
+		0.01
+	Set_signal:
+		Data:
+			build_Tower
+		Receiver:
+			SceneEditMap
+	Parent:
+		ToggleBuilding
+#create_end
 #END

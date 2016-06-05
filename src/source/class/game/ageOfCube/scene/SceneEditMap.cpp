@@ -147,11 +147,16 @@ void SceneEditMap::camera_control(){
 void SceneEditMap::handle_signal(Input::Signal *sig){
 	if(sig->get_data()=="save_map"){
 		map->save_map(map_name);
-	}else if(sig->get_data()=="build"){
+	}else if(sig->get_data()=="build_BallSpawnTower"){
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
-		//constructing_building = creator->create("Tower");
+		//
 		constructing_building = creator->create("BallSpawnTower");
+	}else if(sig->get_data()=="build_Tower"){
+		if(constructing_building)delete constructing_building;
+		BuildingCreator* creator=BuildingCreator::get_cur_object();
+		constructing_building = creator->create("Tower");
+		constructing_building->set_player(1);
 	}
 }
 void SceneEditMap::handle_input() {
@@ -159,9 +164,9 @@ void SceneEditMap::handle_input() {
 	if (input->mouse->left_clicked()) {//->left_pressed()
 		if(constructing_building){
 			if(constructing_building->build(map,
-					map->selected_on.x,
-					map->selected_on.y,
-					map->selected_on.z)){
+				constructing_building->get_pos_int().x,
+				constructing_building->get_pos_int().y,
+				constructing_building->get_pos_int().z)){
 			}else{
 				delete constructing_building;
 			}
@@ -261,10 +266,6 @@ void SceneEditMap::scene_update() {
 	}else{
 		//std::cout<<"pause"<<std::endl;
 	}
-
-
-
-
 
 }
 void SceneEditMap::scene_update_end(){

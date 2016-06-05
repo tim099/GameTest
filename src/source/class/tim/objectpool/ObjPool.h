@@ -43,7 +43,7 @@ public:
 	}
 private:
 	inline void create_obj(unsigned size){
-		//std::cout<<"create obj size:"<<size<<std::endl;
+		std::cout<<"create obj size:"<<size<<std::endl;
 		Type *buff;
 		while(size>objs.size()){
 			buff=new Type();

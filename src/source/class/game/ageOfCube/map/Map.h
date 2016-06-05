@@ -19,6 +19,11 @@ class LandscapeCreator;
 class Timer;
 
 namespace AOC{
+namespace AI{
+namespace search{
+class Astar;
+}
+}
 class CubeEX;
 class CubeOutOfEdge;
 class Water;
@@ -107,6 +112,7 @@ public:
 	math::vec3<int> seg_num;
 	math::vec3<int> segsize;
 	std::vector<Player*>players;
+	AI::search::Astar* astar;
 	int player_num;
 protected:
 	//generate the shape of the map(only generate the cube type=1,and empty space type=0

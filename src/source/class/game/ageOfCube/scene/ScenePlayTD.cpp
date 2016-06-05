@@ -272,6 +272,7 @@ void ScenePlayTD::scene_draw() {
 	map->draw(draw,camera,thread_pool); //push position
 
 	if(constructing_building){
+		constructing_building->set_player(1);
 		if(input->mouse->pos_delta()==glm::ivec2(0,0)){
 			constructing_building->draw_buildable(map);
 		}else{

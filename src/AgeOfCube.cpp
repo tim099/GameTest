@@ -18,7 +18,6 @@
 #include "class/game/ageOfCube/AgeOfCubes.h"
 #include "class/game/chessMaster/ChessMaster.h"
 
-#include "class/tim/pointer/smartPointerTest.h"
 #include <AL/al.h>
 #include <AL/alc.h>
 #include <AL/alut.h>
@@ -46,12 +45,12 @@ int main(){
 
 	//while(true){
 
-	test_al();
+	//test_al();
 	AOC::AgeOfCubes* ageOfCubes=new AOC::AgeOfCubes();
 	ageOfCubes->initialize();
 	ageOfCubes->mainloop();
 	delete ageOfCubes;
-	test_al_end();
+	//test_al_end();
 
 
 	//}

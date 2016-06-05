@@ -39,6 +39,9 @@ public:
 	virtual bool standable(){
 		return false;
 	}
+	virtual bool jumpable(){
+		return false;
+	}
 	virtual void collide(physic::RigidBody *b){}
 	/*
 	 * x,y,z is the position of this cube and

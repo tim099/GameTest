@@ -37,19 +37,7 @@ public:
 			}
 		}
 	}
-	/*
-	void push_minion(Minion* unit){
-		minions.push_back(unit);
-	}
-	void remove_minion(Minion* minion){
-		for(unsigned i=0;i<minions.size();i++){
-			if(minions.at(i)==minion){
-				minions.at(i)=minions.back();
-				minions.pop_back();
-			}
-		}
-	}
-	*/
+	Unit* search_unit(int player);
 	void save(FILE *file);
 	void load(FILE *file);
 	MinionCreator* minion_creator;

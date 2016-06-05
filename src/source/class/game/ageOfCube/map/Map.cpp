@@ -12,6 +12,7 @@
 #include "class/input/Input.h"
 #include "class/game/timer/Timer.h"
 #include "class/game/ageOfCube/map/landscape/tree/Tree.h"
+#include "class/game/ageOfCube/map/ai/search/Astar.h"
 #include <cstdio>
 #include <ctime>
 #include <cstdlib>
@@ -27,6 +28,7 @@ Map::Map() {
 	player_num=4;
 	water_height=0.5;
 	ground_height=80;
+
 	map_rigid_body=new MapRigidBody(this);
 	cube_out_of_edge=new CubeOutOfEdge();
 	cube_null=new CubeNull();
@@ -37,9 +39,12 @@ Map::Map() {
 	prev_update_pos=&update_pos2;
 	unit_controller=new UnitController();
 	unit_controller->register_cur();
+	astar=new AI::search::Astar();
+	astar->register_cur();
 	register_cur();
 }
 Map::~Map() {
+	delete astar;
 	if(dp_map)delete dp_map;
 	delete map_rigid_body;
 	for(unsigned i=0;i<players.size();i++){

@@ -60,6 +60,14 @@ void UnitController::load_minion(FILE * file){
 		minion->recruit();
 	}
 }
+Unit* UnitController::search_unit(int player){
+	for(unsigned i=0;i<units.size();i++){
+		if(units.at(i)->get_player()==player){
+			return units.at(i);
+		}
+	}
+	return 0;
+}
 void UnitController::select_unit(Unit *unit){
 	selected_unit = unit;
 	name_str->set_string(unit->get_name());

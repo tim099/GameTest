@@ -22,7 +22,7 @@ public:
 	virtual ~vec3(){
 
 	}
-	inline double length()const{
+	inline double get_length()const{
 		return sqrt(x*x+y*y+z*z);
 	}
 	inline double dot(const vec3& vec)const{
@@ -34,7 +34,7 @@ public:
 				    x*vec.y+y*vec.x);
 	}
 	static inline vec3 normalize(vec3 vec){
-		double len=vec.length();
+		double len=vec.get_length();
 		if(len>0){
 			vec.x/=len;vec.y/=len;vec.z/=len;
 		}
@@ -96,12 +96,68 @@ public:
 	inline vec3 operator-(const double& val)const{
 		return vec3(x-val,y-val,z-val);
 	}
+	inline vec3 operator*=(const double& val){
+		x*=val;y*=val;z*=val;
+		return *this;
+	}
+	inline vec3 operator/=(const double& val){
+		x/=val;y/=val;z/=val;
+		return *this;
+	}
+	inline vec3 operator+=(const double& val){
+		x+=val;y+=val;z+=val;
+		return *this;
+	}
+	inline vec3 operator-=(const double& val){
+		x-=val;y-=val;z-=val;
+		return *this;
+	}
+
+
+	inline vec3 operator*(const int& val)const{
+		return vec3(x*val,y*val,z*val);
+	}
+	inline vec3 operator/(const int& val)const{
+		return vec3(x/val,y/val,z/val);
+	}
+	inline vec3 operator+(const int& val)const{
+		return vec3(x+val,y+val,z+val);
+	}
+	inline vec3 operator-(const int& val)const{
+		return vec3(x-val,y-val,z-val);
+	}
+	inline vec3 operator+=(const int& val){
+		x+=val;y+=val;z+=val;
+		return *this;
+	}
+	inline vec3 operator-=(const int& val){
+		x-=val;y-=val;z-=val;
+		return *this;
+	}
 	Type x,y,z;
 };
 template <class Type>
 inline vec3<Type> operator*(const double& val,const vec3<Type> &vec){
 	return vec*val;
 }
+
+template <class Type>
+struct vec3Cmp{
+	bool operator()(const vec3<Type>& v1, const vec3<Type>& v2) const{
+		if(v1.x<v2.x){
+			return true;
+		}else if(v1.x==v2.x){
+			if(v1.y<v2.y){
+				return true;
+			}else if(v1.y==v2.y){
+				if(v1.z<v2.z){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+};
 
 } /* namespace math */
 #include "class/tim/math/vec3.cpp"

@@ -38,8 +38,9 @@ void Ball::minion_update(){
 	}
 
 	*/
+	rigid_body.vel.y-=0.003f;
 	if(timer==50){
-		//std::cout<<"Ball::minion_update() find path"<<std::endl;
+		std::cout<<"Ball::minion_update() find path timer="<<timer<<std::endl;
 		Unit* unit=UnitController::get_cur_object()->search_unit(1);
 		if(unit){
 			//std::cout<<"Ball start search"<<std::endl;
@@ -53,13 +54,19 @@ void Ball::minion_update(){
 			finder->get()->min_search_times=6000;
 			AI::search::SearchTask *task=new AOC::AI::search::SearchTask(*finder);
 			AI::search::Astar::get_cur_object()->push_task(task);
+			//delete finder;//test
+			//finder=0;//test
 		}
 		//std::cout<<"Ball::minion_update() find path end"<<std::endl;
 	}
-	rigid_body.vel-=0.003f;
+
 	if(finder&&(*finder)->search_done&&(*finder)->find){
+
 		AI::search::FindPath* path=dynamic_cast<AI::search::FindPath*>(finder->get());
-		if(path->cur_at<path->path.size()){
+		if(!path){
+			std::cerr<<"finder no path!!"<<std::endl;
+		}
+		if(path&&path->cur_at<path->path.size()){
 			if((get_pos()-(path->path.at(path->cur_at))).get_length()<0.2*Map::CUBE_SIZE){//reach!!
 				path->cur_at++;
 				if(path->cur_at>=path->path.size()){
@@ -97,14 +104,6 @@ void Ball::minion_update(){
 	}
 
 	timer++;
-
-	if(timer<500){
-
-	}else{
-		///*
-
-		//*/
-	}
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
 	if(timer>2500)delete this;
 	//set_position(get_position()+math::vec3<double>(0.05,0,0));

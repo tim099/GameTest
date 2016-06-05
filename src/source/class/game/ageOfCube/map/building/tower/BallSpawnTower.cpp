@@ -93,16 +93,17 @@ void BallSpawnTower::building_update(){
 				  y*Map::CUBE_SIZE+0.093*size,
 				  z*Map::CUBE_SIZE+0.5*size);
 		glm::vec3 relative_pos=recruit_pos-pos.get_pos();
-		if(rotate){
-			float angle=0.5*rotate*M_PI;
-			float nx=relative_pos.x*cosf(angle)+relative_pos.z*sinf(angle);
-			float nz=-relative_pos.x*sinf(angle)+relative_pos.z*cosf(angle);
-			relative_pos.x=nx;relative_pos.z=nz;
-		}
+
+		float angle=0.5*rotate*M_PI;
+		float nx=relative_pos.x*cosf(angle)+relative_pos.z*sinf(angle);
+		float nz=-relative_pos.x*sinf(angle)+relative_pos.z*cosf(angle);
+		relative_pos.x=nx;relative_pos.z=nz;
+
 		ball->set_pos(math::vec3<double>(pos.get_pos().x+relative_pos.x,
 				pos.get_pos().y+relative_pos.y,
 				pos.get_pos().z+relative_pos.z));
-		ball->set_vel((200/loop_time)*0.02*size*math::vec3<double>::normalize(
+		ball->set_vel((200.0/loop_time)*0.02*size*
+				math::vec3<double>::normalize(
 				math::vec3<double>(relative_pos.x,0,relative_pos.z)));
 		ball->set_size(0.16f*size);
 		ball->recruit();

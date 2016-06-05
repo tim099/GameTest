@@ -10,7 +10,7 @@ namespace AI {
 namespace search{
 Astar::Astar() {
 	thread_pool=new Tim::ThreadPool(1,BELOW_NORMAL_PRIORITY_CLASS);
-	node_pool=new Tim::ObjPool<Node>(50000);
+	node_pool=new Tim::ObjPool<Node>(10000);
 }
 Astar::~Astar() {
 	delete node_pool;
@@ -23,18 +23,16 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 	std::map<math::vec3<int>,Node*,math::vec3Cmp<int> >::iterator it;
 	std::priority_queue<Node*, std::vector<Node*>, NodeCmp > q;
 
-	int size=finder->get_size();
-	int search_times=0;
+	int size=finder->get_size(),search_times=0;
 	int max_search_times=finder->max_search_times,min_search_times=finder->min_search_times;
-	bool access_able;
-	bool find=false;
+	bool find=false,access_able;
 	double min_dis=std::numeric_limits<double>::max();
+
 	Map *map=Map::get_cur_object();
 	Node *next_node,*find_node=0;
 	std::vector<math::vec3<int> >next_node_pos;
 	math::vec3<int> next_pos;
 	math::vec3<int> cur_stand_on;
-	bool standable;
 
 	Node* node=new Node();//start!!
 	node->pos=finder->get_start_pos();
@@ -65,20 +63,15 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 		cur_stand_on.y-=1;
 		cur_stand_on.z+=size/2;
 		cube=map->get_cube(cur_stand_on.x,cur_stand_on.y,cur_stand_on.z);
-		if(cube->standable()){
-			standable=true;
-		}else{
-			standable=false;
-		}
 		next_node_pos.clear();
-		if(standable||node->jump){
+		if(cube->standable()||node->jump){
 			//if(node->jump)std::cout<<"jump"<<std::endl;
 			next_node_pos.push_back(node->pos+math::vec3<int>(1,0,0));
 			next_node_pos.push_back(node->pos+math::vec3<int>(-1,0,0));
 			next_node_pos.push_back(node->pos+math::vec3<int>(0,0,1));
 			next_node_pos.push_back(node->pos+math::vec3<int>(0,0,-1));
 		}
-		if(standable&&cube->jumpable()){
+		if(cube->standable()&&cube->jumpable()){
 			next_node_pos.push_back(node->pos+math::vec3<int>(0,1,0));//jump
 		}
 		next_node_pos.push_back(node->pos+math::vec3<int>(0,-1,0));//drop
@@ -91,18 +84,8 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 				if(node->cur_dis+Map::CUBE_SIZE>=it->second->cur_dis){//no updated
 					continue;
 				}else{
-					//std::cout<<"update!!"<<node->cur_dis+Map::CUBE_SIZE
-							//<<","<<it->second->cur_dis<<std::endl;
-
-
 					access_able=true;
 					next_node=it->second;
-					if(!(next_pos==next_node->pos)){
-						std::cout<<"update!!pos="<<next_pos.x<<","<<next_pos.y<<","<<next_pos.z<<std::endl;
-						std::cout<<"update!!pos2="<<next_node->pos.x<<","
-								<<next_node->pos.y<<","<<next_node->pos.z<<std::endl;
-					}
-
 				}
 			}else{//first visit!!
 				access_able=true;
@@ -133,8 +116,6 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 					q.push(next_node);
 					in_q.insert(next_node->pos);
 				}
-
-				//std::cout<<"next_pos added"<<std::endl;
 			}
 		}
 	}

@@ -23,6 +23,15 @@ bool RigidBodyController::check_collision(RigidBody* a){
 void RigidBodyController::detect_collision(RigidBody* a,bool stop_when_collide){
 	a->update_rigid_body();
 	RigidBody *b;
+	for(unsigned i=0;i<special_collisions.size();i++){
+		b=special_collisions.at(i);
+		if(b!=a){
+			if(b->check_collision(a)){
+				b->collide(a);
+				a->be_collide(b);
+			}
+		}
+	}
 	for(unsigned i=0;i<collisions.size();i++){
 		b=collisions.at(i);
 		if(b!=a){
@@ -33,15 +42,7 @@ void RigidBodyController::detect_collision(RigidBody* a,bool stop_when_collide){
 			}
 		}
 	}
-	for(unsigned i=0;i<special_collisions.size();i++){
-		b=special_collisions.at(i);
-		if(b!=a){
-			if(b->check_collision(a)){
-				b->collide(a);
-				a->be_collide(b);
-			}
-		}
-	}
+
 
 }
 void RigidBodyController::check_collision(){

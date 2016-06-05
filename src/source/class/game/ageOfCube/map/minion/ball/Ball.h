@@ -31,7 +31,7 @@ protected:
 	Display::DrawObject *ball_Drawobj;
 	math::Position dp_pos;
 	Tim::SmartPointer<AI::search::Finder> *finder;
-	int timer,stuck_timer;
+	int timer,stuck_timer,stuck_times;
 };
 
 } /* namespace AOC */

@@ -15,6 +15,9 @@ public:
 	virtual bool standable(){
 		return true;
 	}
+	virtual bool jumpable(){
+		return true;
+	}
 };
 }
 #endif /* SOURCE_CLASS_GAME_MAP_CUBE_BASIC_BASICCUBE_H_ */

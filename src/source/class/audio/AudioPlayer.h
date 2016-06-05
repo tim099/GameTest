@@ -20,8 +20,11 @@ public:
 	AudioPlayer(std::string _audio_name);
 	AudioPlayer(ALuint _buffer);
 	virtual ~AudioPlayer();
+	void init();
 	void play();
 	void pause();
+	float get_volume()const{return volume;};
+	void set_volume(float volume);
 	void set_source(std::string _audio_name);
 	void set_source(ALuint _buffer);
 	void set_loop(bool _loop);
@@ -30,6 +33,7 @@ private:
 	ALuint buffer;
 	ALuint source;
 	ALint  state;
+	float volume;
 	bool is_pause;
 	bool is_looping;
 };

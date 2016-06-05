@@ -17,45 +17,47 @@ AudioPlayer::AudioPlayer() {
 	buffer = 0;
 	source = 0;
 	state = 0;
-	is_pause = false;
-	is_looping=false;
-	alGenSources(1, &source);
+	init();
 }
-
 AudioPlayer::AudioPlayer(ALuint _buffer){
-	buffer = _buffer;
+	buffer = 0;
 	source = 0;
 	state = 0;
-	is_pause = false;
-	is_looping=false;
-	alGenSources(1, &source);
-	alSourcei(source, AL_BUFFER, buffer);
+	init();
+	set_source(_buffer);
 }
-
 AudioPlayer::AudioPlayer(std::string _audio_name){
-	buffer = AllAudioSources::get_cur_object()->get(_audio_name)->get_buffer();
+	//buffer = AllAudioSources::get_cur_object()->get(_audio_name)->get_buffer();
 	source = 1;
 	state = 0;
+	init();
+	//alSourcei(source, AL_BUFFER, buffer);
+	set_source(_audio_name);
+	//std::cout<<"audio player source = "<<source<<" buffer = "<<buffer<<std::endl;
+}
+void AudioPlayer::init(){
 	is_pause = false;
 	is_looping = false;
 	alGenSources(1, &source);
-	alSourcei(source, AL_BUFFER, buffer);
-	std::cout<<"audio player source = "<<source<<" buffer = "<<buffer<<std::endl;
-}
 
+	set_volume(1.0);
+}
 AudioPlayer::~AudioPlayer() {
-	alSourcePause(source);
+	pause();
     alDeleteSources(1, &source);
 }
 void AudioPlayer::play(){
-	std::cout<<"play "<<source<<std::endl;
+	//std::cout<<"play "<<source<<std::endl;
 	alSourcePlay(source);
 }
 
 void AudioPlayer::pause(){
 	alSourcePause(source);
 }
-
+void AudioPlayer::set_volume(float _volume){
+	volume=_volume;
+	alSourcef(source, AL_GAIN, volume);
+}
 void AudioPlayer::set_loop(bool _loop){
 	is_looping = _loop;
 	if(is_looping){
@@ -66,8 +68,7 @@ void AudioPlayer::set_loop(bool _loop){
 	}
 }
 void AudioPlayer::set_source(std::string _audio_name){
-	ALuint _buffer=AllAudioSources::get_cur_object()->get(_audio_name)->get_buffer();
-	set_source(_buffer);
+	set_source(AllAudioSources::get_cur_object()->get(_audio_name)->get_buffer());
 }
 void AudioPlayer::set_source(ALuint _buffer){
 	buffer = _buffer;

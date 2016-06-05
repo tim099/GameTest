@@ -15,7 +15,7 @@ FindPath::FindPath(const math::vec3<double>&_pos,const double &_size,math::vec3<
 	cur_at=0;
 }
 FindPath::~FindPath() {
-	std::cout<<"FindPath::~FindPath()"<<std::endl;
+	//std::cout<<"FindPath::~FindPath()"<<std::endl;
 }
 double FindPath::node_score(Node* node){
 	double total_dis=0;

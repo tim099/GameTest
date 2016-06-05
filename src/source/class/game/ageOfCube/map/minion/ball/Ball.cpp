@@ -11,12 +11,14 @@ void Ball::minion_pre_init(){
 }
 Ball::Ball() {
 	ball_Drawobj=0;
+	stuck_timer=0;
 	timer=0;
 	finder=0;
 	colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
 }
 Ball::Ball(Ball* ball) {
 	ball_Drawobj=ball->ball_Drawobj;
+	stuck_timer=0;
 	timer=0;
 	finder=0;
 	colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
@@ -41,14 +43,31 @@ void Ball::minion_update(){
 
 	*/
 	rigid_body.vel.y-=0.003f;
+	if(stuck_timer>100){
+		stuck_timer=0;
+		std::cout<<"ball stuck"<<std::endl;
+		Unit* unit=UnitController::get_cur_object()->search_unit(1);
+		if(unit){
+			math::vec3<int>des(unit->get_pos_int());
+			AI::search::FindPath *find_path=new AI::search::FindPath(
+					rigid_body.pos,2*rigid_body.radius,des,0);
+			if(finder)delete finder;
+
+			finder=new Tim::SmartPointer<AI::search::Finder>(find_path);
+			finder->get()->max_search_times=40000;
+			finder->get()->min_search_times=6000;
+			AI::search::SearchTask *task=new AOC::AI::search::SearchTask(*finder);
+			AI::search::Astar::get_cur_object()->push_task(task);
+		}
+	}
 	if(timer==50){
-		std::cout<<"Ball::minion_update() find path timer="<<timer<<std::endl;
+		//std::cout<<"Ball::minion_update() find path timer="<<timer<<std::endl;
 		Unit* unit=UnitController::get_cur_object()->search_unit(1);
 		if(unit){
 			//std::cout<<"Ball start search"<<std::endl;
 			math::vec3<int>des(unit->get_pos_int());
-			AI::search::FindPath *find_path=
-					new AI::search::FindPath(rigid_body.pos,2*rigid_body.radius,des,0);
+			AI::search::FindPath *find_path=new AI::search::FindPath(
+					rigid_body.pos,2*rigid_body.radius,des,0);
 			if(finder)delete finder;
 
 			finder=new Tim::SmartPointer<AI::search::Finder>(find_path);
@@ -71,6 +90,7 @@ void Ball::minion_update(){
 		if(path&&path->cur_at<path->path.size()){
 			if((get_pos()-(path->path.at(path->cur_at))).get_length()<0.2*Map::CUBE_SIZE){//reach!!
 				path->cur_at++;
+				stuck_timer=0;
 				if(path->cur_at>=path->path.size()){
 					rigid_body.acc=math::vec3<double>(0,0,0);
 					colli_sound.play();
@@ -79,6 +99,7 @@ void Ball::minion_update(){
 			if(path->cur_at<path->path.size()){
 				math::vec3<double> target=path->path.at(path->cur_at);
 				move_to(target,0.025);
+				stuck_timer++;
 			}
 		}else{
 			//delete this;

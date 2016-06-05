@@ -60,7 +60,6 @@ SceneEditMap::~SceneEditMap() {
 
 }
 void SceneEditMap::camera_control(){
-
 	if(input->keyboard->pressed('R')){
 		camera->v.y += 0.01f* sqrt(camera->look_dis() + 0.001);
 	}
@@ -164,6 +163,14 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 }
 void SceneEditMap::handle_input() {
 	camera_control();
+	if(input->keyboard->pressed(Input::KeyCode::Plus)){
+		std::cout<<"+ volume"<<std::endl;
+		back_music->set_volume(1.03*back_music->get_volume());
+	}
+	if(input->keyboard->pressed(Input::KeyCode::Minus)){
+		std::cout<<"- volume"<<std::endl;
+		back_music->set_volume(0.97*back_music->get_volume());
+	}
 	if (input->mouse->left_clicked()) {//->left_pressed()
 		if(constructing_building){
 			if(constructing_building->build(map,

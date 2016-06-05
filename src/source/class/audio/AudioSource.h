@@ -8,12 +8,10 @@
 #ifndef SOURCE_CLASS_AUDIO_AUDIOSOURCE_H_
 #define SOURCE_CLASS_AUDIO_AUDIOSOURCE_H_
 
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <AL/alut.h>
+
 #include <cstdio>
 #include <string>
-
+typedef unsigned int ALuint;
 namespace Audio {
 
 class AudioSource {

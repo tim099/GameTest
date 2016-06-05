@@ -8,9 +8,7 @@
 #ifndef SOURCE_CLASS_AUDIO_AUDIOCONFIG_H_
 #define SOURCE_CLASS_AUDIO_AUDIOCONFIG_H_
 
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <AL/alut.h>
+
 #include <cstdio>
 #include <string>
 

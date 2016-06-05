@@ -13,11 +13,13 @@ Ball::Ball() {
 	ball_Drawobj=0;
 	timer=0;
 	finder=0;
+	colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
 }
 Ball::Ball(Ball* ball) {
 	ball_Drawobj=ball->ball_Drawobj;
 	timer=0;
 	finder=0;
+	colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
 }
 Ball::~Ball() {
 	if(finder)delete finder;
@@ -71,6 +73,7 @@ void Ball::minion_update(){
 				path->cur_at++;
 				if(path->cur_at>=path->path.size()){
 					rigid_body.acc=math::vec3<double>(0,0,0);
+					colli_sound.play();
 				}
 			}
 			if(path->cur_at<path->path.size()){
@@ -78,8 +81,8 @@ void Ball::minion_update(){
 				move_to(target,0.025);
 			}
 		}else{
-			delete this;
-			/*
+			//delete this;
+			///*
 			if(rigid_body.radius>0.45){
 				if((rigid_body.be_collided&&rigid_body.be_collided->get_type()=="MapRigidBody")){
 					for(int i=-2;i<=2;i++){
@@ -99,10 +102,13 @@ void Ball::minion_update(){
 			}else{
 				rigid_body.radius*=1.02;
 			}
-			*/
+			//*/
 		}
 	}
-
+	//if(rigid_body.be_collided||rigid_body.collided){
+		//colli_sound.pause();
+		//colli_sound.play();
+	//}
 	timer++;
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
 	if(timer>2500)delete this;

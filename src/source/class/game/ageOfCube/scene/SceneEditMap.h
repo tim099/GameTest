@@ -6,7 +6,7 @@
 #include "class/display/UI/UI.h"
 #include "class/game/timer/Timer.h"
 #include "class/display/light/LightControl.h"
-
+#include "class/audio/AudioPlayer.h"
 namespace AOC{
 class SceneEditMap : public Scene{
 public:
@@ -33,6 +33,7 @@ protected:
 	AOC::Map *map;
 	Display::Camera *camera;
 	Display::LightControl* lightControl;
+	Audio::AudioPlayer *back_music;
 	Building* constructing_building;
 	math::Position galaxy_pos_o;
 	math::Position galaxy_pos;

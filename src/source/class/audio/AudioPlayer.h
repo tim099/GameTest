@@ -8,12 +8,10 @@
 #ifndef SOURCE_CLASS_AUDIO_AUDIOPLAYER_H_
 #define SOURCE_CLASS_AUDIO_AUDIOPLAYER_H_
 
-#include <AL/al.h>
-#include <AL/alc.h>
-#include <AL/alut.h>
+
 #include <cstdio>
 #include <string>
-
+#include <AL/alut.h>
 namespace Audio {
 
 class AudioPlayer {
@@ -24,6 +22,7 @@ public:
 	virtual ~AudioPlayer();
 	void play();
 	void pause();
+	void set_source(std::string _audio_name);
 	void set_source(ALuint _buffer);
 	void set_loop(bool _loop);
 private:

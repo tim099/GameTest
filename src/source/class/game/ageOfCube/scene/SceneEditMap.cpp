@@ -3,6 +3,8 @@
 #include "class/tim/file/File.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
+#include "class/audio/AllAudioSources.h"
+
 #include <ctime>
 namespace AOC{
 SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
@@ -12,6 +14,7 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	camera = 0;
 	lightControl = 0;
 	UI = 0;
+	back_music=0;
 	destruct_mode=false;
 	pause_timer=false;
 	constructing_building=0;
@@ -38,14 +41,14 @@ void SceneEditMap::scene_initialize() {
 
 	UI = new UI::UI();
 	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
-
-
-
+	back_music=new Audio::AudioPlayer();
+	back_music->set_source("default_music/prepare_your_swords.wav");
 	resume();
 }
 void SceneEditMap::scene_terminate() {
 	delete lightControl;
 	delete camera;
+	if(back_music)delete back_music;
 	if(constructing_building)delete constructing_building;
 	if(map)delete map;
 	if (UI) {
@@ -319,9 +322,11 @@ void SceneEditMap::scene_draw() {
 	}
 }
 void SceneEditMap::pause() {
-
+	back_music->pause();
 }
 void SceneEditMap::resume() {
+	back_music->set_loop(true);
+	back_music->play();
 	draw->Enable3D = true;
 	draw->set_camera(camera);
 	draw->set_lightControl(lightControl);

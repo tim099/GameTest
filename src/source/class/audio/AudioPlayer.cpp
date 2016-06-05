@@ -8,6 +8,8 @@
 #include <iostream>
 #include "class/audio/AudioPlayer.h"
 #include "class/audio/AllAudioSources.h"
+#include <AL/al.h>
+#include <AL/alc.h>
 
 namespace Audio {
 
@@ -16,6 +18,8 @@ AudioPlayer::AudioPlayer() {
 	source = 0;
 	state = 0;
 	is_pause = false;
+	is_looping=false;
+	alGenSources(1, &source);
 }
 
 AudioPlayer::AudioPlayer(ALuint _buffer){
@@ -23,6 +27,7 @@ AudioPlayer::AudioPlayer(ALuint _buffer){
 	source = 0;
 	state = 0;
 	is_pause = false;
+	is_looping=false;
 	alGenSources(1, &source);
 	alSourcei(source, AL_BUFFER, buffer);
 }
@@ -39,10 +44,9 @@ AudioPlayer::AudioPlayer(std::string _audio_name){
 }
 
 AudioPlayer::~AudioPlayer() {
-	// TODO Auto-generated destructor stub
+	alSourcePause(source);
+    alDeleteSources(1, &source);
 }
-
-
 void AudioPlayer::play(){
 	std::cout<<"play "<<source<<std::endl;
 	alSourcePlay(source);
@@ -61,7 +65,10 @@ void AudioPlayer::set_loop(bool _loop){
 		alSourcei(source, AL_LOOPING, 0);
 	}
 }
-
+void AudioPlayer::set_source(std::string _audio_name){
+	ALuint _buffer=AllAudioSources::get_cur_object()->get(_audio_name)->get_buffer();
+	set_source(_buffer);
+}
 void AudioPlayer::set_source(ALuint _buffer){
 	buffer = _buffer;
 	alSourcei(source, AL_BUFFER, buffer);

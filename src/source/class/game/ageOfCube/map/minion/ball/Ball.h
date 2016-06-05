@@ -5,6 +5,7 @@
 #include "class/tim/math/Position.h"
 #include "class/tim/pointer/SmartPointer.h"
 #include "class/game/ageOfCube/map/ai/search/finder/FindPath.h"
+#include "class/audio/AudioPlayer.h"
 namespace AOC {
 
 class Ball: public Minion {
@@ -26,6 +27,7 @@ protected:
 	virtual void load_minion(FILE * file);
 	virtual void draw_minion();
 	virtual void minion_update();
+	Audio::AudioPlayer colli_sound;
 	Display::DrawObject *ball_Drawobj;
 	math::Position dp_pos;
 	Tim::SmartPointer<AI::search::Finder> *finder;

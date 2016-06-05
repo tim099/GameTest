@@ -14,6 +14,7 @@
 #include "class/display/texture/AllTextures.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/model/modelBuffer/AllModelBuffers.h"
+#include "class/audio/AllAudioSources.h"
 
 namespace AOC{
 class AgeOfCubes : public Game{
@@ -39,6 +40,7 @@ private:
 	Display::AllDrawObjects *drawObjects;
 	Display::AllTextures* textures;
 	Display::AllModelBuffers* modelBuffers;
+	Audio::AllAudioSources *audioSources;
 	//SceneStart *startScene;
 
 };

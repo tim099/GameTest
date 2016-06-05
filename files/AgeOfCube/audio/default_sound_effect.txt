@@ -1,0 +1,18 @@
+#LOAD_AUDIOMAP_SCRIPT
+
+#HEADER
+
+Name:
+	default_sound_effect
+FolderPath:
+	files/audio/soundeffect/
+	
+#HEADER_END
+
+
+AudioSource:
+	Name:
+		Blip_Select3.wav
+#load_end
+
+#END

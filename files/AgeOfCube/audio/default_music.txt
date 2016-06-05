@@ -1,0 +1,18 @@
+#LOAD_AUDIOMAP_SCRIPT
+
+#HEADER
+
+Name:
+	default_music
+FolderPath:
+	files/audio/music/
+	
+#HEADER_END
+
+
+AudioSource:
+	Name:
+		prepare_your_swords.wav
+#load_end
+
+#END

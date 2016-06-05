@@ -6,6 +6,7 @@
 #include "class/display/UI/UI.h"
 #include "class/display/UI/page/PageControl.h"
 #include "class/display/UI/page/AutoPageControl.h"
+#include "class/audio/AudioPlayer.h"
 namespace AOC{
 class SceneStart: public Scene {
 public:
@@ -39,6 +40,7 @@ protected:
 	UI::PageControl *p_control;
 	UI::AutoPageControl *auto_p_control;
 	UI::UI *UI;
+	Audio::AudioPlayer music_player;
 };
 }
 #endif /* SOURCE_CLASS_GAME_SCENE_AGEOFCUBESCENE_SCENESTART_H_ */

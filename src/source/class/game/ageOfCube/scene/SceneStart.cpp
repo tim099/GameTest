@@ -12,6 +12,9 @@ SceneStart::SceneStart() {
 	p_control=0;
 	auto_p_control=0;
 	map_folder_path="files/AgeOfCube/maps/";
+	music_player = Audio::AudioPlayer("default_music/prepare_your_swords.wav");
+	music_player.set_loop(true);
+	music_player.play();
 }
 void SceneStart::scene_initialize(){
 

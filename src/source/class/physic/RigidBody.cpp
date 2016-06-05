@@ -54,8 +54,8 @@ void RigidBody::collide(RigidBody* b){
 	///*
 	static const int range=100;
 	vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
-							   0.01*((rand()%range)-range/2)/(double)range,
-							   0.01*((rand()%range)-range/2)/(double)range)*vel.get_length();
+							0.01*((rand()%range)-range/2)/(double)range,
+							0.01*((rand()%range)-range/2)/(double)range)*vel.get_length();
 
 	b->vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
 							   0.01*((rand()%range)-range/2)/(double)range,
@@ -74,7 +74,7 @@ void RigidBody::collide(RigidBody* b){
 		///*
 		if(RigidBodyController::get_cur_object()->check_collision(this)){//handle stuck
 			math::vec3<double> vec=math::vec3<double>::normalize(
-					((pos+math::vec3<double>(0.0001,0.0001,0.0001))-o_pos));
+					((pos-o_pos)+math::vec3<double>(0.00001,0.00001,0.00001)));
 			pos=o_pos+(1.01*radius)*vec;
 			b->pos=o_pos-(1.01*b->radius)*vec;
 

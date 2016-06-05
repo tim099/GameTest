@@ -54,7 +54,11 @@ void FindPath::convert_path(Node* node){
 	for(int i=(int)nodes.size()-1;i>=0;i--){
 		cur=nodes.at(i);
 		pos.x=(cur->pos.x+0.5*i_size)*Map::CUBE_SIZE;
-		pos.y=(cur->pos.y)*Map::CUBE_SIZE+size;
+		if(cur->parent&&cur->parent->jump){
+			pos.y=(cur->pos.y+0.5*i_size)*Map::CUBE_SIZE;
+		}else{
+			pos.y=(cur->pos.y)*Map::CUBE_SIZE+0.5*size;
+		}
 		pos.z=(cur->pos.z+0.5*i_size)*Map::CUBE_SIZE;
 		path.push_back(pos);
 	}

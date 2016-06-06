@@ -128,7 +128,9 @@ void Ball::moving(){
 			if(finder)delete finder;
 			finder=0;
 			rigid_body.acc=math::vec3<double>(0,0,0);
-			Audio::AudioController::get_cur_object()->play("default_sound_effect/Blip_Select3.wav");
+			//Audio::AudioController::get_cur_object()->play("default_sound_effect/Blip_Select3.wav");
+			Audio::AudioController::get_cur_object()->
+					play_by_dis("default_sound_effect/Blip_Select3.wav",rigid_body.pos,1000);
 			//colli_sound.play();
 			delete this;
 		}

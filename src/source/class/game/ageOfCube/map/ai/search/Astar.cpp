@@ -9,7 +9,7 @@ namespace AOC {
 namespace AI {
 namespace search{
 Astar::Astar() {
-	thread_pool=new Tim::ThreadPool(1,BELOW_NORMAL_PRIORITY_CLASS);
+	thread_pool=new Tim::ThreadPool(1,BELOW_NORMAL_PRIORITY_CLASS);//IDLE_PRIORITY_CLASS
 	node_pool=new Tim::ObjPool<Node>(10000);
 }
 Astar::~Astar() {
@@ -151,10 +151,10 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 		node_pool->free(nodes.at(i));
 	}
 	if(find){
-		std::cout<<"Astar::search find!!search times="<<search_times<<std::endl;
+		//std::cout<<"Astar::search find!!search times="<<search_times<<std::endl;
 		finder->find=true;
 	}else{
-		std::cout<<"Astar::search not find!!search times="<<search_times<<std::endl;
+		//std::cout<<"Astar::search not find!!search times="<<search_times<<std::endl;
 	}
 
 

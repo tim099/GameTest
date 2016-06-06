@@ -1,6 +1,8 @@
 //Author: LukeWu
 #include "class/audio/AudioController.h"
 #include "class/audio/AudioConfig.h"
+#include "class/display/draw/Draw.h"
+#include "class/display/camera/Camera.h"
 #include <iostream>
 namespace Audio {
 
@@ -23,6 +25,13 @@ void AudioController::play(std::string name,double volume){
 	player->set_volume(volume);
 	player->play();
 	auto_players.push_back(player);
+}
+void AudioController::play_by_dis(std::string name,math::vec3<double> pos,double volume){
+	Display::Camera* camera=Display::Draw::get_cur_object()->camera;
+	if(!camera)return;
+	math::vec3<double> cam_pos(camera->pos.x,camera->pos.y,camera->pos.z);
+	double dis=(cam_pos-pos).get_length();
+	play(name,volume/(dis*dis));
 }
 void AudioController::update(){
 	AudioPlayer* player;

@@ -13,6 +13,7 @@
 #include "class/tim/objectpool/ObjPool.h"
 #include "class/controller/Controller.h"
 #include "class/audio/AudioPlayer.h"
+#include "class/tim/math/vec3.h"
 #include <string>
 namespace Audio {
 
@@ -24,6 +25,7 @@ public:
 	virtual ~AudioController();
 	virtual void update();
 	void play(std::string name,double volume=1.0);
+	void play_by_dis(std::string name,math::vec3<double> pos,double volume=1.0);
 private:
 	Tim::ObjPool<AudioPlayer>*player_pool;
 	std::vector<AudioPlayer*>auto_players;

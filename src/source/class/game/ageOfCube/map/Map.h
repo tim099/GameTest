@@ -15,6 +15,7 @@
 #include "class/game/ageOfCube/unit/UnitController.h"
 #include "class/tim/math/vec3.h"
 #include "class/game/ageOfCube/map/MapRigidBody.h"
+#include "class/tim/thread/mutex/Mutex.h"
 class LandscapeCreator;
 class Timer;
 
@@ -157,6 +158,7 @@ protected:
 	int ground_height;
 	unsigned seed;
 	double water_height;
+	Tim::Mutex Cube_Mutex;
 
 	MapRigidBody* map_rigid_body;
 

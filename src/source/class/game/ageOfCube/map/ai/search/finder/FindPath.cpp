@@ -25,7 +25,7 @@ double FindPath::node_score(Node* node){
 	//std::cout<<"dis_need="<<dis_need<<"score="<<-total_dis<<std::endl;
 	return -total_dis;
 }
-void FindPath::find_node(Node* node){
+void FindPath::node_find(Node* node){
 	convert_path(node);
 }
 bool FindPath::check_find(Node* node){
@@ -57,7 +57,7 @@ void FindPath::convert_path(Node* node){
 		if(cur->parent&&cur->parent->jump){
 			pos.y=(cur->pos.y+0.5*i_size)*Map::CUBE_SIZE;
 		}else{
-			pos.y=(cur->pos.y)*Map::CUBE_SIZE+0.5*size;
+			pos.y=(cur->pos.y)*Map::CUBE_SIZE+0.51*size;
 		}
 		pos.z=(cur->pos.z+0.5*i_size)*Map::CUBE_SIZE;
 		path.push_back(pos);

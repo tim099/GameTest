@@ -183,7 +183,7 @@ void Map::gen_map_shape(){
 			for (int j = 0; j < map_size.y; j++) {
 				if (j < ground_height * height) {
 					//map->get(i, j, k).set(Cube::startcube);
-					map->get(i,j,k)=Cube::startcube;
+					map->get(i,j,k)=Cube::cube_start;
 				}
 			}
 		}
@@ -201,7 +201,7 @@ void Map::gen_map_cube_type(){
 			wetness=get_wetness(i,k,height);
 
 			for(int j=0;j<map_size.y;j++){
-				if(map->get(i,j,k)>=Cube::startcube){//.type
+				if(map->get(i,j,k)>=Cube::cube_start){//.type
 					gen_cube_type(i,j,k,stone_height,height,wetness);
 				}
 			}
@@ -377,7 +377,7 @@ bool Map::remove_cube(int x,int y,int z){
 }
 bool Map::set_cube_type(int x,int y,int z,int type){
 	if(x<0||x>=map_size.x||y<0||y>=map_size.y||z<0||z>=map_size.z){
-		std::cout<<"Map::set_cube_type out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
+		//std::cout<<"Map::set_cube_type out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return false;
 	}
 	unsigned char perv_type=map->get(x,y,z);
@@ -410,7 +410,7 @@ Cube* Map::get_cube(int x,int y,int z){
 		return cube_water;//get_map_seg_by_pos(x,z)->get_cube(x,y,z);
 	}
 	Cube *cube;
-	if(type>=Cube::startcube){
+	if(type>=Cube::cube_start){
 		cube=all_cubes->get_cube(type);
 	}else if(type==Cube::cubeEX){
 		cube=get_map_seg_by_pos(x,z)->get_cube(x,y,z);

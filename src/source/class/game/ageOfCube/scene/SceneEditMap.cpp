@@ -11,6 +11,7 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	map_name = _map_name;
 	map_size = _map_size;
 	map = 0;
+	cube_type=0;
 	camera = 0;
 	lightControl = 0;
 	UI = 0;
@@ -29,7 +30,6 @@ void SceneEditMap::loading(){
 }
 void SceneEditMap::scene_initialize() {
 	map = new AOC::Map();
-
 	glm::vec3 pos(10,80,10);
 	camera = new Display::Camera(pos,
 			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
@@ -43,6 +43,8 @@ void SceneEditMap::scene_initialize() {
 	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
 	back_music=new Audio::AudioPlayer();
 	back_music->set_source("default_music/prepare_your_swords.wav");
+
+	cube_type=Cube::cube_start;
 	resume();
 }
 void SceneEditMap::scene_terminate() {
@@ -92,6 +94,15 @@ void SceneEditMap::camera_control(){
 		constructing_building->set_size(6.0);
 	}
 	if(input->keyboard->get('7')&&constructing_building){
+		constructing_building->set_size(7.0);
+	}
+	if(input->keyboard->get('8')&&constructing_building){
+		constructing_building->set_size(8.0);
+	}
+	if(input->keyboard->get('9')&&constructing_building){
+		constructing_building->set_size(9.0);
+	}
+	if(input->keyboard->get('0')&&constructing_building){
 		constructing_building->set_size(10.0);
 	}
 	if (input->mouse->mid_pressed()||input->keyboard->pressed('Z')) {
@@ -163,13 +174,15 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 }
 void SceneEditMap::handle_input() {
 	camera_control();
-	if(input->keyboard->pressed(Input::KeyCode::Plus)){
-		std::cout<<"+ volume"<<std::endl;
-		back_music->set_volume(1.03*back_music->get_volume());
+	if(input->keyboard->get(Input::KeyCode::Plus)){
+		//std::cout<<"+ volume"<<std::endl;
+		//back_music->set_volume(1.03*back_music->get_volume());
+		if(cube_type<Cube::cube_end)cube_type++;
 	}
-	if(input->keyboard->pressed(Input::KeyCode::Minus)){
-		std::cout<<"- volume"<<std::endl;
-		back_music->set_volume(0.97*back_music->get_volume());
+	if(input->keyboard->get(Input::KeyCode::Minus)){
+		if(cube_type>Cube::cube_start)cube_type--;
+		//std::cout<<"- volume"<<std::endl;
+		//back_music->set_volume(0.97*back_music->get_volume());
 	}
 	if (input->mouse->left_clicked()) {//->left_pressed()
 		if(constructing_building){
@@ -186,7 +199,7 @@ void SceneEditMap::handle_input() {
 				map->set_cube_type(map->selected_on.x,
 								   map->selected_on.y,
 								   map->selected_on.z,
-								   Cube::dirt);
+								   cube_type);
 			}else{
 				map->set_cube_type(map->selected_cube.x,
 								   map->selected_cube.y,

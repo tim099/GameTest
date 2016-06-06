@@ -13,8 +13,8 @@ Astar::Astar() {
 	node_pool=new Tim::ObjPool<Node>(10000);
 }
 Astar::~Astar() {
-	delete node_pool;
 	thread_pool->Terminate();
+	delete node_pool;
 }
 void Astar::search(Tim::SmartPointer<Finder>& finder){
 	std::vector<Node*>nodes;
@@ -27,7 +27,11 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 	int max_search_times=finder->max_search_times,min_search_times=finder->min_search_times;
 	bool find=false,access_able;
 	double min_dis=std::numeric_limits<double>::max();
-
+	unsigned char path;
+	static const unsigned char left=1<<0;
+	static const unsigned char right=1<<1;
+	static const unsigned char front=1<<2;
+	static const unsigned char back=1<<3;
 	Map *map=Map::get_cur_object();
 	Node *next_node,*find_node=0;
 	std::vector<math::vec3<int> >next_node_pos;
@@ -64,21 +68,20 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 		cur_stand_on.z+=size/2;
 		cube=map->get_cube(cur_stand_on.x,cur_stand_on.y,cur_stand_on.z);
 		next_node_pos.clear();
+		path=0;
 		if(cube->standable()||node->jump){
-			//if(node->jump)std::cout<<"jump"<<std::endl;
-			next_node_pos.push_back(node->pos+math::vec3<int>(1,0,0));
-			next_node_pos.push_back(node->pos+math::vec3<int>(-1,0,0));
-			next_node_pos.push_back(node->pos+math::vec3<int>(0,0,1));
-			next_node_pos.push_back(node->pos+math::vec3<int>(0,0,-1));
+			next_node_pos.push_back(math::vec3<int>(1,0,0));
+			next_node_pos.push_back(math::vec3<int>(-1,0,0));
+			next_node_pos.push_back(math::vec3<int>(0,0,1));
+			next_node_pos.push_back(math::vec3<int>(0,0,-1));
 		}
 		if(cube->standable()&&cube->jumpable()){
-			next_node_pos.push_back(node->pos+math::vec3<int>(0,1,0));//jump
+			next_node_pos.push_back(math::vec3<int>(0,1,0));//jump
 		}
-		next_node_pos.push_back(node->pos+math::vec3<int>(0,-1,0));//drop
-		//std::cout<<"next_node_pos.size()="<<next_node_pos.size()<<std::endl;
+		next_node_pos.push_back(math::vec3<int>(0,-1,0));//drop
 
 		for(unsigned n=0;n<next_node_pos.size();n++){
-			next_pos=next_node_pos.at(n);
+			next_pos=(node->pos+next_node_pos.at(n));
 			it=visited.find(next_pos);
 			if(it!=visited.end()){//visited!!
 				if(node->cur_dis+Map::CUBE_SIZE>=it->second->cur_dis){//no updated
@@ -107,8 +110,9 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 			}
 			if(access_able){
 				next_node->init(node);
-				next_node->cur_dis=node->cur_dis+Map::CUBE_SIZE;
-				if(next_pos.y-node->pos.y==1){
+				next_node->cur_dis=node->cur_dis+Map::CUBE_SIZE*next_node_pos.at(n).get_length();
+
+				if(next_node_pos.at(n).y==1){
 					next_node->jump=true;
 				}
 				next_node->score=finder->node_score(next_node);
@@ -116,13 +120,35 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 					q.push(next_node);
 					in_q.insert(next_node->pos);
 				}
+				if(next_node_pos.at(n).x==1){
+					path|=right;
+				}else if(next_node_pos.at(n).x==-1){
+					path|=left;
+				}else if(next_node_pos.at(n).z==1){
+					path|=front;
+					if(path&right){
+						next_node_pos.push_back(math::vec3<int>(1,0,1));
+					}
+					if(path&left){
+						next_node_pos.push_back(math::vec3<int>(-1,0,1));
+					}
+				}else if(next_node_pos.at(n).z==-1){
+					path|=back;
+					if(path&right){
+						next_node_pos.push_back(math::vec3<int>(1,0,-1));
+					}
+					if(path&left){
+						next_node_pos.push_back(math::vec3<int>(-1,0,-1));
+					}
+				}
 			}
 		}
 	}
-	if(find_node){
-		finder->find_node(find_node);
-	}
 
+
+	if(find_node){
+		finder->node_find(find_node);
+	}
 	for(unsigned i=0;i<nodes.size();i++){
 		node_pool->free(nodes.at(i));
 	}

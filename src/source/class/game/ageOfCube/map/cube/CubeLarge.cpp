@@ -33,7 +33,7 @@ bool CubeLarge::buildable(Map *map,int x,int y,int z){
 	if(buildable){
 		for(unsigned i=0;i<build_on.size();i++){
 			on=&(build_on.at(i));
-			if(map->get_cube_type(x+on->x,y+on->y,z+on->z)<Cube::startcube){
+			if(map->get_cube_type(x+on->x,y+on->y,z+on->z)<Cube::cube_start){
 				buildable=false;
 				break;
 			}

@@ -10,7 +10,7 @@ public:
 	Finder();
 	virtual ~Finder();
 	virtual bool check_find(Node* node)=0;
-	virtual void find_node(Node* node)=0;
+	virtual void node_find(Node* node)=0;
 	virtual double node_score(Node* node){return 0;}
 	virtual	math::vec3<int> get_start_pos()=0;
 	virtual	int get_size()=0;

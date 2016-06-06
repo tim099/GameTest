@@ -30,6 +30,7 @@ protected:
 
 	void camera_control();
 	void handle_input();
+	int cube_type;
 	AOC::Map *map;
 	Display::Camera *camera;
 	Display::LightControl* lightControl;

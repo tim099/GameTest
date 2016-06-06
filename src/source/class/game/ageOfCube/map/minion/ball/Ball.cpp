@@ -13,14 +13,17 @@ Ball::Ball() {
 	ball_Drawobj=0;
 	stuck_timer=0;
 	stuck_times=0;
+	colli_timer=0;
 	timer=0;
 	finder=0;
+
 	colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
 }
 Ball::Ball(Ball* ball) {
 	ball_Drawobj=ball->ball_Drawobj;
 	stuck_timer=0;
 	stuck_times=0;
+	colli_timer=0;
 	timer=0;
 	finder=0;
 	colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
@@ -35,33 +38,88 @@ void Ball::load_minion(FILE * file){
 	fscanf(file,"%d\n",&timer);
 }
 void Ball::minion_update(){
-	//rigid_body.vel.x=-0.04f;
-	/*
-	if(rigid_body.vel.get_length()<0.1f){
-		rigid_body.vel+=0.0001*math::vec3<double>::normalize(
-				rigid_body.vel+
-				math::vec3<double>(0.000001,0.000001,0.000001));
-	}
 
-	*/
-	rigid_body.vel.y-=0.003f;
+	ball_move();
+	//if(rigid_body.be_collided||rigid_body.collided){
+		//colli_sound.pause();
+		//colli_sound.play();
+	//}
+	timer++;
+	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
+	if(timer>2500)delete this;
+	//set_position(get_position()+math::vec3<double>(0.05,0,0));
+}
+void Ball::find_path(){
+	Unit* unit=UnitController::get_cur_object()->search_unit(1);
+	if(unit){
+		math::vec3<int>des(unit->get_pos_int());
+		AI::search::FindPath *find_path=new AI::search::FindPath(
+				rigid_body.pos,2*rigid_body.radius,des,1);
+		if(finder)delete finder;
+
+		finder=new Tim::SmartPointer<AI::search::Finder>(find_path);
+		finder->get()->max_search_times=40000;
+		finder->get()->min_search_times=6000;
+		AI::search::SearchTask *task=new AOC::AI::search::SearchTask(*finder);
+		AI::search::Astar::get_cur_object()->push_task(task);
+	}
+}
+void Ball::explode(){
+	if(rigid_body.radius>0.45){
+		if((rigid_body.be_collided&&rigid_body.be_collided->get_type()=="MapRigidBody")){
+
+			for(int i=-2;i<=2;i++){
+				for(int j=-2;j<=2;j++){
+					for(int k=-2;k<=2;k++){
+						Map::get_cur_object()->set_cube_type(
+								rigid_body.pos.x/Map::CUBE_SIZE+i,
+								rigid_body.pos.y/Map::CUBE_SIZE+j,
+								rigid_body.pos.z/Map::CUBE_SIZE+k,
+								Cube::cubeNull);
+					}
+				}
+			}
+
+			delete this;
+		}
+	}else{
+		rigid_body.radius*=1.02;
+	}
+}
+void Ball::moving(){
+	AI::search::FindPath* path=dynamic_cast<AI::search::FindPath*>(finder->get());
+	if(path&&path->cur_at<path->path.size()){
+		if((get_pos()-(path->path.at(path->cur_at))).get_length()<0.5*Map::CUBE_SIZE){//reach!!
+			path->cur_at++;
+			stuck_timer=0;
+		}
+		if(path->cur_at<path->path.size()){
+			if(rigid_body.collided){
+				colli_timer=10;
+			}
+			if(colli_timer<=0){
+				math::vec3<double> target=path->path.at(path->cur_at);
+				move_to(target,0.025);
+				stuck_timer++;
+			}else{
+				colli_timer--;
+			}
+		}else{
+			if(finder)delete finder;
+			finder=0;
+			rigid_body.acc=math::vec3<double>(0,0,0);
+			colli_sound.play();
+		}
+	}else{
+		//explode();
+	}
+}
+void Ball::ball_move(){
 	if(stuck_timer>100){
 		stuck_times++;
 		stuck_timer=0;
 		if(stuck_times<2){
-			Unit* unit=UnitController::get_cur_object()->search_unit(1);
-			if(unit){
-				math::vec3<int>des(unit->get_pos_int());
-				AI::search::FindPath *find_path=new AI::search::FindPath(
-						rigid_body.pos,2*rigid_body.radius,des,0);
-				if(finder)delete finder;
-
-				finder=new Tim::SmartPointer<AI::search::Finder>(find_path);
-				finder->get()->max_search_times=40000;
-				finder->get()->min_search_times=6000;
-				AI::search::SearchTask *task=new AOC::AI::search::SearchTask(*finder);
-				AI::search::Astar::get_cur_object()->push_task(task);
-			}
+			find_path();
 		}else{
 			if(finder)delete finder;
 			finder=0;
@@ -71,78 +129,15 @@ void Ball::minion_update(){
 	}
 	if(timer==50){
 		//std::cout<<"Ball::minion_update() find path timer="<<timer<<std::endl;
-		Unit* unit=UnitController::get_cur_object()->search_unit(1);
-		if(unit){
-			//std::cout<<"Ball start search"<<std::endl;
-			math::vec3<int>des(unit->get_pos_int());
-			AI::search::FindPath *find_path=new AI::search::FindPath(
-					rigid_body.pos,2*rigid_body.radius,des,0);
-			if(finder)delete finder;
-
-			finder=new Tim::SmartPointer<AI::search::Finder>(find_path);
-			finder->get()->max_search_times=40000;
-			finder->get()->min_search_times=6000;
-			AI::search::SearchTask *task=new AOC::AI::search::SearchTask(*finder);
-			AI::search::Astar::get_cur_object()->push_task(task);
-			//delete finder;//test
-			//finder=0;//test
-		}
+		find_path();
 		//std::cout<<"Ball::minion_update() find path end"<<std::endl;
 	}
 
 	if(finder&&(*finder)->search_done&&(*finder)->find){
-
-		AI::search::FindPath* path=dynamic_cast<AI::search::FindPath*>(finder->get());
-		if(!path){
-			std::cerr<<"finder no path!!"<<std::endl;
-		}
-		if(path&&path->cur_at<path->path.size()){
-			if((get_pos()-(path->path.at(path->cur_at))).get_length()<0.2*Map::CUBE_SIZE){//reach!!
-				path->cur_at++;
-				stuck_timer=0;
-				if(path->cur_at>=path->path.size()){
-					rigid_body.acc=math::vec3<double>(0,0,0);
-					colli_sound.play();
-				}
-			}
-			if(path->cur_at<path->path.size()){
-				math::vec3<double> target=path->path.at(path->cur_at);
-				move_to(target,0.025);
-				stuck_timer++;
-			}
-		}else{
-			//delete this;
-			///*
-			if(rigid_body.radius>0.45){
-				if((rigid_body.be_collided&&rigid_body.be_collided->get_type()=="MapRigidBody")){
-					for(int i=-2;i<=2;i++){
-						for(int j=-2;j<=2;j++){
-							for(int k=-2;k<=2;k++){
-								Map::get_cur_object()->set_cube_type(
-										rigid_body.pos.x/Map::CUBE_SIZE+i,
-										rigid_body.pos.y/Map::CUBE_SIZE+j,
-										rigid_body.pos.z/Map::CUBE_SIZE+k,
-										Cube::cubeNull);
-							}
-						}
-					}
-					delete this;
-				}
-
-			}else{
-				rigid_body.radius*=1.02;
-			}
-			//*/
-		}
+		moving();
+	}else{
+		rigid_body.vel.y-=0.003f;
 	}
-	//if(rigid_body.be_collided||rigid_body.collided){
-		//colli_sound.pause();
-		//colli_sound.play();
-	//}
-	timer++;
-	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
-	if(timer>2500)delete this;
-	//set_position(get_position()+math::vec3<double>(0.05,0,0));
 }
 void Ball::draw_minion(){
 	math::vec3<double> pos=get_pos();

@@ -174,19 +174,19 @@ void DisplayMap::create_map_object(int px, int pz) {
 			for (int k = sz; k < ez; k++) {
 				int type = map->get_cube_type(i, j, k);
 
-				if (type>=Cube::startcube) {
-					tex_layer=type-Cube::startcube;
+				if (type>=Cube::cube_start) {
+					tex_layer=type-Cube::cube_start;
 					cube_exist=0;
 					glm::vec3 pos = glm::vec3((i + 0.5) * Map::CUBE_SIZE,
 							(j + 0.5) * Map::CUBE_SIZE,
 							(k + 0.5) * Map::CUBE_SIZE);
 
-					if((map->get_cube_type(i,j+1,k)>=Cube::startcube))cube_exist|=up;
-					if((map->get_cube_type(i,j-1,k)>=Cube::startcube))cube_exist|=down;
-					if((map->get_cube_type(i+1,j,k)>=Cube::startcube))cube_exist|=left;
-					if((map->get_cube_type(i-1,j,k)>=Cube::startcube))cube_exist|=right;
-					if((map->get_cube_type(i,j,k+1)>=Cube::startcube))cube_exist|=front;
-					if((map->get_cube_type(i,j,k-1)>=Cube::startcube))cube_exist|=back;
+					if((map->get_cube_type(i,j+1,k)>=Cube::cube_start))cube_exist|=up;
+					if((map->get_cube_type(i,j-1,k)>=Cube::cube_start))cube_exist|=down;
+					if((map->get_cube_type(i+1,j,k)>=Cube::cube_start))cube_exist|=left;
+					if((map->get_cube_type(i-1,j,k)>=Cube::cube_start))cube_exist|=right;
+					if((map->get_cube_type(i,j,k+1)>=Cube::cube_start))cube_exist|=front;
+					if((map->get_cube_type(i,j,k-1)>=Cube::cube_start))cube_exist|=back;
 
 					//if((cube_exist&up)&&(cube_exist&left)&&(cube_exist&right)
 							//&&(cube_exist&front)&&(cube_exist&back)){
@@ -257,15 +257,15 @@ void DisplayMap::create_water_object(int px, int pz) {
 						surface=true;
 					}
 					if(map->get_cube_type(i,j+1,k)==Cube::water)cube_exist|=up;
-					if((map->get_cube_type(i,j-1,k)>=Cube::startcube)
+					if((map->get_cube_type(i,j-1,k)>=Cube::cube_start)
 							||map->get_cube_type(i,j-1,k)==Cube::water)cube_exist|=down;
-					if((map->get_cube_type(i+1,j,k)>=Cube::startcube)
+					if((map->get_cube_type(i+1,j,k)>=Cube::cube_start)
 							||map->get_cube_type(i+1,j,k)==Cube::water)cube_exist|=left;
-					if((map->get_cube_type(i-1,j,k)>=Cube::startcube)
+					if((map->get_cube_type(i-1,j,k)>=Cube::cube_start)
 							||map->get_cube_type(i-1,j,k)==Cube::water)cube_exist|=right;
-					if((map->get_cube_type(i,j,k+1)>=Cube::startcube)
+					if((map->get_cube_type(i,j,k+1)>=Cube::cube_start)
 							||map->get_cube_type(i,j,k+1)==Cube::water)cube_exist|=front;
-					if((map->get_cube_type(i,j,k-1)>=Cube::startcube)
+					if((map->get_cube_type(i,j,k-1)>=Cube::cube_start)
 							||map->get_cube_type(i,j,k-1)==Cube::water)cube_exist|=back;
 
 					//if((cube_exist&up)&&(cube_exist&left)&&(cube_exist&right)

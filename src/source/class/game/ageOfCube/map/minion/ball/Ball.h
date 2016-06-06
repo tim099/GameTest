@@ -27,11 +27,15 @@ protected:
 	virtual void load_minion(FILE * file);
 	virtual void draw_minion();
 	virtual void minion_update();
+	void ball_move();
+	void find_path();
+	void explode();
+	void moving();
 	Audio::AudioPlayer colli_sound;
 	Display::DrawObject *ball_Drawobj;
 	math::Position dp_pos;
 	Tim::SmartPointer<AI::search::Finder> *finder;
-	int timer,stuck_timer,stuck_times;
+	int timer,stuck_timer,stuck_times,colli_timer;
 };
 
 } /* namespace AOC */

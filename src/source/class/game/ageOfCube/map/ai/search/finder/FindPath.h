@@ -10,7 +10,7 @@ class FindPath : public Finder{
 public:
 	FindPath(const math::vec3<double>&pos,const double &size,math::vec3<int>des,int dis=0);
 	virtual ~FindPath();
-	virtual void find_node(Node* node);
+	virtual void node_find(Node* node);
 	virtual bool check_find(Node* node);
 	virtual double node_score(Node* node);
 	virtual	math::vec3<int> get_start_pos();

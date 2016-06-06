@@ -172,6 +172,11 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
 		constructing_building = creator->create("Tower");
 		constructing_building->set_player(1);
+	}else if(sig->get_data()=="build_MainTower"){
+		if(constructing_building)delete constructing_building;
+		BuildingCreator* creator=BuildingCreator::get_cur_object();
+		constructing_building = creator->create("MainTower");
+		constructing_building->set_player(1);
 	}
 }
 void SceneEditMap::handle_input() {

@@ -64,8 +64,8 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 		cur_stand_on.x+=r;
 		cur_stand_on.y-=1;
 		cur_stand_on.z+=r;
-		standable=map->get_cube(cur_stand_on.x,cur_stand_on.y,cur_stand_on.z)->standable();
-		jumpable=map->get_cube(cur_stand_on.x,cur_stand_on.y,cur_stand_on.z)->jumpable();
+		standable=map->get_standable(cur_stand_on.x,cur_stand_on.y,cur_stand_on.z);
+		jumpable=map->get_jumpable(cur_stand_on.x,cur_stand_on.y,cur_stand_on.z);
 		next_node_pos.clear();
 		path=0;
 		if(standable||node->jump){
@@ -150,13 +150,14 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 	for(unsigned i=0;i<nodes.size();i++){
 		node_pool->free(nodes.at(i));
 	}
-	finder->search_done=true;
 	if(find){
 		std::cout<<"Astar::search find!!search times="<<search_times<<std::endl;
 		finder->find=true;
 	}else{
 		std::cout<<"Astar::search not find!!search times="<<search_times<<std::endl;
 	}
+
+
 }
 
 

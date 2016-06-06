@@ -50,13 +50,22 @@ void AudioPlayer::play(){
 	//std::cout<<"play "<<source<<std::endl;
 	alSourcePlay(source);
 }
-
+ALuint AudioPlayer::get_state(){
+	alGetSourcei(source,AL_SOURCE_STATE,&state);
+	return state;
+}
+bool AudioPlayer::playing(){
+	if(get_state()==AL_PLAYING){
+		return true;
+	}
+	return false;
+}
 void AudioPlayer::pause(){
 	alSourcePause(source);
 }
 void AudioPlayer::set_volume(float _volume){
 	volume=_volume;
-	alSourcef(source, AL_GAIN, volume);
+	alSourcef(source,AL_GAIN,volume);
 }
 void AudioPlayer::set_loop(bool _loop){
 	is_looping = _loop;

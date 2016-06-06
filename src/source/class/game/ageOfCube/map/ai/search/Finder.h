@@ -2,6 +2,7 @@
 #define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_AI_FINDER_H_
 #include "class/game/ageOfCube/map/ai/search/Node.h"
 #include "class/tim/math/vec3.h"
+#include <cstdio>
 namespace AOC {
 namespace AI {
 namespace search{
@@ -15,11 +16,18 @@ public:
 	virtual	math::vec3<int> get_start_pos()=0;
 	virtual	int get_size()=0;
 	virtual	double get_double_size();
+
+	void save(FILE* file);
+	void load(FILE* file);
+
 	int min_search_times;//if find and reach min_search_times then stop
 	int max_search_times;//if reach max_search_times then stop(no matter find or not
 	bool find;//find target
 	bool search_done;//search_done flag
 	bool stop_search;//stop this search request
+protected:
+	virtual void save_finder(FILE* file){}
+	virtual void load_finder(FILE* file){}
 };
 }
 }

@@ -364,16 +364,17 @@ void Map::load_map(const std::string& path){
 	fclose(file);
 }
 void Map::push_CubeEX(int x,int y,int z,CubeEX *cube){
-	//Cube_Mutex.wait_for_this();
+
 	if(map->get(x,y,z)!=Cube::cubeNull){
 		std::cerr<<"Map::push_CubeEX fail ,cube already exist"<<std::endl;
 		delete cube;
 	}else{
+		Cube_Mutex.wait_for_this();
 		map->get(x,y,z)=cube->get_type();//.set(Cube::CubeEX);
 		get_map_seg_by_pos(x,z)->push_cube(math::vec3<int>(x,y,z),cube);
+		Cube_Mutex.release();
 	}
 
-	//Cube_Mutex.release();
 }
 bool Map::remove_cube(int x,int y,int z){
 	return set_cube_type(x,y,z,Cube::cubeNull);
@@ -388,7 +389,8 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 	if(perv_type==type){
 		return false;
 	}
-	//Cube_Mutex.wait_for_this();
+
+	Cube_Mutex.wait_for_this();
 	if(perv_type==Cube::cubeEX){//.type
 		get_map_seg_by_pos(x,z)->remove_cube(math::vec3<int>(x,y,z));
 	}
@@ -397,7 +399,8 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 	push_update_cube(x,y,z);
 
 	dp_map->update_map(math::vec3<int>(x,y,z));
-	//Cube_Mutex.release();
+	Cube_Mutex.release();
+
 	return true;
 }
 void Map::push_update_cube(int x,int y,int z){
@@ -406,8 +409,19 @@ void Map::push_update_cube(int x,int y,int z){
 	//}
 	prev_update_pos->push_back(math::vec3<int>(x,y,z));
 }
+bool Map::get_standable(int x,int y,int z){
+	Cube_Mutex.wait_for_this();
+	bool flag=get_cube(x,y,z)->standable();
+	Cube_Mutex.release();
+	return flag;
+}
+bool Map::get_jumpable(int x,int y,int z){
+	Cube_Mutex.wait_for_this();
+	bool flag=get_cube(x,y,z)->jumpable();
+	Cube_Mutex.release();
+	return flag;
+}
 Cube* Map::get_cube(int x,int y,int z){
-	//Cube_Mutex.wait_for_this();
 	Cube* cube=0;
 	int type=get_cube_type(x,y,z);
 	if(type==Cube::cubeOutofEdge){
@@ -424,7 +438,6 @@ Cube* Map::get_cube(int x,int y,int z){
 		std::cout<<"Map::get_cube unknown cube type:"<<type<<std::endl;
 	}
 	if(!cube)cube=cube_error;
-	//Cube_Mutex.release();
 	return cube;
 }
 int Map::get_cube_type(const int &x,const int &y,const int &z)const{

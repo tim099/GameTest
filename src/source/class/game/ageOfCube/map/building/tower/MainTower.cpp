@@ -15,16 +15,23 @@ void MainTower::building_pre_init(){
 }
 MainTower::MainTower() {
 	tower_Drawobj=0;
-	size = 3.0;
+	size = 9.0;
 	timer=0;
 }
 MainTower::MainTower(MainTower* tower){
 	tower_Drawobj=tower->tower_Drawobj;
 	size=tower->size;
 	timer=0;
+	init(10000,0);
 }
 MainTower::~MainTower() {
 
+}
+void MainTower::save_building(FILE * file){
+	fprintf(file,"%d\n",timer);
+}
+void MainTower::load_building(FILE * file){
+	fscanf(file,"%d\n",&timer);
 }
 void MainTower::building_set_pos(int x,int y,int z){
 	math::vec3<int> real_size=get_cube_large_size();
@@ -36,7 +43,7 @@ void MainTower::building_set_pos(int x,int y,int z){
 void MainTower::building_update(){
 
 }
-void MainTower::draw(){
+void MainTower::draw_building(){
 	static const int loop_time=200;
 	if(timer<loop_time){
 		timer++;

@@ -12,7 +12,7 @@
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/controller/Controller.h"
 #include "class/audio/AudioPlayer.h"
-
+#include <string>
 namespace Audio {
 
 class AudioController : public Controller,
@@ -22,7 +22,9 @@ public:
 	AudioController();
 	virtual ~AudioController();
 	virtual void update();
+	void play(std::string name,double volume=1.0);
 private:
+
 	std::vector<AudioPlayer *>audio_players;
 };
 

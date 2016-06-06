@@ -2,7 +2,7 @@
 #define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_AI_SEARCH_FINDER_FINDPATH_H_
 #include "class/game/ageOfCube/map/ai/search/Finder.h"
 #include <vector>
-#include <cstdio>
+
 namespace AOC {
 namespace AI {
 namespace search {
@@ -19,11 +19,12 @@ public:
 	virtual	int get_size();
 	virtual	double get_double_size();
 
-	void save(FILE* file);
-	void load(FILE* file);
+
 	std::vector<math::vec3<double> >path;
 	unsigned cur_at;
 protected:
+	virtual void save_finder(FILE* file);
+	virtual void load_finder(FILE* file);
 	void convert_path(Node* node);
 	math::vec3<double>pos;
 	math::vec3<int>des;

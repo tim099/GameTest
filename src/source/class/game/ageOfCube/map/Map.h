@@ -54,7 +54,8 @@ public:
 	bool remove_cube(int x,int y,int z);
 	int get_cube_type(const int &x,const int &y,const int &z)const;
 	Cube *get_cube(int x,int y,int z);
-
+	bool get_standable(int x,int y,int z);
+	bool get_jumpable(int x,int y,int z);
 	//get map_seg by position x and z
 	inline MapSeg* get_map_seg_by_pos(int x,int z){
 		return (map_segs->get((x/segsize.x),(z/segsize.z)));
@@ -158,7 +159,7 @@ protected:
 	int ground_height;
 	unsigned seed;
 	double water_height;
-	//Tim::Mutex Cube_Mutex;
+	Tim::Mutex Cube_Mutex;
 
 	MapRigidBody* map_rigid_body;
 

@@ -116,7 +116,7 @@ void BallSpawnTower::building_update(){
 		//loop_time*=1.5;
 	}
 }
-void BallSpawnTower::draw(){
+void BallSpawnTower::draw_building(){
 	float light_val=sqrt(fabs(((float)((8*timer)%loop_time)/(float)loop_time)-0.5));
 	math::vec3<int> real_size=get_cube_large_size();
 	Display::PointLight *light=new Display::PointLight(

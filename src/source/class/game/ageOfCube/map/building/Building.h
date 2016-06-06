@@ -34,15 +34,17 @@ public:
 
 	void draw_buildable(Map *map);
 	void set_size(float size);
-
+	virtual void draw();
 protected:
 	virtual void building_set_pos(int x,int y,int z){}
 	virtual void building_update(){}
-	void build_cube_large();
 	virtual void save_cubeEX(FILE * file);
 	virtual void load_cubeEX(FILE * file);
 	virtual void save_building(FILE * file){}
 	virtual void load_building(FILE * file){}
+	virtual void build_cube_large();
+	virtual void draw_building(){}
+	void draw_hp();
 	int rotate;
 	float size;
 	math::Position pos;

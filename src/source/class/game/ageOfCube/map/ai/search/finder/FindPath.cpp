@@ -20,10 +20,11 @@ FindPath::FindPath(const math::vec3<double>&_pos,const double &_size,math::vec3<
 FindPath::~FindPath() {
 	//std::cout<<"FindPath::~FindPath()"<<std::endl;
 }
-void FindPath::save(FILE* file){
+void FindPath::save_finder(FILE* file){
 	fprintf(file,"%lf %lf %lf\n",pos.x,pos.y,pos.z);
-	fprintf(file,"%lf",size);
+	fprintf(file,"%lf %d\n",size,dis);
 	fprintf(file,"%d %d %d\n",des.x,des.y,des.z);
+
 	fprintf(file,"%d\n",cur_at);
 	fprintf(file,"%u\n",path.size());
 
@@ -31,11 +32,13 @@ void FindPath::save(FILE* file){
 		fprintf(file,"%lf %lf %lf\n",path.at(i).x,path.at(i).y,path.at(i).z);
 	}
 }
-void FindPath::load(FILE* file){
+void FindPath::load_finder(FILE* file){
 	fscanf(file,"%lf %lf %lf\n",&pos.x,&pos.y,&pos.z);
-	fscanf(file,"%lf",&size);
+	fscanf(file,"%lf %d\n",&size,&dis);
 	fscanf(file,"%d %d %d\n",&des.x,&des.y,&des.z);
 	fscanf(file,"%d\n",&cur_at);
+	des_min=des-dis;
+	des_max=des+dis;
 	unsigned path_size;
 	math::vec3<double> pos;
 	fscanf(file,"%u\n",&path_size);
@@ -44,8 +47,7 @@ void FindPath::load(FILE* file){
 		path.push_back(pos);
 	}
 
-	des_min=des-dis;
-	des_max=des+dis;
+
 }
 double FindPath::node_score(Node* node){
 	double total_dis=0;

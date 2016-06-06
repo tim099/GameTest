@@ -1,6 +1,7 @@
 #include "class/game/Game.h"
 #include "class/input/mouse/selectable/SelectableControl.h"
 #include "class/physic/RigidBodyController.h"
+#include "class/audio/AudioController.h"
 #include "class/game/SceneInitTask.h"
 #include <iostream>
 Game::Game() {
@@ -55,6 +56,7 @@ void Game::initialize(){
 	controller_system=new ControllerSystem();
 	controller_system->push(new Input::SelectableControl());
 	controller_system->push(new physic::RigidBodyController());
+	controller_system->push(new Audio::AudioController());
 
 	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 	thread_pool = create_thread_pool();

@@ -33,9 +33,27 @@ Ball::~Ball() {
 }
 void Ball::save_minion(FILE * file){
 	fprintf(file,"%d\n",timer);
+	if(finder&&finder->get()->find){
+		AI::search::FindPath* path=dynamic_cast<AI::search::FindPath*>(finder->get());
+		fprintf(file,"1\n");
+		path->save(file);
+	}else{
+		fprintf(file,"0\n");
+	}
 }
 void Ball::load_minion(FILE * file){
 	fscanf(file,"%d\n",&timer);
+	int flag;
+	///*
+	fscanf(file,"%d\n",&flag);
+	if(flag){
+		if(finder)delete finder;
+		AI::search::FindPath* path=new AI::search::FindPath();
+		path->load(file);
+		finder=new Tim::SmartPointer<AI::search::Finder>(path);
+		//finder->get()->find=true;
+	}
+	//*/
 }
 void Ball::minion_update(){
 
@@ -50,15 +68,15 @@ void Ball::minion_update(){
 	//set_position(get_position()+math::vec3<double>(0.05,0,0));
 }
 void Ball::find_path(){
-	Unit* unit=UnitController::get_cur_object()->search_unit("Tower",rigid_body.pos);
+	Unit* unit=UnitController::get_cur_object()->search_unit("MainTower",rigid_body.pos);
 	if(unit){
 		math::vec3<int>des(unit->get_mid_pos_int());
 		//std::cout<<"get_pos_int():"<<des.x<<","<<des.y<<","<<des.z<<std::endl;
-		AI::search::FindPath *find_path=new AI::search::FindPath(
+		AI::search::FindPath *find=new AI::search::FindPath(
 				rigid_body.pos,2*rigid_body.radius,des,1);
 		if(finder)delete finder;
 
-		finder=new Tim::SmartPointer<AI::search::Finder>(find_path);
+		finder=new Tim::SmartPointer<AI::search::Finder>(find);
 		finder->get()->max_search_times=40000;
 		finder->get()->min_search_times=5000;
 		AI::search::SearchTask *task=new AOC::AI::search::SearchTask(*finder);
@@ -123,8 +141,11 @@ void Ball::ball_move(){
 		if(stuck_times<2){
 			find_path();
 		}else{
-			if(finder)delete finder;
-			finder=0;
+			if(finder&&finder->get()->search_done){
+				delete finder;
+				finder=0;
+			}
+
 		}
 		//std::cout<<"ball stuck"<<std::endl;
 
@@ -135,8 +156,16 @@ void Ball::ball_move(){
 		//std::cout<<"Ball::minion_update() find path end"<<std::endl;
 	}
 
-	if(finder&&(*finder)->search_done&&(*finder)->find){
-		moving();
+	if(finder&&(*finder)->search_done){
+		if((*finder)->find){
+			moving();
+		}else{
+			if(finder&&finder->get()->search_done){
+				delete finder;
+				finder=0;
+			}
+		}
+
 	}else{
 		rigid_body.vel.y-=0.003f;
 	}

@@ -27,13 +27,14 @@ public:
 	}
 
 
-	virtual void draw();
+
 	unsigned char tower_type;
 protected:
 	virtual void building_set_pos(int x,int y,int z);
 	virtual void building_update();
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);
+	virtual void draw_building();
 	Display::DrawObject *tower_Drawobj;
 	int timer;
 };

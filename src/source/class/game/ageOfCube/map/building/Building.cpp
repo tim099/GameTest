@@ -77,4 +77,28 @@ void Building::draw_buildable(Map *map){
 	Display::Draw::get_cur_object()->lightControl->push_temp_light(building_light);
 	draw();
 }
+void Building::draw(){
+	draw_hp();
+	draw_building();
+}
+void Building::draw_hp(){
+	if(get_hp()<get_max_hp()){
+		Display::CubeLight* building_light=new Display::CubeLight();
+		building_light->color=glm::vec3(3,0,0);
+
+
+		building_light->cube_size=glm::vec3(
+				Map::CUBE_SIZE*1.0*get_cube_large_size().x,
+				Map::CUBE_SIZE*1.0*get_cube_large_size().y*
+				((get_max_hp()-get_hp())/(double)get_max_hp()),
+
+				Map::CUBE_SIZE*1.0*get_cube_large_size().z);
+
+		building_light->pos=glm::vec3(
+				  x*Map::CUBE_SIZE+0.49*building_light->cube_size.x,
+				  y*Map::CUBE_SIZE+0.49*building_light->cube_size.y,
+				  z*Map::CUBE_SIZE+0.49*building_light->cube_size.z);
+		Display::Draw::get_cur_object()->lightControl->push_temp_light(building_light);
+	}
+}
 }

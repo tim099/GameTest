@@ -23,15 +23,13 @@ public:
 	virtual std::string get_name()const{
 		return "BallSpawnTower";
 	}
-
-	virtual void draw();
-
 protected:
 	virtual void building_set_pos(int x,int y,int z);
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);
 	virtual void building_update();
 	void init_BallSpawnTower();
+	virtual void draw_building();
 	Display::DrawObject *tower_Drawobj;
 	Display::DrawObject *tower_part1;
 	Display::DrawObject *tower_part2;

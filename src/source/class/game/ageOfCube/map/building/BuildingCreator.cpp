@@ -1,6 +1,7 @@
 #include "class/game/ageOfCube/map/building/BuildingCreator.h"
 #include "class/game/ageOfCube/map/building/tower/Tower.h"
 #include "class/game/ageOfCube/map/building/tower/BallSpawnTower.h"
+#include "class/game/ageOfCube/map/building/tower/MainTower.h"
 #include <iostream>
 
 
@@ -9,6 +10,7 @@ BuildingCreator::BuildingCreator() {
 	//std::cout<<"BuildingCreator::BuildingCreator()"<<std::endl;
 	push(new AOC::Tower());
 	push(new AOC::BallSpawnTower());
+	push(new AOC::MainTower());
 	register_cur();
 }
 BuildingCreator::~BuildingCreator() {

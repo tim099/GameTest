@@ -1,6 +1,7 @@
 #ifndef SOURCE_CLASS_TIM_POINTER_SMARTPOINTER_H_
 #define SOURCE_CLASS_TIM_POINTER_SMARTPOINTER_H_
 #include <iostream>
+#include "class/tim/thread/mutex/Mutex.h"
 namespace Tim {
 template <class Type>
 class SmartPointer {
@@ -9,17 +10,20 @@ public:
 		//std::cout<<"SmartPointer()"<<std::endl;
 		ptr=0;
 		pointed_num=0;
+		mutex=0;
 	}
 
 	SmartPointer(Type *_ptr){
 		//std::cout<<"SmartPointer(Type *_ptr)"<<std::endl;
 		ptr=_ptr;
 		pointed_num=new int(1);
+		mutex=new Tim::Mutex();
 	}
 	SmartPointer(const SmartPointer &that){
 		//std::cout<<"SmartPointer(const SmartPointer &that)"<<std::endl;
 		ptr=0;
 		pointed_num=0;
+		mutex=0;
 		*this=that;
 	}
 	virtual ~SmartPointer(){
@@ -31,6 +35,7 @@ public:
 			clear();
 			if(that.ptr){
 				ptr=that.ptr;
+				mutex=that.mutex;
 				pointed_num=that.pointed_num;
 				(*pointed_num)++;
 			}
@@ -47,20 +52,24 @@ public:
 		return ptr;
 	}
 	inline void clear(){
-		//std::cout<<"void clear()"<<std::endl;
 		if(ptr){
-			if(--(*pointed_num)==0){
+			mutex->wait_for_this();
+			--(*pointed_num);
+			if((*pointed_num)==0){
 				delete pointed_num;
 				delete ptr;
+				delete mutex;
 			}
+			mutex->release();
+			mutex=0;
 			pointed_num=0;
 			ptr=0;
 		}
-
 	}
 protected:
 	int* pointed_num;
 	Type *ptr;
+	Tim::Mutex *mutex;
 };
 
 } /* namespace Tim */

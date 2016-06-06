@@ -23,6 +23,15 @@ public:
 	void init();
 	void play();
 	void pause();
+	/*
+	Possible values of state
+	AL_INITIAL
+	AL_STOPPED
+	AL_PLAYING
+	AL_PAUSED
+	*/
+	ALuint get_state();
+	bool playing();
 	float get_volume()const{return volume;};
 	void set_volume(float volume);
 	void set_source(std::string _audio_name);

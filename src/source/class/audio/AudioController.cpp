@@ -5,21 +5,21 @@
  *      Author: LukeWu
  */
 
-#include <class/audio/AudioController.h>
-
+#include "class/audio/AudioController.h"
+#include <iostream>
 namespace Audio {
 
 AudioController::AudioController() {
-	// TODO Auto-generated constructor stub
-
+	register_cur();
 }
-
 AudioController::~AudioController() {
 	// TODO Auto-generated destructor stub
 }
+void AudioController::play(std::string name,double volume){
 
+}
 void AudioController::update(){
-
+	//std::cout<<"AudioController::update()"<<std::endl;
 }
 
 } /* namespace Audio */

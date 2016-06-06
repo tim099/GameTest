@@ -11,7 +11,7 @@ SearchTask::SearchTask(Tim::SmartPointer<Finder> _finder) {
 	auto_terminate=true;
 }
 SearchTask::~SearchTask() {
-	//delete finder;
+
 }
 void SearchTask::ExecuteTask(){
 	if(finder->stop_search){
@@ -22,9 +22,8 @@ void SearchTask::ExecuteTask(){
 		}else{
 			std::cerr<<"SearchTask::ExecuteTask() fail,astar not exist!!"<<std::endl;
 		}
-
 	}
-
+	finder.get()->search_done=true;
 }
 } /* namespace search */
 } /* namespace AI */

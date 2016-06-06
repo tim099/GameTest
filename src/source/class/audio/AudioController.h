@@ -10,6 +10,7 @@
 
 #include <vector>
 #include "class/tim/globalObject/GlobalObject.h"
+#include "class/tim/objectpool/ObjPool.h"
 #include "class/controller/Controller.h"
 #include "class/audio/AudioPlayer.h"
 #include <string>
@@ -24,7 +25,8 @@ public:
 	virtual void update();
 	void play(std::string name,double volume=1.0);
 private:
-
+	Tim::ObjPool<AudioPlayer>*player_pool;
+	std::vector<AudioPlayer*>auto_players;
 	std::vector<AudioPlayer *>audio_players;
 };
 

@@ -5,6 +5,7 @@
 #include "class/game/ageOfCube/map/ai/search/Astar.h"
 
 #include "class/game/ageOfCube/unit/UnitController.h"
+#include "class/audio/AudioController.h"
 namespace AOC {
 void Ball::minion_pre_init(){
 	ball_Drawobj=Display::AllDrawObjects::get_cur_object()->get("building/ball_spawn_tower_part_4");
@@ -17,7 +18,7 @@ Ball::Ball() {
 	timer=0;
 	finder=0;
 
-	colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
+	//colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
 }
 Ball::Ball(Ball* ball) {
 	ball_Drawobj=ball->ball_Drawobj;
@@ -26,7 +27,7 @@ Ball::Ball(Ball* ball) {
 	colli_timer=0;
 	timer=0;
 	finder=0;
-	colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
+	//colli_sound.set_source();
 }
 Ball::~Ball() {
 	if(finder)delete finder;
@@ -127,7 +128,8 @@ void Ball::moving(){
 			if(finder)delete finder;
 			finder=0;
 			rigid_body.acc=math::vec3<double>(0,0,0);
-			colli_sound.play();
+			Audio::AudioController::get_cur_object()->play("default_sound_effect/Blip_Select3.wav");
+			//colli_sound.play();
 			delete this;
 		}
 	}else{

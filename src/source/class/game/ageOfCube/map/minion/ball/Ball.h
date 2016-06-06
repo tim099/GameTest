@@ -31,7 +31,7 @@ protected:
 	void find_path();
 	void explode();
 	void moving();
-	Audio::AudioPlayer colli_sound;
+	//Audio::AudioPlayer colli_sound;
 	Display::DrawObject *ball_Drawobj;
 	math::Position dp_pos;
 	Tim::SmartPointer<AI::search::Finder> *finder;

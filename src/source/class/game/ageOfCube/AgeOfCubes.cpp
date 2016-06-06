@@ -1,6 +1,6 @@
 #include "class/game/ageOfCube/AgeOfCubes.h"
 #include "class/game/ageOfCube/scene/SceneStart.h"
-#include "class/audio/AudioConfig.h"
+
 #include <iostream>
 namespace AOC{
 AgeOfCubes::AgeOfCubes() {
@@ -24,7 +24,7 @@ void AgeOfCubes::initialize_game(){
 	modelBuffers->register_cur();
 	drawObjects = new Display::AllDrawObjects("files/AgeOfCube/drawObject/loadAllDrawObjects.txt");
 	drawObjects->register_cur();
-	Audio::AudioConfig::audio_init();
+
 	audioSources = new Audio::AllAudioSources("files/AgeOfCube/audio/loadAllAudios.txt");
 	audioSources->register_cur();
 
@@ -40,7 +40,7 @@ void AgeOfCubes::terminate_game(){
 	delete modelBuffers;
 	delete textures;
 	//==================
-	Audio::AudioConfig::audio_exit();
+
 	std::cout<<"terminate game end"<<std::endl;
 }
 void AgeOfCubes::game_update(){

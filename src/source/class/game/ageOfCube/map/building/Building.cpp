@@ -32,11 +32,14 @@ void Building::set_pos(int _x,int _y,int _z){
 	x=_x,y=_y,z=_z;
 	building_set_pos(_x,_y,_z);
 }
-math::vec3<double> Building::get_pos()const{
+math::vec3<double> Building::get_pos(){
 	return math::vec3<double>(x*Map::CUBE_SIZE,y*Map::CUBE_SIZE,z*Map::CUBE_SIZE);
 }
-math::vec3<int> Building::get_pos_int()const{
+math::vec3<int> Building::get_pos_int(){
 	return math::vec3<int>(x,y,z);
+}
+math::vec3<int> Building::get_mid_pos_int(){
+	return math::vec3<int>(x+(get_cube_large_size().x-1)/2,y,z+(get_cube_large_size().z-1)/2);
 }
 void Building::build_cube_large(){
 	push_to_controller();//create when build success

@@ -24,10 +24,14 @@ public:
 	}
 	virtual void unit_update();
 	virtual void set_pos(int x,int y,int z);
-	virtual math::vec3<double> get_pos()const;
-	virtual math::vec3<int> get_pos_int()const;
+	virtual math::vec3<double> get_pos();
+	virtual math::vec3<int> get_pos_int();
+	virtual math::vec3<int> get_mid_pos_int();
+	virtual bool draw_cube(){return true;}
+
 	void set_rotate(int _rotate);
 	inline int get_rotate()const{return rotate;}
+
 	void draw_buildable(Map *map);
 	void set_size(float size);
 

@@ -36,9 +36,11 @@ void SceneEditMap::scene_initialize() {
 			10000.0f);
 	lightControl = new Display::LightControl(120);
 	lightControl->push_light(
-			new Display::ParallelLight(glm::vec3(1.0, -1.2, 0.2),
+			new Display::ParallelLight(glm::vec3(1.0, -1.2, 0.5),
 					glm::vec3(1.9, 1.9, 1.9), true));
-
+	lightControl->push_light(
+			new Display::ParallelLight(glm::vec3(0.05, -1.2, -0.2),
+					glm::vec3(0.3, 0.3, 0.3),false));
 	UI = new UI::UI();
 	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
 	back_music=new Audio::AudioPlayer();

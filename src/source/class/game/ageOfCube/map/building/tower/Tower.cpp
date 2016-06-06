@@ -60,7 +60,7 @@ void Tower::draw(){
 			glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
 			AOC::Map::CUBE_SIZE*y+1.4*real_size.y,
 			AOC::Map::CUBE_SIZE*z+0.5*real_size.z),
-			glm::vec3(50*light_val,50*light_val,50*light_val),false);
+			glm::vec3(size*50*light_val,size*50*light_val,size*50*light_val),false);
 	Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
 	tower_Drawobj->push_temp_drawdata(new Display::DrawDataObj(&pos));
 

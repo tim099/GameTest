@@ -25,9 +25,7 @@ public:
 	virtual std::string get_name()const{
 		return "Tower";
 	}
-	virtual bool draw_cube(){
-		return true;
-	}
+
 
 	virtual void draw();
 	unsigned char tower_type;

@@ -5,7 +5,10 @@
 namespace AOC {
 namespace AI {
 namespace search {
-
+FindPath::FindPath(){
+	size=0;dis=0;
+	cur_at=0;
+}
 FindPath::FindPath(const math::vec3<double>&_pos,const double &_size,math::vec3<int>_des,int _dis) {
 	pos=_pos;size=_size;des=_des;dis=_dis;
 	des_min=des-dis;
@@ -16,6 +19,33 @@ FindPath::FindPath(const math::vec3<double>&_pos,const double &_size,math::vec3<
 }
 FindPath::~FindPath() {
 	//std::cout<<"FindPath::~FindPath()"<<std::endl;
+}
+void FindPath::save(FILE* file){
+	fprintf(file,"%lf %lf %lf\n",pos.x,pos.y,pos.z);
+	fprintf(file,"%lf",size);
+	fprintf(file,"%d %d %d\n",des.x,des.y,des.z);
+	fprintf(file,"%d\n",cur_at);
+	fprintf(file,"%u\n",path.size());
+
+	for(unsigned i=0;i<path.size();i++){
+		fprintf(file,"%lf %lf %lf\n",path.at(i).x,path.at(i).y,path.at(i).z);
+	}
+}
+void FindPath::load(FILE* file){
+	fscanf(file,"%lf %lf %lf\n",&pos.x,&pos.y,&pos.z);
+	fscanf(file,"%lf",&size);
+	fscanf(file,"%d %d %d\n",&des.x,&des.y,&des.z);
+	fscanf(file,"%d\n",&cur_at);
+	unsigned path_size;
+	math::vec3<double> pos;
+	fscanf(file,"%u\n",&path_size);
+	for(unsigned i=0;i<path_size;i++){
+		fscanf(file,"%lf %lf %lf\n",&pos.x,&pos.y,&pos.z);
+		path.push_back(pos);
+	}
+
+	des_min=des-dis;
+	des_max=des+dis;
 }
 double FindPath::node_score(Node* node){
 	double total_dis=0;
@@ -71,6 +101,9 @@ math::vec3<int> FindPath::get_start_pos(){
 }
 int FindPath::get_size(){
 	return ceil(size);
+}
+double FindPath::get_double_size(){
+	return size;
 }
 } /* namespace search */
 } /* namespace AI */

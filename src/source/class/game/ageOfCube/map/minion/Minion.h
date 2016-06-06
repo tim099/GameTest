@@ -25,8 +25,8 @@ public:
 	void move_to(math::vec3<double> target,double vel);
 
 
-	virtual math::vec3<double> get_pos()const{return rigid_body.pos;}
-	virtual math::vec3<int> get_pos_int()const;
+	virtual math::vec3<double> get_pos(){return rigid_body.pos;}
+	virtual math::vec3<int> get_pos_int();
 	inline void set_pos(math::vec3<double> pos){rigid_body.pos=pos;}
 	inline void set_vel(math::vec3<double> vel){rigid_body.vel=vel;}
 	inline void set_size(double size){rigid_body.radius=0.5*size;}

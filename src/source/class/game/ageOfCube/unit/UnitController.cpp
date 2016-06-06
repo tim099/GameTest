@@ -60,13 +60,45 @@ void UnitController::load_minion(FILE * file){
 		minion->recruit();
 	}
 }
-Unit* UnitController::search_unit(int player){
+Unit* UnitController::search_unit(std::string name,math::vec3<double>pos){
+	Unit* unit=0;
+	double min_dis=0,dis;
 	for(unsigned i=0;i<units.size();i++){
-		if(units.at(i)->get_player()==player){
-			return units.at(i);
+		if(units.at(i)->get_name()==name){
+			if(unit){
+				dis=(pos-units.at(i)->get_pos()).get_length();
+				if(dis<min_dis){
+					min_dis=dis;
+					unit=units.at(i);
+				}
+			}else{
+				unit=units.at(i);
+				min_dis=(pos-units.at(i)->get_pos()).get_length();
+			}
+
 		}
 	}
-	return 0;
+	return unit;
+}
+Unit* UnitController::search_unit(int player,math::vec3<double>pos){
+	Unit* unit=0;
+	double min_dis=0,dis;
+	for(unsigned i=0;i<units.size();i++){
+		if(units.at(i)->get_player()==player){
+			if(unit){
+				dis=(pos-units.at(i)->get_pos()).get_length();
+				if(dis<min_dis){
+					min_dis=dis;
+					unit=units.at(i);
+				}
+			}else{
+				unit=units.at(i);
+				min_dis=(pos-units.at(i)->get_pos()).get_length();
+			}
+
+		}
+	}
+	return unit;
 }
 void UnitController::select_unit(Unit *unit){
 	selected_unit = unit;

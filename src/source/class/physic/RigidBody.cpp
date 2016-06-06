@@ -61,15 +61,15 @@ void RigidBody::collide(RigidBody* b){
 							   0.01*((rand()%range)-range/2)/(double)range,
 							   0.01*((rand()%range)-range/2)/(double)range)*b->vel.get_length();
 	//*/
-	bool flag=false;
+	bool stuck=true;
 	for(int i=0;i<4;i++){
 		pos=0.5*(prev_pos+pos);
 		if(!RigidBodyController::get_cur_object()->check_collision(this)){
-			flag=true;
+			stuck=false;
 			break;
 		}
 	}
-	if(!flag){
+	if(stuck){
 		pos=prev_pos;
 		///*
 		if(RigidBodyController::get_cur_object()->check_collision(this)){//handle stuck

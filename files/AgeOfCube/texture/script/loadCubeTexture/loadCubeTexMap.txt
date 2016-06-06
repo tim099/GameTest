@@ -28,7 +28,8 @@ Texture2DArr:
 		coal.bmp
 	TexturePath:
 		tex6.bmp
-	#Load_texture2DArr_END
+#Load_texture2DArr_END
+
 Texture2DArr:
 	TextureName:
 		cube_normals
@@ -49,6 +50,16 @@ Texture2DArr:
 		cube5.bmp
 	TexturePath:
 		cube6.bmp
-	#Load_texture2DArr_END
+#Load_texture2DArr_END
 
+Texture:
+	TextureName:
+		stone
+	TexturePath:
+		stone.bmp
+Texture:
+	TextureName:
+		stoneNor
+	TexturePath:
+		stoneNor.bmp
 #END	

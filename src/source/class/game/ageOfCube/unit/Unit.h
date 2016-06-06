@@ -18,8 +18,9 @@ public:
 	inline int get_max_hp()const{return max_hp;}
 	inline int get_player()const{return player;}
 	inline void set_player(int _player){player=_player;}
-	virtual math::vec3<double> get_pos()const=0;
-	virtual math::vec3<int> get_pos_int()const=0;
+	virtual math::vec3<double> get_pos()=0;
+	virtual math::vec3<int> get_pos_int()=0;
+	virtual math::vec3<int> get_mid_pos_int();
 	void save_unit(FILE * file);
 	void load_unit(FILE * file);
 	virtual void unit_update(){

@@ -12,6 +12,9 @@ Unit::~Unit() {
 		UnitController::get_cur_object()->remove(this);
 	}
 }
+math::vec3<int> Unit::get_mid_pos_int(){
+	return get_pos_int();
+}
 void Unit::push_to_controller(){
 	UnitController::get_cur_object()->push(this);
 	created=true;

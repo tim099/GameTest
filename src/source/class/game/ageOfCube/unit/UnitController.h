@@ -10,6 +10,7 @@
 #include "class/display/UI/string/UIString.h"
 #include "class/game/ageOfCube/map/minion/MinionCreator.h"
 #include "class/tim/pointer/SmartPointer.h"
+
 namespace Display{
 class Draw;
 }
@@ -37,7 +38,8 @@ public:
 			}
 		}
 	}
-	Unit* search_unit(int player);
+	Unit* search_unit(int player,math::vec3<double>pos);
+	Unit* search_unit(std::string name,math::vec3<double>pos);
 	void save(FILE *file);
 	void load(FILE *file);
 	MinionCreator* minion_creator;

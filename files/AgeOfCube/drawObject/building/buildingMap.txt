@@ -32,7 +32,9 @@ DrawObject:
 	ModelBuffer:
 		building/ball_spawn_tower_part_1
 	Texture:
-		building/basic_cube_tower_1
+		cube/stone
+	NormalMap:
+		cube/stoneNor
 #load_end
 
 DrawObject:
@@ -41,7 +43,9 @@ DrawObject:
 	ModelBuffer:
 		building/ball_spawn_tower_part_2
 	Texture:
-		building/basic_cube_tower_1
+		cube/stone
+	NormalMap:
+		cube/stoneNor
 #load_end
 
 DrawObject:
@@ -50,7 +54,9 @@ DrawObject:
 	ModelBuffer:
 		building/ball_spawn_tower_part_3
 	Texture:
-		building/basic_cube_tower_1
+		cube/stone
+	NormalMap:
+		cube/stoneNor
 #load_end
 
 DrawObject:
@@ -59,7 +65,9 @@ DrawObject:
 	ModelBuffer:
 		building/ball_spawn_tower_part_4
 	Texture:
-		building/basic_cube_tower_1
+		cube/stone
+	NormalMap:
+		cube/stoneNor
 #load_end
 
 #END

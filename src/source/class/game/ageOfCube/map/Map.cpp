@@ -364,18 +364,22 @@ void Map::load_map(const std::string& path){
 	fclose(file);
 }
 void Map::push_CubeEX(int x,int y,int z,CubeEX *cube){
+	//Cube_Mutex.wait_for_this();
 	if(map->get(x,y,z)!=Cube::cubeNull){
 		std::cerr<<"Map::push_CubeEX fail ,cube already exist"<<std::endl;
 		delete cube;
-		return;
+	}else{
+		map->get(x,y,z)=cube->get_type();//.set(Cube::CubeEX);
+		get_map_seg_by_pos(x,z)->push_cube(math::vec3<int>(x,y,z),cube);
 	}
-	map->get(x,y,z)=cube->get_type();//.set(Cube::CubeEX);
-	get_map_seg_by_pos(x,z)->push_cube(math::vec3<int>(x,y,z),cube);
+
+	//Cube_Mutex.release();
 }
 bool Map::remove_cube(int x,int y,int z){
 	return set_cube_type(x,y,z,Cube::cubeNull);
 }
 bool Map::set_cube_type(int x,int y,int z,int type){
+
 	if(x<0||x>=map_size.x||y<0||y>=map_size.y||z<0||z>=map_size.z){
 		//std::cout<<"Map::set_cube_type out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return false;
@@ -384,6 +388,7 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 	if(perv_type==type){
 		return false;
 	}
+	//Cube_Mutex.wait_for_this();
 	if(perv_type==Cube::cubeEX){//.type
 		get_map_seg_by_pos(x,z)->remove_cube(math::vec3<int>(x,y,z));
 	}
@@ -392,6 +397,7 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 	push_update_cube(x,y,z);
 
 	dp_map->update_map(math::vec3<int>(x,y,z));
+	//Cube_Mutex.release();
 	return true;
 }
 void Map::push_update_cube(int x,int y,int z){
@@ -401,16 +407,16 @@ void Map::push_update_cube(int x,int y,int z){
 	prev_update_pos->push_back(math::vec3<int>(x,y,z));
 }
 Cube* Map::get_cube(int x,int y,int z){
+	//Cube_Mutex.wait_for_this();
+	Cube* cube=0;
 	int type=get_cube_type(x,y,z);
 	if(type==Cube::cubeOutofEdge){
-		return cube_out_of_edge;
+		cube=cube_out_of_edge;
 	}else if(type==Cube::cubeNull){
-		return cube_null;
+		cube=cube_null;
 	}else if(type==Cube::water){
-		return cube_water;//get_map_seg_by_pos(x,z)->get_cube(x,y,z);
-	}
-	Cube *cube;
-	if(type>=Cube::cube_start){
+		cube=cube_water;//get_map_seg_by_pos(x,z)->get_cube(x,y,z);
+	}else if(type>=Cube::cube_start){
 		cube=all_cubes->get_cube(type);
 	}else if(type==Cube::cubeEX){
 		cube=get_map_seg_by_pos(x,z)->get_cube(x,y,z);
@@ -418,6 +424,7 @@ Cube* Map::get_cube(int x,int y,int z){
 		std::cout<<"Map::get_cube unknown cube type:"<<type<<std::endl;
 	}
 	if(!cube)cube=cube_error;
+	//Cube_Mutex.release();
 	return cube;
 }
 int Map::get_cube_type(const int &x,const int &y,const int &z)const{

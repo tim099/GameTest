@@ -23,9 +23,6 @@ public:
 	virtual std::string get_name()const{
 		return "BallSpawnTower";
 	}
-	virtual bool draw_cube(){
-		return true;
-	}
 
 	virtual void draw();
 

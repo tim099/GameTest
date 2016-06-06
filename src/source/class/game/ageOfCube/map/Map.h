@@ -158,7 +158,7 @@ protected:
 	int ground_height;
 	unsigned seed;
 	double water_height;
-	Tim::Mutex Cube_Mutex;
+	//Tim::Mutex Cube_Mutex;
 
 	MapRigidBody* map_rigid_body;
 

@@ -50,16 +50,17 @@ void Ball::minion_update(){
 	//set_position(get_position()+math::vec3<double>(0.05,0,0));
 }
 void Ball::find_path(){
-	Unit* unit=UnitController::get_cur_object()->search_unit(1);
+	Unit* unit=UnitController::get_cur_object()->search_unit("Tower",rigid_body.pos);
 	if(unit){
-		math::vec3<int>des(unit->get_pos_int());
+		math::vec3<int>des(unit->get_mid_pos_int());
+		//std::cout<<"get_pos_int():"<<des.x<<","<<des.y<<","<<des.z<<std::endl;
 		AI::search::FindPath *find_path=new AI::search::FindPath(
 				rigid_body.pos,2*rigid_body.radius,des,1);
 		if(finder)delete finder;
 
 		finder=new Tim::SmartPointer<AI::search::Finder>(find_path);
 		finder->get()->max_search_times=40000;
-		finder->get()->min_search_times=6000;
+		finder->get()->min_search_times=5000;
 		AI::search::SearchTask *task=new AOC::AI::search::SearchTask(*finder);
 		AI::search::Astar::get_cur_object()->push_task(task);
 	}
@@ -109,6 +110,7 @@ void Ball::moving(){
 			finder=0;
 			rigid_body.acc=math::vec3<double>(0,0,0);
 			colli_sound.play();
+			delete this;
 		}
 	}else{
 		//explode();

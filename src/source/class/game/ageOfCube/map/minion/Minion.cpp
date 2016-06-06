@@ -30,7 +30,7 @@ void Minion::recruit(){
 	minion_created=true;
 	push_to_controller();
 }
-math::vec3<int> Minion::get_pos_int()const{
+math::vec3<int> Minion::get_pos_int(){
 	return math::vec3<int>(
 			get_pos().x/Map::CUBE_SIZE,
 			get_pos().y/Map::CUBE_SIZE,

@@ -19,13 +19,14 @@ Astar::~Astar() {
 void Astar::search(Tim::SmartPointer<Finder>& finder){
 	std::vector<Node*>nodes;
 	std::map<math::vec3<int>,Node*,math::vec3Cmp<int> >visited;
-	std::set<math::vec3<int>,math::vec3Cmp<int> >in_q;
+	//std::set<math::vec3<int>,math::vec3Cmp<int> >in_q;
 	std::map<math::vec3<int>,Node*,math::vec3Cmp<int> >::iterator it;
 	std::priority_queue<Node*, std::vector<Node*>, NodeCmp > q;
+	double d_size=finder->get_double_size();
+	int size=finder->get_size(),r=floor((d_size/2.0)/Map::CUBE_SIZE),search_times=0;
 
-	int size=finder->get_size(),search_times=0;
 	int max_search_times=finder->max_search_times,min_search_times=finder->min_search_times;
-	bool find=false,access_able;
+	bool find=false,access_able,standable,jumpable;
 	double min_dis=std::numeric_limits<double>::max();
 	unsigned char path;
 	static const unsigned char left=1<<0;
@@ -43,16 +44,13 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 	visited[node->pos]=node;
 	q.push(node);
 	nodes.push_back(node);
-	Cube* cube;
 	//std::cout<<"size="<<size<<std::endl;
 	while(!q.empty()&&search_times<max_search_times&&
 			(search_times<min_search_times||!find)){
-		//std::cout<<"Astar::search times="<<search_times<<std::endl;
 		search_times++;
 		node=q.top();
 		q.pop();
-		in_q.erase(node->pos);
-		//std::cout<<"node score="<<node->score<<std::endl;
+
 		if(finder->check_find(node)){//find!!
 			find=true;
 			if(node->cur_dis<min_dis){
@@ -63,19 +61,20 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 
 		//===================find next step====================
 		cur_stand_on=node->pos;
-		cur_stand_on.x+=size/2;
+		cur_stand_on.x+=r;
 		cur_stand_on.y-=1;
-		cur_stand_on.z+=size/2;
-		cube=map->get_cube(cur_stand_on.x,cur_stand_on.y,cur_stand_on.z);
+		cur_stand_on.z+=r;
+		standable=map->get_cube(cur_stand_on.x,cur_stand_on.y,cur_stand_on.z)->standable();
+		jumpable=map->get_cube(cur_stand_on.x,cur_stand_on.y,cur_stand_on.z)->jumpable();
 		next_node_pos.clear();
 		path=0;
-		if(cube->standable()||node->jump){
+		if(standable||node->jump){
 			next_node_pos.push_back(math::vec3<int>(1,0,0));
 			next_node_pos.push_back(math::vec3<int>(-1,0,0));
 			next_node_pos.push_back(math::vec3<int>(0,0,1));
 			next_node_pos.push_back(math::vec3<int>(0,0,-1));
 		}
-		if(cube->standable()&&cube->jumpable()){
+		if(standable&&jumpable){
 			next_node_pos.push_back(math::vec3<int>(0,1,0));//jump
 		}
 		next_node_pos.push_back(math::vec3<int>(0,-1,0));//drop
@@ -103,23 +102,22 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 				}
 				if(access_able){
 					next_node=node_pool->create();
+					next_node->init(node);
+
 					next_node->pos=next_pos;
 					visited[next_node->pos]=next_node;
 					nodes.push_back(next_node);
 				}
 			}
 			if(access_able){
-				next_node->init(node);
 				next_node->cur_dis=node->cur_dis+Map::CUBE_SIZE*next_node_pos.at(n).get_length();
-
+				next_node->parent=node;
 				if(next_node_pos.at(n).y==1){
 					next_node->jump=true;
 				}
 				next_node->score=finder->node_score(next_node);
-				if(in_q.find(next_node->pos)==in_q.end()){
-					q.push(next_node);
-					in_q.insert(next_node->pos);
-				}
+
+				q.push(next_node);
 				if(next_node_pos.at(n).x==1){
 					path|=right;
 				}else if(next_node_pos.at(n).x==-1){

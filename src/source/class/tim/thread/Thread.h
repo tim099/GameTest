@@ -64,7 +64,7 @@ public:
 	 * use this instead of delete thread directly!!
 	 */
 	void Terminate();
-	Mutex *endMutex;
+
 protected:
 	static DWORD WINAPI Execute(LPVOID lpParameter);
 	void Execute();
@@ -73,6 +73,7 @@ protected:
 	bool terminate;
 	bool thread_start;
 	Mutex *threadMutex;
+	Mutex *endMutex;
 
 	ExecuteDone *done;
 	HANDLE threadhandle;

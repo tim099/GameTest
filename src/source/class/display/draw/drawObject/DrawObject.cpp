@@ -100,7 +100,7 @@ void DrawObject::draw_shadow_vec(Shader *shader,
 	for (unsigned i = 0; i < data_v.size(); i++) {
 		data = data_v.at(i);
 		if (data->draw_shadow) {
-			sent_model_veiw_uniform(shader->programID, data->pos->PosMat());
+			sent_model_veiw_uniform(shader->programID, data->pos->get_pos_mat());
 			model_buffer->draw(shader->programID);
 		}
 	}
@@ -110,7 +110,7 @@ void DrawObject::draw_vec(Shader *shader, std::vector<DrawDataObj*> &data_v) {
 	for (unsigned i = 0; i < data_v.size(); i++) {
 		data = data_v.at(i);
 		data->prepare_to_draw(shader);
-		sent_model_veiw_uniform(shader->programID, data->pos->PosMat());
+		sent_model_veiw_uniform(shader->programID, data->pos->get_pos_mat());
 		model_buffer->draw(shader->programID);
 		data->draw_end(shader);
 	}

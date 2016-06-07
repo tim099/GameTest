@@ -121,10 +121,10 @@ void DisplayMap::display_height_alter(int val, Tim::ThreadPool* threadpool) {
 		else
 			display_height = 0;
 	} else {
-		if (display_height + val < map->get_size().y)
+		if (display_height + val <=map->get_size().y)
 			display_height += val;
 		else
-			display_height = map->get_size().y - 1;
+			display_height = map->get_size().y;
 	}
 	update_whole_map();
 }

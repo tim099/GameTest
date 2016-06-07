@@ -40,6 +40,9 @@ void Tower::load_building(FILE * file){
 	fscanf(file,"%c\n",(char*)&tower_type);
 	fscanf(file,"%d\n",&timer);
 }
+void Tower::get_build_on_type(std::vector<int> &v){
+	v.push_back(Cube::stone);
+}
 void Tower::building_set_pos(int x,int y,int z){
 	math::vec3<int> real_size=get_cube_large_size();
 	pos.set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,

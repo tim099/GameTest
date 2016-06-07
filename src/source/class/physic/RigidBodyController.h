@@ -21,7 +21,7 @@ public:
 	virtual void update();
 protected:
 	void check_collision();
-	void detect_collision(RigidBody* rigid_body,bool stop_when_collide);
+	bool detect_collision(RigidBody* rigid_body,bool stop_when_collide);
 
 	//std::vector<RigidBody*>rigid_bodys;
 	std::vector<RigidBody*>collisions;

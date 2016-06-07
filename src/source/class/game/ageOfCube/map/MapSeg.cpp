@@ -79,7 +79,7 @@ void MapSeg::load_landscape(FILE * file){
 		fscanf(file,"%s\n",name);
 		lc=creator->create(name);
 		lc->load(file);
-		lc->build(map,pos.x,pos.y,pos.z);
+		lc->create_cube_large(pos.x,pos.y,pos.z);
 	}
 }
 void MapSeg::save_building(FILE * file){
@@ -118,7 +118,8 @@ void MapSeg::load_building(FILE * file){
 		fscanf(file,"%s\n",name);
 		building=building_creator->create(name);
 		building->load(file);
-		building->build(map,pos.x,pos.y,pos.z);
+		building->set_pos(pos.x,pos.y,pos.z);
+		building->build();
 	}
 }
 unsigned MapSeg::convert_pos(const math::vec3<int> &pos){

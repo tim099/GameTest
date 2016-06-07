@@ -23,7 +23,7 @@ public:
 	virtual void be_collide(RigidBody* b);
 	double radius;
 	double mass;
-	math::vec3<double> acc;
+	//math::vec3<double> acc;
 	math::vec3<double> vel;
 	math::vec3<double> pos,prev_pos;
 	RigidBody* collided,*be_collided;

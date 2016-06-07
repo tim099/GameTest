@@ -27,18 +27,30 @@ AudioPlayer::AudioPlayer(ALuint _buffer){
 	set_source(_buffer);
 }
 AudioPlayer::AudioPlayer(std::string _audio_name){
-	//buffer = AllAudioSources::get_cur_object()->get(_audio_name)->get_buffer();
-	source = 1;
+	//std::cout<<"AudioPlayer::AudioPlayer(std::string _audio_name)"<<std::endl;
+	source = 0;
 	state = 0;
 	init();
 	//alSourcei(source, AL_BUFFER, buffer);
 	set_source(_audio_name);
 	//std::cout<<"audio player source = "<<source<<" buffer = "<<buffer<<std::endl;
 }
+AudioPlayer::AudioPlayer(const AudioPlayer &that){
+	source = 0;
+	state = 0;
+	init();
+	buffer=that.buffer;
+	//alSourcei(source, AL_BUFFER, buffer);
+}
+AudioPlayer& AudioPlayer::operator=(const AudioPlayer &that){
+	set_source(that.buffer);
+	return *this;
+}
 void AudioPlayer::init(){
 	is_pause = false;
 	is_looping = false;
-	alGenSources(1, &source);
+
+	if(!source)alGenSources(1, &source);
 
 	set_volume(1.0);
 }
@@ -81,7 +93,10 @@ void AudioPlayer::set_source(std::string _audio_name){
 }
 void AudioPlayer::set_source(ALuint _buffer){
 	buffer = _buffer;
-	alSourcei(source, AL_BUFFER, buffer);
+	if(buffer){
+		alSourcei(source, AL_BUFFER, buffer);
+	}
+
 }
 
 } /* namespace Audio */

@@ -106,6 +106,7 @@ void BallSpawnTower::building_update(){
 				math::vec3<double>::normalize(
 				math::vec3<double>(relative_pos.x,0,relative_pos.z)));
 		ball->set_size(0.16f*size);
+		ball->set_player(get_player());
 		ball->recruit();
 		//std::cout<<"BallSpawnTower::building_update() recruit"<<std::endl;
 	}

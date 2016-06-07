@@ -3,9 +3,10 @@
 
 #include <string>
 #include "class/tim/math/vec3.h"
+#include "class/game/entity/Entity.h"
 namespace AOC {
 
-class Unit {
+class Unit :public entity::Entity{
 public:
 	Unit(int _max_hp=1);
 	void init(int max_hp,int player);
@@ -13,7 +14,7 @@ public:
 	virtual std::string get_name()const{
 		return "Unit";
 	}
-	void push_to_controller();//create this unit will push it into UnitController
+	void create_unit();//create this unit will push it into UnitController
 	inline int get_hp()const{return hp;}
 	inline int get_max_hp()const{return max_hp;}
 	inline int get_player()const{return player;}
@@ -23,9 +24,7 @@ public:
 	virtual math::vec3<int> get_mid_pos_int();
 	void save_unit(FILE * file);
 	void load_unit(FILE * file);
-	virtual void unit_update(){
-
-	}
+	virtual void unit_update(){}
 protected:
 	int max_hp;
 	int hp;

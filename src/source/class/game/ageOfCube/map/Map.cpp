@@ -13,6 +13,7 @@
 #include "class/game/timer/Timer.h"
 #include "class/game/ageOfCube/map/landscape/tree/Tree.h"
 #include "class/game/ageOfCube/map/ai/search/Astar.h"
+
 #include <cstdio>
 #include <ctime>
 #include <cstdlib>
@@ -38,7 +39,7 @@ Map::Map() {
 	cur_update_pos=&update_pos1;
 	prev_update_pos=&update_pos2;
 	unit_controller=new UnitController();
-	unit_controller->register_cur();
+	entity_controller=new entity::EntityController();
 	astar=new AI::search::Astar();
 	astar->register_cur();
 	register_cur();
@@ -66,6 +67,7 @@ Map::~Map() {
 	delete cube_water;
 	delete all_cubes;
 	delete unit_controller;
+	delete entity_controller;
 
 }
 void Map::swap_update_pos(){
@@ -169,7 +171,7 @@ void Map::gen_land_scape(int i,int j,int k,
 			Tree *tree;
 			tree=(Tree*)landscape_creator.create("Tree");
 			tree->rand_tree_size();
-			tree->build(this,i,j,k);
+			tree->create_cube_large(i,j,k);
 			//push_CubeEX(i,j,k,landscape);
 		}
 	}
@@ -332,6 +334,7 @@ void Map::save_map(const std::string& path){
 	}
 	save_update_pos(file);
 	unit_controller->save(file);
+	entity_controller->save(file);
 	fclose(file);
 }
 void Map::load_map(const std::string& path){
@@ -360,6 +363,8 @@ void Map::load_map(const std::string& path){
 	}
 	load_update_pos(file);
 	unit_controller->load(file);
+	entity_controller->load(file);
+
 	dp_map->update_whole_map();
 	fclose(file);
 }

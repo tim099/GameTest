@@ -57,6 +57,8 @@ void Game::initialize(){
 	controller_system->push(new Input::SelectableControl());
 	controller_system->push(new physic::RigidBodyController());
 	controller_system->push(new Audio::AudioController());
+	//controller_system->push(new entity::EntityController());
+
 
 	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 	thread_pool = create_thread_pool();
@@ -101,9 +103,11 @@ Scene* Game::get_cur_scene(){
 	return scenes.back();
 }
 void Game::push_scene(Scene* scene){
-	loading=true;
 	Scene* cur_scene=get_cur_scene();
-	if(cur_scene)cur_scene->pause();
+	loading=true;
+	if(cur_scene){
+		cur_scene->pause();
+	}
 	scene->initialize(draw,input,thread_pool);
 	thread_pool->push_task(new SceneInitTask(this,scene));
 	//scene_push(scene);

@@ -66,8 +66,6 @@ DrawObject:
 		building/ball_spawn_tower_part_4
 	Texture:
 		cube/stone
-	NormalMap:
-		cube/stoneNor
 #load_end
 
 #END

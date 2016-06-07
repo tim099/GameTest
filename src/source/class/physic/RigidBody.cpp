@@ -15,7 +15,6 @@ RigidBody::~RigidBody() {
 	//RigidBodyController::get_cur_object()->remove(this);
 }
 void RigidBody::save(FILE * file){
-	fprintf(file,"%lf %lf %lf\n",acc.x,acc.y,acc.z);
 	fprintf(file,"%lf %lf %lf\n",vel.x,vel.y,vel.z);
 	fprintf(file,"%lf %lf %lf\n",pos.x,pos.y,pos.z);
 	fprintf(file,"%lf %lf %lf\n",prev_pos.x,prev_pos.y,prev_pos.z);
@@ -23,7 +22,6 @@ void RigidBody::save(FILE * file){
 
 }
 void RigidBody::load(FILE * file){
-	fscanf(file,"%lf %lf %lf\n",&acc.x,&acc.y,&acc.z);
 	fscanf(file,"%lf %lf %lf\n",&vel.x,&vel.y,&vel.z);
 	fscanf(file,"%lf %lf %lf\n",&pos.x,&pos.y,&pos.z);
 	fscanf(file,"%lf %lf %lf\n",&prev_pos.x,&prev_pos.y,&prev_pos.z);
@@ -89,7 +87,6 @@ void RigidBody::update_rigid_body(){
 	collided=0;
 	be_collided=0;
 	prev_pos=pos;
-	vel+=acc;
 	pos+=vel;
 }
 } /* namespace physic */

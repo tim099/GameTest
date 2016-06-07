@@ -17,6 +17,7 @@ UnitController::UnitController() {
 	atk_str=dynamic_cast<UI::UIString*>(building_UI->get_child("atk"));
 	armor_str=dynamic_cast<UI::UIString*>(building_UI->get_child("armor"));
 	hp_str=dynamic_cast<UI::UIString*>(building_UI->get_child("hp"));
+	register_cur();
 }
 UnitController::~UnitController() {
 	delete minion_creator;

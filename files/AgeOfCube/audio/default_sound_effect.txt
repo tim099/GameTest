@@ -15,4 +15,9 @@ AudioSource:
 		Blip_Select3.wav
 #load_end
 
+AudioSource:
+	Name:
+		Bomb.wav
+#load_end
+
 #END

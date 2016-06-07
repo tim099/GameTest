@@ -15,8 +15,10 @@ Unit::~Unit() {
 math::vec3<int> Unit::get_mid_pos_int(){
 	return get_pos_int();
 }
-void Unit::push_to_controller(){
+void Unit::create_unit(){
 	UnitController::get_cur_object()->push(this);
+	create_entity();
+	std::cout<<"Unit::create_unit() id="<<id<<std::endl;
 	created=true;
 }
 void Unit::init(int _max_hp,int _player){
@@ -29,8 +31,10 @@ void Unit::init(int _max_hp,int _player){
 }
 void Unit::save_unit(FILE * file){
 	fprintf(file,"%d %d %d %d %d\n",max_hp,hp,player,is_dead,dead_timer);
+	save_entity(file);
 }
 void Unit::load_unit(FILE * file){
 	fscanf(file,"%d %d %d %d %d\n",&max_hp,&hp,&player,(int*)&is_dead,&dead_timer);
+	load_entity(file);
 }
 } /* namespace AOC */

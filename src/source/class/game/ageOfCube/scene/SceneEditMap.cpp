@@ -16,6 +16,7 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	lightControl = 0;
 	UI = 0;
 	back_music=0;
+	sun_light=0;
 	destruct_mode=false;
 	pause_timer=false;
 	constructing_building=0;
@@ -31,13 +32,16 @@ void SceneEditMap::loading(){
 void SceneEditMap::scene_initialize() {
 	map = new AOC::Map();
 	glm::vec3 pos(10,80,10);
+	sun_col_1=glm::vec3(1.9, 1.9, 1.9);
+
 	camera = new Display::Camera(pos,
 			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	lightControl = new Display::LightControl(120);
-	lightControl->push_light(
-			new Display::ParallelLight(glm::vec3(1.0, -1.2, 0.5),
-					glm::vec3(1.9, 1.9, 1.9), true));
+	sun_pos=glm::vec3(1.0, -1.2, 0.5);
+	sun_light=new Display::ParallelLight(sun_pos,sun_col_1, true);
+
+	lightControl->push_light(sun_light);
 	lightControl->push_light(
 			new Display::ParallelLight(glm::vec3(0.05, -1.2, -0.2),
 					glm::vec3(0.3, 0.3, 0.3),false));
@@ -45,6 +49,7 @@ void SceneEditMap::scene_initialize() {
 	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
 	back_music=new Audio::AudioPlayer();
 	back_music->set_source("default_music/prepare_your_swords.wav");
+	back_music->set_loop(true);
 
 	cube_type=Cube::cube_start;
 	resume();
@@ -165,18 +170,18 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 	}else if(sig->get_data()=="build_BallSpawnTower"){
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
-		//
 		constructing_building = creator->create("BallSpawnTower");
+		constructing_building->set_player(1);//enemy
 	}else if(sig->get_data()=="build_Tower"){
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
 		constructing_building = creator->create("Tower");
-		constructing_building->set_player(1);
+		constructing_building->set_player(0);
 	}else if(sig->get_data()=="build_MainTower"){
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
 		constructing_building = creator->create("MainTower");
-		constructing_building->set_player(1);
+		constructing_building->set_player(0);
 	}
 }
 void SceneEditMap::handle_input() {
@@ -193,10 +198,7 @@ void SceneEditMap::handle_input() {
 	}
 	if (input->mouse->left_clicked()) {//->left_pressed()
 		if(constructing_building){
-			if(constructing_building->build(map,
-				constructing_building->get_pos_int().x,
-				constructing_building->get_pos_int().y,
-				constructing_building->get_pos_int().z)){
+			if(constructing_building->build()){
 			}else{
 				delete constructing_building;
 			}
@@ -287,6 +289,9 @@ void SceneEditMap::handle_input() {
 	}
 }
 void SceneEditMap::scene_update() {
+
+
+
 	//std::cout<<"scene_update()"<<std::endl;
 	UI->update_UIObject();
 	camera->update();
@@ -313,7 +318,10 @@ void SceneEditMap::scene_draw() {
 	galaxy_pos.set_parent(&galaxy_pos_o);
 	galaxy_pos.set_r(glm::vec3(0.0f,180.0f*timer.get_hour(),0.0f));
 
-
+	//sun_light->vec=glm::vec3(
+			//glm::rotate((float)(360.0f * timer.get_hour()),glm::vec3(-1, 0, 1))
+					//*glm::vec4(glm::vec3(10,-10, 10), 1));
+	sun_light->vec=glm::vec3(galaxy_pos.get_pos_mat()*glm::vec4(glm::vec3(10,-10, 10), 1));
 	Display::DrawObject* stars=Display::AllDrawObjects::get_cur_object()->get("default/stars");
 	data=new Display::DrawDataObj(&galaxy_pos,false,false);
 	stars->push_temp_drawdata(data);
@@ -321,11 +329,10 @@ void SceneEditMap::scene_draw() {
 		if(input->mouse->_pos_delta==glm::ivec2(0,0)){
 			constructing_building->draw_buildable(map);
 		}else{
-			constructing_building->set_pos(map->selected_on.x,
+			constructing_building->set_pos(
+					map->selected_on.x,
 					map->selected_on.y,
 					map->selected_on.z);
-			//std::cout<<"pos_delta"<<
-					//input->mouse->pos_delta().x<<","<<input->mouse->pos_delta().y<<std::endl;
 		}
 
 	}else{
@@ -352,7 +359,6 @@ void SceneEditMap::pause() {
 	back_music->pause();
 }
 void SceneEditMap::resume() {
-	back_music->set_loop(true);
 	back_music->play();
 	draw->Enable3D = true;
 	draw->set_camera(camera);

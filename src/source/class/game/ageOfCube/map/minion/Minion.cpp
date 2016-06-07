@@ -28,7 +28,7 @@ void Minion::load(FILE * file){
 void Minion::recruit(){
 	//push_minion_to_controller();
 	minion_created=true;
-	push_to_controller();
+	create_unit();
 }
 math::vec3<int> Minion::get_pos_int(){
 	return math::vec3<int>(

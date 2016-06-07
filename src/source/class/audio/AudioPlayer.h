@@ -19,10 +19,13 @@ public:
 	AudioPlayer();
 	AudioPlayer(std::string _audio_name);
 	AudioPlayer(ALuint _buffer);
+	AudioPlayer(const AudioPlayer &that);
+
 	virtual ~AudioPlayer();
 	void init();
 	void play();
 	void pause();
+	AudioPlayer& operator=(const AudioPlayer &that);
 	/*
 	Possible values of state
 	AL_INITIAL

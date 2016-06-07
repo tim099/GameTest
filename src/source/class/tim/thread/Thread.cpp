@@ -53,12 +53,13 @@ void Thread::start(){
 	}
 
 	ResumeThread(threadhandle);
+	///*
 	unsigned i=1,j=0;
 	while(!thread_start&&!DONE()){
 		i++;
-		if(i%2000==0){
+		if(i%1000==0){
 			j++;
-			if(j>500){
+			if(j>1000){
 				std::cout<<"thread not start for:"<<j*i<<"loop of waiting"<<std::endl;
 				j=0;
 			}
@@ -66,10 +67,12 @@ void Thread::start(){
 			ResumeThread(threadhandle);
 		}
 	}
+	//*/
 }
 void Thread::sleep(){
 	thread_start=false;
 	threadMutex->release();
+
 	//may start at here causing problem so start func should avoid this
 	SuspendThread(threadhandle);//dangerous because may start again before suspend!!
 }

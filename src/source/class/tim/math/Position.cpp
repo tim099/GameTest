@@ -85,10 +85,10 @@ glm::vec4 Position::multiply_quaternion(glm::vec4 a, glm::vec4 b) {
 			b.w * a.z + b.z * a.w + b.x * a.y - b.y * a.x,
 			b.w * a.w - b.x * a.x - b.y * a.y - b.z * a.z);
 }
-glm::mat4 Position::PosMat() {
+glm::mat4 Position::get_pos_mat() {
 	if (!updated){
 		if (parent_pos) {
-			return parent_pos->PosMat()*pos_matrix;
+			return parent_pos->get_pos_mat()*pos_matrix;
 		}else{
 			return pos_matrix;
 		}
@@ -126,7 +126,7 @@ glm::mat4 Position::PosMat() {
 
 	updated = false;
 	if (parent_pos) {
-		return parent_pos->PosMat()*pos_matrix;
+		return parent_pos->get_pos_mat()*pos_matrix;
 	}else{
 		return pos_matrix;
 	}

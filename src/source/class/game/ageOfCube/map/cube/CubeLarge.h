@@ -39,14 +39,14 @@ public:
 			}
 		}
 	}
-	bool buildable(Map *map,int x,int y,int z);
-	bool build(Map *map,int x,int y,int z);
+	virtual void get_build_on_type(std::vector<int> &v){
+		//if v==empty then means build on all basic cube
+	}
+	bool buildable(int x,int y,int z);
+	bool create_cube_large(int x,int y,int z);
 	bool removing;
 	int x,y,z;
 protected:
-	virtual void build_cube_large(){
-
-	}
 	std::vector<AttachCube*> attach_cubes;
 
 };

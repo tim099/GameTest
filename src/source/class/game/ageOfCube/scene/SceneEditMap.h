@@ -38,6 +38,8 @@ protected:
 	Building* constructing_building;
 	math::Position galaxy_pos_o;
 	math::Position galaxy_pos;
+	Display::ParallelLight *sun_light;
+	glm::vec3 sun_col_1,sun_col_2,sun_pos;
 	UI::UI *UI;
 	Timer timer;
 	bool destruct_mode;

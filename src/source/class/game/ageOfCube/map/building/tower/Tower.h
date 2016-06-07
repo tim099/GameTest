@@ -25,7 +25,7 @@ public:
 	virtual std::string get_name()const{
 		return "Tower";
 	}
-
+	virtual void get_build_on_type(std::vector<int> &v);
 
 
 	unsigned char tower_type;

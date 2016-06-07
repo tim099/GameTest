@@ -41,9 +41,6 @@ math::vec3<int> Building::get_pos_int(){
 math::vec3<int> Building::get_mid_pos_int(){
 	return math::vec3<int>(x+(get_cube_large_size().x-1)/2,y,z+(get_cube_large_size().z-1)/2);
 }
-void Building::build_cube_large(){
-	push_to_controller();//create when build success
-}
 void Building::save_cubeEX(FILE * file){
 	fprintf(file,"%d %f\n",rotate,size);
 	save_unit(file);
@@ -60,7 +57,7 @@ void Building::unit_update(){
 void Building::draw_buildable(Map *map){
 	//set_pos(x,y,z);
 	Display::CubeLight* building_light=new Display::CubeLight();
-	if(buildable(map,x,y,z)){
+	if(buildable(x,y,z)){
 		building_light->color=glm::vec3(0,1,0);
 	}else{
 		building_light->color=glm::vec3(1,0,0);
@@ -80,6 +77,13 @@ void Building::draw_buildable(Map *map){
 void Building::draw(){
 	draw_hp();
 	draw_building();
+}
+bool Building::build(){
+	bool build_success=create_cube_large(x,y,z);
+	if(build_success){
+		create_unit();
+	}
+	return build_success;
 }
 void Building::draw_hp(){
 	if(get_hp()<get_max_hp()){

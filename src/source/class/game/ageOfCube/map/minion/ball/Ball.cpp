@@ -17,7 +17,6 @@ Ball::Ball() {
 	colli_timer=0;
 	timer=0;
 	finder=0;
-
 	//colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
 }
 Ball::Ball(Ball* ball) {
@@ -127,10 +126,9 @@ void Ball::moving(){
 		}else{
 			if(finder)delete finder;
 			finder=0;
-			rigid_body.acc=math::vec3<double>(0,0,0);
 			//Audio::AudioController::get_cur_object()->play("default_sound_effect/Blip_Select3.wav");
 			Audio::AudioController::get_cur_object()->
-					play_by_dis("default_sound_effect/Blip_Select3.wav",rigid_body.pos,1000);
+					play_by_dis("default_sound_effect/Bomb.wav",rigid_body.pos,500);
 			//colli_sound.play();
 			delete this;
 		}

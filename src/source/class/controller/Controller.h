@@ -1,6 +1,5 @@
 #ifndef SOURCE_CLASS_GAME_MAP_CONTROLLER_H_
 #define SOURCE_CLASS_GAME_MAP_CONTROLLER_H_
-#include "class/controller/Component.h"
 
 class Controller {
 

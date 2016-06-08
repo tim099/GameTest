@@ -2,7 +2,10 @@
 #define _CUBE_H_
 #include <vector>
 #include <string>
-#include "class/physic/RigidBody.h"
+
+namespace physic{
+	class RigidBody;
+}
 namespace AOC{
 class CubeEX;
 class Cube {

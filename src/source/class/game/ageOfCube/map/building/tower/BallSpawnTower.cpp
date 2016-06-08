@@ -94,7 +94,7 @@ void BallSpawnTower::building_update(){
 				  z*Map::CUBE_SIZE+0.5*size);
 		glm::vec3 relative_pos=recruit_pos-pos.get_pos();
 
-		float angle=0.5*rotate*M_PI;
+		float angle=0.5*get_rotate()*M_PI;
 		float nx=relative_pos.x*cosf(angle)+relative_pos.z*sinf(angle);
 		float nz=-relative_pos.x*sinf(angle)+relative_pos.z*cosf(angle);
 		relative_pos.x=nx;relative_pos.z=nz;
@@ -107,7 +107,7 @@ void BallSpawnTower::building_update(){
 				math::vec3<double>(relative_pos.x,0,relative_pos.z)));
 		ball->set_size(0.16f*size);
 		ball->set_player(get_player());
-		ball->recruit();
+		ball->create_minion();
 		//std::cout<<"BallSpawnTower::building_update() recruit"<<std::endl;
 	}
 	if(timer<loop_time){

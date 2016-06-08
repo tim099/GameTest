@@ -17,7 +17,7 @@ AudioMap::AudioMap() {
 }
 
 AudioMap::AudioMap(std::string script_path){
-	std::cout<<"new audio map : "<<script_path<<std::endl;
+	//std::cout<<"new audio map : "<<script_path<<std::endl;
 	Load_script(script_path);
 }
 
@@ -64,7 +64,7 @@ void AudioMap::Parse_Audio(std::istream &is){
 	while(Tim::String::get_line(is, line, true, true)){
 		if(line=="#load_end"){
 			AudioSource* loaded_audio=new AudioSource(folder_path+audio_name);
-			std::cout<<"name : "<<audio_name<<std::endl;
+			//std::cout<<"name : "<<audio_name<<std::endl;
 			push(audio_name, loaded_audio);
 			break;
 		}else if(line=="Name:"){

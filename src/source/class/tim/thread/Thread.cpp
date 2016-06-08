@@ -7,8 +7,6 @@ Thread::Thread(int priority,Tim::ExecuteDone *_done) {
 	terminate=false;
 	threadhandle=CreateThread(NULL,0,Execute,this,CREATE_SUSPENDED,&ThreadID);
 	//threadhandle=CreateThread(NULL,0,Execute,this,0,&ThreadID);
-	threadMutex=new Mutex();
-	endMutex=new Mutex();
 	thread_start=false;
 	set_priority(priority);
 	done=_done;
@@ -16,8 +14,6 @@ Thread::Thread(int priority,Tim::ExecuteDone *_done) {
 Thread::~Thread() {
 	if(!terminate)std::cout<<"thread delete error not terminated yet!!"<<std::endl;
 	//else std::cout<<"thread delete success!!"<<std::endl;
-	delete threadMutex;
-	delete endMutex;
 	//if(done)delete done; dont!!if done=thread pool
 
 }
@@ -26,16 +22,17 @@ void Thread::Terminate(){
 	if(DONE()){
 		ResumeThread(threadhandle);//return to active state to terminate
 	}
-	endMutex->wait_for_this();
-	endMutex->release();
+	endMutex.wait_for_this();
+	endMutex.release();
 }
 void Thread::join(DWORD time){
 	while(!thread_start&&!DONE());//waste time until thread_start
 
-	threadMutex->wait_for_this();
-	threadMutex->release();
+	threadMutex.wait_for_this();
+	threadMutex.release();
 }
-void Thread::set_priority(int priority){
+void Thread::set_priority(int _priority){
+	priority=_priority;
 	bool flag=SetThreadPriority(threadhandle,priority);
 	if(flag)std::cout<<"set thread priority fail"<<std::endl;
 }
@@ -71,13 +68,13 @@ void Thread::start(){
 }
 void Thread::sleep(){
 	thread_start=false;
-	threadMutex->release();
+	threadMutex.release();
 
 	//may start at here causing problem so start func should avoid this
 	SuspendThread(threadhandle);//dangerous because may start again before suspend!!
 }
 void Thread::ExecuteTask(){
-	threadMutex->wait_for_this();
+	threadMutex.wait_for_this();
 	thread_start=true;
 	Tim::Task *task;
 	bool AutoTerminate;
@@ -112,11 +109,11 @@ void Thread::Execute(){
 DWORD WINAPI Thread::Execute(LPVOID lpParameter){
 
 	Thread* thread=(Thread*)lpParameter;
-	thread->endMutex->wait_for_this();
+	thread->endMutex.wait_for_this();
 	//std::cout<<"Execute start"<<std::endl;
 	thread->Execute();
 	//std::cout<<"Execute end"<<std::endl;
-	thread->endMutex->release();
+	thread->endMutex.release();
 	delete thread;
 	return 0;
 }

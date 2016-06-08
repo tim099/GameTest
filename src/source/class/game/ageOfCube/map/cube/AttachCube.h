@@ -13,7 +13,7 @@ class AttachCube: public CubeEX {
 public:
 	AttachCube(int x,int y,int z,CubeLarge *parent);
 	virtual ~AttachCube();
-	virtual void remove();
+	virtual void remove_cubeEX();
 	inline CubeLarge* get_parent(){
 		return parent;
 	}

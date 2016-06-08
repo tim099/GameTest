@@ -1,11 +1,12 @@
 #ifndef SOURCE_CLASS_PHYSIC_RIGIDBODY_H_
 #define SOURCE_CLASS_PHYSIC_RIGIDBODY_H_
 #include "class/tim/math/vec3.h"
+#include "class/game/entity/Component.h"
 #include <cstdio>
 #include <string>
 namespace physic {
 
-class RigidBody {
+class RigidBody : public entity::Component{
 public:
 	RigidBody();
 	virtual ~RigidBody();
@@ -23,7 +24,7 @@ public:
 	virtual void be_collide(RigidBody* b);
 	double radius;
 	double mass;
-	//math::vec3<double> acc;
+
 	math::vec3<double> vel;
 	math::vec3<double> pos,prev_pos;
 	RigidBody* collided,*be_collided;

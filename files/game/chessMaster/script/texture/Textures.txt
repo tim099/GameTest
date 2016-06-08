@@ -15,4 +15,7 @@ TextureDir:
 TextureMap:
 	ScriptPath:
 		script/texture/sky.txt	
+TextureMap:
+	ScriptPath:
+		script/texture/default.txt			
 #END	

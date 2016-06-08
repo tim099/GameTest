@@ -1,7 +1,7 @@
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBE_MAP_MINION_MINION_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_MINION_MINION_H_
 
-#include "class/game/ageOfCube/unit/Unit.h"
+#include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/physic/RigidBody.h"
 namespace Display{
 	class DrawObject;
@@ -13,14 +13,12 @@ public:
 	Minion();
 	virtual ~Minion();
 	virtual void minion_pre_init(){}
-	virtual void unit_update();
-
-	virtual Minion* create_minion()=0;
+	virtual Minion* clone()=0;
 
 
 	void save(FILE * file);
 	void load(FILE * file);
-	void recruit();
+	void create_minion();
 	void draw();
 	void move_to(math::vec3<double> target,double vel);
 
@@ -31,6 +29,7 @@ public:
 	inline void set_vel(math::vec3<double> vel){rigid_body.vel=vel;}
 	inline void set_size(double size){rigid_body.radius=0.5*size;}
 protected:
+	virtual void unit_update();
 	virtual void save_minion(FILE * file){}
 	virtual void load_minion(FILE * file){}
 	virtual void draw_minion()=0;

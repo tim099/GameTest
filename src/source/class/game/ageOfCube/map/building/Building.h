@@ -2,12 +2,12 @@
 #define SOURCE_CLASS_GAME_MAP_BUILDING_BUILDING_H_
 
 #include "class/game/ageOfCube/map/cube/CubeLarge.h"
-#include "class/game/ageOfCube/unit/Unit.h"
+#include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/tim/math/Position.h"
 namespace AOC {
 class Map;
-class Building: public CubeLarge ,
-				public Unit
+class Building: public CubeLarge, public Unit
+
 {
 public:
 	Building();
@@ -16,13 +16,12 @@ public:
 	virtual AOC::Building* get_building(){
 		return this;
 	}
-	virtual AOC::Building* create_building(){
+	virtual AOC::Building* clone(){
 		return 0;
 	}
 	virtual std::string get_name()const{
 		return "Building";
 	}
-	virtual void unit_update();
 	virtual void set_pos(int x,int y,int z);
 	virtual math::vec3<double> get_pos();
 	virtual math::vec3<int> get_pos_int();
@@ -35,8 +34,9 @@ public:
 	void draw_buildable(Map *map);
 	void set_size(float size);
 	virtual void draw();
-	bool build();
+	bool create_building();
 protected:
+	virtual void unit_update();
 	virtual void building_set_pos(int x,int y,int z){}
 	virtual void building_update(){}
 	virtual void save_cubeEX(FILE * file);
@@ -45,9 +45,11 @@ protected:
 	virtual void load_building(FILE * file){}
 	virtual void draw_building(){}
 	void draw_hp();
-	int rotate;
+
 	float size;
 	math::Position pos;
+private:
+	int rotate;
 };
 }
 

@@ -36,6 +36,7 @@ bool RigidBodyController::detect_collision(RigidBody* a,bool stop_when_collide){
 	for(unsigned i=0;i<collisions.size();i++){
 		b=collisions.at(i);
 		if(b!=a){
+			//std::cout<<"a="<<a<<","<<"b="<<b<<std::endl;
 			if(a->check_collision(b)){
 				a->collide(b);
 				b->be_collide(a);
@@ -47,6 +48,7 @@ bool RigidBodyController::detect_collision(RigidBody* a,bool stop_when_collide){
 	return collided;
 }
 void RigidBodyController::check_collision(){
+	//std::cout<<"RigidBodyController::check_collision() 1"<<std::endl;
 	RigidBody* body;
 	math::vec3<double> pos,prev_pos;
 	int seg;
@@ -60,7 +62,7 @@ void RigidBodyController::check_collision(){
 		if(dis>max_vel){//moving fast!!
 			pos=body->pos,prev_pos=body->prev_pos;
 			seg=ceil(dis/max_vel);
-			std::cout<<"fast colli seg="<<seg<<std::endl;
+			//std::cout<<"fast colli seg="<<seg<<std::endl;
 			body->pos=prev_pos;
 			for(int i=1;i<=seg;i++){
 				body->prev_pos=body->pos;
@@ -73,15 +75,11 @@ void RigidBodyController::check_collision(){
 		}
 
 	}
+	//std::cout<<"RigidBodyController::check_collision() 2"<<std::endl;
 	collisions.clear();
 	special_collisions.clear();
 }
 void RigidBodyController::update(){
-	/*
-	for(unsigned i=0;i<rigid_bodys.size();i++){
-		rigid_bodys.at(i)->update_rigid_body();
-	}
-	*/
 	check_collision();
 }
 } /* namespace physic */

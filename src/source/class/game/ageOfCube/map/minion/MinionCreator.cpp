@@ -16,10 +16,10 @@ void MinionCreator::push(AOC::Minion* obj){
 }
 AOC::Minion* MinionCreator::create(std::string type_name){
 	if (!creator.get(type_name)) {
-		std::cerr << "LandScape name:" << type_name
-				<< " not exist in this LandScapeCreator" << std::endl;
+		std::cerr << "Minion name:" << type_name
+				<< " not exist in this MinionCreatorCreator" << std::endl;
 		return 0;
 	}
-	return creator.get(type_name)->create_minion();
+	return creator.get(type_name)->clone();
 }
 } /* namespace AOC */

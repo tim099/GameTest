@@ -157,7 +157,7 @@ void ScenePlayTD::handle_input() {
 
 			//BuildingCreator* creator2=BuildingCreator::get_cur_object();
 			//constructing_building = creator2->create("Tower");
-			if(constructing_building->build()){
+			if(constructing_building->create_building()){
 				constructing_building=0;
 			}else{
 				delete constructing_building;

@@ -113,14 +113,16 @@ void MapSeg::load_building(FILE * file){
 	char name[100];
 	Building* building;
 	glm::ivec3 pos;
+	//std::cout<<"MapSeg::load_building 1"<<std::endl;
 	for(unsigned i=0;i<building_size;i++){
 		fscanf(file,"%d,%d,%d\n",&pos.x,&pos.y,&pos.z);
 		fscanf(file,"%s\n",name);
 		building=building_creator->create(name);
 		building->load(file);
 		building->set_pos(pos.x,pos.y,pos.z);
-		building->build();
+		building->create_building();
 	}
+	//std::cout<<"MapSeg::load_building 2"<<std::endl;
 }
 unsigned MapSeg::convert_pos(const math::vec3<int> &pos){
 	return (pos.x-seg_at.x)+pos.y*segsize.x+(pos.z-seg_at.y)*segsize.x*segsize.y;
@@ -160,7 +162,7 @@ void MapSeg::push_cube(math::vec3<int> pos,CubeEX *cube){
 void MapSeg::remove_cube(math::vec3<int> pos){
 	CubeEX* cube=cubes.get(convert_pos(pos));
 	if(cube){
-		cube->remove();
+		cube->remove_cubeEX();
 		cubes.remove(convert_pos(pos));
 	}
 

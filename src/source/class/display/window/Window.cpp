@@ -14,9 +14,14 @@ Window::Window(math::vec2<int> _size,std::string name,bool full_screen) {
 	creat_window(name,full_screen);
 }
 Window::~Window() {
-	glfwTerminate();
-	glewinitial=false;
-	glfwinitial=false;
+	if(glfwinitial){
+		glfwinitial=false;
+		//glfwTerminate();
+	}
+	if(glewinitial){
+		//glewinitial=false;
+	}
+
 }
 void Window::close_window(){
 	glfwSetWindowShouldClose(get_window(),1);

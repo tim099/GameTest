@@ -12,7 +12,7 @@ class CubeLarge: public CubeEX {
 public:
 	CubeLarge();
 	virtual ~CubeLarge();
-	virtual void remove();
+	virtual void remove_cubeEX();
 
 	virtual math::vec3<int> get_cube_large_size(){
 		return math::vec3<int>(1,1,1);

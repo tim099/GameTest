@@ -16,12 +16,13 @@ public:
 	void push_task(Task* task);
 	void distribute_task(Tim::Thread* thread);
 	void Terminate();
-	void thread_terminate(Thread* thread);
+	bool ready_thread_terminate(Thread* thread);
 	std::queue<Task*>task_q;
 	std::queue<Thread*>ready_q;
 	std::vector<Thread*>threads;
-	Tim::Mutex *Distribute_Mutex;
+	Tim::Mutex Distribute_Mutex;
 protected:
+
 	DistributeTask *distributeTask;
 };
 

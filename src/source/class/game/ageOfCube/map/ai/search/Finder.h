@@ -22,9 +22,9 @@ public:
 
 	int min_search_times;//if find and reach min_search_times then stop
 	int max_search_times;//if reach max_search_times then stop(no matter find or not
-	bool find;//find target
-	bool search_done;//search_done flag
-	bool stop_search;//stop this search request
+	int find;//find target
+	int search_done;//search_done flag
+	int stop_search;//stop this search request
 protected:
 	virtual void save_finder(FILE* file){}
 	virtual void load_finder(FILE* file){}

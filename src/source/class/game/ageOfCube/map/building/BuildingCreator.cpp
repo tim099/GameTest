@@ -26,6 +26,6 @@ AOC::Building* BuildingCreator::create(std::string type_name){
 				<< " not exist in this BuildingCreator" << std::endl;
 		return 0;
 	}
-	return creator.get(type_name)->create_building();
+	return creator.get(type_name)->clone();
 }
 }

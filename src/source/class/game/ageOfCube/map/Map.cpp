@@ -40,8 +40,9 @@ Map::Map() {
 	prev_update_pos=&update_pos2;
 	unit_controller=new UnitController();
 	entity_controller=new entity::EntityController();
+	//attack_controller=new AttackController();
+
 	astar=new AI::search::Astar();
-	astar->register_cur();
 	register_cur();
 }
 Map::~Map() {
@@ -66,7 +67,9 @@ Map::~Map() {
 	delete cube_error;
 	delete cube_water;
 	delete all_cubes;
+
 	delete unit_controller;
+	//delete attack_controller;
 	delete entity_controller;
 
 }
@@ -327,14 +330,18 @@ void Map::save_map(const std::string& path){
 			}
 		}
 	}
+	entity_controller->save(file);
 	for(int i=0;i<seg_num.x;i++){
 		for(int j=0;j<seg_num.z;j++){
 			map_segs->get(i,j)->save(file);
 		}
 	}
 	save_update_pos(file);
+
+
 	unit_controller->save(file);
-	entity_controller->save(file);
+	//attack_controller->save(file);
+
 	fclose(file);
 }
 void Map::load_map(const std::string& path){
@@ -356,15 +363,18 @@ void Map::load_map(const std::string& path){
 			}
 		}
 	}
+
+	entity_controller->load(file);
+
 	for(int i=0;i<seg_num.x;i++){
 		for(int j=0;j<seg_num.z;j++){
 			map_segs->get(i,j)->load(file);
 		}
 	}
 	load_update_pos(file);
-	unit_controller->load(file);
-	entity_controller->load(file);
 
+	unit_controller->load(file);
+	//attack_controller->load(file);
 	dp_map->update_whole_map();
 	fclose(file);
 }
@@ -645,8 +655,11 @@ void Map::draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* thre
 	unit_controller->draw(draw);
 }
 void Map::update(Timer* timer){
+	//attack_controller->update();
 	unit_controller->update();
 	map_rigid_body->set_detect_special_collision();
+
+
 	int update_num=seg_num.x*seg_num.z/10;
 	for(int i=0;i<update_num;i++){
 		get_map_seg(update_at.x,update_at.y)->update();

@@ -6,7 +6,7 @@ namespace AOC{
 AttachCube::AttachCube(int _x,int _y,int _z,CubeLarge *_parent) {
 	x=_x;y=_y;z=_z;parent=_parent;removing=false;
 }
-void AttachCube::remove(){
+void AttachCube::remove_cubeEX(){
 	removing=true;
 	if(!parent->removing){
 		Map::get_cur_object()->remove_cube(parent->x,parent->y,parent->z);

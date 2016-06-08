@@ -4,8 +4,8 @@ class GLFWwindow;
 //#include <glm/glm.hpp>
 #include "class/tim/math/vec2.h"
 
-class HDC__;
-class HGLRC__;
+//class HDC__;
+//class HGLRC__;
 #include "class/tim/globalObject/GlobalObject.h"
 #include <string>
 namespace Display{
@@ -40,8 +40,8 @@ protected:
 	void glfwinit();
 	GLFWwindow* window;
 	math::vec2<int> size;
-	HDC__ *dc;
-	HGLRC__ *lrc;
+	//HDC__ *dc;
+	//HGLRC__ *lrc;
 };
 }
 

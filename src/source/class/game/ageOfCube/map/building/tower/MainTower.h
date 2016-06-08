@@ -16,7 +16,7 @@ public:
 	virtual math::vec3<int> get_cube_large_size(){
 		return math::vec3<int>(ceil(size/3.0),ceil(size),ceil(size/3.0));
 	}
-	virtual AOC::Building* create_building(){
+	virtual AOC::Building* clone(){
 		return new MainTower(this);
 	}
 	virtual std::string get_name()const{
@@ -30,7 +30,7 @@ protected:
 	virtual void load_building(FILE * file);
 	virtual void draw_building();
 	Display::DrawObject *tower_Drawobj;
-	int timer;
+	int timer,loop_time;
 };
 
 } /* namespace AOC */

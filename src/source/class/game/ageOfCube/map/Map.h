@@ -12,11 +12,12 @@
 #include "class/game/ageOfCube/map/landscape/LandscapeCreator.h"
 #include "class/game/ageOfCube/map/building/BuildingCreator.h"
 #include "class/game/ageOfCube/player/Player.h"
-#include "class/game/ageOfCube/unit/UnitController.h"
-#include "class/game/entity/EntityController.h"
 #include "class/tim/math/vec3.h"
 #include "class/game/ageOfCube/map/MapRigidBody.h"
 #include "class/tim/thread/mutex/Mutex.h"
+#include "class/game/ageOfCube/map/unit/UnitController.h"
+#include "class/game/entity/EntityController.h"
+#include "class/game/ageOfCube/map/attack/AttackController.h"
 class LandscapeCreator;
 class Timer;
 
@@ -106,6 +107,7 @@ public:
 	AOC::DisplayMap* dp_map;
 	UnitController* unit_controller;
 	entity::EntityController* entity_controller;
+	//AttackController* attack_controller;
 	//cube being selected by mouse
 	math::vec3<int> selected_cube;
 

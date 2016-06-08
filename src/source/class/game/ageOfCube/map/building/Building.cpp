@@ -3,17 +3,19 @@
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/Draw.h"
 #include "class/game/ageOfCube/map/Map.h"
+#include "class/physic/RigidBody.h"
 #include <cstdio>
 namespace AOC{
 void Building::building_pre_init(){
 
 }
 Building::Building() {
+	//std::cout<<"Building::Building()="<<this<<std::endl;
 	size=1.0;
 	rotate=0;
 }
 Building::~Building() {
-
+	//std::cout<<"Building::~Building()="<<this<<std::endl;
 }
 void Building::set_size(float _size){
 	//pos.set_scale(glm::vec3(0.9*size,0.9*size,0.9*size));
@@ -26,9 +28,8 @@ void Building::set_rotate(int _rotate){
 
 }
 void Building::set_pos(int _x,int _y,int _z){
-	if(rotate!=0){
-		pos.set_r(glm::vec3(0,90*rotate,0));
-	}
+
+	pos.set_r(glm::vec3(0,90*rotate,0));
 	x=_x,y=_y,z=_z;
 	building_set_pos(_x,_y,_z);
 }
@@ -78,10 +79,12 @@ void Building::draw(){
 	draw_hp();
 	draw_building();
 }
-bool Building::build(){
+bool Building::create_building(){
 	bool build_success=create_cube_large(x,y,z);
 	if(build_success){
 		create_unit();
+	}else{
+		std::cerr<<"Building::build() fail"<<std::endl;
 	}
 	return build_success;
 }

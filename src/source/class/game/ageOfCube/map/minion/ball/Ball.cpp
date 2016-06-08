@@ -4,7 +4,8 @@
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/game/ageOfCube/map/ai/search/Astar.h"
 
-#include "class/game/ageOfCube/unit/UnitController.h"
+#include "class/game/ageOfCube/map/unit/UnitController.h"
+#include "class/game/entity/EntityController.h"
 #include "class/audio/AudioController.h"
 namespace AOC {
 void Ball::minion_pre_init(){
@@ -17,7 +18,7 @@ Ball::Ball() {
 	colli_timer=0;
 	timer=0;
 	finder=0;
-	//colli_sound.set_source("default_sound_effect/Blip_Select3.wav");
+	//target_id=0;
 }
 Ball::Ball(Ball* ball) {
 	ball_Drawobj=ball->ball_Drawobj;
@@ -26,13 +27,14 @@ Ball::Ball(Ball* ball) {
 	colli_timer=0;
 	timer=0;
 	finder=0;
-	//colli_sound.set_source();
+	//target_id=0;
 }
 Ball::~Ball() {
 	if(finder)delete finder;
 }
 void Ball::save_minion(FILE * file){
 	fprintf(file,"%d\n",timer);
+	///*
 	if(finder&&finder->get()->find){
 		AI::search::FindPath* path=dynamic_cast<AI::search::FindPath*>(finder->get());
 		fprintf(file,"1\n");
@@ -40,37 +42,42 @@ void Ball::save_minion(FILE * file){
 	}else{
 		fprintf(file,"0\n");
 	}
+	//*/
 }
 void Ball::load_minion(FILE * file){
 	fscanf(file,"%d\n",&timer);
-	int flag;
 	///*
+	int flag;
 	fscanf(file,"%d\n",&flag);
 	if(flag){
 		if(finder)delete finder;
 		AI::search::FindPath* path=new AI::search::FindPath();
 		path->load(file);
 		finder=new Tim::SmartPointer<AI::search::Finder>(path);
-		//finder->get()->find=true;
 	}
 	//*/
 }
 void Ball::minion_update(){
-
 	ball_move();
-	//if(rigid_body.be_collided||rigid_body.collided){
-		//colli_sound.pause();
-		//colli_sound.play();
-	//}
 	timer++;
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
-	if(timer>2500)delete this;
+	if(timer>2500)set_hp(0);
 	//set_position(get_position()+math::vec3<double>(0.05,0,0));
 }
 void Ball::find_path(){
-	Unit* unit=UnitController::get_cur_object()->search_unit("MainTower",rigid_body.pos);
-	if(unit){
-		math::vec3<int>des(unit->get_mid_pos_int());
+	Unit* target=0;
+	/*
+	if(!target_id){
+		target=UnitController::get_cur_object()->search_unit("MainTower",rigid_body.pos);
+	}else{
+		target=dynamic_cast<Unit*>(
+				entity::EntityController::get_cur_object()->get_entity(target_id));
+		std::cout<<"target id recover:"<<target->get_name()<<std::endl;
+	}
+	*/
+	target=UnitController::get_cur_object()->search_unit("MainTower",rigid_body.pos);
+	if(target){
+		math::vec3<int>des(target->get_mid_pos_int());
 		//std::cout<<"get_pos_int():"<<des.x<<","<<des.y<<","<<des.z<<std::endl;
 		AI::search::FindPath *find=new AI::search::FindPath(
 				rigid_body.pos,2*rigid_body.radius,des,1);
@@ -98,8 +105,7 @@ void Ball::explode(){
 					}
 				}
 			}
-
-			delete this;
+			set_hp(0);
 		}
 	}else{
 		rigid_body.radius*=1.02;
@@ -130,7 +136,7 @@ void Ball::moving(){
 			Audio::AudioController::get_cur_object()->
 					play_by_dis("default_sound_effect/Bomb.wav",rigid_body.pos,500);
 			//colli_sound.play();
-			delete this;
+			set_hp(0);
 		}
 	}else{
 		//explode();

@@ -23,7 +23,7 @@ public:
 	}
 
 	//action before being removed
-	virtual void remove(){
+	virtual void remove_cubeEX(){
 
 	}
 

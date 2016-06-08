@@ -27,7 +27,7 @@ void SceneEditMap::loading(){
 	}else{
 		map->gen_map(map_size,time(NULL));
 	}
-
+	resume();
 }
 void SceneEditMap::scene_initialize() {
 	map = new AOC::Map();
@@ -52,7 +52,15 @@ void SceneEditMap::scene_initialize() {
 	back_music->set_loop(true);
 
 	cube_type=Cube::cube_start;
-	resume();
+}
+void SceneEditMap::pause() {
+	back_music->pause();
+}
+void SceneEditMap::resume() {
+	back_music->play();
+	draw->Enable3D = true;
+	draw->set_camera(camera);
+	draw->set_lightControl(lightControl);
 }
 void SceneEditMap::scene_terminate() {
 	delete lightControl;
@@ -198,7 +206,7 @@ void SceneEditMap::handle_input() {
 	}
 	if (input->mouse->left_clicked()) {//->left_pressed()
 		if(constructing_building){
-			if(constructing_building->build()){
+			if(constructing_building->create_building()){
 			}else{
 				delete constructing_building;
 			}
@@ -290,18 +298,15 @@ void SceneEditMap::handle_input() {
 }
 void SceneEditMap::scene_update() {
 
-
-
-	//std::cout<<"scene_update()"<<std::endl;
 	UI->update_UIObject();
 	camera->update();
+
 	if(!pause_timer){
 		timer.tic(1);
 		map->update(&timer);
 	}else{
 		//std::cout<<"pause"<<std::endl;
 	}
-
 }
 void SceneEditMap::scene_update_end(){
 	handle_input();
@@ -309,7 +314,6 @@ void SceneEditMap::scene_update_end(){
 void SceneEditMap::scene_draw() {
 	UI->draw_UIObject(draw);
 	map->draw(draw,camera,thread_pool); //push position
-
 	Display::DrawObject* galaxy=Display::AllDrawObjects::get_cur_object()->get("default/galaxy");
 	Display::DrawDataObj* data=new Display::DrawDataObj(&galaxy_pos_o,false,false);
 	data->push_ex_data(new Display::drawDataEX::SkyMap());
@@ -317,7 +321,6 @@ void SceneEditMap::scene_draw() {
 	galaxy_pos_o.set_r(glm::vec3(60,0,0));
 	galaxy_pos.set_parent(&galaxy_pos_o);
 	galaxy_pos.set_r(glm::vec3(0.0f,180.0f*timer.get_hour(),0.0f));
-
 	//sun_light->vec=glm::vec3(
 			//glm::rotate((float)(360.0f * timer.get_hour()),glm::vec3(-1, 0, 1))
 					//*glm::vec4(glm::vec3(10,-10, 10), 1));
@@ -355,13 +358,5 @@ void SceneEditMap::scene_draw() {
 		}
 	}
 }
-void SceneEditMap::pause() {
-	back_music->pause();
-}
-void SceneEditMap::resume() {
-	back_music->play();
-	draw->Enable3D = true;
-	draw->set_camera(camera);
-	draw->set_lightControl(lightControl);
-}
+
 }

@@ -33,18 +33,14 @@ public:
 	 *stop the thread until you call start() again
 	 */
 	void sleep();
-	/*
-	 * set priority of this thread
-	 */
-	void set_priority(int priority);
-	/*
-	 * push a task into thread queue
-	 */
-	void push_task(Task* task);
-	/*
-	 *wait for this thread until all task done
-	 */
-	void join(DWORD time=INFINITE);
+
+
+
+	void set_priority(int priority);//set priority of this thread
+
+	void push_task(Task* task);//push a task into thread queue
+
+	void join(DWORD time=INFINITE);//wait for this thread until all task done
 	/*
 	 *this function only call by the win32 api CreateThread()
 	 *execute task in this function
@@ -72,8 +68,9 @@ protected:
 	bool end;
 	bool terminate;
 	bool thread_start;
-	Mutex *threadMutex;
-	Mutex *endMutex;
+	int priority;
+	Mutex threadMutex;
+	Mutex endMutex;
 
 	ExecuteDone *done;
 	HANDLE threadhandle;

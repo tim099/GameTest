@@ -8,7 +8,7 @@ CubeLarge::CubeLarge() {
 CubeLarge::~CubeLarge() {
 
 }
-void CubeLarge::remove(){
+void CubeLarge::remove_cubeEX(){
 	removing=true;
 	Map *map=Map::get_cur_object();
 	AttachCube* cube;
@@ -80,6 +80,7 @@ bool CubeLarge::buildable(int x,int y,int z){
 	for(unsigned i=0;i<attach_cubes.size();i++){
 		delete attach_cubes.at(i);
 	}
+	attach_cubes.clear();
 	return buildable;
 }
 bool CubeLarge::create_cube_large(int _x,int _y,int _z){
@@ -87,6 +88,7 @@ bool CubeLarge::create_cube_large(int _x,int _y,int _z){
 	x=_x,y=_y,z=_z;
 	if(!buildable(x,y,z))return false;
 	for(unsigned i=0;i<attach_cubes.size();i++){
+		std::cerr<<"CubeLarge::create_cube_large delete attach_cubes"<<std::endl;
 		delete attach_cubes.at(i);
 	}
 	attach_cubes.clear();

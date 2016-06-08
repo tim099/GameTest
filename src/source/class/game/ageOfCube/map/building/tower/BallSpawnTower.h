@@ -17,7 +17,7 @@ public:
 	virtual math::vec3<int> get_cube_large_size(){
 		return math::vec3<int>(ceil(size),ceil(size),ceil(size));
 	}
-	virtual AOC::Building* create_building(){
+	virtual AOC::Building* clone(){
 		return new BallSpawnTower(this);
 	}
 	virtual std::string get_name()const{

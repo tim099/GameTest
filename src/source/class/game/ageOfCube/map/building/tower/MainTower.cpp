@@ -17,11 +17,13 @@ MainTower::MainTower() {
 	tower_Drawobj=0;
 	size = 9.0;
 	timer=0;
+	loop_time=200;
 }
 MainTower::MainTower(MainTower* tower){
 	tower_Drawobj=tower->tower_Drawobj;
 	size=tower->size;
 	timer=0;
+	loop_time=tower->loop_time;
 	init(10000,0);
 }
 MainTower::~MainTower() {
@@ -42,14 +44,15 @@ void MainTower::building_set_pos(int x,int y,int z){
 }
 void MainTower::building_update(){
 
-}
-void MainTower::draw_building(){
-	static const int loop_time=200;
 	if(timer<loop_time){
 		timer++;
+		//hp_alter(-1);
 	}else{
 		timer=0;
 	}
+}
+void MainTower::draw_building(){
+
 	float light_val=sqrt(fabs(((float)timer/(float)loop_time)-0.5));
 	math::vec3<int> real_size=get_cube_large_size();
 	Display::PointLight *light=new Display::PointLight(

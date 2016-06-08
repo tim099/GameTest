@@ -5,6 +5,7 @@
 namespace physic {
 
 RigidBody::RigidBody() {
+	//std::cout<<"RigidBody::RigidBody()="<<this<<std::endl;
 	//RigidBodyController::get_cur_object()->push(this);
 	radius=1.0;
 	collided=0;
@@ -12,6 +13,7 @@ RigidBody::RigidBody() {
 	mass=1.0;
 }
 RigidBody::~RigidBody() {
+	//std::cout<<"RigidBody::~RigidBody()="<<this<<std::endl;
 	//RigidBodyController::get_cur_object()->remove(this);
 }
 void RigidBody::save(FILE * file){

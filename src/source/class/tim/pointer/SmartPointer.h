@@ -55,12 +55,15 @@ public:
 		if(ptr){
 			mutex->wait_for_this();
 			--(*pointed_num);
+			bool flag=false;
 			if((*pointed_num)==0){
 				delete pointed_num;
 				delete ptr;
-				delete mutex;
+				flag=true;
 			}
 			mutex->release();
+			if(flag)delete mutex;
+
 			mutex=0;
 			pointed_num=0;
 			ptr=0;

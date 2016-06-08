@@ -19,7 +19,7 @@ public:
 	virtual math::vec3<int> get_cube_large_size(){
 		return math::vec3<int>(ceil(size/3.0),ceil(size),ceil(size/3.0));
 	}
-	virtual AOC::Building* create_building(){
+	virtual AOC::Building* clone(){
 		return new Tower(this);
 	}
 	virtual std::string get_name()const{

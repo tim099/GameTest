@@ -25,24 +25,37 @@ void EntityController::load(FILE* file){
 		avaliable_id.push_back(id);
 	}
 }
-Entity* EntityController::get_entity(int id){
-		if(map.find(id)!=map.end()){
-			return map[id];
-		}else{
-			std::cerr<<"EntityController::get_entity id:"<<id<<"false,id not exist"<<std::endl;
-			return 0;
-		}
-
+Entity* EntityController::get_entity(unsigned id){
+	if(id<entities.size()){
+		return entities.at(id);
+	}else{
+		std::cerr<<"EntityController::get_entity(int id) id="<<id<<"out if range"<<std::endl;
+		return 0;
+	}
 }
 void EntityController::push_entity(Entity* entity){
-	if(!entity->id)entity->id=gen_id();
-	map[entity->id]=entity;
+	//std::cout<<"EntityController::push_entity="<<entity<<std::endl;
+	if(!entity->id){
+		entity->id=gen_id();
+	}
+	if(entity->id>=entities.size()){
+		entities.resize(entities.size()+entity->id+1,0);
+	}
+	entities.at(entity->id)=entity;
 }
 void EntityController::remove_entity(Entity* entity){
 	delete_id(entity->id);
-	map.erase(entity->id);
+	if(entity->id<entities.size()){
+		//std::cout<<"EntityController::remove_entity id="<<entity->id<<std::endl;
+		//std::cout<<"EntityController::remove_entity size="<<entities.size()<<std::endl;
+		entities.at(entity->id)=0;
+	}else{
+		std::cerr<<"EntityController::remove_entity(Entity* entity)"<<entity->id
+				<<"out if range"<<std::endl;
+	}
+
 }
-int EntityController::gen_id(){
+unsigned EntityController::gen_id(){
 	if(avaliable_id.empty()){
 		return ++id_num;
 	}else{
@@ -51,7 +64,7 @@ int EntityController::gen_id(){
 		return id;
 	}
 }
-void EntityController::delete_id(int id){
+void EntityController::delete_id(unsigned id){
 	if(id){
 		avaliable_id.push_back(id);
 	}

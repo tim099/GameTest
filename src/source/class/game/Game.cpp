@@ -86,11 +86,12 @@ void Game::terminate(){
 	delete controller_system;
 	delete input;
 
-	//delete render_task;
+
 	delete renderer;
 	delete UIObj_Creator;
 	delete draw;
-	delete window;
+
+	//delete window;
 	//std::cout<<"terminate end"<<std::endl;
 }
 Scene* Game::get_cur_scene(){
@@ -152,7 +153,7 @@ void Game::update(){
 	Scene* cur_scene=get_cur_scene();
 	//std::cout<<"Game::update() cur_scene="<<cur_scene->scene_name()<<std::endl;
 	cur_scene->update();
-	//std::cout<<"Game::update() draw end"<<std::endl;
+	//std::cout<<"Game::update() cur_scene->update() end"<<std::endl;
 	//===========system update=============
 	controller_system->update();
 	//std::cout<<"Game::update() controller_system->update() end"<<std::endl;

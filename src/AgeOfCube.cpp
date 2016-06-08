@@ -15,10 +15,7 @@
 //#include <thread>
 #include "class/game/ageOfCube/AgeOfCubes.h"
 #include "class/game/chessMaster/ChessMaster.h"
-
 int main(){
-
-
 
 	///*
 

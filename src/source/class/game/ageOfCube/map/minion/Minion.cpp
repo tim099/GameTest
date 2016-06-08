@@ -1,19 +1,17 @@
 #include "class/game/ageOfCube/map/minion/Minion.h"
-#include "class/game/ageOfCube/unit/UnitController.h"
+#include "class/game/ageOfCube/map/unit/UnitController.h"
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/game/ageOfCube/map/DisplayMap.h"
+#include "class/game/ageOfCube/map/unit/UnitController.h"
 #include <iostream>
 namespace AOC {
 
 Minion::Minion() {
+	//std::cout<<"Minion::Minion()="<<this<<std::endl;
 	minion_created=false;
 }
 Minion::~Minion() {
-	/*
-	if(minion_created){
-		UnitController::get_cur_object()->remove_minion(this);
-	}
-	*/
+	//std::cout<<"Minion::~Minion()="<<this<<std::endl;
 }
 void Minion::save(FILE * file){
 	save_unit(file);
@@ -25,7 +23,7 @@ void Minion::load(FILE * file){
 	rigid_body.load(file);
 	load_minion(file);
 }
-void Minion::recruit(){
+void Minion::create_minion(){
 	//push_minion_to_controller();
 	minion_created=true;
 	create_unit();

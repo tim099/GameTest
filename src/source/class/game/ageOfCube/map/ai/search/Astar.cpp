@@ -11,6 +11,7 @@ namespace search{
 Astar::Astar() {
 	thread_pool=new Tim::ThreadPool(1,BELOW_NORMAL_PRIORITY_CLASS);//IDLE_PRIORITY_CLASS
 	node_pool=new Tim::ObjPool<Node>(10000);
+	register_cur();
 }
 Astar::~Astar() {
 	thread_pool->Terminate();

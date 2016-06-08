@@ -6,6 +6,7 @@
 #include "class/tim/pointer/SmartPointer.h"
 #include "class/game/ageOfCube/map/ai/search/finder/FindPath.h"
 #include "class/audio/AudioPlayer.h"
+
 namespace AOC {
 
 class Ball: public Minion {
@@ -15,7 +16,7 @@ public:
 	Ball(Ball* ball);
 	virtual ~Ball();
 
-	virtual Minion* create_minion(){
+	virtual Minion* clone(){
 		return new Ball(this);
 	}
 	virtual std::string get_name()const{
@@ -31,7 +32,7 @@ protected:
 	void find_path();
 	void explode();
 	void moving();
-	//Audio::AudioPlayer colli_sound;
+	//unsigned target_id;
 	Display::DrawObject *ball_Drawobj;
 	math::Position dp_pos;
 	Tim::SmartPointer<AI::search::Finder> *finder;

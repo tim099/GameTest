@@ -5,26 +5,22 @@
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/game/entity/Entity.h"
 #include <vector>
-#include <map>
 namespace entity{
 class EntityController: public Controller ,public Tim::GlobalObject<EntityController>{
 public:
 	EntityController();
 	virtual ~EntityController();
-	Entity* get_entity(int id);
+	Entity* get_entity(unsigned id);
 	void push_entity(Entity* entity);
 	void remove_entity(Entity* entity);
-	void delete_id(int id);
+	void delete_id(unsigned id);
 	void save(FILE* file);
 	void load(FILE* file);
-	int gen_id();
+	unsigned gen_id();
 
 protected:
-
-
-
-	std::map<int,Entity*> map;
-	std::vector<int> avaliable_id;
+	std::vector<unsigned> avaliable_id;
+	std::vector<Entity*>entities;
 	unsigned id_num;
 };
 }

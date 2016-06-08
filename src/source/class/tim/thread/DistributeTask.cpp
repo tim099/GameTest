@@ -16,7 +16,9 @@ void DistributeTask::done(Tim::Thread* thread){
 	if(!end){
 		thread_pool->distribute_task(thread);
 	}else{
-		thread_pool->thread_terminate(thread);
+		if(thread_pool->ready_thread_terminate(thread)){
+			delete thread_pool;
+		}
 	}
 }
 } /* namespace Tim */

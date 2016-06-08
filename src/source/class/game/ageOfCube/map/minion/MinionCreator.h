@@ -10,9 +10,9 @@ class MinionCreator :public Tim::GlobalObject<MinionCreator> {
 public:
 	MinionCreator();
 	virtual ~MinionCreator();
-	AOC::Minion* create(std::string type_name);
+	Minion* create(std::string type_name);
 protected:
-	void push(AOC::Minion* obj);
+	void push(Minion* obj);
 	Tim::MapContainer<std::string,Minion>creator;
 };
 

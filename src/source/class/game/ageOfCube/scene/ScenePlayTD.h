@@ -2,7 +2,7 @@
 #define SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_SCENEPLAYTD_H_
 
 #include "class/game/scene/Scene.h"
-#include "class/game/ageOfCube/map/Map.h"
+#include "class/game/ageOfCube/field/Field.h"
 #include "class/display/camera/Camera.h"
 #include "class/display/UI/UI.h"
 #include "class/game/timer/Timer.h"
@@ -38,7 +38,8 @@ protected:
 
 	void camera_control();
 	void handle_input();
-	AOC::Map *map;
+	//AOC::Map *map;
+	Field* field;
 	Display::Camera *camera;
 	Display::LightControl* lightControl;
 	Display::CubeLight* cl;

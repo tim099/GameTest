@@ -19,10 +19,16 @@ Missile::Missile(Missile* missile){
 Missile::~Missile() {
 
 }
+void Missile::save_attack(FILE* file){
+	fprintf(file,"%d\n",timer);
+}
+void Missile::load_attack(FILE* file){
+	fscanf(file,"%d\n",&timer);
+}
 void  Missile::explode(){
 	//std::cout<<"Missile::explode()"<<std::endl;
 	for(unsigned i=0;i<collied_units.size();i++){
-		collied_units.at(i)->hp_alter(-100);
+		collied_units.at(i)->hp_alter(-10);
 	}
 	Audio::AudioController::get_cur_object()->
 			play_by_dis("default_sound_effect/Bomb.wav",pos,200);
@@ -45,13 +51,13 @@ void Missile::attack_update(){
 		explode();
 	}
 	if(target){
-		vel*=0.8;
+		vel*=0.9;
 		if(timer<50){
-			vel.y+=0.03;
+			vel.y+=0.025;
 		}else{
 			math::vec3<double> target_pos=target->get_mid_pos();
 			math::vec3<double> del_pos=target_pos-pos;
-			vel+=0.03*del_pos.normalize();
+			vel+=0.025*del_pos.normalize();
 			if(del_pos.get_length()<0.1)explode();
 		}
 	}else{

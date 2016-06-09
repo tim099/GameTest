@@ -1,7 +1,7 @@
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_SCENEEDITMAP_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_SCENEEDITMAP_H_
 #include "class/game/scene/Scene.h"
-#include "class/game/ageOfCube/map/Map.h"
+#include "class/game/ageOfCube/field/Field.h"
 #include "class/display/camera/Camera.h"
 #include "class/display/UI/UI.h"
 #include "class/game/timer/Timer.h"
@@ -31,7 +31,8 @@ protected:
 	void camera_control();
 	void handle_input();
 	int cube_type;
-	AOC::Map *map;
+	//Map *map;
+	Field* field;
 	Display::Camera *camera;
 	Display::LightControl* lightControl;
 	Audio::AudioPlayer *back_music;

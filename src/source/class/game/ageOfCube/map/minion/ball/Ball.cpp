@@ -35,7 +35,7 @@ Ball::~Ball() {
 	if(finder)delete finder;
 }
 void Ball::save_minion(FILE * file){
-	fprintf(file,"%d\n",timer);
+	fprintf(file,"%d %d\n",timer,attack_timer);
 	///*
 	if(finder&&finder->get()->find){
 		AI::search::FindPath* path=dynamic_cast<AI::search::FindPath*>(finder->get());
@@ -47,7 +47,7 @@ void Ball::save_minion(FILE * file){
 	//*/
 }
 void Ball::load_minion(FILE * file){
-	fscanf(file,"%d\n",&timer);
+	fscanf(file,"%d %d\n",&timer,&attack_timer);
 	///*
 	int flag;
 	fscanf(file,"%d\n",&flag);
@@ -63,7 +63,7 @@ void Ball::minion_update(){
 	attack_timer++;
 	if(attack_timer>200){
 		Unit* target;
-		target=UnitController::get_cur_object()->search_unit("MainTower",rigid_body.pos);
+		target=UnitController::get_cur_object()->search_unit(0,rigid_body.pos);//"MainTower"
 		if(target){
 			attack(target);
 			attack_timer=0;

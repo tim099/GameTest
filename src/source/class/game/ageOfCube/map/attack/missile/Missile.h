@@ -18,6 +18,8 @@ public:
 		return std::string("Missile");
 	}
 protected:
+	virtual void save_attack(FILE* file);
+	virtual void load_attack(FILE* file);
 	virtual void draw_attack();
 	virtual void attack_update();
 	void explode();

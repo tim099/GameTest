@@ -24,9 +24,10 @@ void Minion::load(FILE * file){
 	load_minion(file);
 }
 void Minion::create_minion(){
-	//push_minion_to_controller();
 	minion_created=true;
 	create_unit();
+
+	push_component(&rigid_body);
 }
 math::vec3<int> Minion::get_pos_int(){
 	return math::vec3<int>(

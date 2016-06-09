@@ -107,7 +107,7 @@ public:
 	AOC::DisplayMap* dp_map;
 	UnitController* unit_controller;
 	entity::EntityController* entity_controller;
-	//AttackController* attack_controller;
+	AttackController* attack_controller;
 	//cube being selected by mouse
 	math::vec3<int> selected_cube;
 

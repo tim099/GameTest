@@ -138,6 +138,7 @@ bool MapRigidBody::check_collision(physic::RigidBody* b,bool &c_x,bool &c_y,bool
 	return collided;
 }
 bool MapRigidBody::MapRigidBody::check_collision(physic::RigidBody* b){
+	id=0;
 	bool c_x=false,c_y=false,c_z=false;
 	bool c_x_col=false,c_y_col=false,c_z_col=false;
 	Cube* collide_cube=0;
@@ -162,6 +163,10 @@ bool MapRigidBody::MapRigidBody::check_collision(physic::RigidBody* b){
 		}
 		if(collide_cube){
 			collide_cube->collide(b);
+		}
+		if(Building* building=dynamic_cast<Building*>(collide_cube)){
+			//std::cout<<"map_rigid_body colli at building!!="<<building->get_name()<<std::endl;
+			id=(building->get_id());
 		}
 		collided=check_collision(b,c_x,c_y,c_z,collide_cube);
 	}

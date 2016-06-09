@@ -10,6 +10,7 @@ RigidBody::RigidBody() {
 	radius=1.0;
 	collided=0;
 	be_collided=0;
+	collided_id=0;be_collided_id=0;
 	mass=1.0;
 }
 RigidBody::~RigidBody() {
@@ -43,7 +44,7 @@ bool RigidBody::check_collision(RigidBody* b){
 }
 void RigidBody::collide(RigidBody* b){
 	collided=b;
-
+	collided_id=collided->id;
 	math::vec3<double> o_pos=0.5*(b->pos+pos);
 	math::vec3<double> o_v=(mass*vel+b->mass*b->vel)/(mass+b->mass);
 
@@ -84,10 +85,13 @@ void RigidBody::collide(RigidBody* b){
 }
 void RigidBody::be_collide(RigidBody* b){
 	be_collided=b;
+	be_collided_id=be_collided->id;
 }
 void RigidBody::update_rigid_body(){
 	collided=0;
+	collided_id=0;
 	be_collided=0;
+	be_collided_id=0;
 	prev_pos=pos;
 	pos+=vel;
 }

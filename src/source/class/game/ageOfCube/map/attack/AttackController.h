@@ -13,7 +13,7 @@ public:
 	AttackController();
 	virtual ~AttackController();
 	virtual void update();
-
+	void draw();
 	void save(FILE *file);
 	void load(FILE *file);
 	inline void push(Attack* attack){attacks.push_back(attack);}

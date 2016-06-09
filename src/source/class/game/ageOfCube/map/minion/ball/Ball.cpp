@@ -62,6 +62,13 @@ void Ball::minion_update(){
 	timer++;
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
 	if(timer>2500)set_hp(0);
+	if(rigid_body.be_collided_id){
+		entity::Entity* e=
+		 entity::EntityController::get_cur_object()->get_entity(rigid_body.be_collided_id);
+		if(Building* b=dynamic_cast<Building*>(e)){
+			b->hp_alter(-200);
+		}
+	}
 	//set_position(get_position()+math::vec3<double>(0.05,0,0));
 }
 void Ball::find_path(){
@@ -93,7 +100,6 @@ void Ball::find_path(){
 void Ball::explode(){
 	if(rigid_body.radius>0.45){
 		if((rigid_body.be_collided&&rigid_body.be_collided->get_type()=="MapRigidBody")){
-
 			for(int i=-2;i<=2;i++){
 				for(int j=-2;j<=2;j++){
 					for(int k=-2;k<=2;k++){
@@ -132,14 +138,10 @@ void Ball::moving(){
 		}else{
 			if(finder)delete finder;
 			finder=0;
-			//Audio::AudioController::get_cur_object()->play("default_sound_effect/Blip_Select3.wav");
 			Audio::AudioController::get_cur_object()->
 					play_by_dis("default_sound_effect/Bomb.wav",rigid_body.pos,500);
-			//colli_sound.play();
-			set_hp(0);
+			//set_hp(0);
 		}
-	}else{
-		//explode();
 	}
 }
 void Ball::ball_move(){

@@ -34,7 +34,8 @@ protected:
 	virtual void load_minion(FILE * file){}
 	virtual void draw_minion()=0;
 	virtual void minion_update(){}
-
+	virtual void miniod_collide(entity::Entity* entity){};
+	virtual void miniod_be_collide(entity::Entity* entity){miniod_collide(entity);};
 	//void push_minion_to_controller();
 	physic::RigidBody rigid_body;
 	bool minion_created;

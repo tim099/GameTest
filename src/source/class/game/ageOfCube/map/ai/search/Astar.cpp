@@ -30,6 +30,7 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 	bool find=false,access_able,standable,jumpable;
 	double min_dis=std::numeric_limits<double>::max();
 	unsigned char path;
+	bool next_node_jump;
 	static const unsigned char left=1<<0;
 	static const unsigned char right=1<<1;
 	static const unsigned char front=1<<2;
@@ -83,6 +84,11 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 		for(unsigned n=0;n<next_node_pos.size();n++){
 			next_pos=(node->pos+next_node_pos.at(n));
 			it=visited.find(next_pos);
+			if(next_node_pos.at(n).y==1){
+				next_node_jump=true;
+			}else{
+				next_node_jump=false;
+			}
 			if(it!=visited.end()){//visited!!
 				if(node->cur_dis+Map::CUBE_SIZE>=it->second->cur_dis){//no updated
 					continue;
@@ -113,9 +119,8 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 			if(access_able){
 				next_node->cur_dis=node->cur_dis+Map::CUBE_SIZE*next_node_pos.at(n).get_length();
 				next_node->parent=node;
-				if(next_node_pos.at(n).y==1){
-					next_node->jump=true;
-				}
+
+				next_node->jump=next_node_jump;
 				next_node->score=finder->node_score(next_node);
 
 				q.push(next_node);
@@ -152,10 +157,10 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 		node_pool->free(nodes.at(i));
 	}
 	if(find){
-		//std::cout<<"Astar::search find!!search times="<<search_times<<std::endl;
+		std::cout<<"Astar::search find!!search times="<<search_times<<std::endl;
 		finder->find=true;
 	}else{
-		//std::cout<<"Astar::search not find!!search times="<<search_times<<std::endl;
+		std::cout<<"Astar::search not find!!search times="<<search_times<<std::endl;
 	}
 
 

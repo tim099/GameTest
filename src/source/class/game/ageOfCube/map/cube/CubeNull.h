@@ -10,6 +10,12 @@ public:
 	virtual std::string get_name()const{
 		return "CubeNull";
 	}
+	virtual bool standable(){
+		return false;
+	}
+	virtual bool jumpable(){
+		return false;
+	}
 };
 }
 #endif /* SOURCE_CLASS_GAME_MAP_CUBE_CUBENULL_H_ */

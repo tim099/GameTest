@@ -40,7 +40,7 @@ Map::Map() {
 	prev_update_pos=&update_pos2;
 	unit_controller=new UnitController();
 	entity_controller=new entity::EntityController();
-	//attack_controller=new AttackController();
+	attack_controller=new AttackController();
 
 	astar=new AI::search::Astar();
 	register_cur();
@@ -69,7 +69,7 @@ Map::~Map() {
 	delete all_cubes;
 
 	delete unit_controller;
-	//delete attack_controller;
+	delete attack_controller;
 	delete entity_controller;
 
 }
@@ -340,7 +340,7 @@ void Map::save_map(const std::string& path){
 
 
 	unit_controller->save(file);
-	//attack_controller->save(file);
+	attack_controller->save(file);
 
 	fclose(file);
 }
@@ -374,12 +374,11 @@ void Map::load_map(const std::string& path){
 	load_update_pos(file);
 
 	unit_controller->load(file);
-	//attack_controller->load(file);
+	attack_controller->load(file);
 	dp_map->update_whole_map();
 	fclose(file);
 }
 void Map::push_CubeEX(int x,int y,int z,CubeEX *cube){
-
 	if(map->get(x,y,z)!=Cube::cubeNull){
 		std::cerr<<"Map::push_CubeEX fail ,cube already exist"<<std::endl;
 		delete cube;

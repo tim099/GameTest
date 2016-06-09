@@ -35,22 +35,22 @@ Entity* EntityController::get_entity(unsigned id){
 }
 void EntityController::push_entity(Entity* entity){
 	//std::cout<<"EntityController::push_entity="<<entity<<std::endl;
-	if(!entity->id){
-		entity->id=gen_id();
+	if(!entity->get_id()){
+		entity->set_id(gen_id());
 	}
-	if(entity->id>=entities.size()){
-		entities.resize(entities.size()+entity->id+1,0);
+	if(entity->get_id()>=entities.size()){
+		entities.resize(entities.size()+entity->get_id()+1,0);
 	}
-	entities.at(entity->id)=entity;
+	entities.at(entity->get_id())=entity;
 }
 void EntityController::remove_entity(Entity* entity){
-	delete_id(entity->id);
-	if(entity->id<entities.size()){
+	delete_id(entity->get_id());
+	if(entity->get_id()<entities.size()){
 		//std::cout<<"EntityController::remove_entity id="<<entity->id<<std::endl;
 		//std::cout<<"EntityController::remove_entity size="<<entities.size()<<std::endl;
-		entities.at(entity->id)=0;
+		entities.at(entity->get_id())=0;
 	}else{
-		std::cerr<<"EntityController::remove_entity(Entity* entity)"<<entity->id
+		std::cerr<<"EntityController::remove_entity(Entity* entity)"<<entity->get_id()
 				<<"out if range"<<std::endl;
 	}
 

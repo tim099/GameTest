@@ -28,6 +28,7 @@ public:
 	math::vec3<double> vel;
 	math::vec3<double> pos,prev_pos;
 	RigidBody* collided,*be_collided;
+	unsigned collided_id,be_collided_id;
 };
 
 } /* namespace physic */

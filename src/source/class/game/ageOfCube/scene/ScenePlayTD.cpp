@@ -14,6 +14,7 @@ ScenePlayTD::ScenePlayTD(std::string _map_name, glm::ivec3 _map_size) {
 	cl=0;
 	constructing_building=0;
 	mode = normal;
+	player = new Player(1, type_player);
 }
 void ScenePlayTD::loading(){
 	if(Tim::File::check_if_file_exist(map_name)){
@@ -258,7 +259,7 @@ void ScenePlayTD::scene_update() {
 	timer.tic(1);
 	camera->update();
 	map->update(&timer);
-
+	player->update();
 
 }
 void ScenePlayTD::scene_update_end(){
@@ -266,6 +267,8 @@ void ScenePlayTD::scene_update_end(){
 }
 void ScenePlayTD::scene_draw() {
 	UI->draw_UIObject(draw);
+
+	player->draw(draw);
 
 	map->draw(draw,camera,thread_pool); //push position
 

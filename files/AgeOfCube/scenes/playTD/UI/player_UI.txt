@@ -1,0 +1,218 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		player_ui_root
+#HEADER_END
+CreateUIObject:
+		Panel
+	Name:
+		PlayerPanel
+	Position:
+		0.0 1.0
+	Texture:
+		UI/UI/panel1
+	Width:
+		0.3
+	Height:
+		1.5
+	Parent:
+		player_ui_root
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		player_name
+	Position:
+		0.02 -0.02
+	String:
+"player"
+	String_size:
+		0.015
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		resource1
+	Position:
+		0.01 -0.06
+	Texture:
+		UI/UI/resource_fire
+	Width:
+		0.025
+	Height:
+		1.0
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		resource1_amount
+	Position:
+		0.04 -0.07
+	String:
+"0"
+	String_size:
+		0.015
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		resource2
+	Position:
+		0.06 -0.06
+	Texture:
+		UI/UI/resource_fire
+	Width:
+		0.025
+	Height:
+		1.0
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		resource2_amount
+	Position:
+		0.09 -0.07
+	String:
+"0"
+	String_size:
+		0.015
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		resource3
+	Position:
+		0.11 -0.06
+	Texture:
+		UI/UI/resource_fire
+	Width:
+		0.025
+	Height:
+		1.0
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		resource3_amount
+	Position:
+		0.14 -0.07
+	String:
+"0"
+	String_size:
+		0.015
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		resource4
+	Position:
+		0.16 -0.06
+	Texture:
+		UI/UI/resource_fire
+	Width:
+		0.025
+	Height:
+		1.0
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		resource4_amount
+	Position:
+		0.19 -0.07
+	String:
+"0"
+	String_size:
+		0.015
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		resource5
+	Position:
+		0.21 -0.06
+	Texture:
+		UI/UI/resource_fire
+	Width:
+		0.025
+	Height:
+		1.0
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		resource5_amount
+	Position:
+		0.24 -0.07
+	String:
+"0"
+	String_size:
+		0.015
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		resource6
+	Position:
+		0.26 -0.06
+	Texture:
+		UI/UI/resource_fire
+	Width:
+		0.025
+	Height:
+		1.0
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		resource6_amount
+	Position:
+		0.29 -0.07
+	String:
+"0"
+	String_size:
+		0.015
+	Parent:
+		PlayerPanel
+#create_end
+
+
+
+#END

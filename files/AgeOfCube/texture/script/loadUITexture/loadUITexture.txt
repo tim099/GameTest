@@ -59,4 +59,16 @@ Texture:
 	TexturePath:
 		icon/resource_air.png
 
+Texture:
+	TextureName:
+		resource_tech
+	TexturePath:
+		icon/resource_tech.png
+
+Texture:
+	TextureName:
+		resource_cube
+	TexturePath:
+		icon/resource_cube.png
+
 #END

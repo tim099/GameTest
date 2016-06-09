@@ -35,4 +35,28 @@ Texture:
 	TexturePath:
 		panel2.png
 
+Texture:
+	TextureName:
+		resource_fire
+	TexturePath:
+		icon/resource_fire.png
+
+Texture:
+	TextureName:
+		resource_water
+	TexturePath:
+		icon/resource_water.png
+
+Texture:
+	TextureName:
+		resource_earth
+	TexturePath:
+		icon/resource_earth.png
+
+Texture:
+	TextureName:
+		resource_air
+	TexturePath:
+		icon/resource_air.png
+
 #END

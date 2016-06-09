@@ -8,6 +8,7 @@
 #include "class/game/timer/Timer.h"
 #include "class/display/light/LightControl.h"
 #include "class/game/ageOfCube/map/unit/UnitController.h"
+#include "class/game/ageOfCube/player/Player.h"
 
 namespace AOC {
 
@@ -50,6 +51,7 @@ protected:
 	Building* constructing_building;
 	playMode mode;
 	glm::ivec3 map_size;
+	Player *player;
 };
 
 } /* namespace AOC */

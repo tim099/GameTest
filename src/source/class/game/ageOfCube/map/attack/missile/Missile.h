@@ -20,6 +20,8 @@ public:
 protected:
 	virtual void draw_attack();
 	virtual void attack_update();
+	void explode();
+	int timer;
 	Display::DrawObject *missile_Drawobj;
 };
 

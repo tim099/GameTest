@@ -27,6 +27,7 @@ public:
 
 	virtual math::vec3<double> get_pos()=0;
 	virtual math::vec3<int> get_pos_int()=0;
+	virtual math::vec3<double> get_mid_pos(){return get_pos();}
 	virtual math::vec3<int> get_mid_pos_int();
 	void save_unit(FILE * file);
 	void load_unit(FILE * file);

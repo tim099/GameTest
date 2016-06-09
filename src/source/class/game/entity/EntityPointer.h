@@ -7,11 +7,11 @@ class EntityPointer {
 public:
 	EntityPointer();
 	virtual ~EntityPointer();
-	void update();
 	unsigned get_id()const{return id;}
-	Entity* get_entity()const{return entity;}
+	Entity* get_entity()const;
+
+	static Entity* get_entity(unsigned id);
 protected:
-	Entity* entity;
 	unsigned id;
 };
 

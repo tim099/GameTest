@@ -13,8 +13,8 @@ public:
 	virtual std::string get_type()const{
 		return "RigidBody";
 	}
-	void save(FILE * file);
-	void load(FILE * file);
+	void save_rigid_body(FILE * file);
+	void load_rigid_body(FILE * file);
 	void update_rigid_body();
 
 	void set_detect_collision();//call this function every frame to detect collision

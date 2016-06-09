@@ -32,11 +32,13 @@ protected:
 	void find_path();
 	void explode();
 	void moving();
+	void attack(Unit* target);
 	//unsigned target_id;
 	Display::DrawObject *ball_Drawobj;
 	math::Position dp_pos;
 	Tim::SmartPointer<AI::search::Finder> *finder;
 	int timer,stuck_timer,stuck_times,colli_timer;
+	int attack_timer;
 };
 
 } /* namespace AOC */

@@ -15,12 +15,12 @@ Minion::~Minion() {
 }
 void Minion::save(FILE * file){
 	save_unit(file);
-	rigid_body.save(file);
+	rigid_body.save_rigid_body(file);
 	save_minion(file);
 }
 void Minion::load(FILE * file){
 	load_unit(file);
-	rigid_body.load(file);
+	rigid_body.load_rigid_body(file);
 	load_minion(file);
 }
 void Minion::create_minion(){

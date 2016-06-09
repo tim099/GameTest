@@ -2,6 +2,7 @@
 #define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_ATTACK_ATTACK_H_
 
 #include "class/physic/RigidBody.h"
+#include <vector>
 namespace Display{
 	class DrawObject;
 }
@@ -14,16 +15,25 @@ public:
 	virtual ~Attack();
 	virtual Attack* clone()=0;
 	virtual std::string get_name()=0;
-	void set_target(Unit* _target){target=_target;}
+	int get_die()const{return die;}
+	void save(FILE* file);
+	void load(FILE* file);
+	void set_target(Unit* _target);
 	void draw();
 	void update();
 	void create_attack();
 protected:
+	virtual void save_attack(FILE* file){}
+	virtual void load_attack(FILE* file){}
 	virtual void draw_attack()=0;
 	virtual void attack_update()=0;
 	Unit* target;
+	std::vector<Unit*> collied_units;
+	unsigned target_id;
+	int die;
 private:
-	bool attack_created;
+
+	int attack_created;
 };
 
 } /* namespace AOC */

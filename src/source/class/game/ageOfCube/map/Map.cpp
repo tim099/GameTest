@@ -652,9 +652,10 @@ void Map::find_select_cube(){
 void Map::draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool){
 	dp_map->draw_map(camera,threadpool);
 	unit_controller->draw(draw);
+	attack_controller->draw();
 }
 void Map::update(Timer* timer){
-	//attack_controller->update();
+	attack_controller->update();
 	unit_controller->update();
 	map_rigid_body->set_detect_special_collision();
 

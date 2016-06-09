@@ -1,0 +1,21 @@
+#LOAD_DRAWOBJECTMAP_SCRIPT
+
+#HEADER
+
+Name:
+	minion
+	
+#HEADER_END
+
+DrawObject:
+	Name:
+		ball
+	ModelBuffer:
+		building/ball_spawn_tower_part_4
+	Texture:
+		cube/stone
+	Material:
+		0.4 0.05 0.02 1.7	
+#load_end
+
+#END

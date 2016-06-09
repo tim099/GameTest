@@ -160,11 +160,11 @@ void Game::update(){
 	//===========update end================
 	cur_scene->scene_update_end();
 	//===========draw start================
+	//std::cout<<"Game::update() cur_scene->draw_scene(); start"<<std::endl;
 	cur_scene->draw_scene();
-
+	//std::cout<<"Game::update() cur_scene->draw_scene(); end"<<std::endl;
 	//===========render start==============
-	//render_thread->push_task(render_task);
-	//render_thread->start();
+	//std::cout<<"Game::update() renderer->render() start"<<std::endl;
 	renderer->render();
 	//std::cout<<"Game::update() renderer->render() end"<<std::endl;
 	//===========wait for render end=======

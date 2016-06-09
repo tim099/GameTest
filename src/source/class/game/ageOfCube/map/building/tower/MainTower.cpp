@@ -43,7 +43,6 @@ void MainTower::building_set_pos(int x,int y,int z){
 	pos.set_scale(glm::vec3(size,size,size));
 }
 void MainTower::building_update(){
-
 	if(timer<loop_time){
 		timer++;
 		//hp_alter(-1);

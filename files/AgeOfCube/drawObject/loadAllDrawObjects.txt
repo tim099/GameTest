@@ -19,5 +19,7 @@ Map:
 Map:
 	ScriptPath:
 		building/buildingMap.txt
-
+Map:
+	ScriptPath:
+		minion/minionMap.txt
 #END

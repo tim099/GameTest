@@ -14,8 +14,15 @@ AttackController::~AttackController() {
 	delete creator;
 }
 void AttackController::update(){
+	std::vector<Attack*>die_attacks;
 	for(unsigned i=0;i<attacks.size();i++){
+		if(attacks.at(i)->get_die()){
+			die_attacks.push_back(attacks.at(i));
+		}
 		attacks.at(i)->update();
+	}
+	for(unsigned i=0;i<die_attacks.size();i++){
+		delete die_attacks.at(i);
 	}
 }
 void AttackController::draw(){

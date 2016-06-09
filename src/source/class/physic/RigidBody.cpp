@@ -17,14 +17,14 @@ RigidBody::~RigidBody() {
 	//std::cout<<"RigidBody::~RigidBody()="<<this<<std::endl;
 	//RigidBodyController::get_cur_object()->remove(this);
 }
-void RigidBody::save(FILE * file){
+void RigidBody::save_rigid_body(FILE * file){
 	fprintf(file,"%lf %lf %lf\n",vel.x,vel.y,vel.z);
 	fprintf(file,"%lf %lf %lf\n",pos.x,pos.y,pos.z);
 	fprintf(file,"%lf %lf %lf\n",prev_pos.x,prev_pos.y,prev_pos.z);
 	fprintf(file,"%lf %lf\n",radius,mass);
 
 }
-void RigidBody::load(FILE * file){
+void RigidBody::load_rigid_body(FILE * file){
 	fscanf(file,"%lf %lf %lf\n",&vel.x,&vel.y,&vel.z);
 	fscanf(file,"%lf %lf %lf\n",&pos.x,&pos.y,&pos.z);
 	fscanf(file,"%lf %lf %lf\n",&prev_pos.x,&prev_pos.y,&prev_pos.z);

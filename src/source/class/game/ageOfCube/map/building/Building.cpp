@@ -36,11 +36,21 @@ void Building::set_pos(int _x,int _y,int _z){
 math::vec3<double> Building::get_pos(){
 	return math::vec3<double>(x*Map::CUBE_SIZE,y*Map::CUBE_SIZE,z*Map::CUBE_SIZE);
 }
+math::vec3<double> Building::get_mid_pos(){
+	math::vec3<int>pos=get_pos_int();
+	return math::vec3<double>(
+			(pos.x+0.5*get_cube_large_size().x)*Map::CUBE_SIZE,
+			(pos.y+0.5*get_cube_large_size().y)*Map::CUBE_SIZE,
+			(pos.z+0.5*get_cube_large_size().z)*Map::CUBE_SIZE);
+}
 math::vec3<int> Building::get_pos_int(){
 	return math::vec3<int>(x,y,z);
 }
 math::vec3<int> Building::get_mid_pos_int(){
-	return math::vec3<int>(x+(get_cube_large_size().x-1)/2,y,z+(get_cube_large_size().z-1)/2);
+	return math::vec3<int>(
+			x+(get_cube_large_size().x-1)/2,
+			y+(get_cube_large_size().y-1)/2,
+			z+(get_cube_large_size().z-1)/2);
 }
 void Building::save_cubeEX(FILE * file){
 	fprintf(file,"%d %f\n",rotate,size);

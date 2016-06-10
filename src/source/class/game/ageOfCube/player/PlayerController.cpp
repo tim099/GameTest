@@ -15,7 +15,8 @@ PlayerController::PlayerController() {
 	receiver=new Input::Receiver("PlayerController");
 	Input::Input::get_cur_object()->push_receiver(receiver);
 	current_player = new Player(0,type_player);
-	std::cout<<"current_player : "<<current_player<<std::endl;
+	current_player -> init_UI();
+	//std::cout<<"current_player : "<<current_player<<std::endl;
 	players.push_back(current_player);
 	players.push_back(new Player(1, type_bot));
 	register_cur();
@@ -26,6 +27,8 @@ PlayerController::~PlayerController() {
 	for(unsigned i=0;i<players.size();i++){
 		delete players.at(i);
 	}
+	delete receiver;
+
 }
 void PlayerController::update(){
 	for(unsigned i=0;i<players.size();i++){

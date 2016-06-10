@@ -29,6 +29,7 @@ public:
 	inline void hp_alter(int amount){set_hp(hp+amount);}
 
 	inline int get_max_hp()const{return max_hp;}
+
 	inline unsigned get_player()const{return player;}
 	inline void set_player(unsigned _player){player=_player;}
 

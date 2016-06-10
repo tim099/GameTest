@@ -40,7 +40,7 @@ CreateUIObject:
 	Position:
 		0.01 -0.06
 	Texture:
-		UI/UI/resource_fire
+		UI/UI/resource_cube
 	Width:
 		0.025
 	Height:
@@ -100,7 +100,7 @@ CreateUIObject:
 	Position:
 		0.11 -0.06
 	Texture:
-		UI/UI/resource_fire
+		UI/UI/resource_water
 	Width:
 		0.025
 	Height:
@@ -130,7 +130,7 @@ CreateUIObject:
 	Position:
 		0.16 -0.06
 	Texture:
-		UI/UI/resource_fire
+		UI/UI/resource_earth
 	Width:
 		0.025
 	Height:
@@ -160,7 +160,7 @@ CreateUIObject:
 	Position:
 		0.21 -0.06
 	Texture:
-		UI/UI/resource_fire
+		UI/UI/resource_air
 	Width:
 		0.025
 	Height:
@@ -190,7 +190,7 @@ CreateUIObject:
 	Position:
 		0.26 -0.06
 	Texture:
-		UI/UI/resource_fire
+		UI/UI/resource_tech
 	Width:
 		0.025
 	Height:

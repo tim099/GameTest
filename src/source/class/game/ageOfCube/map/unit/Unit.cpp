@@ -25,6 +25,20 @@ void Unit::attack(Unit* target){
 	attack->set_damage(attack_damage);
 	attack->create_attack();
 }
+void Unit::attack_update(){
+	attack_timer++;
+	if(attack_timer>attack_cycle){
+		Unit* target;
+		unsigned enemy_id=(get_player()==0?1:0);
+		target=UnitController::get_cur_object()->search_unit(enemy_id,get_pos());
+		if(target&&(target->get_pos()-get_pos()).get_length()<get_attack_range()){
+			attack(target);
+			attack_timer=0;
+		}else{
+			attack_timer*=0.8;
+		}
+	}
+}
 math::vec3<int> Unit::get_mid_pos_int(){
 	return get_pos_int();
 }

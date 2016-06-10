@@ -31,11 +31,11 @@ AudioSource::AudioSource(std::string _file_name) {
 
 
 void AudioSource::delete_source(){
-	alDeleteBuffers(1, &buffer);
+	if(buffer)alDeleteBuffers(1, &buffer);
 }
 
 AudioSource::~AudioSource() {
-	// TODO Auto-generated destructor stub
+	delete_source();
 }
 
 } /* namespace Audio */

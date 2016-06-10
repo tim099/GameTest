@@ -56,35 +56,13 @@ void Ball::load_minion(FILE * file){
 		finder=new Tim::SmartPointer<AI::search::Finder>(path);
 	}
 }
+
 void Ball::minion_update(){
-	attack_timer++;
-	if(attack_timer>attack_cycle){
-		Unit* target;
-		target=UnitController::get_cur_object()->search_unit(0,rigid_body.pos);
-		if(target&&(target->get_pos()-get_pos()).get_length()<get_attack_range()){
-			attack(target);
-			attack_timer=0;
-		}else{
-			attack_timer*=0.8;
-		}
-	}
-
-
-
+	attack_update();
 	ball_move();
 	timer++;
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
 	if(timer>5000)set_hp(0);
-	/*
-	if(rigid_body.be_collided_id){
-		entity::Entity* e=
-				entity::EntityController::get_cur_object()->get_entity(rigid_body.be_collided_id);
-		if(Building* b=dynamic_cast<Building*>(e)){
-			b->hp_alter(-200);
-		}
-	}
-	*/
-	//set_position(get_position()+math::vec3<double>(0.05,0,0));
 }
 void Ball::find_path(){
 	Unit* target;

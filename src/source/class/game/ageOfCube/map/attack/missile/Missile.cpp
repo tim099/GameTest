@@ -16,9 +16,9 @@ Missile::Missile() {
 }
 Missile::Missile(Missile* missile){
 	radius=missile->radius;
-	timer=0;
-	type=0;
-	explode_timer=0;
+	timer=missile->timer;
+	type=missile->type;
+	explode_timer=missile->explode_timer;
 }
 Missile::~Missile() {
 

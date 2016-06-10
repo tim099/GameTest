@@ -24,7 +24,7 @@ void Minion::load(FILE * file){
 	load_minion(file);
 }
 double Minion::get_attack_size(){
-	return 0.5*rigid_body.radius;
+	return rigid_body.radius;
 }
 void Minion::create_minion(){
 	minion_created=true;

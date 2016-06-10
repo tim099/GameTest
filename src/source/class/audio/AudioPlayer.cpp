@@ -56,7 +56,7 @@ void AudioPlayer::init(){
 }
 AudioPlayer::~AudioPlayer() {
 	pause();
-    alDeleteSources(1, &source);
+	if(source)alDeleteSources(1, &source);
 }
 void AudioPlayer::play(){
 	//std::cout<<"play "<<source<<std::endl;

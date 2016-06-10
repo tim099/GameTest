@@ -11,6 +11,7 @@ void MainTower::building_pre_init(){
 	//tower_Drawobj=Display::AllDrawObjects::get_cur_object()->get("building/ball_spawn_tower");
 
 	timer=0;
+	attack_cycle=60;
 	//tree_Drawobj=AllDrawObjects::get_cur_object()->get("landscape/broadleaftree");
 }
 MainTower::MainTower() {
@@ -20,11 +21,13 @@ MainTower::MainTower() {
 	loop_time=200;
 }
 MainTower::MainTower(MainTower* tower){
+	init(10000,0);
 	tower_Drawobj=tower->tower_Drawobj;
 	size=tower->size;
 	timer=0;
 	loop_time=tower->loop_time;
-	init(10000,1);
+	attack_cycle=tower->attack_cycle;
+
 }
 MainTower::~MainTower() {
 
@@ -43,6 +46,8 @@ void MainTower::building_set_pos(int x,int y,int z){
 	pos.set_scale(glm::vec3(size,size,size));
 }
 void MainTower::building_update(){
+	attack_update();
+	//std::cout<<"MainTower::building_update() attack cycle="<<attack_cycle<<std::endl;
 	if(timer<loop_time){
 		timer++;
 		//hp_alter(-1);

@@ -18,13 +18,14 @@ void Tower::building_pre_init(){
 	//tree_Drawobj=AllDrawObjects::get_cur_object()->get("landscape/broadleaftree");
 }
 Tower::Tower() {
+	init(1000,0);
 	tower_type=tower;
 	tower_Drawobj=0;
 	size = 3.0;
 	timer=0;
 	attack_timer=0;
+	attack_cycle=250;
 	attack_damage=100;
-	init(1000,0);
 }
 Tower::Tower(Tower* tower) {
 	tower_type=tower->tower_type;
@@ -32,6 +33,7 @@ Tower::Tower(Tower* tower) {
 	timer=0;
 	size = tower->size;
 	attack_timer=0;
+	attack_cycle=tower->attack_cycle;
 	attack_damage=100;
 	init(1000,0);
 }
@@ -76,6 +78,8 @@ void Tower::draw_building(){
 }
 
 void Tower::building_update(){
+	attack_update();
+	/*
 	attack_timer++;
 	if(attack_timer>attack_cycle){
 		Unit* target;
@@ -87,5 +91,6 @@ void Tower::building_update(){
 			attack_timer*=0.8;
 		}
 	}
+	*/
 }
 }

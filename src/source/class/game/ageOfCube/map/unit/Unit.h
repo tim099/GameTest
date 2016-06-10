@@ -43,6 +43,7 @@ public:
 protected:
 	virtual void unit_update(){}
 	void attack(Unit* target);
+	virtual void attack_update();
 	int max_hp;
 	int hp;
 	unsigned player;

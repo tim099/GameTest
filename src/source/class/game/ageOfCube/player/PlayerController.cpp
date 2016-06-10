@@ -33,7 +33,6 @@ void PlayerController::update(){
 	}
 }
 
-
 void PlayerController::draw(Display::Draw* draw){
 	current_player->draw(draw);
 }

@@ -21,6 +21,7 @@ public:
 	void draw(Display::Draw* draw);
 	void update();
 	unsigned int get_id(){return id;}
+	void init_UI();
 	bool modify_resource(ResourceModifier modifier);
 private:
 	unsigned int id;

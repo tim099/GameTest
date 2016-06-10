@@ -24,7 +24,7 @@ MainTower::MainTower(MainTower* tower){
 	size=tower->size;
 	timer=0;
 	loop_time=tower->loop_time;
-	init(10000,1);
+	init(10000,0);
 }
 MainTower::~MainTower() {
 

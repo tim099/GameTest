@@ -29,9 +29,11 @@ public:
 		return "PlayerUI";
 	}
 	bool check_script();
-	void set_resource_amount(std::string resource_name, std::string value);
+	void init_playerUI();
+	void set_resource_amount(unsigned int resource_string_id, int value);
 private:
 	UIString *resource_amount_strings[6];
+	bool inited;
 };
 
 } /* namespace AOC */

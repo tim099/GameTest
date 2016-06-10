@@ -102,9 +102,12 @@ UIObject* UIObject::get_child(std::string name) {
 	UIObject* find;
 	for (unsigned i = 0; i < childs.size(); i++) {
 		find = childs.at(i)->get_child(name);
-		if (find)
+		if (find){
+			//std::cout<<"UIObject : find "<<name<<std::endl;
 			return find;
+		}
 	}
+	//std::cout<<"UIObject : not find "<<name<<std::endl;
 	return 0;
 }
 std::string UIObject::get_name() const {

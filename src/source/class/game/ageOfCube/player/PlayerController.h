@@ -42,7 +42,8 @@ public:
 			}
 		}
 	}
-	Player* search_player(int player_id);
+	Player* search_player(unsigned int player_id);
+	Player *get_cur_player(){return current_player;}
 	void save(FILE *file);
 	void load(FILE *file);
 protected:

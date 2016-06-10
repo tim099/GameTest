@@ -31,7 +31,7 @@ Tower::Tower(Tower* tower) {
 	timer=0;
 	size = tower->size;
 	attack_timer=0;
-	init(1000,0);
+	init(1000,1);
 }
 Tower::~Tower() {
 	//std::cout<<"delete tree"<<std::endl;

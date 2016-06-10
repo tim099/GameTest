@@ -38,7 +38,7 @@ public:
 			}
 		}
 	}
-	Unit* search_unit(int player,math::vec3<double>pos);
+	Unit* search_unit(unsigned int player,math::vec3<double>pos);
 	Unit* search_unit(std::string name,math::vec3<double>pos);
 	void save(FILE *file);
 	void load(FILE *file);

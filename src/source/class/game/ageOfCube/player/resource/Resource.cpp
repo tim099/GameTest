@@ -18,8 +18,12 @@ Resource::~Resource() {
 	// TODO Auto-generated destructor stub
 }
 
-void Resource::modifyAmount(int modifier){
+bool Resource::modifyAmount(int modifier){
 	amount += modifier;
+	if(amount > 0){
+		return true;
+	}
+	return false;
 }
 
 } /* namespace AOC */

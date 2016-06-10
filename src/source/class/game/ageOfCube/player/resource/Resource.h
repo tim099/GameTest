@@ -16,7 +16,9 @@ class Resource {
 public:
 	Resource(std::string _name, std::string _description, int _amount=0);
 	virtual ~Resource();
-	void modifyAmount(int modifier);
+	bool modifyAmount(int modifier);
+	std::string get_name(){return name;}
+	int get_amount(){return amount;}
 private:
 	int amount;
 	std::string name;

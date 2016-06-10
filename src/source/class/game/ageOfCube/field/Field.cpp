@@ -44,11 +44,13 @@ void Field::update(){
 	timer.tic(1);
 	map->update(&timer);
 	unit_controller->update();
+	player_controller->update();
 	attack_controller->update();
 }
 void Field::draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool){
 	map->draw(draw,camera,threadpool);
 	unit_controller->draw(draw);
+	player_controller->draw(draw);
 	attack_controller->draw();
 	draw_back_ground();
 }

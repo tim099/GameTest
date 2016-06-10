@@ -155,7 +155,7 @@ CreateUIObject:
 #create_end
 
 CreateUIObject:
-		ToggleButton
+		PictureButton
 	Name:
 		upgrade_button_fire
 	Position:
@@ -196,7 +196,7 @@ CreateUIObject:
 #create_end
 
 CreateUIObject:
-		ToggleButton
+		PictureButton
 	Name:
 		upgrade_button_water
 	Position:
@@ -237,7 +237,7 @@ CreateUIObject:
 #create_end
 
 CreateUIObject:
-		ToggleButton
+		PictureButton
 	Name:
 		upgrade_button_earth
 	Position:
@@ -278,7 +278,7 @@ CreateUIObject:
 #create_end
 
 CreateUIObject:
-		ToggleButton
+		PictureButton
 	Name:
 		upgrade_button_air
 	Position:

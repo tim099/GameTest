@@ -4,6 +4,7 @@
 #include <vector>
 #include "class/display/UI/playerUI/PlayerUI.h"
 #include "class/game/ageOfCube/player/resource/Resource.h"
+#include "class/game/ageOfCube/player/resource/ResourceModifier.h"
 
 namespace Display{
 class Draw;
@@ -19,9 +20,10 @@ public:
 	virtual ~Player();
 	void draw(Display::Draw* draw);
 	void update();
-	int get_id(){return id;}
+	unsigned int get_id(){return id;}
+	bool modify_resource(ResourceModifier modifier);
 private:
-	int id;
+	unsigned int id;
 	std::string name;
 	PlayerType type;
 	std::vector<Resource> resources;

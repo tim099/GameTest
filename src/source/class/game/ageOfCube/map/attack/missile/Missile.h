@@ -22,9 +22,11 @@ protected:
 	virtual void load_attack(FILE* file);
 	virtual void draw_attack();
 	virtual void attack_update();
+	virtual void collide_action(RigidBody* b);
 	void explode();
 	int timer;
-	Display::DrawObject *missile_Drawobj;
+	int type;
+
 };
 
 } /* namespace AOC */

@@ -91,7 +91,7 @@ void Ball::attack(Unit* target){
 	Attack* attack=AttackCreator::get_cur_object()->create("Missile");
 	attack->pos=get_pos()+math::vec3<double>(0,1.5*(rigid_body.radius+attack->radius),0);
 	attack->set_target(target);
-	attack->set_damage(100);
+	attack->set_damage(10);
 	attack->create_attack();
 }
 void Ball::find_path(){

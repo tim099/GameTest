@@ -45,6 +45,9 @@ bool RigidBody::check_collision(RigidBody* b){
 void RigidBody::collide(RigidBody* b){
 	collided=b;
 	collided_id=collided->id;
+	collide_action(b);
+}
+void RigidBody::collide_action(RigidBody* b){
 	math::vec3<double> o_pos=0.5*(b->pos+pos);
 	math::vec3<double> o_v=(mass*vel+b->mass*b->vel)/(mass+b->mass);
 
@@ -86,6 +89,10 @@ void RigidBody::collide(RigidBody* b){
 void RigidBody::be_collide(RigidBody* b){
 	be_collided=b;
 	be_collided_id=be_collided->id;
+	be_collide_action(b);
+}
+void RigidBody::be_collide_action(RigidBody* b){
+
 }
 void RigidBody::update_rigid_body(){
 	collided=0;

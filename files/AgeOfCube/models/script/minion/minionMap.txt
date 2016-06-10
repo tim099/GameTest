@@ -1,0 +1,21 @@
+#LOAD_MODELBUFFERMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/AgeOfCube/models/minion/
+Name:
+	minion
+#HEADER_END
+
+ModelBuffer:
+	Name:
+		ball
+	Path:
+		ball/ball.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+#END

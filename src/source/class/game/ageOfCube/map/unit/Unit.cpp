@@ -48,7 +48,7 @@ void Unit::update(){
 	if(is_dead){
 		dead_timer++;
 	}
-	if(dead_timer>20){
+	if(dead_timer>5){
 		terminate=true;
 	}
 	if(!terminate){

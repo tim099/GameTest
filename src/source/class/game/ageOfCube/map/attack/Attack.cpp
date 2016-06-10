@@ -25,7 +25,6 @@ void Attack::save(FILE* file){
 }
 void Attack::load(FILE* file){
 	fscanf(file,"%u %d %d\n",&target_id,&die,&damage);
-	std::cout<<"Attack::load target_id="<<target_id<<std::endl;
 	load_rigid_body(file);
 	load_attack(file);
 }

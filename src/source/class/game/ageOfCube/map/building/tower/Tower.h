@@ -35,8 +35,10 @@ protected:
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);
 	virtual void draw_building();
+	void attack(Unit* target);
 	Display::DrawObject *tower_Drawobj;
 	int timer;
+	int attack_timer;
 };
 
 }

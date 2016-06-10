@@ -1,0 +1,21 @@
+#LOAD_MODELBUFFERMAP_SCRIPT
+
+#HEADER
+
+FolderPath:
+	files/AgeOfCube/models/attack/
+Name:
+	attack
+#HEADER_END
+
+ModelBuffer:
+	Name:
+		ball_missile
+	Path:
+		missile/ball.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+#END

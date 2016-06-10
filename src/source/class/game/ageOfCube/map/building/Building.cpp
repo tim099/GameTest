@@ -22,6 +22,11 @@ void Building::set_size(float _size){
 	size=_size;
 	building_set_pos(x,y,z);
 }
+math::vec3<double> Building::get_size(){
+	return math::vec3<double>(get_cube_large_size().x*Map::CUBE_SIZE,
+			get_cube_large_size().y*Map::CUBE_SIZE,
+			get_cube_large_size().z*Map::CUBE_SIZE);
+}
 void Building::set_rotate(int _rotate){
 	rotate=_rotate;
 	pos.set_r(glm::vec3(0,90*rotate,0));

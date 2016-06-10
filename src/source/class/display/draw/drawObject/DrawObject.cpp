@@ -118,6 +118,8 @@ void DrawObject::draw_vec(Shader *shader, std::vector<DrawDataObj*> &data_v) {
 void DrawObject::draw_shadow_map(Shader *shader) {
 	if (!draw_shadow)return;
 	if(temp_datas.empty())return;
+	if(model_buffer->lybuffer)model_buffer->lybuffer->unbind_buffer();
+	if(model_buffer->uvbuffer)model_buffer->uvbuffer->unbind_buffer();
 	model_buffer->vtbuffer->bind_buffer();
 	draw_shadow_vec(shader, temp_datas);
 	model_buffer->vtbuffer->unbind_buffer();

@@ -41,7 +41,7 @@ void  Missile::explode(){
 			play_by_dis("default_sound_effect/Bomb.wav",pos,200);
 	Display::PointLight *light=new Display::PointLight(
 			glm::vec3(pos.x,pos.y,pos.z),
-			glm::vec3(10.0,1.0,1.0),false);
+			glm::vec3(30.0,1.0,1.0),false);
 
 	Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
 	die=true;
@@ -57,24 +57,24 @@ void Missile::draw_attack(){
 void Missile::attack_update(){
 	//std::cout<<"Missile::attack_update()"<<std::endl;
 	timer++;
-	if(timer>300)die=true;
 	if(be_collided||collided){
 		explode();
 	}
 	if(target){
 		vel*=0.75;
-		if(timer<30){
+		math::vec3<double> target_pos=target->get_mid_pos();
+		math::vec3<double> del_pos=target_pos-pos;
+		if(timer<25||(timer<50&&del_pos.y>-3.0)){
 			vel.y+=0.045;
+
 		}else{
-			math::vec3<double> target_pos=target->get_mid_pos();
-			math::vec3<double> del_pos=target_pos-pos;
+			timer=50;
 			math::vec3<double> del_pos_xz=del_pos;
 			del_pos_xz.y=0;
-			if(del_pos_xz.get_length()<1.0){
-				vel+=0.045*del_pos.normalize();
-			}else{
-				vel+=0.045*del_pos_xz.normalize();
+			if(del_pos_xz.get_length()>=1.0){
+				del_pos.y/=del_pos_xz.get_length();
 			}
+			vel+=0.045*del_pos.normalize();
 		}
 	}else{
 		//explode();

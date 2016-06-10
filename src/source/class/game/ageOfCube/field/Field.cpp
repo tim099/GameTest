@@ -16,7 +16,7 @@ Field::Field() {
 }
 Field::~Field() {
 	if(map)delete map;
-
+	delete player_controller;
 	delete attack_controller;
 	delete unit_controller;
 	delete entity_controller;

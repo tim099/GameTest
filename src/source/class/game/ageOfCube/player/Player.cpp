@@ -15,7 +15,7 @@ Player::Player(int _id, PlayerType _type) {
 	resources.push_back(Resource("tech","technical material used for research",100));
 }
 Player::~Player() {
-
+	delete player_UI;
 }
 
 void Player::draw(Display::Draw* draw){

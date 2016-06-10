@@ -22,7 +22,10 @@ public:
 	void draw();
 	void move_to(math::vec3<double> target,double vel);
 
-
+	virtual math::vec3<double> get_size(){
+		return math::vec3<double>(rigid_body.radius*2.0,rigid_body.radius*2.0,rigid_body.radius*2.0);
+	}
+	virtual double get_attack_size();
 	virtual math::vec3<double> get_pos(){return rigid_body.pos;}
 	virtual math::vec3<int> get_pos_int();
 	inline void set_pos(math::vec3<double> pos){rigid_body.pos=pos;}

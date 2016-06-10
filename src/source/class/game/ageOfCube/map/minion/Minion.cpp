@@ -23,6 +23,9 @@ void Minion::load(FILE * file){
 	rigid_body.load_rigid_body(file);
 	load_minion(file);
 }
+double Minion::get_attack_size(){
+	return 0.5*rigid_body.radius;
+}
 void Minion::create_minion(){
 	minion_created=true;
 	create_unit();

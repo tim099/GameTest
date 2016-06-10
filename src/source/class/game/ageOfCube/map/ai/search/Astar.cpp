@@ -157,10 +157,10 @@ void Astar::search(Tim::SmartPointer<Finder>& finder){
 		node_pool->free(nodes.at(i));
 	}
 	if(find){
-		std::cout<<"Astar::search find!!search times="<<search_times<<std::endl;
+		//std::cout<<"Astar::search find!!search times="<<search_times<<std::endl;
 		finder->find=true;
 	}else{
-		std::cout<<"Astar::search not find!!search times="<<search_times<<std::endl;
+		//std::cout<<"Astar::search not find!!search times="<<search_times<<std::endl;
 	}
 
 

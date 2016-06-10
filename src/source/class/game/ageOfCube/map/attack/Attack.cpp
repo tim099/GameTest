@@ -4,6 +4,7 @@
 #include "class/game/ageOfCube/map/DisplayMap.h"
 #include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/game/entity/EntityPointer.h"
+#include "class/game/ageOfCube/map/unit/UnitController.h"
 namespace AOC {
 
 Attack::Attack() {
@@ -51,7 +52,7 @@ void Attack::update(){
 		}
 	}
 	if(target&&target->get_is_dead()){
-		target=0;
+		target=UnitController::get_cur_object()->search_unit(target->get_player(),pos);//"MainTower"
 	}
 	collied_units.clear();
 	if(be_collided_id){

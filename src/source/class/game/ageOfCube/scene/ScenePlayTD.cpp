@@ -13,6 +13,7 @@ ScenePlayTD::ScenePlayTD(std::string _map_name, glm::ivec3 _map_size) {
 	UI = 0;
 	cl=0;
 	constructing_building=0;
+	back_music=0;
 	mode = normal;
 }
 void ScenePlayTD::loading(){
@@ -135,6 +136,7 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator2=BuildingCreator::get_cur_object();
 		constructing_building = creator2->create("Tower");
+		constructing_building->set_player(0);
 		mode = constructing;
 	}
 	else if(sig->get_data() == "reload"){
@@ -275,7 +277,7 @@ void ScenePlayTD::scene_draw() {
 	field->draw(draw,camera,thread_pool); //push position
 
 	if(constructing_building){
-		constructing_building->set_player(1);
+		constructing_building->set_player(field->player_controller->get_cur_player()->get_id());
 		if(input->mouse->pos_delta()==glm::ivec2(0,0)){
 			constructing_building->draw_buildable(field->map);
 		}else{

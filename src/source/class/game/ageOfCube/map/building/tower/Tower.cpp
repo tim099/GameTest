@@ -3,7 +3,7 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/Draw.h"
-#include "class/game/ageOfCube/map/attack/AttackCreator.h"
+
 #include "class/game/ageOfCube/map/unit/UnitController.h"
 #include <cstdio>
 #include <iostream>
@@ -23,6 +23,7 @@ Tower::Tower() {
 	size = 3.0;
 	timer=0;
 	attack_timer=0;
+	attack_damage=100;
 	init(1000,0);
 }
 Tower::Tower(Tower* tower) {
@@ -31,7 +32,8 @@ Tower::Tower(Tower* tower) {
 	timer=0;
 	size = tower->size;
 	attack_timer=0;
-	init(1000,1);
+	attack_damage=100;
+	init(1000,0);
 }
 Tower::~Tower() {
 	//std::cout<<"delete tree"<<std::endl;
@@ -72,24 +74,17 @@ void Tower::draw_building(){
 	tower_Drawobj->push_temp_drawdata(new Display::DrawDataObj(&pos));
 
 }
-void Tower::attack(Unit* target){
-	if(!target)return;
-	//std::cout<<"Ball::attack(Unit* target)"<<std::endl;
-	Attack* attack=AttackCreator::get_cur_object()->create("CubeMissile");
-	attack->pos=get_mid_pos()+
-			math::vec3<double>(0,1.5*(0.5*get_cube_large_size().y*Map::CUBE_SIZE+attack->radius),0);
-	attack->set_target(target);
-	attack->set_damage(100);
-	attack->create_attack();
-}
+
 void Tower::building_update(){
 	attack_timer++;
-	if(attack_timer>200){
+	if(attack_timer>attack_cycle){
 		Unit* target;
 		target=UnitController::get_cur_object()->search_unit(1,get_mid_pos());//"MainTower"
-		if(target){
+		if(target&&(target->get_pos()-get_pos()).get_length()<get_attack_range()){
 			attack(target);
 			attack_timer=0;
+		}else{
+			attack_timer*=0.8;
 		}
 	}
 }

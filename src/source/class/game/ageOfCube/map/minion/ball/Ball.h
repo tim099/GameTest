@@ -22,6 +22,8 @@ public:
 	virtual std::string get_name()const{
 		return "Ball";
 	}
+	virtual double get_attack_range(){return 8.0;}
+	virtual std::string get_attack_type(){return std::string("Missile");}
 
 protected:
 	virtual void save_minion(FILE * file);
@@ -32,13 +34,12 @@ protected:
 	void find_path();
 	void explode();
 	void moving();
-	void attack(Unit* target);
 	//unsigned target_id;
 	Display::DrawObject *ball_Drawobj;
 	math::Position dp_pos;
 	Tim::SmartPointer<AI::search::Finder> *finder;
 	int timer,stuck_timer,stuck_times,colli_timer;
-	int attack_timer;
+
 };
 
 } /* namespace AOC */

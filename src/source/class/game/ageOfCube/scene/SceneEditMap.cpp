@@ -222,10 +222,18 @@ void SceneEditMap::handle_input() {
 									field->map->selected_on.z,
 									cube_type);
 			}else{
-				field->map->set_cube_type(field->map->selected_cube.x,
+				if(Unit* unit=dynamic_cast<Unit*>(field->map->get_cube
+								  (field->map->selected_cube.x,
 								   field->map->selected_cube.y,
-								   field->map->selected_cube.z,
-								   Cube::cubeNull);
+								   field->map->selected_cube.z))){
+					unit->set_hp(0);
+
+				}else{
+					field->map->set_cube_type(field->map->selected_cube.x,
+									   field->map->selected_cube.y,
+									   field->map->selected_cube.z,
+									   Cube::cubeNull);
+				}
 			}
 		}
 

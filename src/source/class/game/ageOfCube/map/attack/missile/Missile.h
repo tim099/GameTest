@@ -2,7 +2,7 @@
 #define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_ATTACK_MISSILE_MISSILE_H_
 
 #include "class/game/ageOfCube/map/attack/Attack.h"
-
+#include <queue>
 namespace AOC {
 
 class Missile: public Attack {
@@ -27,7 +27,7 @@ protected:
 	int explode_timer;
 	int timer;
 	int type;
-
+	std::queue<math::vec3<double> >prev_pos_q;
 };
 
 } /* namespace AOC */

@@ -1,5 +1,6 @@
 #include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/game/ageOfCube/map/unit/UnitController.h"
+#include "class/game/ageOfCube/map/attack/AttackCreator.h"
 #include <cstdio>
 namespace AOC {
 
@@ -12,6 +13,17 @@ Unit::~Unit() {
 	if(created){
 		UnitController::get_cur_object()->remove(this);
 	}
+}
+void Unit::attack(Unit* target){
+	if(!target)return;
+	//std::cout<<"Ball::attack(Unit* target)"<<std::endl;
+	Attack* attack=AttackCreator::get_cur_object()->create(get_attack_type());
+	attack->radius=0.5*get_attack_size();
+
+	attack->pos=get_attack_pos();
+	attack->set_target(target);
+	attack->set_damage(attack_damage);
+	attack->create_attack();
 }
 math::vec3<int> Unit::get_mid_pos_int(){
 	return get_pos_int();
@@ -34,14 +46,17 @@ void Unit::init(int _max_hp,int _player){
 	terminate=false;
 	created=false;
 	dead_timer=0;
+	attack_damage=10;
+	attack_timer=0;
+	attack_cycle=300;
 	set_player(_player);
 }
 void Unit::save_unit(FILE * file){
-	fprintf(file,"%d %d %d %d %d\n",max_hp,hp,player,is_dead,dead_timer);
+	fprintf(file,"%d %d %u %d %d %d\n",max_hp,hp,player,is_dead,dead_timer,attack_timer);
 	save_entity(file);
 }
 void Unit::load_unit(FILE * file){
-	fscanf(file,"%d %d %d %d %d\n",&max_hp,&hp,&player,&is_dead,&dead_timer);
+	fscanf(file,"%d %d %u %d %d %d\n",&max_hp,&hp,&player,&is_dead,&dead_timer,&attack_timer);
 	load_entity(file);
 }
 void Unit::update(){

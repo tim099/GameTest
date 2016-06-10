@@ -87,7 +87,7 @@ Unit* UnitController::search_unit(std::string name,math::vec3<double>pos){
 	}
 	return unit;
 }
-Unit* UnitController::search_unit(unsigned int player,math::vec3<double>pos){
+Unit* UnitController::search_unit(unsigned player,math::vec3<double>pos){
 	Unit* unit=0;
 	double min_dis=0,dis;
 	for(unsigned i=0;i<units.size();i++){
@@ -150,11 +150,13 @@ void UnitController::handle_signal(){
 				std::cerr<<"can't non-building unit"<<std::endl;
 				return;
 			}
+			///*
 			ResourceModifier cost("fire", -1);
 			if(!current_player->modify_resource(cost)){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
+			//*/
 
 		}
 		else if(sig->get_data()=="water_upgrade"){

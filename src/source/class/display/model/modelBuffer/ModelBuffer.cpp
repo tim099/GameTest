@@ -82,9 +82,9 @@ void ModelBuffer::unbind_buffer(Shader *shader) {
 	//vnbuffer->unbind_buffer();
 }
 void ModelBuffer::draw(GLuint programID, GLenum mode) {
-
+	//std::cout<<"ModelBuffer::draw="<<vertex_num<<std::endl;
 	glDrawArrays(mode, 0, vertex_num);
-
+	//std::cout<<"ModelBuffer::draw end"<<std::endl;
 	//glDrawArrays(GL_LINES,0,vertex_num);
 	//glDrawArrays(GL_POINTS,0,vertex_num);
 }

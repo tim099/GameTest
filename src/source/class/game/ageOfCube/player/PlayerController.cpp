@@ -14,17 +14,19 @@ namespace AOC {
 PlayerController::PlayerController() {
 	receiver=new Input::Receiver("PlayerController");
 	Input::Input::get_cur_object()->push_receiver(receiver);
-	current_player = new Player(1,type_player);
+	current_player = new Player(0,type_player);
 	std::cout<<"current_player : "<<current_player<<std::endl;
 	players.push_back(current_player);
-	players.push_back(new Player(0, type_bot));
+	players.push_back(new Player(1, type_bot));
 	register_cur();
 }
 
 PlayerController::~PlayerController() {
-	// TODO Auto-generated destructor stub
+	Input::Input::get_cur_object()->remove_receiver(receiver->get_name());
+	for(unsigned i=0;i<players.size();i++){
+		delete players.at(i);
+	}
 }
-
 void PlayerController::update(){
 	for(unsigned i=0;i<players.size();i++){
 		players.at(i)->update();

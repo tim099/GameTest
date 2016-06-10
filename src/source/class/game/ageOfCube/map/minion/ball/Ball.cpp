@@ -3,7 +3,6 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/game/ageOfCube/map/ai/search/Astar.h"
-#include "class/game/ageOfCube/map/attack/AttackCreator.h"
 #include "class/game/ageOfCube/map/unit/UnitController.h"
 #include "class/game/entity/EntityController.h"
 #include "class/audio/AudioController.h"
@@ -19,7 +18,7 @@ Ball::Ball() {
 	attack_timer=0;
 	timer=0;
 	finder=0;
-	//target_id=0;
+	attack_damage=10;
 }
 Ball::Ball(Ball* ball) {
 	ball_Drawobj=ball->ball_Drawobj;
@@ -29,14 +28,14 @@ Ball::Ball(Ball* ball) {
 	attack_timer=0;
 	timer=0;
 	finder=0;
-	//target_id=0;
+	attack_damage=10;
 }
 Ball::~Ball() {
 	if(finder)delete finder;
 }
 void Ball::save_minion(FILE * file){
-	fprintf(file,"%d %d\n",timer,attack_timer);
-	///*
+	fprintf(file,"%d\n",timer);
+
 	if(finder&&finder->get()->find){
 		AI::search::FindPath* path=dynamic_cast<AI::search::FindPath*>(finder->get());
 		fprintf(file,"1\n");
@@ -44,11 +43,10 @@ void Ball::save_minion(FILE * file){
 	}else{
 		fprintf(file,"0\n");
 	}
-	//*/
 }
 void Ball::load_minion(FILE * file){
-	fscanf(file,"%d %d\n",&timer,&attack_timer);
-	///*
+	fscanf(file,"%d\n",&timer);
+
 	int flag;
 	fscanf(file,"%d\n",&flag);
 	if(flag){
@@ -57,16 +55,17 @@ void Ball::load_minion(FILE * file){
 		path->load(file);
 		finder=new Tim::SmartPointer<AI::search::Finder>(path);
 	}
-	//*/
 }
 void Ball::minion_update(){
 	attack_timer++;
-	if(attack_timer>200){
+	if(attack_timer>attack_cycle){
 		Unit* target;
-		target=UnitController::get_cur_object()->search_unit(0,rigid_body.pos);//"MainTower"
-		if(target){
+		target=UnitController::get_cur_object()->search_unit(0,rigid_body.pos);
+		if(target&&(target->get_pos()-get_pos()).get_length()<get_attack_range()){
 			attack(target);
 			attack_timer=0;
+		}else{
+			attack_timer*=0.8;
 		}
 	}
 
@@ -75,7 +74,8 @@ void Ball::minion_update(){
 	ball_move();
 	timer++;
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;
-	if(timer>2500)set_hp(0);
+	if(timer>5000)set_hp(0);
+	/*
 	if(rigid_body.be_collided_id){
 		entity::Entity* e=
 				entity::EntityController::get_cur_object()->get_entity(rigid_body.be_collided_id);
@@ -83,16 +83,8 @@ void Ball::minion_update(){
 			b->hp_alter(-200);
 		}
 	}
+	*/
 	//set_position(get_position()+math::vec3<double>(0.05,0,0));
-}
-void Ball::attack(Unit* target){
-	if(!target)return;
-	//std::cout<<"Ball::attack(Unit* target)"<<std::endl;
-	Attack* attack=AttackCreator::get_cur_object()->create("Missile");
-	attack->pos=get_pos()+math::vec3<double>(0,1.5*(rigid_body.radius+attack->radius),0);
-	attack->set_target(target);
-	attack->set_damage(10);
-	attack->create_attack();
 }
 void Ball::find_path(){
 	Unit* target;
@@ -145,7 +137,7 @@ void Ball::moving(){
 			}
 			if(colli_timer<=0){
 				math::vec3<double> target=path->path.at(path->cur_at);
-				move_to(target,0.025);
+				move_to(target,0.02);
 				stuck_timer++;
 			}else{
 				colli_timer--;
@@ -173,8 +165,6 @@ void Ball::ball_move(){
 			}
 
 		}
-		//std::cout<<"ball stuck"<<std::endl;
-
 	}
 	if(timer==50){
 		//std::cout<<"Ball::minion_update() find path timer="<<timer<<std::endl;

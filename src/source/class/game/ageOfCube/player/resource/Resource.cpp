@@ -4,7 +4,6 @@
  *  Created on: 2016¦~6¤ë9¤é
  *      Author: LukeWu
  */
-
 #include <class/game/ageOfCube/player/resource/Resource.h>
 
 namespace AOC {

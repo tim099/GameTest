@@ -28,7 +28,7 @@ void Missile::load_attack(FILE* file){
 void  Missile::explode(){
 	//std::cout<<"Missile::explode()"<<std::endl;
 	for(unsigned i=0;i<collied_units.size();i++){
-		collied_units.at(i)->hp_alter(-10);
+		collied_units.at(i)->hp_alter(-damage);
 	}
 	Audio::AudioController::get_cur_object()->
 			play_by_dis("default_sound_effect/Bomb.wav",pos,200);

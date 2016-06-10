@@ -17,7 +17,7 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	lightControl = 0;
 	UI = 0;
 	back_music=0;
-	sun_light=0;
+	//sun_light=0;
 	destruct_mode=false;
 	pause_timer=false;
 	constructing_building=0;
@@ -32,22 +32,19 @@ void SceneEditMap::loading(){
 	resume();
 }
 void SceneEditMap::scene_initialize() {
-	//map = new Map();
-	field=new Field();
 	glm::vec3 pos(10,80,10);
-	sun_col_1=glm::vec3(1.9, 1.9, 1.9);
 
 	camera = new Display::Camera(pos,
 			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	lightControl = new Display::LightControl(120);
-	sun_pos=glm::vec3(1.0, -1.2, 0.5);
-	sun_light=new Display::ParallelLight(sun_pos,sun_col_1, true);
 
-	lightControl->push_light(sun_light);
+
 	lightControl->push_light(
 			new Display::ParallelLight(glm::vec3(0.05, -1.2, -0.2),
 					glm::vec3(0.3, 0.3, 0.3),false));
+	draw->set_lightControl(lightControl);
+
 	UI = new UI::UI();
 	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
 	back_music=new Audio::AudioPlayer();
@@ -55,6 +52,8 @@ void SceneEditMap::scene_initialize() {
 	back_music->set_loop(true);
 
 	cube_type=Cube::cube_start;
+
+	field=new Field();
 }
 void SceneEditMap::pause() {
 	back_music->pause();
@@ -260,8 +259,7 @@ void SceneEditMap::handle_input() {
 		draw->real_water^=1;
 	}
 	if(input->keyboard->get('T')){
-		timer.tic(1);
-		field->update(&timer);
+		field->update();
 		//map->update(&timer);
 	}
 
@@ -308,8 +306,7 @@ void SceneEditMap::scene_update() {
 	camera->update();
 
 	if(!pause_timer){
-		timer.tic(1);
-		field->update(&timer);
+		field->update();
 		//map->update(&timer);
 	}else{
 		//std::cout<<"pause"<<std::endl;
@@ -321,20 +318,7 @@ void SceneEditMap::scene_update_end(){
 void SceneEditMap::scene_draw() {
 	UI->draw_UIObject(draw);
 	field->draw(draw,camera,thread_pool); //push position
-	Display::DrawObject* galaxy=Display::AllDrawObjects::get_cur_object()->get("default/galaxy");
-	Display::DrawDataObj* data=new Display::DrawDataObj(&galaxy_pos_o,false,false);
-	data->push_ex_data(new Display::drawDataEX::SkyMap());
-	galaxy->push_temp_drawdata(data);
-	galaxy_pos_o.set_r(glm::vec3(60,0,0));
-	galaxy_pos.set_parent(&galaxy_pos_o);
-	galaxy_pos.set_r(glm::vec3(0.0f,180.0f*timer.get_hour(),0.0f));
-	//sun_light->vec=glm::vec3(
-			//glm::rotate((float)(360.0f * timer.get_hour()),glm::vec3(-1, 0, 1))
-					//*glm::vec4(glm::vec3(10,-10, 10), 1));
-	sun_light->vec=glm::vec3(galaxy_pos.get_pos_mat()*glm::vec4(glm::vec3(10,-10, 10), 1));
-	Display::DrawObject* stars=Display::AllDrawObjects::get_cur_object()->get("default/stars");
-	data=new Display::DrawDataObj(&galaxy_pos,false,false);
-	stars->push_temp_drawdata(data);
+
 	if(constructing_building){
 		if(input->mouse->_pos_delta==glm::ivec2(0,0)){
 			constructing_building->draw_buildable(field->map);

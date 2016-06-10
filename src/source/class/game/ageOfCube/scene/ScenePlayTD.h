@@ -39,14 +39,12 @@ protected:
 
 	void camera_control();
 	void handle_input();
-	//AOC::Map *map;
 	Field* field;
 	Display::Camera *camera;
 	Display::LightControl* lightControl;
 	Display::CubeLight* cl;
 
 	UI::UI *UI;
-	Timer timer;
 	std::string map_name;
 	Building* constructing_building;
 	playMode mode;

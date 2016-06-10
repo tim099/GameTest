@@ -1,6 +1,11 @@
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBE_FIELD_FIELD_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBE_FIELD_FIELD_H_
 #include "class/game/ageOfCube/map/Map.h"
+#include "class/game/ageOfCube/map/attack/AttackController.h"
+#include "class/game/ageOfCube/map/unit/UnitController.h"
+#include "class/game/entity/EntityController.h"
+#include "class/game/timer/Timer.h"
+#include "class/display/light/LightControl.h"
 namespace AOC {
 
 class Field {
@@ -9,8 +14,20 @@ public:
 	virtual ~Field();
 	void save(const std::string& path);
 	void load(const std::string& path);
-	void update(Timer* timer);
+	void update();
 	void draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool);
+	void draw_back_ground();
+	AttackController* attack_controller;
+	UnitController* unit_controller;
+	entity::EntityController* entity_controller;
+	Timer timer;
+	math::Position galaxy_pos_o;
+	math::Position galaxy_pos;
+
+	Display::ParallelLight *sun_light;
+	glm::vec3 sun_col_1,sun_col_2,sun_pos;
+
+
 	Map *map;
 };
 

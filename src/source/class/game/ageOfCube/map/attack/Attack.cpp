@@ -11,6 +11,7 @@ Attack::Attack() {
 	target=0;
 	target_id=0;
 	attack_created=false;
+	damage=10;
 }
 Attack::~Attack() {
 	if(attack_created){
@@ -18,12 +19,12 @@ Attack::~Attack() {
 	}
 }
 void Attack::save(FILE* file){
-	fprintf(file,"%u %d\n",target_id,die);
+	fprintf(file,"%u %d %d\n",target_id,die,damage);
 	save_rigid_body(file);
 	save_attack(file);
 }
 void Attack::load(FILE* file){
-	fscanf(file,"%u %d\n",&target_id,&die);
+	fscanf(file,"%u %d %d\n",&target_id,&die,&damage);
 	std::cout<<"Attack::load target_id="<<target_id<<std::endl;
 	load_rigid_body(file);
 	load_attack(file);

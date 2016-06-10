@@ -4,7 +4,6 @@
 #include "class/game/ageOfCube/field/Field.h"
 #include "class/display/camera/Camera.h"
 #include "class/display/UI/UI.h"
-#include "class/game/timer/Timer.h"
 #include "class/display/light/LightControl.h"
 #include "class/audio/AudioPlayer.h"
 namespace AOC{
@@ -37,12 +36,10 @@ protected:
 	Display::LightControl* lightControl;
 	Audio::AudioPlayer *back_music;
 	Building* constructing_building;
-	math::Position galaxy_pos_o;
-	math::Position galaxy_pos;
-	Display::ParallelLight *sun_light;
-	glm::vec3 sun_col_1,sun_col_2,sun_pos;
+
+
 	UI::UI *UI;
-	Timer timer;
+
 	bool destruct_mode;
 	bool pause_timer;
 	std::string map_name;

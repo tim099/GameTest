@@ -38,9 +38,6 @@ Map::Map() {
 	all_cubes=new AllCubes();
 	cur_update_pos=&update_pos1;
 	prev_update_pos=&update_pos2;
-	unit_controller=new UnitController();
-	entity_controller=new entity::EntityController();
-	attack_controller=new AttackController();
 
 	astar=new AI::search::Astar();
 	register_cur();
@@ -49,10 +46,6 @@ Map::~Map() {
 	delete astar;
 	if(dp_map)delete dp_map;
 	delete map_rigid_body;
-	for(unsigned i=0;i<players.size();i++){
-		delete players.at(i);
-	}
-	players.clear();
 	if(map_segs){
 		for(int i=0;i<seg_num.x;i++){
 			for(int j=0;j<seg_num.z;j++){
@@ -68,9 +61,9 @@ Map::~Map() {
 	delete cube_water;
 	delete all_cubes;
 
-	delete unit_controller;
-	delete attack_controller;
-	delete entity_controller;
+
+
+
 
 }
 void Map::swap_update_pos(){
@@ -314,8 +307,7 @@ void Map::load_update_pos(FILE * file){
 	}
 	//*/
 }
-void Map::save_map(const std::string& path){
-	FILE * file = fopen(path.c_str(),"w+t");
+void Map::save_map(FILE* file){
 	fprintf(file,"%d %d %d\n",map_size.x,map_size.y,map_size.z);
 	fprintf(file,"%d %lf\n",ground_height,water_height);
 	fprintf(file,"%u\n",seed);
@@ -330,22 +322,14 @@ void Map::save_map(const std::string& path){
 			}
 		}
 	}
-	entity_controller->save(file);
 	for(int i=0;i<seg_num.x;i++){
 		for(int j=0;j<seg_num.z;j++){
 			map_segs->get(i,j)->save(file);
 		}
 	}
 	save_update_pos(file);
-
-
-	unit_controller->save(file);
-	attack_controller->save(file);
-
-	fclose(file);
 }
-void Map::load_map(const std::string& path){
-	FILE * file = fopen(path.c_str(),"r");
+void Map::load_map(FILE* file){
 	fscanf(file,"%d %d %d\n",&map_size.x,&map_size.y,&map_size.z);
 	fscanf(file,"%d %lf\n",&ground_height,&water_height);
 	fscanf(file,"%u\n",&seed);
@@ -364,7 +348,7 @@ void Map::load_map(const std::string& path){
 		}
 	}
 
-	entity_controller->load(file);
+
 
 	for(int i=0;i<seg_num.x;i++){
 		for(int j=0;j<seg_num.z;j++){
@@ -373,10 +357,10 @@ void Map::load_map(const std::string& path){
 	}
 	load_update_pos(file);
 
-	unit_controller->load(file);
-	attack_controller->load(file);
+
+
 	dp_map->update_whole_map();
-	fclose(file);
+
 }
 void Map::push_CubeEX(int x,int y,int z,CubeEX *cube){
 	if(map->get(x,y,z)!=Cube::cubeNull){
@@ -651,14 +635,9 @@ void Map::find_select_cube(){
 }
 void Map::draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool){
 	dp_map->draw_map(camera,threadpool);
-	unit_controller->draw(draw);
-	attack_controller->draw();
 }
 void Map::update(Timer* timer){
-	attack_controller->update();
-	unit_controller->update();
 	map_rigid_body->set_detect_special_collision();
-
 
 	int update_num=seg_num.x*seg_num.z/10;
 	for(int i=0;i<update_num;i++){

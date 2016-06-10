@@ -11,16 +11,17 @@
 #include "class/game/ageOfCube/map/DisplayMap.h"
 #include "class/game/ageOfCube/map/landscape/LandscapeCreator.h"
 #include "class/game/ageOfCube/map/building/BuildingCreator.h"
-#include "class/game/ageOfCube/player/Player.h"
 #include "class/tim/math/vec3.h"
 #include "class/game/ageOfCube/map/MapRigidBody.h"
 #include "class/tim/thread/mutex/Mutex.h"
-#include "class/game/ageOfCube/map/unit/UnitController.h"
-#include "class/game/entity/EntityController.h"
-#include "class/game/ageOfCube/map/attack/AttackController.h"
+
+
+
 class LandscapeCreator;
 class Timer;
-
+namespace Display{
+	class Draw;
+}
 namespace AOC{
 namespace AI{
 namespace search{
@@ -48,8 +49,8 @@ public:
 	//ground height limited the max height of the ground
 	void regen_map();
 	static glm::ivec3 convert_position(glm::vec3 pos);
-	void save_map(const std::string& path);
-	void load_map(const std::string& path);
+	void save_map(FILE* file);
+	void load_map(FILE* file);
 	void push_CubeEX(int x,int y,int z,CubeEX *cube);
 
 	bool set_cube_type(int x,int y,int z,int val);
@@ -105,9 +106,9 @@ public:
 	void draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool);
 
 	AOC::DisplayMap* dp_map;
-	UnitController* unit_controller;
-	entity::EntityController* entity_controller;
-	AttackController* attack_controller;
+
+
+
 	//cube being selected by mouse
 	math::vec3<int> selected_cube;
 
@@ -116,7 +117,6 @@ public:
 
 	math::vec3<int> seg_num;
 	math::vec3<int> segsize;
-	std::vector<Player*>players;
 	AI::search::Astar* astar;
 	int player_num;
 protected:
@@ -174,7 +174,6 @@ protected:
 	Water *cube_water;
 
 	AllCubes *all_cubes;
-	//LandscapeCreator *landscapeCreator;
 	PerlinNoise noise;
 	math::vec2<int>update_at;
 };

@@ -25,7 +25,7 @@ void ScenePlayTD::loading(){
 
 }
 void ScenePlayTD::scene_initialize() {
-	field = new Field();
+
 
 	glm::vec3 pos(10,80,10);
 	camera = new Display::Camera(pos,
@@ -34,7 +34,8 @@ void ScenePlayTD::scene_initialize() {
 	lightControl = new Display::LightControl(120);
 	lightControl->push_light(
 			new Display::ParallelLight(glm::vec3(1.0, -1.2, 0.2),
-					glm::vec3(1.9, 1.9, 1.9), true));
+					glm::vec3(0.3, 0.3, 0.3), true));
+	draw->set_lightControl(lightControl);
 
 	UI = new UI::UI();
 	UI->Load_script("files/AgeOfCube/scenes/playTD/UI/playTD_UI.txt");
@@ -45,6 +46,7 @@ void ScenePlayTD::scene_initialize() {
 	cl->color=glm::vec3(1,0.5,0);
 	cl->size=1.01f*Map::CUBE_SIZE;
 	lightControl->push_light(cl);
+	field = new Field();
 	resume();
 	//========================
 	//std::cout << "SceneEditMap::scene_initialize()" << std::endl;
@@ -148,10 +150,10 @@ void ScenePlayTD::handle_input() {
 		if(Building *selected_building = dynamic_cast<Building *>(selected_cube) ){
 			std::cout<<"building selected. hp="<<selected_building->get_hp()
 					<<"/"<<selected_building->get_max_hp()<<std::endl;
-			field->map->unit_controller->select_unit(selected_building);
+			field->unit_controller->select_unit(selected_building);
 			return;
 		}else{
-			field->map->unit_controller->deselect_unit();
+			field->unit_controller->deselect_unit();
 		}
 
 		if(mode == constructing){
@@ -256,9 +258,8 @@ void ScenePlayTD::handle_input() {
 void ScenePlayTD::scene_update() {
 	//std::cout<<"scene_update()"<<std::endl;
 	UI->update_UIObject();
-	timer.tic(1);
 	camera->update();
-	field->update(&timer);
+	field->update();
 	player->update();
 }
 void ScenePlayTD::scene_update_end(){
@@ -302,7 +303,7 @@ void ScenePlayTD::resume() {
 	draw->Enable3D = true;
 	draw->set_camera(camera);
 	draw->set_lightControl(lightControl);
-	field->map->unit_controller->register_cur();
+	field->unit_controller->register_cur();
 }
 
 void ScenePlayTD::reload_map(){

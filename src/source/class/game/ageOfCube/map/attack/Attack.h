@@ -13,15 +13,17 @@ public:
 	virtual void attack_pre_init(){}
 	Attack();
 	virtual ~Attack();
+	void create_attack();
 	virtual Attack* clone()=0;
 	virtual std::string get_name()=0;
 	int get_die()const{return die;}
 	void save(FILE* file);
 	void load(FILE* file);
 	void set_target(Unit* _target);
+	void set_damage(int _damage){damage=_damage;}
+
 	void draw();
 	void update();
-	void create_attack();
 protected:
 	virtual void save_attack(FILE* file){}
 	virtual void load_attack(FILE* file){}
@@ -31,6 +33,7 @@ protected:
 	std::vector<Unit*> collied_units;
 	unsigned target_id;
 	int die;
+	int damage;
 private:
 
 	int attack_created;

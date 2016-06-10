@@ -27,7 +27,6 @@ MainTower::MainTower(MainTower* tower){
 	timer=0;
 	loop_time=tower->loop_time;
 	attack_cycle=tower->attack_cycle;
-
 }
 MainTower::~MainTower() {
 

@@ -13,7 +13,7 @@ ScenePlayTD::ScenePlayTD(std::string _map_name, glm::ivec3 _map_size) {
 	UI = 0;
 	cl=0;
 	constructing_building=0;
-	back_music=0;
+	back_music = 0;
 	mode = normal;
 }
 void ScenePlayTD::loading(){

@@ -28,14 +28,16 @@ Tower::Tower() {
 	attack_damage=100;
 }
 Tower::Tower(Tower* tower) {
+	init(1000,0);
 	tower_type=tower->tower_type;
 	tower_Drawobj=tower->tower_Drawobj;
 	timer=0;
+
 	size = tower->size;
 	attack_timer=0;
 	attack_cycle=tower->attack_cycle;
+
 	attack_damage=100;
-	init(1000,0);
 }
 Tower::~Tower() {
 	//std::cout<<"delete tree"<<std::endl;

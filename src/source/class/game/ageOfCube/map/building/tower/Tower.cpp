@@ -75,7 +75,7 @@ void Tower::draw_building(){
 void Tower::attack(Unit* target){
 	if(!target)return;
 	//std::cout<<"Ball::attack(Unit* target)"<<std::endl;
-	Attack* attack=AttackCreator::get_cur_object()->create("Missile");
+	Attack* attack=AttackCreator::get_cur_object()->create("CubeMissile");
 	attack->pos=get_mid_pos()+
 			math::vec3<double>(0,1.5*(0.5*get_cube_large_size().y*Map::CUBE_SIZE+attack->radius),0);
 	attack->set_target(target);

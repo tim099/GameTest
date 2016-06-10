@@ -18,4 +18,15 @@ ModelBuffer:
 	Align_center:
 		true
 #load_end
+
+ModelBuffer:
+	Name:
+		cube_missile
+	Path:
+		missile/cube.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
 #END

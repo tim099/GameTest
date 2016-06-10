@@ -2,7 +2,8 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/audio/AudioController.h"
 #include "class/game/ageOfCube/map/unit/Unit.h"
-
+#include "class/display/light/LightControl.h"
+#include "class/display/draw/Draw.h"
 namespace AOC {
 void Missile::attack_pre_init(){
 
@@ -11,20 +12,22 @@ Missile::Missile() {
 	radius=0.1;
 	timer=0;
 	type=0;
+	explode_timer=0;
 }
 Missile::Missile(Missile* missile){
 	radius=missile->radius;
 	timer=0;
 	type=0;
+	explode_timer=0;
 }
 Missile::~Missile() {
 
 }
 void Missile::save_attack(FILE* file){
-	fprintf(file,"%d %d\n",timer,type);
+	fprintf(file,"%d %d %d\n",timer,type,explode_timer);
 }
 void Missile::load_attack(FILE* file){
-	fscanf(file,"%d %d\n",&timer,&type);
+	fscanf(file,"%d %d %d\n",&timer,&type,&explode_timer);
 }
 void Missile::collide_action(RigidBody* b){
 
@@ -36,17 +39,20 @@ void  Missile::explode(){
 	}
 	Audio::AudioController::get_cur_object()->
 			play_by_dis("default_sound_effect/Bomb.wav",pos,200);
+	Display::PointLight *light=new Display::PointLight(
+			glm::vec3(pos.x,pos.y,pos.z),
+			glm::vec3(10.0,1.0,1.0),false);
+
+	Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
 	die=true;
 }
 void Missile::draw_attack(){
-	//std::cout<<"Missile::draw_attack()"<<std::endl;
-	///*
-	Display::DrawObject *missile_Drawobj=Display::AllDrawObjects::get_cur_object()->get("attack/missile_3");
+	Display::DrawObject *missile_Drawobj=Display::AllDrawObjects::get_cur_object()->get("attack/ball_missile_1");
+	//Display::DrawObject *missile_Drawobj=Display::AllDrawObjects::get_cur_object()->get("attack/cube_missile_1");
 	math::Position *dp_pos=new math::Position();
 	dp_pos->set_pos(glm::vec3(pos.x,pos.y,pos.z));
 	dp_pos->set_scale(glm::vec3(2*radius,2*radius,2*radius));
 	missile_Drawobj->push_temp_drawdata(new Display::DrawDataObj(dp_pos,true,true));
-	//*/
 }
 void Missile::attack_update(){
 	//std::cout<<"Missile::attack_update()"<<std::endl;

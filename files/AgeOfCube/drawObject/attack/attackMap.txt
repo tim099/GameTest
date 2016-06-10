@@ -9,34 +9,23 @@ Name:
 
 DrawObject:
 	Name:
-		missile_1
+		ball_missile_1
 	ModelBuffer:
-		building/ball_spawn_tower_part_4
-	Texture:
-		cube/stone
-	Material:
-		0.4 0.05 0.02 0.4	
-#load_end
-
-DrawObject:
-	Name:
-		missile_2
-	ModelBuffer:
-		building/ball_spawn_tower_part_4
+		attack/ball_missile
 	Texture:
 		cube/stone
 	Material:
 		0.4 0.05 0.02 0.8	
 #load_end
-
 DrawObject:
 	Name:
-		missile_3
+		cube_missile_1
 	ModelBuffer:
-		building/ball_spawn_tower_part_4
+		attack/cube_missile
 	Texture:
-		cube/stone
+		building/basic_cube_tower_1
 	Material:
-		0.4 0.05 0.02 1.2	
+		0.4 0.05 0.02 0.8	
 #load_end
+
 #END

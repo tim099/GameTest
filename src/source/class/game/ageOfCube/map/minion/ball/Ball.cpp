@@ -107,7 +107,7 @@ void Ball::find_path(){
 
 		finder=new Tim::SmartPointer<AI::search::Finder>(find);
 		finder->get()->max_search_times=40000;
-		finder->get()->min_search_times=5000;
+		finder->get()->min_search_times=2000;
 		AI::search::SearchTask *task=new AOC::AI::search::SearchTask(*finder);
 		AI::search::Astar::get_cur_object()->push_task(task);
 	}

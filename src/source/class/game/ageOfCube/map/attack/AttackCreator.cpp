@@ -1,10 +1,11 @@
 #include "class/game/ageOfCube/map/attack/AttackCreator.h"
 #include "class/game/ageOfCube/map/attack/missile/Missile.h"
+#include "class/game/ageOfCube/map/attack/missile/CubeMissile.h"
 namespace AOC {
 
 AttackCreator::AttackCreator() {
 	push(new Missile());
-
+	push(new CubeMissile());
 	register_cur();
 }
 AttackCreator::~AttackCreator() {

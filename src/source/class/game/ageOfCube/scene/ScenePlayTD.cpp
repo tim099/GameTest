@@ -47,6 +47,11 @@ void ScenePlayTD::scene_initialize() {
 	cl->size=1.01f*Map::CUBE_SIZE;
 	lightControl->push_light(cl);
 	field = new Field();
+
+	back_music=new Audio::AudioPlayer();
+	back_music->set_source("default_music/prepare_your_swords.wav");
+	back_music->set_loop(true);
+
 	resume();
 	//========================
 	//std::cout << "SceneEditMap::scene_initialize()" << std::endl;
@@ -297,9 +302,10 @@ void ScenePlayTD::scene_draw() {
 	}
 }
 void ScenePlayTD::pause() {
-
+	back_music->pause();
 }
 void ScenePlayTD::resume() {
+	back_music->play();
 	draw->Enable3D = true;
 	draw->set_camera(camera);
 	draw->set_lightControl(lightControl);

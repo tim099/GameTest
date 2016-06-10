@@ -4,6 +4,7 @@
 #include "class/game/ageOfCube/map/attack/AttackController.h"
 #include "class/game/ageOfCube/map/unit/UnitController.h"
 #include "class/game/entity/EntityController.h"
+#include "class/game/ageOfCube/player/PlayerController.h"
 #include "class/game/timer/Timer.h"
 #include "class/display/light/LightControl.h"
 namespace AOC {
@@ -19,6 +20,7 @@ public:
 	void draw_back_ground();
 	AttackController* attack_controller;
 	UnitController* unit_controller;
+	PlayerController *player_controller;
 	entity::EntityController* entity_controller;
 	Timer timer;
 	math::Position galaxy_pos_o;

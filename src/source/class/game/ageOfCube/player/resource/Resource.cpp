@@ -8,9 +8,10 @@
 
 namespace AOC {
 
-Resource::Resource() {
-	amount = 0;
-	description = "this is description";
+Resource::Resource(std::string _name, std::string _description, int _amount) {
+	name = _name;
+	description = _description;
+	amount = _amount;
 }
 
 Resource::~Resource() {

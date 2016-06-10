@@ -10,6 +10,7 @@
 
 #include <string>
 #include "class/display/UI/UI.h"
+#include "class/display/UI/string/UIString.h"
 
 namespace AOC{
 	class Player;
@@ -28,8 +29,9 @@ public:
 		return "PlayerUI";
 	}
 	bool check_script();
-protected:
-
+	void set_resource_amount(std::string resource_name, std::string value);
+private:
+	UIString *resource_amount_strings[6];
 };
 
 } /* namespace AOC */

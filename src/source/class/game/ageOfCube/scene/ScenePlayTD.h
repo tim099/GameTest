@@ -9,6 +9,7 @@
 #include "class/display/light/LightControl.h"
 #include "class/game/ageOfCube/map/unit/UnitController.h"
 #include "class/game/ageOfCube/player/Player.h"
+#include "class/audio/AudioPlayer.h"
 
 namespace AOC {
 
@@ -44,6 +45,7 @@ protected:
 	Display::LightControl* lightControl;
 	Display::CubeLight* cl;
 
+	Audio::AudioPlayer *back_music;
 	UI::UI *UI;
 	std::string map_name;
 	Building* constructing_building;

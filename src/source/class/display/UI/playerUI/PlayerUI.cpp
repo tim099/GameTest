@@ -22,4 +22,8 @@ bool PlayerUI::check_script(){
 	return true;
 }
 
+void PlayerUI::set_resource_amount(std::string ui_name, std::string value){
+
+}
+
 } /* namespace AOC */

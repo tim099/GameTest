@@ -14,11 +14,12 @@ namespace AOC {
 
 class Resource {
 public:
-	Resource();
+	Resource(std::string _name, std::string _description, int _amount=0);
 	virtual ~Resource();
 	void modifyAmount(int modifier);
 private:
 	int amount;
+	std::string name;
 	std::string description;
 };
 

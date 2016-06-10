@@ -19,6 +19,7 @@ public:
 	virtual ~Player();
 	void draw(Display::Draw* draw);
 	void update();
+	int get_id(){return id;}
 private:
 	int id;
 	std::string name;

@@ -7,6 +7,7 @@ Field::Field() {
 	entity_controller=new entity::EntityController();
 	unit_controller=new UnitController();
 	attack_controller=new AttackController();
+	player_controller = new PlayerController();
 	map = new Map();
 	sun_col_1=glm::vec3(1.9, 1.9, 1.9);
 	sun_pos=glm::vec3(1.0, -1.2, 0.5);

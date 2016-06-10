@@ -128,9 +128,21 @@ void UnitController::handle_signal(){
 	while((sig=receiver->get_signal())){
 		if(sig->get_data()=="toggle_panel"){
 			building_UI->hide^=1;
-		}else{
+		}else if(sig->get_data()=="fire_upgrade"){
+			Building *selected_building = dynamic_cast<Building *>(selected_unit);
+		}
+		else if(sig->get_data()=="water_upgrade"){
 
 		}
+		else if(sig->get_data()=="earth_upgrade"){
+
+		}
+		else if(sig->get_data()=="air_upgrade"){
+
+		}
+		else{
+		}
+
 	}
 }
 void UnitController::update(){

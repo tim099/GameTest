@@ -139,7 +139,7 @@ void BallSpawnTower::spawn(){
 		ball->max_hp_alter((spawn_timer/loop_time)*15);
 		ball->attack_alter((spawn_timer/loop_time)*1.5);
 	}
-	std::cout<<"ball hp="<<ball->get_hp()<<std::endl;
+	//std::cout<<"ball hp="<<ball->get_hp()<<std::endl;
 	double ball_size=0.16f*size*sqrt(ball->get_hp()/100.0);
 	if(ball_size>0.9)ball_size=0.9;
 	ball->set_size(ball_size);

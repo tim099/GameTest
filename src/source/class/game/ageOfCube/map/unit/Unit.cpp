@@ -68,10 +68,12 @@ void Unit::init(int _max_hp,int _player){
 }
 void Unit::save_unit(FILE * file){
 	fprintf(file,"%d %d %u %d %d %d\n",max_hp,hp,player,is_dead,dead_timer,attack_timer);
+	fprintf(file,"%d %d\n",attack_damage,attack_cycle);
 	save_entity(file);
 }
 void Unit::load_unit(FILE * file){
 	fscanf(file,"%d %d %u %d %d %d\n",&max_hp,&hp,&player,&is_dead,&dead_timer,&attack_timer);
+	fscanf(file,"%d %d\n",&attack_damage,&attack_cycle);
 	load_entity(file);
 }
 void Unit::update(){

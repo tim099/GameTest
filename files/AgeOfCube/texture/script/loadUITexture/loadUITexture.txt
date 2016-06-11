@@ -34,6 +34,11 @@ Texture:
 		panel2
 	TexturePath:
 		panel2.png
+Texture:
+	TextureName:
+		title
+	TexturePath:
+		AOCTD_title.png
 
 Texture:
 	TextureName:

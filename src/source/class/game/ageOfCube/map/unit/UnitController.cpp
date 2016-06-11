@@ -151,7 +151,7 @@ void UnitController::handle_signal(){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
-
+			//selected_building ->
 		}
 		else if(sig->get_data()=="water_upgrade"){
 			std::cout<<"water_upgrade"<<std::endl;

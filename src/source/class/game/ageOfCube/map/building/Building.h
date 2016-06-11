@@ -37,6 +37,8 @@ public:
 	void set_size(float size);
 	virtual void draw();
 	bool create_building();
+
+	void upgrade(std::string description);
 protected:
 	virtual void unit_update();
 	virtual void building_set_pos(int x,int y,int z);

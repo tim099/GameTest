@@ -64,6 +64,7 @@ void ScenePlayTD::scene_terminate() {
 		delete UI;
 		UI = 0;
 	}
+	if(back_music)delete back_music;
 }
 ScenePlayTD::~ScenePlayTD() {
 

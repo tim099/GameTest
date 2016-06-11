@@ -134,6 +134,143 @@ CreateUIObject:
 		UnitPanel
 #create_end
 
+
+CreateUIObject:
+		UIString
+	Name:
+		upgraded_string
+	Position:
+		0.15 -0.12
+	String:
+"upgrade:"
+	String_size:
+		0.015
+	Parent:
+		UnitPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		upgrade1
+	Position:
+		0.15 -0.16
+	Texture:
+		UI/UI/resource_fire
+	Width:
+		0.015
+	Height:
+		1.0
+	Parent:
+		UnitPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		upgrade1_amount
+	Position:
+		0.17 -0.17
+	String:
+"0"
+	String_size:
+		0.01
+	Parent:
+		UnitPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		upgrade2
+	Position:
+		0.2 -0.16
+	Texture:
+		UI/UI/resource_water
+	Width:
+		0.015
+	Height:
+		1.0
+	Parent:
+		UnitPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		upgrade2_amount
+	Position:
+		0.22 -0.17
+	String:
+"0"
+	String_size:
+		0.01
+	Parent:
+		UnitPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		upgrade3
+	Position:
+		0.25 -0.16
+	Texture:
+		UI/UI/resource_earth
+	Width:
+		0.015
+	Height:
+		1.0
+	Parent:
+		UnitPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		upgrade3_amount
+	Position:
+		0.27 -0.17
+	String:
+"0"
+	String_size:
+		0.01
+	Parent:
+		UnitPanel
+#create_end
+
+CreateUIObject:
+		Panel
+	Name:
+		upgrade4
+	Position:
+		0.3 -0.16
+	Texture:
+		UI/UI/resource_air
+	Width:
+		0.015
+	Height:
+		1.0
+	Parent:
+		UnitPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		upgrade4_amount
+	Position:
+		0.32 -0.17
+	String:
+"0"
+	String_size:
+		0.01
+	Parent:
+		UnitPanel
+#create_end
+
+
+
 CreateUIObject:
 		ToggleButton
 	Name:

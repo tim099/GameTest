@@ -130,4 +130,24 @@ void Building::draw_hp(){
 		Display::Draw::get_cur_object()->lightControl->push_temp_light(building_light);
 	}
 }
+
+void Building::upgrade(std::string description){
+	if(description == "fire_upgrade"){
+		std::cout<<"fire upgrade"<<std::endl;
+		attack_alter(5.0);
+	}
+	else if(description == "water_upgrade"){
+		std::cout<<"water upgrade"<<std::endl;
+	}
+	else if(description == "earth_upgrade"){
+		std::cout<<"earth upgrade"<<std::endl;
+		max_hp_alter(10);
+
+	}
+	else if(description == "air_upgrade"){
+		std::cout<<"air upgrade"<<std::endl;
+		attack_cycle_alter(-10.0);
+	}
+}
+
 }

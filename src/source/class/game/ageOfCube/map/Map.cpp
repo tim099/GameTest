@@ -12,7 +12,7 @@
 #include "class/input/Input.h"
 #include "class/game/timer/Timer.h"
 #include "class/game/ageOfCube/map/landscape/tree/Tree.h"
-#include "class/game/ageOfCube/map/ai/search/Astar.h"
+
 
 #include <cstdio>
 #include <ctime>
@@ -39,11 +39,10 @@ Map::Map() {
 	cur_update_pos=&update_pos1;
 	prev_update_pos=&update_pos2;
 
-	astar=new AI::search::Astar();
+
 	register_cur();
 }
 Map::~Map() {
-	delete astar;
 	if(dp_map)delete dp_map;
 	delete map_rigid_body;
 	if(map_segs){
@@ -60,11 +59,6 @@ Map::~Map() {
 	delete cube_error;
 	delete cube_water;
 	delete all_cubes;
-
-
-
-
-
 }
 void Map::swap_update_pos(){
 	std::swap(update_pos1,update_pos2);

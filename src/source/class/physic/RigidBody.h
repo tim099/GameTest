@@ -26,7 +26,7 @@ public:
 
 	double radius;
 	double mass;
-
+	bool collision_off;
 	math::vec3<double> vel;
 	math::vec3<double> pos,prev_pos;
 	RigidBody* collided,*be_collided;

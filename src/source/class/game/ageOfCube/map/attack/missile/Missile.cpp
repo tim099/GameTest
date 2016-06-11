@@ -4,6 +4,7 @@
 #include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/Draw.h"
+#include <cmath>
 namespace AOC {
 void Missile::attack_pre_init(){
 
@@ -38,7 +39,7 @@ void  Missile::explode(){
 		collied_units.at(i)->hp_alter(-damage);
 	}
 	Audio::AudioController::get_cur_object()->
-			play_by_dis("default_sound_effect/Bomb.wav",pos,200);
+			play_by_dis("default_sound_effect/Bomb.wav",pos,100);
 	Display::PointLight *light=new Display::PointLight(
 			glm::vec3(pos.x,pos.y,pos.z),
 			glm::vec3(30.0,1.0,1.0),false);
@@ -46,12 +47,16 @@ void  Missile::explode(){
 	Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
 	die=true;
 }
+Display::DrawObject *Missile::get_missile_drawobj(){
+	return Display::AllDrawObjects::get_cur_object()->get("attack/ball_missile_1");
+}
 void Missile::draw_attack(){
-	Display::DrawObject *missile_Drawobj=Display::AllDrawObjects::get_cur_object()->get("attack/ball_missile_1");
-	//Display::DrawObject *missile_Drawobj=Display::AllDrawObjects::get_cur_object()->get("attack/cube_missile_1");
+	Display::DrawObject *missile_Drawobj=get_missile_drawobj();
 	math::Position *dp_pos=new math::Position();
 	dp_pos->set_pos(glm::vec3(pos.x,pos.y,pos.z));
 	dp_pos->set_scale(glm::vec3(2*radius,2*radius,2*radius));
+	dp_pos->set_r(glm::vec3((180.0/M_PI)*atan2(sqrt(vel.x*vel.x+vel.z*vel.z),vel.y),
+			(180.0/M_PI)*atan2(vel.x,vel.z),0));
 	missile_Drawobj->push_temp_drawdata(new Display::DrawDataObj(dp_pos,true,true));
 }
 void Missile::attack_update(){
@@ -61,7 +66,7 @@ void Missile::attack_update(){
 		explode();
 	}
 	if(target){
-		vel*=0.75;
+		vel*=0.8;
 		math::vec3<double> target_pos=target->get_mid_pos();
 		math::vec3<double> del_pos=target_pos-pos;
 		if(timer<25||(timer<50&&del_pos.y>-3.0)){

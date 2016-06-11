@@ -70,6 +70,7 @@ void Attack::update(){
 	attack_update();
 }
 void Attack::draw(){
+	if(die)return;
 	math::vec3<double> s=Map::get_cur_object()->dp_map->dp_start;
 	math::vec3<double> e=Map::get_cur_object()->dp_map->dp_end;
 	if(pos>=s&&pos<=e){

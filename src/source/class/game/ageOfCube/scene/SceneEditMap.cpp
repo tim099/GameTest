@@ -49,6 +49,7 @@ void SceneEditMap::scene_initialize() {
 	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
 	back_music=new Audio::AudioPlayer();
 	back_music->set_source("default_music/prepare_your_swords.wav");
+	back_music->set_volume(0.2);
 	back_music->set_loop(true);
 
 	cube_type=Cube::cube_start;

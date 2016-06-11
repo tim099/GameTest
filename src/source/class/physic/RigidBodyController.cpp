@@ -21,11 +21,13 @@ bool RigidBodyController::check_collision(RigidBody* a){
 	return false;
 }
 bool RigidBodyController::detect_collision(RigidBody* a,bool stop_when_collide){
+	if(a->collision_off)return false;
+
 	RigidBody *b;
 	bool collided=false;
 	for(unsigned i=0;i<special_collisions.size();i++){
 		b=special_collisions.at(i);
-		if(b!=a){
+		if(b!=a&&!b->collision_off){
 			if(b->check_collision(a)){
 				b->collide(a);
 				a->be_collide(b);
@@ -35,7 +37,7 @@ bool RigidBodyController::detect_collision(RigidBody* a,bool stop_when_collide){
 	}
 	for(unsigned i=0;i<collisions.size();i++){
 		b=collisions.at(i);
-		if(b!=a){
+		if(b!=a&&!b->collision_off){
 			//std::cout<<"a="<<a<<","<<"b="<<b<<std::endl;
 			if(a->check_collision(b)){
 				a->collide(b);

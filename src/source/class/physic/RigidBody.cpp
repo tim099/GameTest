@@ -11,6 +11,7 @@ RigidBody::RigidBody() {
 	collided=0;
 	be_collided=0;
 	collided_id=0;be_collided_id=0;
+	collision_off=false;
 	mass=1.0;
 }
 RigidBody::~RigidBody() {

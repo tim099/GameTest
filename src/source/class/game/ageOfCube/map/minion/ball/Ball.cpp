@@ -56,7 +56,9 @@ void Ball::load_minion(FILE * file){
 		finder=new Tim::SmartPointer<AI::search::Finder>(path);
 	}
 }
-
+double Ball::get_attack_size(){
+	return 1.5*rigid_body.radius;
+}
 void Ball::minion_update(){
 	attack_update();
 	ball_move();

@@ -1,6 +1,7 @@
 #include "class/game/ageOfCube/field/Field.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
+#include "class/game/ageOfCube/map/ai/search/Astar.h"
 namespace AOC {
 
 Field::Field() {
@@ -9,18 +10,25 @@ Field::Field() {
 	attack_controller=new AttackController();
 	player_controller = new PlayerController();
 	map = new Map();
+	astar=new AI::search::Astar();
 	sun_col_1=glm::vec3(1.9, 1.9, 1.9);
 	sun_pos=glm::vec3(1.0, -1.2, 0.5);
 	sun_light=new Display::ParallelLight(sun_pos,sun_col_1, true);
 	Display::Draw::get_cur_object()->lightControl->push_light(sun_light);
 }
 Field::~Field() {
+	std::cout<<"Field::~Field() 1"<<std::endl;
+	delete astar;
 	if(map)delete map;
-
+	std::cout<<"Field::~Field() 2"<<std::endl;
 	delete player_controller;
+	std::cout<<"Field::~Field() 3"<<std::endl;
 	delete attack_controller;
+	std::cout<<"Field::~Field() 4"<<std::endl;
 	delete unit_controller;
+	std::cout<<"Field::~Field() 5"<<std::endl;
 	delete entity_controller;
+	std::cout<<"Field::~Field() 6"<<std::endl;
 
 }
 void Field::save(const std::string& path){

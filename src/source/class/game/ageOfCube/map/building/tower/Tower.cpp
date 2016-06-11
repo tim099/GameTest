@@ -10,12 +10,7 @@
 #include <cmath>
 namespace AOC{
 void Tower::building_pre_init(){
-	//std::cout<<"Tree::pre_init()"<<std::endl;
 	tower_Drawobj=Display::AllDrawObjects::get_cur_object()->get("building/basic_cube_tower_1");
-	//tower_Drawobj=Display::AllDrawObjects::get_cur_object()->get("building/ball_spawn_tower");
-
-	timer=0;
-	//tree_Drawobj=AllDrawObjects::get_cur_object()->get("landscape/broadleaftree");
 }
 Tower::Tower() {
 	init(1000,0);

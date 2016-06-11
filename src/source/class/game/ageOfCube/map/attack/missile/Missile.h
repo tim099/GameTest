@@ -23,11 +23,11 @@ protected:
 	virtual void draw_attack();
 	virtual void attack_update();
 	virtual void collide_action(RigidBody* b);
+	virtual Display::DrawObject *get_missile_drawobj();
 	void explode();
 	int explode_timer;
 	int timer;
 	int type;
-	std::queue<math::vec3<double> >prev_pos_q;
 };
 
 } /* namespace AOC */

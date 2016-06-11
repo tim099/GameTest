@@ -9,6 +9,11 @@
 #include "class/display/light/LightControl.h"
 namespace AOC {
 
+namespace AI{
+namespace search{
+class Astar;
+}
+}
 class Field {
 public:
 	Field();
@@ -29,7 +34,7 @@ public:
 	Display::ParallelLight *sun_light;
 	glm::vec3 sun_col_1,sun_col_2,sun_pos;
 
-
+	AI::search::Astar* astar;
 	Map *map;
 };
 

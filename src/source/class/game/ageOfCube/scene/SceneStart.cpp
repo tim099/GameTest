@@ -42,6 +42,7 @@ void SceneStart::pause(){
 	*/
 }
 void SceneStart::resume(){
+	std::cout<<"SceneStart::resume()"<<std::endl;
 	music_player.play();
 	draw->Enable3D=false;
 	if(UI){

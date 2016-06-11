@@ -56,6 +56,7 @@ void Unit::create_unit(){
 void Unit::init(int _max_hp,int _player){
 	max_hp = _max_hp;
 	hp = max_hp;
+	armor = 0;
 	is_dead = false;
 	terminate=false;
 	created=false;

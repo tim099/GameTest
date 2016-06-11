@@ -10,10 +10,8 @@
 
 #include <string>
 #include "class/display/UI/UI.h"
-
-namespace AOC{
-	class Building;
-}
+#include "class/display/UI/string/UIString.h"
+#include "class/game/ageOfCube/map/building/Building.h"
 
 namespace UI {
 
@@ -29,9 +27,15 @@ public:
 	}
 	void set_selected_building(AOC::Building *);
 	void clear_selected_building();
+	void init_buildingUI();
+	void update();
 	bool check_script();
 protected:
-
+	UIString *name_str;
+	UIString *atk_str;
+	UIString *armor_str;
+	UIString *hp_str;
+	AOC::Building *selected_building;
 };
 
 } /* namespace UI */

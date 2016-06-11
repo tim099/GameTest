@@ -140,7 +140,7 @@ CreateUIObject:
 	Name:
 		upgraded_string
 	Position:
-		0.15 -0.12
+		0.17 -0.12
 	String:
 "upgrade:"
 	String_size:

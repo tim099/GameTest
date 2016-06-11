@@ -24,10 +24,13 @@ public:
 	inline void hp_alter(int amount){set_hp(hp+amount);}
 	inline void attack_alter(int amount){attack_damage += amount;}
 	inline void max_hp_alter(int amount){max_hp += amount;}
-	inline void attack_cycle_alter(int amount){attack_cycle += amount;}
+	inline void attack_cycle_alter(int amount){if(attack_cycle+amount > 0)attack_cycle += amount;}
+	inline void armor_alter(int amount){armor += amount;}
 
 
 	inline int get_max_hp()const{return max_hp;}
+	inline int get_atk(){return attack_damage;}
+	inline int get_armor(){return armor;}
 
 	inline unsigned get_player()const{return player;}
 	inline void set_player(unsigned _player){player=_player;}
@@ -52,6 +55,7 @@ protected:
 	virtual double get_attack_size(){return 0.05;}
 	int max_hp;
 	int hp;
+	int armor;
 
 	unsigned player;
 	int dead_timer;

@@ -18,6 +18,7 @@ UnitController::UnitController() {
 	Input::Input::get_cur_object()->push_receiver(receiver);
 	building_UI=new UI::BuildingUI();
 	building_UI->Load_script("files/AgeOfCube/scenes/playTD/UI/unit_UI.txt");
+	building_UI->init_buildingUI();
 	building_UI->hide = true;
 	name_str=dynamic_cast<UI::UIString*>(building_UI->get_child("name"));
 	atk_str=dynamic_cast<UI::UIString*>(building_UI->get_child("atk"));
@@ -112,6 +113,10 @@ void UnitController::select_unit(Unit *unit){
 	name_str->set_string(unit->get_name());
 	hp_str->set_string(Tim::String::to_string(unit->get_hp())+"/"+
 			Tim::String::to_string(unit->get_max_hp()));
+	Building *building = dynamic_cast<Building *>(unit);
+	if(building){
+		building_UI->set_selected_building(building);
+	}
 	display_unit_UI();
 }
 void UnitController::deselect_unit(){
@@ -151,7 +156,7 @@ void UnitController::handle_signal(){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
-			//selected_building ->
+			selected_building->attack_alter(1);
 		}
 		else if(sig->get_data()=="water_upgrade"){
 			std::cout<<"water_upgrade"<<std::endl;
@@ -173,6 +178,7 @@ void UnitController::handle_signal(){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
+			selected_building->max_hp_alter(50);
 		}
 		else if(sig->get_data()=="earth_upgrade"){
 			std::cout<<"earth_upgrade"<<std::endl;
@@ -194,6 +200,7 @@ void UnitController::handle_signal(){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
+			selected_building->armor_alter(1);
 		}
 		else if(sig->get_data()=="air_upgrade"){
 			std::cout<<"air_upgrade"<<std::endl;
@@ -215,6 +222,7 @@ void UnitController::handle_signal(){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
+			selected_building->attack_cycle_alter(-10);
 		}
 		else{
 		}
@@ -222,6 +230,8 @@ void UnitController::handle_signal(){
 	}
 }
 void UnitController::update(){
+	//std::cout<<"unit controller update"<<std::endl;
+	building_UI->update();
 	building_UI->update_UIObject();
 	handle_signal();
 	std::vector<Unit*>dead_units;

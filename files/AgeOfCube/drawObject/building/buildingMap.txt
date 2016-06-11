@@ -19,6 +19,24 @@ DrawObject:
 
 DrawObject:
 	Name:
+		main_tower
+	ModelBuffer:
+		building/main_tower
+	Texture:
+		building/basic_cube_tower_1
+#load_end
+
+DrawObject:
+	Name:
+		laser_tower
+	ModelBuffer:
+		building/laser_tower
+	Texture:
+		building/basic_cube_tower_1
+#load_end
+
+DrawObject:
+	Name:
 		ball_spawn_tower
 	ModelBuffer:
 		building/ball_spawn_tower

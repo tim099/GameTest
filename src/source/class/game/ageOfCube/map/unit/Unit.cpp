@@ -30,7 +30,7 @@ void Unit::attack_update(){
 	if(attack_timer>attack_cycle){
 		Unit* target;
 		unsigned enemy_id=(get_player()==0?1:0);
-		target=UnitController::get_cur_object()->search_unit(enemy_id,get_pos());
+		target=UnitController::get_cur_object()->search_unit(enemy_id,get_mid_pos());
 		if(target&&(target->get_pos()-get_pos()).get_length()<get_attack_range()){
 			attack(target);
 			attack_timer=0;
@@ -80,7 +80,7 @@ void Unit::update(){
 	if(dead_timer>5){
 		terminate=true;
 	}
-	if(!terminate){
+	if(!is_dead){
 		unit_update();
 	}
 }

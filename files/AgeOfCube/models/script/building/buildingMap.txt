@@ -21,6 +21,28 @@ ModelBuffer:
 
 ModelBuffer:
 	Name:
+		main_tower
+	Path:
+		mainTower/mainTower.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		laser_tower
+	Path:
+		laserTower/laserTower.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
 		ball_spawn_tower
 	Path:
 		ballSpawnTower/ballSpawnTower.obj

@@ -2,6 +2,7 @@
 #include "class/game/ageOfCube/map/building/tower/Tower.h"
 #include "class/game/ageOfCube/map/building/tower/BallSpawnTower.h"
 #include "class/game/ageOfCube/map/building/tower/MainTower.h"
+#include "class/game/ageOfCube/map/building/tower/LaserTower.h"
 #include <iostream>
 
 
@@ -11,6 +12,7 @@ BuildingCreator::BuildingCreator() {
 	push(new AOC::Tower());
 	push(new AOC::BallSpawnTower());
 	push(new AOC::MainTower());
+	push(new AOC::LaserTower());
 	register_cur();
 }
 BuildingCreator::~BuildingCreator() {

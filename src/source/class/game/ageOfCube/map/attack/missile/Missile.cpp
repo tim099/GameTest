@@ -71,7 +71,6 @@ void Missile::attack_update(){
 		math::vec3<double> del_pos=target_pos-pos;
 		if(timer<25||(timer<50&&del_pos.y>-3.0)){
 			vel.y+=0.045;
-
 		}else{
 			timer=50;
 			math::vec3<double> del_pos_xz=del_pos;
@@ -79,7 +78,7 @@ void Missile::attack_update(){
 			if(del_pos_xz.get_length()>=1.0){
 				del_pos.y/=del_pos_xz.get_length();
 			}
-			vel+=0.045*del_pos.normalize();
+			vel+=0.04*del_pos.normalize();
 		}
 	}else{
 		//explode();

@@ -39,7 +39,7 @@ public:
 	bool create_building();
 protected:
 	virtual void unit_update();
-	virtual void building_set_pos(int x,int y,int z){}
+	virtual void building_set_pos(int x,int y,int z);
 	virtual void building_update(){}
 	virtual void save_cubeEX(FILE * file);
 	virtual void load_cubeEX(FILE * file);

@@ -119,15 +119,18 @@ void Game::scene_loading(Scene* scene){
 	loading=false;
 }
 void Game::pop_scene(){
+	std::cout<<"Game::pop_scene() 1"<<std::endl;
 	if(scenes.empty())return;
 	scenes.back()->terminate();
 	delete scenes.back();
+	std::cout<<"Game::pop_scene() 2"<<std::endl;
 	scenes.pop_back();
-
+	std::cout<<"Game::pop_scene() 3"<<std::endl;
 	Scene* cur_scene=get_cur_scene();
 	if(cur_scene){
 		cur_scene->resume();
 	}
+	std::cout<<"Game::pop_scene() 4"<<std::endl;
 }
 void Game::handle_game_signal(){
 	Input::Signal *sig = game_receiver->get_signal(); //get signal from receiver "test"

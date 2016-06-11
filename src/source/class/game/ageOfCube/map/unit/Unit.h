@@ -13,12 +13,7 @@ public:
 	virtual ~Unit();
 	virtual std::string get_name()const{return "Unit";}
 
-	virtual double get_attack_range(){return 5.0;}
-	virtual std::string get_attack_type(){return std::string("Missile");}
-	virtual math::vec3<double>get_attack_pos(){
-		return get_mid_pos()+math::vec3<double>(0,0.65*(get_size().y+get_attack_size()),0);
-	}
-	virtual double get_attack_size(){return 0.05;}
+
 
 	void create_unit();//create this unit will push it into UnitController
 
@@ -45,8 +40,15 @@ protected:
 	virtual void unit_update(){}
 	void attack(Unit* target);
 	virtual void attack_update();
+	virtual double get_attack_range(){return 5.0;}
+	virtual std::string get_attack_type(){return std::string("Missile");}
+	virtual math::vec3<double>get_attack_pos(){
+		return get_mid_pos()+math::vec3<double>(0,0.55*(get_size().y+get_attack_size()),0);
+	}
+	virtual double get_attack_size(){return 0.05;}
 	int max_hp;
 	int hp;
+
 	unsigned player;
 	int dead_timer;
 	int attack_damage;

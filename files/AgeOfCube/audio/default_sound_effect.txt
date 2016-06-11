@@ -20,4 +20,8 @@ AudioSource:
 		Bomb.wav
 #load_end
 
+AudioSource:
+	Name:
+		laser.wav
+#load_end
 #END

@@ -22,11 +22,12 @@ public:
 	virtual std::string get_name()const{
 		return "MainTower";
 	}
+
+protected:
 	virtual double get_attack_range(){return 30.0;}
 	virtual std::string get_attack_type(){return std::string("CubeMissile");}
-	virtual double get_attack_size(){return 0.1*size;}
-protected:
-	virtual void building_set_pos(int x,int y,int z);
+	virtual double get_attack_size(){return 0.6;}
+
 	virtual void building_update();
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);

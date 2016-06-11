@@ -7,9 +7,8 @@
 namespace AOC {
 void MainTower::building_pre_init(){
 	//std::cout<<"Tree::pre_init()"<<std::endl;
-	tower_Drawobj=Display::AllDrawObjects::get_cur_object()->get("building/basic_cube_tower_1");
+	tower_Drawobj=Display::AllDrawObjects::get_cur_object()->get("building/main_tower");
 	//tower_Drawobj=Display::AllDrawObjects::get_cur_object()->get("building/ball_spawn_tower");
-
 	timer=0;
 	attack_cycle=60;
 	//tree_Drawobj=AllDrawObjects::get_cur_object()->get("landscape/broadleaftree");
@@ -36,13 +35,6 @@ void MainTower::save_building(FILE * file){
 }
 void MainTower::load_building(FILE * file){
 	fscanf(file,"%d\n",&timer);
-}
-void MainTower::building_set_pos(int x,int y,int z){
-	math::vec3<int> real_size=get_cube_large_size();
-	pos.set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
-			AOC::Map::CUBE_SIZE*y+0.5*real_size.y,
-			AOC::Map::CUBE_SIZE*z+0.5*real_size.z));
-	pos.set_scale(glm::vec3(size,size,size));
 }
 void MainTower::building_update(){
 	attack_update();

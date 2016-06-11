@@ -9,6 +9,17 @@ Name:
 
 DrawObject:
 	Name:
+		laser
+	ModelBuffer:
+		attack/laser
+	Texture:
+		cube/stone
+	Material:
+		0.4 0.05 0.02 3.0	
+#load_end
+
+DrawObject:
+	Name:
 		ball_missile_1
 	ModelBuffer:
 		attack/ball_missile
@@ -17,6 +28,7 @@ DrawObject:
 	Material:
 		0.4 0.05 0.02 1.2	
 #load_end
+
 DrawObject:
 	Name:
 		cube_missile_1

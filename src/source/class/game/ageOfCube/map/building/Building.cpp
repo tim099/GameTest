@@ -38,6 +38,13 @@ void Building::set_pos(int _x,int _y,int _z){
 	x=_x,y=_y,z=_z;
 	building_set_pos(_x,_y,_z);
 }
+void Building::building_set_pos(int x,int y,int z){
+	math::vec3<int> real_size=get_cube_large_size();
+	pos.set_pos(glm::vec3(AOC::Map::CUBE_SIZE*x+0.5*real_size.x,
+			AOC::Map::CUBE_SIZE*y+0.5*real_size.y,
+			AOC::Map::CUBE_SIZE*z+0.5*real_size.z));
+	pos.set_scale(glm::vec3(size,size,size));
+}
 math::vec3<double> Building::get_pos(){
 	return math::vec3<double>(x*Map::CUBE_SIZE,y*Map::CUBE_SIZE,z*Map::CUBE_SIZE);
 }

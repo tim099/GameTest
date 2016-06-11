@@ -39,6 +39,9 @@ math::vec3<int> Minion::get_pos_int(){
 			get_pos().z/Map::CUBE_SIZE);
 }
 void Minion::draw(){
+	if(is_dead){
+		return;
+	}
 	math::vec3<double> s=Map::get_cur_object()->dp_map->dp_start;
 	math::vec3<double> e=Map::get_cur_object()->dp_map->dp_end;
 	math::vec3<double> pos=get_pos();

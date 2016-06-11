@@ -10,6 +10,17 @@ Name:
 
 ModelBuffer:
 	Name:
+		laser
+	Path:
+		laser/laser.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
 		ball_missile
 	Path:
 		missile/ball.obj

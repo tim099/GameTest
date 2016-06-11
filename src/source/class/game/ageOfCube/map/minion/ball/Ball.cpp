@@ -19,7 +19,7 @@ Ball::Ball() {
 	timer=0;
 	finder=0;
 	attack_damage=10;
-	set_hp(100);
+	set_max_hp(100);
 }
 Ball::Ball(Ball* ball) {
 	ball_Drawobj=ball->ball_Drawobj;
@@ -30,7 +30,7 @@ Ball::Ball(Ball* ball) {
 	timer=0;
 	finder=0;
 	attack_damage=10;
-	set_hp(ball->get_hp());
+	set_max_hp(ball->get_hp());
 }
 Ball::~Ball() {
 	if(finder)delete finder;

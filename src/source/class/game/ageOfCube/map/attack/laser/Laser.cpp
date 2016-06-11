@@ -12,11 +12,13 @@ Laser::Laser() {
 	collision_off=true;
 	timer=0;
 	burn_time=10;
+	burning_target=false;
 }
 Laser::Laser(Laser* laser) {
 	collision_off=true;
 	timer=0;
 	burn_time=10;
+	burning_target=false;
 }
 Laser::~Laser() {
 
@@ -41,18 +43,24 @@ void Laser::draw_attack(){
 			(180.0/M_PI)*atan2(del_pos.x,del_pos.z),0));
 
 	drawobj->push_temp_drawdata(new Display::DrawDataObj(dp_pos,false,true));
+	if(burning_target){
+		math::vec3<double> target_pos=target->get_mid_pos();
+		Display::PointLight *light=new Display::PointLight(
+				glm::vec3(target_pos.x,target_pos.y,target_pos.z),
+				glm::vec3(10.0,10.0,10.0),false);
+		Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
+
+		light=new Display::PointLight(
+				glm::vec3(pos.x,pos.y,pos.z),
+				glm::vec3(50.0,50.0,50.0),false);
+		Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
+	}
 }
 void Laser::burn_target(){
+	burning_target=false;
 	if(!target)return;
-
+	burning_target=true;
 	target->hp_alter(-damage);
-	math::vec3<double> target_pos=target->get_mid_pos();
-
-	Display::PointLight *light=new Display::PointLight(
-			glm::vec3(target_pos.x,target_pos.y,target_pos.z),
-			glm::vec3(10.0,10.0,10.0),false);
-
-	Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
 }
 void Laser::attack_update(){
 	timer++;

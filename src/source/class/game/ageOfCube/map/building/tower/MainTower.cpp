@@ -18,6 +18,7 @@ MainTower::MainTower() {
 	size = 9.0;
 	timer=0;
 	loop_time=200;
+
 }
 MainTower::MainTower(MainTower* tower){
 	init(10000,0);
@@ -26,6 +27,7 @@ MainTower::MainTower(MainTower* tower){
 	timer=0;
 	loop_time=tower->loop_time;
 	attack_cycle=tower->attack_cycle;
+	attack_damage=100;
 }
 MainTower::~MainTower() {
 

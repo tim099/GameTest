@@ -25,6 +25,7 @@ public:
 protected:
 	void burn_target();
 	int timer,burn_time;
+	bool burning_target;
 };
 
 } /* namespace AOC */

@@ -27,7 +27,9 @@ protected:
 	virtual double get_attack_range(){return 8.0;}
 	virtual std::string get_attack_type(){return std::string("Laser");}
 	virtual double get_attack_size(){return 0.1*size;}
-
+	virtual math::vec3<double>get_attack_pos(){
+		return get_mid_pos()+math::vec3<double>(0,0.51*(get_size().y),0);
+	}
 	virtual void building_update();
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);

@@ -28,8 +28,9 @@ protected:
 	virtual void save_building(FILE * file);
 	virtual void load_building(FILE * file);
 	virtual void building_update();
-	void init_BallSpawnTower();
 	virtual void draw_building();
+	void init_BallSpawnTower();
+	void spawn();
 	Display::DrawObject *tower_Drawobj;
 	Display::DrawObject *tower_part1;
 	Display::DrawObject *tower_part2;
@@ -46,6 +47,7 @@ protected:
 	math::Position ball4;
 	int loop_time;
 	int timer;
+	int spawn_timer;
 };
 
 } /* namespace AOC */

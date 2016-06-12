@@ -27,10 +27,7 @@ bool Weapon::attack(){
 		target=UnitController::get_cur_object()->search_unit(enemy_id,unit->get_attack_pos());
 		if(target&&(target->get_pos()-unit->get_attack_pos()).get_length()<=attack_range){
 			fire(target);
-			attack_timer=0;
 			attack_success=true;
-		}else{
-			attack_timer*=0.8;
 		}
 	}
 	return attack_success;
@@ -47,7 +44,10 @@ void Weapon::fire(Unit* target){
 	attack->create_attack();
 }
 void Weapon::update(){
-	if(!unit)return;
+	if(!unit){
+		std::cerr<<"Weapon::update() no unit set!!"<<std::endl;
+		return;
+	}
 
 	attack_timer++;
 	if(attack_timer>attack_cycle){

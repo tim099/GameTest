@@ -16,7 +16,7 @@ LaserTower::LaserTower(LaserTower* tower){
 	attack_damage=tower->attack_damage;
 
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("LaserCannon");
-	weapon->set_attack_range(9.0);
+	weapon->set_attack_range(12.0);
 	push_weapon(weapon);
 }
 LaserTower::~LaserTower() {

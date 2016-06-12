@@ -3,7 +3,7 @@
 namespace AOC {
 
 LaserCannon::LaserCannon() {
-	attack_range=9.0;
+	attack_range=12.0;
 }
 LaserCannon::~LaserCannon() {
 

@@ -3,6 +3,7 @@
 
 #include "class/game/ageOfCube/map/building/Building.h"
 
+
 namespace AOC {
 
 class LaserTower: public Building{

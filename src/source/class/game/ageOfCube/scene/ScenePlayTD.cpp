@@ -146,6 +146,7 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 	}
 	else if(sig->get_data() == "build_LaserTower"){
 		if(!PlayerController::get_cur_object()->get_cur_player()->modify_resource("cube",-50)){
+			std::cout<<"build_LaserTower no resource"<<std::endl;
 			return;
 		}
 		if(constructing_building)delete constructing_building;

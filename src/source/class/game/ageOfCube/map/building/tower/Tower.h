@@ -30,8 +30,6 @@ public:
 
 	unsigned char tower_type;
 protected:
-	virtual double get_attack_range(){return 20.0;}
-	virtual std::string get_attack_type(){return std::string("CubeMissile");}
 	virtual double get_attack_size(){return 0.36;}
 
 	virtual void building_set_pos(int x,int y,int z);

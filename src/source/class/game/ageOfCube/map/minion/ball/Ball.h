@@ -24,8 +24,6 @@ public:
 	}
 
 protected:
-	virtual double get_attack_range(){return 8.0;}
-	virtual std::string get_attack_type(){return std::string("Missile");}
 	virtual double get_attack_size();
 
 	virtual void save_minion(FILE * file);

@@ -6,6 +6,7 @@
 #include "class/game/ageOfCube/map/unit/UnitController.h"
 #include "class/game/entity/EntityController.h"
 #include "class/audio/AudioController.h"
+#include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
 namespace AOC {
 void Ball::minion_pre_init(){
 	ball_Drawobj=Display::AllDrawObjects::get_cur_object()->get("minion/ball");
@@ -15,7 +16,6 @@ Ball::Ball() {
 	stuck_timer=0;
 	stuck_times=0;
 	colli_timer=0;
-	attack_timer=0;
 	timer=0;
 	finder=0;
 	attack_damage=10;
@@ -26,11 +26,15 @@ Ball::Ball(Ball* ball) {
 	stuck_timer=0;
 	stuck_times=0;
 	colli_timer=0;
-	attack_timer=0;
 	timer=0;
 	finder=0;
 	attack_damage=10;
+	set_attack_cycle(300);
 	set_max_hp(ball->get_hp());
+
+	Weapon* weapon=WeaponCreator::get_cur_object()->create("MissileLauncher");
+	weapon->set_attack_range(8.0);
+	push_weapon(weapon);
 }
 Ball::~Ball() {
 	if(finder)delete finder;
@@ -62,7 +66,7 @@ double Ball::get_attack_size(){
 	return 1.5*rigid_body.radius;
 }
 void Ball::minion_update(){
-	attack_update();
+	//attack_update();
 	ball_move();
 	timer++;
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;

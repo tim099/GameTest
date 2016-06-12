@@ -89,7 +89,7 @@ void FindPath::convert_path(Node* node){
 		if(cur->parent&&cur->parent->jump){
 			pos.y=(cur->pos.y+0.5*i_size)*Map::CUBE_SIZE;
 		}else{
-			pos.y=(cur->pos.y)*Map::CUBE_SIZE+0.51*size;
+			pos.y=(cur->pos.y)*Map::CUBE_SIZE+0.55*size;
 		}
 		pos.z=(cur->pos.z+0.5*i_size)*Map::CUBE_SIZE;
 		path.push_back(pos);

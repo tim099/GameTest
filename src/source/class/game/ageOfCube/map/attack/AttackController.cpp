@@ -3,7 +3,7 @@
 namespace AOC {
 
 AttackController::AttackController() {
-
+	weapon_creator=new WeaponCreator();
 	creator=new AttackCreator();
 	register_cur();
 }
@@ -12,6 +12,7 @@ AttackController::~AttackController() {
 		delete attacks.at(i);
 	}
 	delete creator;
+	delete weapon_creator;
 }
 void AttackController::update(){
 	std::vector<Attack*>die_attacks;

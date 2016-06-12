@@ -29,7 +29,20 @@ public:
 
 	inline void max_hp_alter(int amount){max_hp += amount;hp=max_hp;}
 
-	inline void attack_cycle_alter(int amount){if(attack_cycle+amount > 0)attack_cycle += amount;}
+	inline void set_attack_cycle(int _attack_cycle){
+		attack_cycle=_attack_cycle;
+		for(unsigned i=0;i<weapons.size();i++){
+			weapons.at(i)->set_attack_cycle(attack_cycle);
+		}
+	}
+	inline void attack_cycle_alter(int amount){
+		if(attack_cycle+amount > 0){
+			attack_cycle += amount;
+			for(unsigned i=0;i<weapons.size();i++){
+				weapons.at(i)->set_attack_cycle(attack_cycle);
+			}
+		}
+	}
 	inline void armor_alter(int amount){armor += amount;}
 
 	inline int get_max_hp()const{return max_hp;}
@@ -49,10 +62,6 @@ public:
 	void update();
 protected:
 	virtual void unit_update(){}
-
-	virtual void attack_update();
-	virtual double get_attack_range(){return 5.0;}
-	virtual std::string get_attack_type(){return std::string("Missile");}
 	virtual math::vec3<double>get_attack_pos(){
 		return get_mid_pos()+math::vec3<double>(0,0.55*(get_size().y+get_attack_size()),0);
 	}
@@ -60,9 +69,9 @@ protected:
 
 	void save_weapons(FILE* file);
 	void load_weapons(FILE* file);
-	void attack(Unit* target);
 	void push_weapon(Weapon* weapon){
 		weapon->set_unit(this);
+		weapon->set_attack_cycle(attack_cycle);
 		weapons.push_back(weapon);
 	}
 	std::vector<Weapon*> weapons;
@@ -78,7 +87,7 @@ protected:
 	bool created;
 
 	int attack_damage;
-	int attack_timer;
+private:
 	int attack_cycle;
 };
 

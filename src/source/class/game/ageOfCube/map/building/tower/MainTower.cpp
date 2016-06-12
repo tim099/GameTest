@@ -4,13 +4,14 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/Draw.h"
+#include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
 namespace AOC {
 void MainTower::building_pre_init(){
 	//std::cout<<"Tree::pre_init()"<<std::endl;
 	tower_Drawobj=Display::AllDrawObjects::get_cur_object()->get("building/main_tower");
 	//tower_Drawobj=Display::AllDrawObjects::get_cur_object()->get("building/ball_spawn_tower");
 	timer=0;
-	attack_cycle=60;
+
 	//tree_Drawobj=AllDrawObjects::get_cur_object()->get("landscape/broadleaftree");
 }
 MainTower::MainTower() {
@@ -26,8 +27,12 @@ MainTower::MainTower(MainTower* tower){
 	size=tower->size;
 	timer=0;
 	loop_time=tower->loop_time;
-	attack_cycle=tower->attack_cycle;
+	set_attack_cycle(100);
 	attack_damage=100;
+
+	Weapon* weapon=WeaponCreator::get_cur_object()->create("CubeMissileLauncher");
+	weapon->set_attack_range(30.0);
+	push_weapon(weapon);
 }
 MainTower::~MainTower() {
 
@@ -39,11 +44,10 @@ void MainTower::load_building(FILE * file){
 	fscanf(file,"%d\n",&timer);
 }
 void MainTower::building_update(){
-	attack_update();
+	//attack_update();
 	//std::cout<<"MainTower::building_update() attack cycle="<<attack_cycle<<std::endl;
 	if(timer<loop_time){
 		timer++;
-		//hp_alter(-1);
 	}else{
 		timer=0;
 	}

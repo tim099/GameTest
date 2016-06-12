@@ -5,6 +5,7 @@
 #include "class/display/draw/Draw.h"
 
 #include "class/game/ageOfCube/map/unit/UnitController.h"
+#include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
 #include <cstdio>
 #include <iostream>
 #include <cmath>
@@ -18,9 +19,7 @@ Tower::Tower() {
 	tower_Drawobj=0;
 	size = 3.0;
 	timer=0;
-	attack_timer=0;
-	attack_cycle=250;
-	attack_damage=150;
+	attack_damage=250;
 }
 Tower::Tower(Tower* tower) {
 	init(1000,0);
@@ -29,10 +28,13 @@ Tower::Tower(Tower* tower) {
 	timer=0;
 
 	size = tower->size;
-	attack_timer=0;
-	attack_cycle=tower->attack_cycle;
+	set_attack_cycle(250);
 
 	attack_damage=tower->attack_damage;
+
+	Weapon* weapon=WeaponCreator::get_cur_object()->create("CubeMissileLauncher");
+	weapon->set_attack_range(20.0);
+	push_weapon(weapon);
 }
 Tower::~Tower() {
 	//std::cout<<"delete tree"<<std::endl;
@@ -75,19 +77,6 @@ void Tower::draw_building(){
 }
 
 void Tower::building_update(){
-	attack_update();
-	/*
-	attack_timer++;
-	if(attack_timer>attack_cycle){
-		Unit* target;
-		target=UnitController::get_cur_object()->search_unit(1,get_mid_pos());//"MainTower"
-		if(target&&(target->get_pos()-get_pos()).get_length()<get_attack_range()){
-			attack(target);
-			attack_timer=0;
-		}else{
-			attack_timer*=0.8;
-		}
-	}
-	*/
+	//attack_update();
 }
 }

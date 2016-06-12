@@ -1,19 +1,23 @@
 #include "class/game/ageOfCube/map/building/tower/LaserTower.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
+#include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
 namespace AOC {
 void LaserTower::building_pre_init(){
 
 }
 LaserTower::LaserTower() {
 	size=6.0;
-	attack_cycle=30;
 	attack_damage=5;
 }
 LaserTower::LaserTower(LaserTower* tower){
 	init(3000,0);
 	size=tower->size;
-	attack_cycle=tower->attack_cycle;
+	set_attack_cycle(30);
 	attack_damage=tower->attack_damage;
+
+	Weapon* weapon=WeaponCreator::get_cur_object()->create("LaserCannon");
+	weapon->set_attack_range(9.0);
+	push_weapon(weapon);
 }
 LaserTower::~LaserTower() {
 
@@ -25,7 +29,7 @@ void LaserTower::load_building(FILE * file){
 	//fscanf(file,"%d\n",&timer);
 }
 void LaserTower::building_update(){
-	attack_update();
+	//attack_update();
 }
 void LaserTower::draw_building(){
 	math::vec3<int> real_size=get_cube_large_size();

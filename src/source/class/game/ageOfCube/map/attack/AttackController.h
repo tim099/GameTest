@@ -4,7 +4,7 @@
 #include "class/controller/Controller.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/game/ageOfCube/map/attack/Attack.h"
-
+#include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
 #include <vector>
 namespace AOC {
 class AttackCreator;
@@ -28,6 +28,7 @@ public:
 protected:
 	std::vector<Attack*>attacks;
 	AttackCreator* creator;
+	WeaponCreator* weapon_creator;
 };
 
 } /* namespace AOC */

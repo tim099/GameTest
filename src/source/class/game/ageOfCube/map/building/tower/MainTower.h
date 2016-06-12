@@ -24,8 +24,6 @@ public:
 	}
 
 protected:
-	virtual double get_attack_range(){return 30.0;}
-	virtual std::string get_attack_type(){return std::string("CubeMissile");}
 	virtual double get_attack_size(){return 0.6;}
 
 	virtual void building_update();

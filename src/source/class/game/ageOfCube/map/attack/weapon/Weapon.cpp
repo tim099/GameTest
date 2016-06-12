@@ -7,6 +7,7 @@ namespace AOC {
 Weapon::Weapon() {
 	attack_timer=0;
 	attack_cycle=300;
+	attack_range=10;
 	unit=0;
 }
 Weapon::~Weapon() {
@@ -24,7 +25,7 @@ bool Weapon::attack(){
 		Unit* target;
 		unsigned enemy_id=(unit->get_player()==0?1:0);
 		target=UnitController::get_cur_object()->search_unit(enemy_id,unit->get_attack_pos());
-		if(target&&(target->get_pos()-unit->get_pos()).get_length()<unit->get_attack_range()){
+		if(target&&(target->get_pos()-unit->get_attack_pos()).get_length()<=attack_range){
 			fire(target);
 			attack_timer=0;
 			attack_success=true;
@@ -37,7 +38,7 @@ bool Weapon::attack(){
 void Weapon::fire(Unit* target){
 	if(!target)return;
 	//std::cout<<"Ball::attack(Unit* target)"<<std::endl;
-	Attack* attack=AttackCreator::get_cur_object()->create(unit->get_attack_type());
+	Attack* attack=AttackCreator::get_cur_object()->create(get_attack_type());
 	attack->radius=0.5*unit->get_attack_size();
 
 	attack->pos=unit->get_attack_pos();
@@ -56,10 +57,10 @@ void Weapon::update(){
 			attack_timer*=0.8;
 		}
 	}
-
-	attack_timer++;
-
-
 	weapon_update();
+}
+void Weapon::draw(){
+	if(!unit)return;
+	draw_weapon();
 }
 } /* namespace AOC */

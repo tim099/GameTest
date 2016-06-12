@@ -17,31 +17,6 @@ Unit::~Unit() {
 		delete weapons.at(i);
 	}
 }
-void Unit::attack(Unit* target){
-	if(!target)return;
-	//std::cout<<"Ball::attack(Unit* target)"<<std::endl;
-	Attack* attack=AttackCreator::get_cur_object()->create(get_attack_type());
-	attack->radius=0.5*get_attack_size();
-
-	attack->pos=get_attack_pos();
-	attack->set_target(target);
-	attack->set_damage(attack_damage);
-	attack->create_attack();
-}
-void Unit::attack_update(){
-	attack_timer++;
-	if(attack_timer>attack_cycle){
-		Unit* target;
-		unsigned enemy_id=(get_player()==0?1:0);
-		target=UnitController::get_cur_object()->search_unit(enemy_id,get_attack_pos());
-		if(target&&(target->get_pos()-get_pos()).get_length()<get_attack_range()){
-			attack(target);
-			attack_timer=0;
-		}else{
-			attack_timer*=0.8;
-		}
-	}
-}
 math::vec3<int> Unit::get_mid_pos_int(){
 	return get_pos_int();
 }
@@ -65,7 +40,6 @@ void Unit::init(int _max_hp,int _player){
 	created=false;
 	dead_timer=0;
 	attack_damage=10;
-	attack_timer=0;
 	attack_cycle=300;
 	set_player(_player);
 }
@@ -80,15 +54,15 @@ void Unit::load_weapons(FILE* file){
 	}
 }
 void Unit::save_unit(FILE * file){
-	fprintf(file,"%d %d %u %d %d %d\n",max_hp,hp,player,is_dead,dead_timer,attack_timer);
+	fprintf(file,"%d %d %u %d %d\n",max_hp,hp,player,is_dead,dead_timer);
 	fprintf(file,"%d %d\n",attack_damage,attack_cycle);
-	//save_weapons(file);
+	save_weapons(file);
 	save_entity(file);
 }
 void Unit::load_unit(FILE * file){
-	fscanf(file,"%d %d %u %d %d %d\n",&max_hp,&hp,&player,&is_dead,&dead_timer,&attack_timer);
+	fscanf(file,"%d %d %u %d %d\n",&max_hp,&hp,&player,&is_dead,&dead_timer);
 	fscanf(file,"%d %d\n",&attack_damage,&attack_cycle);
-	//load_weapons(file);
+	load_weapons(file);
 	load_entity(file);
 }
 void Unit::update(){

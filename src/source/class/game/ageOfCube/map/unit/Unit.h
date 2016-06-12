@@ -23,7 +23,13 @@ public:
 	inline bool get_terminate()const{return terminate;}
 	inline int get_hp()const{return hp;}
 	inline void set_max_hp(int _max_hp){max_hp=_max_hp;hp=max_hp;}
-	inline void set_hp(int _hp){hp=_hp;if(hp<=0)is_dead=true;}
+	inline void set_hp(int _hp){
+		hp=_hp;
+		if(hp<=0){
+			is_dead=true;
+			killed();
+		}
+	}
 	inline void hp_alter(int amount){set_hp(hp+amount);}
 	inline void attack_alter(int amount){attack_damage += amount;}
 
@@ -66,7 +72,7 @@ protected:
 		return get_mid_pos()+math::vec3<double>(0,0.55*(get_size().y+get_attack_size()),0);
 	}
 	virtual double get_attack_size(){return 0.05;}
-
+	virtual void killed(){}
 	void save_weapons(FILE* file);
 	void load_weapons(FILE* file);
 	void push_weapon(Weapon* weapon){

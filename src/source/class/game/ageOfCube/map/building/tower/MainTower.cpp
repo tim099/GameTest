@@ -5,6 +5,7 @@
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/Draw.h"
 #include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
+#include "class/game/ageOfCube/player/PlayerController.h"
 namespace AOC {
 void MainTower::building_pre_init(){
 	//std::cout<<"Tree::pre_init()"<<std::endl;
@@ -51,6 +52,9 @@ void MainTower::building_update(){
 	}else{
 		timer=0;
 	}
+}
+void MainTower::killed(){
+	PlayerController::get_cur_object()->game_over(get_player());
 }
 void MainTower::draw_building(){
 

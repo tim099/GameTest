@@ -30,7 +30,7 @@ protected:
 	virtual void load_minion(FILE * file);
 	virtual void draw_minion();
 	virtual void minion_update();
-
+	virtual void killed();
 	void ball_move();
 	void find_path();
 	void explode();

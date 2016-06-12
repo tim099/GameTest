@@ -30,6 +30,9 @@ PlayerController::~PlayerController() {
 	//delete receiver; //delete by input remove_reveiver
 
 }
+void PlayerController::game_over(unsigned player_id){
+
+}
 void PlayerController::update(){
 	for(unsigned i=0;i<players.size();i++){
 		players.at(i)->update();

@@ -25,6 +25,7 @@ public:
 
 protected:
 	virtual double get_attack_size(){return 0.6;}
+	virtual void killed();
 
 	virtual void building_update();
 	virtual void save_building(FILE * file);

@@ -1,9 +1,3 @@
-/*
- * PlayerController.h
- *
- *  Created on: 2016¦~6¤ë10¤é
- *      Author: LukeWu
- */
 
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBE_PLAYER_PLAYERCONTROLLER_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBE_PLAYER_PLAYERCONTROLLER_H_
@@ -44,6 +38,8 @@ public:
 	}
 	Player* search_player(unsigned int player_id);
 	Player *get_cur_player(){return current_player;}
+	void game_over(unsigned player_id);
+
 	void save(FILE *file);
 	void load(FILE *file);
 protected:

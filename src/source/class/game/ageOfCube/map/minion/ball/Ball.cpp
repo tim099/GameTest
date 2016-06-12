@@ -7,6 +7,8 @@
 #include "class/game/entity/EntityController.h"
 #include "class/audio/AudioController.h"
 #include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
+#include "class/game/ageOfCube/player/PlayerController.h"
+#include <cstdlib>
 namespace AOC {
 void Ball::minion_pre_init(){
 	ball_Drawobj=Display::AllDrawObjects::get_cur_object()->get("minion/ball");
@@ -61,6 +63,33 @@ void Ball::load_minion(FILE * file){
 		path->load(file);
 		finder=new Tim::SmartPointer<AI::search::Finder>(path);
 	}
+}
+void Ball::killed(){
+	Player *cur_player=PlayerController::get_cur_object()->get_cur_player();
+	int ran=rand()%5;
+	switch(ran){
+		case 0:
+			cur_player->modify_resource("cube",1*(get_max_hp()/10));
+			break;
+		case 1:
+			cur_player->modify_resource("water",1*(get_max_hp()/30));
+			break;
+		case 2:
+			cur_player->modify_resource("fire",1*(get_max_hp()/30));
+			break;
+		case 3:
+			cur_player->modify_resource("earth",1*(get_max_hp()/30));
+			break;
+		case 4:
+			cur_player->modify_resource("air",1*(get_max_hp()/30));
+			break;
+	}
+
+
+
+
+
+	//cur_player->modify_resource("tech",1*(get_max_hp()/100));
 }
 double Ball::get_attack_size(){
 	return 1.5*rigid_body.radius;

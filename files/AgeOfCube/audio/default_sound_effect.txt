@@ -17,6 +17,12 @@ AudioSource:
 
 AudioSource:
 	Name:
+		Pickup_Coin2.wav
+#load_end
+
+
+AudioSource:
+	Name:
 		Bomb.wav
 #load_end
 

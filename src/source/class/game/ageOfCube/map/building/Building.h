@@ -40,7 +40,7 @@ public:
 	virtual void draw();
 	bool create_building();
 
-	void upgrade(std::string description);
+	void upgrade_building(std::string description);
 	ResourceModifier get_build_cost(){return build_cost;}
 protected:
 	virtual void unit_update();

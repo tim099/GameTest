@@ -149,7 +149,7 @@ void UnitController::handle_signal(){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
-			selected_building->attack_alter(1);
+			selected_building->upgrade_building("fire_upgrade");
 		}
 		else if(sig->get_data()=="water_upgrade"){
 			std::cout<<"water_upgrade"<<std::endl;
@@ -171,7 +171,7 @@ void UnitController::handle_signal(){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
-			selected_building->max_hp_alter(50);
+			selected_building->upgrade_building("water_upgrade");
 		}
 		else if(sig->get_data()=="earth_upgrade"){
 			std::cout<<"earth_upgrade"<<std::endl;
@@ -193,7 +193,7 @@ void UnitController::handle_signal(){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
-			selected_building->armor_alter(1);
+			selected_building->upgrade_building("earth_upgrade");
 		}
 		else if(sig->get_data()=="air_upgrade"){
 			std::cout<<"air_upgrade"<<std::endl;
@@ -215,7 +215,7 @@ void UnitController::handle_signal(){
 				std::cerr<<"resource not enough"<<std::endl;
 				return;
 			}
-			selected_building->attack_cycle_alter(-10);
+			selected_building->upgrade_building("air_upgrade");
 		}
 		else{
 		}

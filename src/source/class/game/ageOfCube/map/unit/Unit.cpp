@@ -42,6 +42,10 @@ void Unit::init(int _max_hp,int _player){
 	attack_damage=10;
 	attack_cycle=300;
 	set_player(_player);
+	upgrades.push("fire",new ResourceModifier("fire",0));
+	upgrades.push("water",new ResourceModifier("water",0));
+	upgrades.push("earth",new ResourceModifier("earth",0));
+	upgrades.push("air",new ResourceModifier("air",0));
 }
 void Unit::save_weapons(FILE* file){
 	for(unsigned i=0;i<weapons.size();i++){
@@ -81,4 +85,15 @@ void Unit::update(){
 	}
 
 }
+
+void Unit::upgrade(std::string upgrade_name, int amount){
+	upgrades.get(upgrade_name)->amount_alter(amount);
+}
+
+
+int Unit::get_upgrade_amount(std::string upgrade_name){
+
+	return upgrades.get(upgrade_name)->get_amount();
+}
+
 } /* namespace AOC */

@@ -6,6 +6,8 @@
 #include "class/game/entity/Entity.h"
 #include "class/game/ageOfCube/map/attack/weapon/Weapon.h"
 #include "class/game/ageOfCube/player/resource/ResourceModifier.h"
+#include "class/tim/map/MapContainer.h"
+
 namespace AOC {
 
 class Unit : public entity::Entity{//
@@ -51,10 +53,12 @@ public:
 		}
 	}
 	inline void armor_alter(int amount){armor += amount;}
+	void upgrade(std::string upgrade_name, int amount);
 
 	inline int get_max_hp()const{return max_hp;}
 	inline int get_atk(){return attack_damage;}
 	inline int get_armor(){return armor;}
+	int get_upgrade_amount(std::string upgrade_name);
 
 	inline unsigned get_player()const{return player;}
 	inline void set_player(unsigned _player){player=_player;}
@@ -82,7 +86,7 @@ protected:
 		weapons.push_back(weapon);
 	}
 	std::vector<Weapon*> weapons;
-	std::vector<ResourceModifier> upgrade;
+	Tim::MapContainer<std::string,ResourceModifier> upgrades;
 	int max_hp;
 	int hp;
 	int armor;

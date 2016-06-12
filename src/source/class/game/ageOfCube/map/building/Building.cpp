@@ -132,22 +132,27 @@ void Building::draw_hp(){
 	}
 }
 
-void Building::upgrade(std::string description){
+void Building::upgrade_building(std::string description){
 	if(description == "fire_upgrade"){
 		std::cout<<"fire upgrade"<<std::endl;
-		attack_alter(5.0);
+		attack_alter(1.0);
+		upgrade("fire", 1);
 	}
 	else if(description == "water_upgrade"){
 		std::cout<<"water upgrade"<<std::endl;
+		max_hp_alter(50);
+		upgrade("water", 1);
 	}
 	else if(description == "earth_upgrade"){
 		std::cout<<"earth upgrade"<<std::endl;
-		max_hp_alter(10);
+		armor_alter(1.0);
+		upgrade("earth", 1);
 
 	}
 	else if(description == "air_upgrade"){
 		std::cout<<"air upgrade"<<std::endl;
-		attack_cycle_alter(-10.0);
+		attack_cycle_alter(-1.0);
+		upgrade("air", 1);
 	}
 }
 

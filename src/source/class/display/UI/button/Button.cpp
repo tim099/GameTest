@@ -23,7 +23,7 @@ void Button::selected(Input::Mouse* mou){
 	if(sig){
 		sig->sent();
 	}
-	Audio::AudioController::get_cur_object()->play("default_sound_effect/Blip_Select3.wav");
+	Audio::AudioController::get_cur_object()->play("default_sound_effect/Pickup_Coin2.wav");
 	//std::cout<<"selected : "<<get_type()<<std::endl;
 }
 void Button::set_signal(Input::Signal* _signal){

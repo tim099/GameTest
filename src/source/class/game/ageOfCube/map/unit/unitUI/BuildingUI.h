@@ -28,6 +28,7 @@ protected:
 	UIString *atk_str;
 	UIString *armor_str;
 	UIString *hp_str;
+	UIString *upgrade_str[4];
 	AOC::Building *selected_building;
 };
 

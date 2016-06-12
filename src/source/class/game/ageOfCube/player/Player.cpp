@@ -4,6 +4,7 @@ namespace AOC {
 
 Player::Player(int _id, PlayerType _type) {
 	player_UI = 0;
+	score = 0;
 	type = _type;
 	id = _id;
 	resources.push("cube", new Resource("cube","basic material for construction",100));

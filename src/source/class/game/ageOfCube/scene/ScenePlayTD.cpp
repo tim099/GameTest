@@ -2,6 +2,7 @@
 #include "class/game/ageOfCube/scene/ScenePlayTD.h"
 #include "class/display/UI/page/PageControl.h"
 #include "class/tim/file/File.h"
+#include "class/game/ageOfCube/player/PlayerController.h"
 #include <ctime>
 namespace AOC{
 ScenePlayTD::ScenePlayTD(std::string _map_name, glm::ivec3 _map_size) {
@@ -133,10 +134,23 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 	if(sig->get_data() == "save_map"){
 		field->save(map_name);
 	}
-	else if(sig->get_data() == "build"){
+	else if(sig->get_data() == "build_Tower"){
+		if(!PlayerController::get_cur_object()->get_cur_player()->modify_resource("cube",-10)){
+			return;
+		}
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator2=BuildingCreator::get_cur_object();
 		constructing_building = creator2->create("Tower");
+		constructing_building->set_player(0);
+		mode = constructing;
+	}
+	else if(sig->get_data() == "build_LaserTower"){
+		if(!PlayerController::get_cur_object()->get_cur_player()->modify_resource("cube",-50)){
+			return;
+		}
+		if(constructing_building)delete constructing_building;
+		BuildingCreator* creator=BuildingCreator::get_cur_object();
+		constructing_building = creator->create("LaserTower");
 		constructing_building->set_player(0);
 		mode = constructing;
 	}

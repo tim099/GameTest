@@ -20,10 +20,6 @@ UnitController::UnitController() {
 	building_UI->Load_script("files/AgeOfCube/scenes/playTD/UI/unit_UI.txt");
 	building_UI->init_buildingUI();
 	building_UI->hide = true;
-	name_str=dynamic_cast<UI::UIString*>(building_UI->get_child("name"));
-	atk_str=dynamic_cast<UI::UIString*>(building_UI->get_child("atk"));
-	armor_str=dynamic_cast<UI::UIString*>(building_UI->get_child("armor"));
-	hp_str=dynamic_cast<UI::UIString*>(building_UI->get_child("hp"));
 	register_cur();
 }
 UnitController::~UnitController() {
@@ -110,9 +106,6 @@ Unit* UnitController::search_unit(unsigned player,math::vec3<double>pos){
 }
 void UnitController::select_unit(Unit *unit){
 	selected_unit = unit;
-	name_str->set_string(unit->get_name());
-	hp_str->set_string(Tim::String::to_string(unit->get_hp())+"/"+
-			Tim::String::to_string(unit->get_max_hp()));
 	Building *building = dynamic_cast<Building *>(unit);
 	if(building){
 		building_UI->set_selected_building(building);
@@ -231,10 +224,7 @@ void UnitController::handle_signal(){
 }
 void UnitController::update(){
 	//std::cout<<"unit controller update"<<std::endl;
-	//building_UI->update();//already done by building_UI->update_UIObject();
-	if(selected_unit&&selected_unit->get_is_dead()){
-		deselect_unit();
-	}
+	building_UI->update();
 	building_UI->update_UIObject();
 	handle_signal();
 	std::vector<Unit*>dead_units;

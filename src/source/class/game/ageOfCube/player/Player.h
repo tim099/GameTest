@@ -5,6 +5,7 @@
 #include "class/game/ageOfCube/player/playerUI/PlayerUI.h"
 #include "class/game/ageOfCube/player/resource/Resource.h"
 #include "class/game/ageOfCube/player/resource/ResourceModifier.h"
+#include "class/tim/map/MapContainer.h"
 
 namespace Display{
 class Draw;
@@ -23,12 +24,13 @@ public:
 	unsigned int get_id(){return id;}
 	void init_UI();
 	bool modify_resource(ResourceModifier modifier);
+	bool modify_resource(std::string resource_name, int requested_amount);
 private:
 	unsigned int id;
 	std::string name;
 	PlayerType type;
-	std::vector<Resource> resources;
 	UI::PlayerUI *player_UI;
+	Tim::MapContainer<std::string,Resource> resources;
 };
 
 } /* namespace AOC */

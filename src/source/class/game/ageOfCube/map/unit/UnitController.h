@@ -51,10 +51,6 @@ protected:
 	std::vector<Unit*>units;
 	//std::vector<Minion*>minions;
 	UI::BuildingUI *building_UI;
-	UI::UIString *name_str;
-	UI::UIString *atk_str;
-	UI::UIString *armor_str;
-	UI::UIString *hp_str;
 	Input::Receiver* receiver;
 
 };

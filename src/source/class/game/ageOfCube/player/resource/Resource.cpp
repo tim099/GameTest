@@ -19,7 +19,7 @@ Resource::~Resource() {
 }
 
 bool Resource::modifyAmount(int modifier){
-	if(amount+modifier > 0){
+	if(amount+modifier >= 0){
 		amount += modifier;
 		return true;
 	}

@@ -4,6 +4,8 @@
 #include "class/game/ageOfCube/map/cube/CubeLarge.h"
 #include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/tim/math/Position.h"
+#include "class/game/ageOfCube/player/resource/ResourceModifier.h"
+
 namespace AOC {
 class Map;
 class Building: public CubeLarge, public Unit
@@ -39,6 +41,7 @@ public:
 	bool create_building();
 
 	void upgrade(std::string description);
+	ResourceModifier get_build_cost(){return build_cost;}
 protected:
 	virtual void unit_update();
 	virtual void building_set_pos(int x,int y,int z);
@@ -52,6 +55,8 @@ protected:
 
 	float size;
 	math::Position pos;
+
+	ResourceModifier build_cost;
 private:
 	int rotate;
 };

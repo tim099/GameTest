@@ -13,6 +13,7 @@ Building::Building() {
 	//std::cout<<"Building::Building()="<<this<<std::endl;
 	size=1.0;
 	rotate=0;
+	build_cost = ResourceModifier("cube",0);
 }
 Building::~Building() {
 	//std::cout<<"Building::~Building()="<<this<<std::endl;

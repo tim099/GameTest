@@ -13,6 +13,7 @@ namespace UI {
 
 PlayerUI::PlayerUI() {
 	inited = false;
+	score_string = 0;
 }
 
 PlayerUI::~PlayerUI() {
@@ -32,6 +33,8 @@ void PlayerUI::init_playerUI(){
 		}
 	}
 
+	score_string = dynamic_cast<UIString *>(get_child("player_score"));
+
 	inited = true;
 }
 
@@ -49,6 +52,14 @@ void PlayerUI::set_resource_amount(unsigned int resource_string_id, int value){
 		return;
 	}
 	resource_amount_strings[resource_string_id]->set_string(Tim::String::to_string(value));
+}
+
+void PlayerUI::set_score(int score){
+	//std::cout<<"set_resource "<<resource_string_id<<" amount "<<value<<std::endl;
+	if(!inited){
+		return;
+	}
+	score_string->set_string(Tim::String::to_string(score));
 }
 
 } /* namespace AOC */

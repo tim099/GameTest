@@ -2,6 +2,7 @@
 #include "class/input/mouse/Mouse.h"
 #include "class/tim/geometry/2D/RectP2D.h"
 #include "class/input/signal/Signal.h"
+#include "class/audio/AudioController.h"
 
 #include "class/input/Input.h"
 #include <iostream>
@@ -22,6 +23,7 @@ void Button::selected(Input::Mouse* mou){
 	if(sig){
 		sig->sent();
 	}
+	Audio::AudioController::get_cur_object()->play("default_sound_effect/Blip_Select3.wav");
 	//std::cout<<"selected : "<<get_type()<<std::endl;
 }
 void Button::set_signal(Input::Signal* _signal){

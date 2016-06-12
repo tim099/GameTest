@@ -40,6 +40,7 @@ void Player::update(){
 	player_UI->set_resource_amount(3, resources.get("earth")->get_amount());
 	player_UI->set_resource_amount(4, resources.get("air")->get_amount());
 	player_UI->set_resource_amount(5, resources.get("tech")->get_amount());
+	player_UI->set_score(score);
 }
 
 bool Player::modify_resource(ResourceModifier modifier){
@@ -53,7 +54,7 @@ bool Player::modify_resource(ResourceModifier modifier){
 
 bool Player::modify_resource(std::string resource_name, int requested_amount){
 	if(Resource *modified_resource = resources.get(resource_name)){
-		if(modified_resource->get_amount() > requested_amount){
+		if(modified_resource->get_amount() >= requested_amount){
 			 return modified_resource->modifyAmount(requested_amount);
 		}
 	}

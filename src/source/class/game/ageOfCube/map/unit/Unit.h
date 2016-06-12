@@ -5,6 +5,7 @@
 #include "class/tim/math/vec3.h"
 #include "class/game/entity/Entity.h"
 #include "class/game/ageOfCube/map/attack/weapon/Weapon.h"
+#include "class/game/ageOfCube/player/resource/ResourceModifier.h"
 namespace AOC {
 
 class Unit : public entity::Entity{//
@@ -81,6 +82,7 @@ protected:
 		weapons.push_back(weapon);
 	}
 	std::vector<Weapon*> weapons;
+	std::vector<ResourceModifier> upgrade;
 	int max_hp;
 	int hp;
 	int armor;

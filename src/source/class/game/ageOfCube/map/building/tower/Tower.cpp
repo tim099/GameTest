@@ -35,6 +35,7 @@ Tower::Tower(Tower* tower) {
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("CubeMissileLauncher");
 	weapon->set_attack_range(20.0);
 	push_weapon(weapon);
+	build_cost = ResourceModifier("cube",-10);
 }
 Tower::~Tower() {
 	//std::cout<<"delete tree"<<std::endl;

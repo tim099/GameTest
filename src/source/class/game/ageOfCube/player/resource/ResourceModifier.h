@@ -14,7 +14,7 @@ namespace AOC {
 
 class ResourceModifier {
 public:
-	ResourceModifier(std::string _name, int _amount);
+	ResourceModifier(std::string _name="cube", int _amount=0);
 	virtual ~ResourceModifier();
 	std::string get_name(){return resource_name;}
 	int get_amount(){return amount;}

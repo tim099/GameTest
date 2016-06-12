@@ -26,12 +26,42 @@ CreateUIObject:
 	Position:
 		0.02 -0.02
 	String:
-"player"
+"player1"
 	String_size:
 		0.015
 	Parent:
 		PlayerPanel
 #create_end
+
+
+CreateUIObject:
+		UIString
+	Name:
+		player_score
+	Position:
+		0.1 -0.02
+	String:
+"score:"
+	String_size:
+		0.015
+	Parent:
+		PlayerPanel
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		player_score
+	Position:
+		0.16 -0.02
+	String:
+"0"
+	String_size:
+		0.015
+	Parent:
+		PlayerPanel
+#create_end
+
 
 CreateUIObject:
 		Panel

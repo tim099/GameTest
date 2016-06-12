@@ -5,9 +5,10 @@
  *      Author: LukeWu
  */
 
-#include <class/game/ageOfCube/player/resource/ResourceModifier.h>
+#include "class/game/ageOfCube/player/resource/ResourceModifier.h"
 
 namespace AOC {
+
 
 ResourceModifier::ResourceModifier(std::string _name, int _amount) {
 	resource_name = _name;

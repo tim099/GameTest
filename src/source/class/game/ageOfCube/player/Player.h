@@ -22,11 +22,14 @@ public:
 	void draw(Display::Draw* draw);
 	void update();
 	unsigned int get_id(){return id;}
+	int get_score(){return score;}
+	void modify_score(int amount){score += amount;}
 	void init_UI();
 	bool modify_resource(ResourceModifier modifier);
 	bool modify_resource(std::string resource_name, int requested_amount);
 private:
 	unsigned int id;
+	int score;
 	std::string name;
 	PlayerType type;
 	UI::PlayerUI *player_UI;

@@ -20,7 +20,7 @@ Tower::Tower() {
 	timer=0;
 	attack_timer=0;
 	attack_cycle=250;
-	attack_damage=100;
+	attack_damage=150;
 }
 Tower::Tower(Tower* tower) {
 	init(1000,0);
@@ -32,7 +32,7 @@ Tower::Tower(Tower* tower) {
 	attack_timer=0;
 	attack_cycle=tower->attack_cycle;
 
-	attack_damage=100;
+	attack_damage=tower->attack_damage;
 }
 Tower::~Tower() {
 	//std::cout<<"delete tree"<<std::endl;

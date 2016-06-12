@@ -84,14 +84,14 @@ void Game::terminate(){
 	thread_pool->Terminate();
 
 	delete controller_system;
-	delete input;
 
+	delete input;
 
 	delete renderer;
 	delete UIObj_Creator;
 	delete draw;
 
-	//delete window;
+	delete window;
 	//std::cout<<"terminate end"<<std::endl;
 }
 Scene* Game::get_cur_scene(){

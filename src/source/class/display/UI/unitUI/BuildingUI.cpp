@@ -30,7 +30,12 @@ void BuildingUI::clear_selected_building(){
 }
 
 void BuildingUI::update(){
-	if(!selected_building)return;
+	if(selected_building&&selected_building->get_is_dead()){
+		selected_building=0;
+	}
+	if(!selected_building){
+		return;
+	}
 	std::cout<<"building UI update"<<std::endl;
 	name_str->set_string(selected_building->get_name());
 	hp_str->set_string(Tim::String::to_string(selected_building->get_hp())+"/"+

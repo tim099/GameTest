@@ -24,7 +24,7 @@ public:
 		v.push_back(Cube::stone);
 	}
 protected:
-	virtual double get_attack_range(){return 8.0;}
+	virtual double get_attack_range(){return 9.0;}
 	virtual std::string get_attack_type(){return std::string("Laser");}
 	virtual double get_attack_size(){return 0.1*size;}
 	virtual math::vec3<double>get_attack_pos(){

@@ -62,8 +62,8 @@ void Laser::burn_target(){
 	burning_target=true;
 	target->hp_alter(-damage);
 	if(target->get_is_dead()){
-		pos=target->get_mid_pos();
-		pos.y+=5.0;
+		//pos=target->get_mid_pos();
+		//pos.y+=5.0;
 	}
 }
 void Laser::attack_update(){

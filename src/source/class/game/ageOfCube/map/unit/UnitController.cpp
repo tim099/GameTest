@@ -231,7 +231,10 @@ void UnitController::handle_signal(){
 }
 void UnitController::update(){
 	//std::cout<<"unit controller update"<<std::endl;
-	building_UI->update();
+	//building_UI->update();//already done by building_UI->update_UIObject();
+	if(selected_unit&&selected_unit->get_is_dead()){
+		deselect_unit();
+	}
 	building_UI->update_UIObject();
 	handle_signal();
 	std::vector<Unit*>dead_units;

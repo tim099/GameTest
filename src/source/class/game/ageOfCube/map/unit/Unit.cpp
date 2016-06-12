@@ -6,6 +6,11 @@ namespace AOC {
 
 Unit::Unit(int _max_hp) {
 	//std::cout<<"Unit::Unit(int _max_hp)="<<this<<std::endl;
+	upgrades.push("fire",new ResourceModifier("fire",0));
+	upgrades.push("water",new ResourceModifier("water",0));
+	upgrades.push("earth",new ResourceModifier("earth",0));
+	upgrades.push("air",new ResourceModifier("air",0));
+
 	init(_max_hp,0);
 }
 Unit::~Unit() {
@@ -42,10 +47,6 @@ void Unit::init(int _max_hp,int _player){
 	attack_damage=10;
 	attack_cycle=300;
 	set_player(_player);
-	upgrades.push("fire",new ResourceModifier("fire",0));
-	upgrades.push("water",new ResourceModifier("water",0));
-	upgrades.push("earth",new ResourceModifier("earth",0));
-	upgrades.push("air",new ResourceModifier("air",0));
 }
 void Unit::save_weapons(FILE* file){
 	for(unsigned i=0;i<weapons.size();i++){

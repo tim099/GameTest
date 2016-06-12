@@ -26,10 +26,8 @@ Map::Map() {
 	map_segs=0;
 	seed=0;
 	times=0;
-	player_num=4;
 	water_height=0.5;
 	ground_height=80;
-
 	map_rigid_body=new MapRigidBody(this);
 	cube_out_of_edge=new CubeOutOfEdge();
 	cube_null=new CubeNull();
@@ -38,8 +36,6 @@ Map::Map() {
 	all_cubes=new AllCubes();
 	cur_update_pos=&update_pos1;
 	prev_update_pos=&update_pos2;
-
-
 	register_cur();
 }
 Map::~Map() {

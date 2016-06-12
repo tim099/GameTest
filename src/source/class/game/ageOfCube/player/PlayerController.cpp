@@ -10,6 +10,7 @@ namespace AOC {
 PlayerController::PlayerController() {
 	receiver=new Input::Receiver("PlayerController");
 	Input::Input::get_cur_object()->push_receiver(receiver);
+
 	current_player = new Player(0,type_player);
 	current_player -> init_UI();
 	//std::cout<<"current_player : "<<current_player<<std::endl;

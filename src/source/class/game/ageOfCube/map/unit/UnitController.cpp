@@ -124,102 +124,44 @@ void UnitController::display_unit_UI(){
 void UnitController::hide_unit_UI(){
 	building_UI->hide = true;
 }
+void UnitController::upgrade(std::string type){
+	if(!selected_unit)return;
+
+	Player *current_player = PlayerController::get_cur_object()->get_cur_player();
+	if (selected_unit->get_player() != current_player->get_id()){
+		std::cerr<<"can't upgrade other player's building"<<std::endl;
+		return;
+	}
+	Building *selected_building = dynamic_cast<Building *>(selected_unit);
+	if(!selected_building){
+		std::cerr<<"can't non-building unit"<<std::endl;
+		return;
+	}
+	ResourceModifier cost(type, -1);
+	if(!current_player->modify_resource(cost)){
+		std::cerr<<"resource not enough"<<std::endl;
+		return;
+	}
+	selected_building->upgrade_building(type+"_upgrade");
+}
 void UnitController::handle_signal(){
 	Input::Signal* sig;
 	while((sig=receiver->get_signal())){
 		if(sig->get_data()=="toggle_panel"){
 			building_UI->hide^=1;
 		}else if(sig->get_data()=="fire_upgrade"){
-			std::cout<<"fire_upgrade"<<std::endl;
-			Player *current_player = PlayerController::get_cur_object()->get_cur_player();
-			if(!selected_unit){
-				return;
-			}
-			if (selected_unit->get_player() != current_player->get_id()){
-				std::cerr<<"can't upgrade other player's building"<<std::endl;
-				return;
-			}
-			Building *selected_building = dynamic_cast<Building *>(selected_unit);
-			if(!selected_building){
-				std::cerr<<"can't non-building unit"<<std::endl;
-				return;
-			}
-			ResourceModifier cost("fire", -1);
-			if(!current_player->modify_resource(cost)){
-				std::cerr<<"resource not enough"<<std::endl;
-				return;
-			}
-			selected_building->upgrade_building("fire_upgrade");
-		}
-		else if(sig->get_data()=="water_upgrade"){
-			std::cout<<"water_upgrade"<<std::endl;
-			Player *current_player = PlayerController::get_cur_object()->get_cur_player();
-			if(!selected_unit){
-				return;
-			}
-			if (selected_unit->get_player() != current_player->get_id()){
-				std::cerr<<"can't upgrade other player's building"<<std::endl;
-				return;
-			}
-			Building *selected_building = dynamic_cast<Building *>(selected_unit);
-			if(!selected_building){
-				std::cerr<<"can't non-building unit"<<std::endl;
-				return;
-			}
-			ResourceModifier cost("water", -1);
-			if(!current_player->modify_resource(cost)){
-				std::cerr<<"resource not enough"<<std::endl;
-				return;
-			}
-			selected_building->upgrade_building("water_upgrade");
-		}
-		else if(sig->get_data()=="earth_upgrade"){
-			std::cout<<"earth_upgrade"<<std::endl;
-			Player *current_player = PlayerController::get_cur_object()->get_cur_player();
-			if(!selected_unit){
-				return;
-			}
-			if (selected_unit->get_player() != current_player->get_id()){
-				std::cerr<<"can't upgrade other player's building"<<std::endl;
-				return;
-			}
-			Building *selected_building = dynamic_cast<Building *>(selected_unit);
-			if(!selected_building){
-				std::cerr<<"can't non-building unit"<<std::endl;
-				return;
-			}
-			ResourceModifier cost("earth", -1);
-			if(!current_player->modify_resource(cost)){
-				std::cerr<<"resource not enough"<<std::endl;
-				return;
-			}
-			selected_building->upgrade_building("earth_upgrade");
-		}
-		else if(sig->get_data()=="air_upgrade"){
-			std::cout<<"air_upgrade"<<std::endl;
-			Player *current_player = PlayerController::get_cur_object()->get_cur_player();
-			if(!selected_unit){
-				return;
-			}
-			if (selected_unit->get_player() != current_player->get_id()){
-				std::cerr<<"can't upgrade other player's building"<<std::endl;
-				return;
-			}
-			Building *selected_building = dynamic_cast<Building *>(selected_unit);
-			if(!selected_building){
-				std::cerr<<"can't non-building unit"<<std::endl;
-				return;
-			}
-			ResourceModifier cost("air", -1);
-			if(!current_player->modify_resource(cost)){
-				std::cerr<<"resource not enough"<<std::endl;
-				return;
-			}
-			selected_building->upgrade_building("air_upgrade");
-		}
-		else{
-		}
+			//std::cout<<"fire_upgrade"<<std::endl;
+			upgrade("fire");
+		}else if(sig->get_data()=="water_upgrade"){
+			//std::cout<<"water_upgrade"<<std::endl;
+			upgrade("water");
+		}else if(sig->get_data()=="earth_upgrade"){
+			upgrade("earth");
+		}else if(sig->get_data()=="air_upgrade"){
+			upgrade("air");
+		}else{
 
+		}
 	}
 }
 void UnitController::update(){

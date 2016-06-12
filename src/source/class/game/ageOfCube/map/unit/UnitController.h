@@ -44,6 +44,7 @@ public:
 	void load(FILE *file);
 	MinionCreator* minion_creator;
 protected:
+	void upgrade(std::string type);
 	void handle_signal();
 	void save_minion(FILE *file);
 	void load_minion(FILE *file);

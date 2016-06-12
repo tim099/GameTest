@@ -11,7 +11,7 @@
 #include <vector>
 #include "class/game/ageOfCube/player/Player.h"
 #include "class/controller/Controller.h"
-#include "class/display/UI/unitUI/BuildingUI.h"
+#include "class/game/ageOfCube/map/unit/unitUI/BuildingUI.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/input/signal/Receiver.h"
 #include "class/display/UI/string/UIString.h"

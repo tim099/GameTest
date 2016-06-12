@@ -13,6 +13,9 @@ Unit::~Unit() {
 	if(created){
 		UnitController::get_cur_object()->remove(this);
 	}
+	for(unsigned i=0;i<weapons.size();i++){
+		delete weapons.at(i);
+	}
 }
 void Unit::attack(Unit* target){
 	if(!target)return;
@@ -66,14 +69,26 @@ void Unit::init(int _max_hp,int _player){
 	attack_cycle=300;
 	set_player(_player);
 }
+void Unit::save_weapons(FILE* file){
+	for(unsigned i=0;i<weapons.size();i++){
+		weapons.at(i)->save(file);
+	}
+}
+void Unit::load_weapons(FILE* file){
+	for(unsigned i=0;i<weapons.size();i++){
+		weapons.at(i)->load(file);
+	}
+}
 void Unit::save_unit(FILE * file){
 	fprintf(file,"%d %d %u %d %d %d\n",max_hp,hp,player,is_dead,dead_timer,attack_timer);
 	fprintf(file,"%d %d\n",attack_damage,attack_cycle);
+	//save_weapons(file);
 	save_entity(file);
 }
 void Unit::load_unit(FILE * file){
 	fscanf(file,"%d %d %u %d %d %d\n",&max_hp,&hp,&player,&is_dead,&dead_timer,&attack_timer);
 	fscanf(file,"%d %d\n",&attack_damage,&attack_cycle);
+	//load_weapons(file);
 	load_entity(file);
 }
 void Unit::update(){
@@ -83,8 +98,13 @@ void Unit::update(){
 	if(dead_timer>5){
 		terminate=true;
 	}
-	if(!is_dead){
-		unit_update();
+
+	if(is_dead)return;
+
+	unit_update();
+	for(unsigned i=0;i<weapons.size();i++){
+		weapons.at(i)->update();
 	}
+
 }
 } /* namespace AOC */

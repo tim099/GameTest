@@ -26,7 +26,7 @@ BallSpawnTower::BallSpawnTower() {
 	timer=0;
 	spawn_timer=0;
 	size = 2.0;
-	loop_time=800;
+	loop_time=1600;
 	init_BallSpawnTower();
 }
 BallSpawnTower::BallSpawnTower(BallSpawnTower* tower) {

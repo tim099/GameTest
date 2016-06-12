@@ -4,9 +4,11 @@
 #include <string>
 #include "class/tim/math/vec3.h"
 #include "class/game/entity/Entity.h"
+#include "class/game/ageOfCube/map/attack/weapon/Weapon.h"
 namespace AOC {
 
 class Unit : public entity::Entity{//
+	friend Weapon;
 public:
 	Unit(int _max_hp=1);
 	void init(int max_hp,int player);
@@ -47,7 +49,7 @@ public:
 	void update();
 protected:
 	virtual void unit_update(){}
-	void attack(Unit* target);
+
 	virtual void attack_update();
 	virtual double get_attack_range(){return 5.0;}
 	virtual std::string get_attack_type(){return std::string("Missile");}
@@ -55,16 +57,27 @@ protected:
 		return get_mid_pos()+math::vec3<double>(0,0.55*(get_size().y+get_attack_size()),0);
 	}
 	virtual double get_attack_size(){return 0.05;}
+
+	void save_weapons(FILE* file);
+	void load_weapons(FILE* file);
+	void attack(Unit* target);
+	void push_weapon(Weapon* weapon){
+		weapon->set_unit(this);
+		weapons.push_back(weapon);
+	}
+	std::vector<Weapon*> weapons;
 	int max_hp;
 	int hp;
 	int armor;
 
 	unsigned player;
 	int dead_timer;
-	int attack_damage;
+
 	bool terminate;
 	int is_dead;
 	bool created;
+
+	int attack_damage;
 	int attack_timer;
 	int attack_cycle;
 };

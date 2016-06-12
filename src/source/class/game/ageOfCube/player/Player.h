@@ -2,7 +2,7 @@
 #define SOURCE_CLASS_GAME_AGEOFCUBE_PLAYER_PLAYER_H_
 
 #include <vector>
-#include "class/display/UI/playerUI/PlayerUI.h"
+#include "class/game/ageOfCube/player/playerUI/PlayerUI.h"
 #include "class/game/ageOfCube/player/resource/Resource.h"
 #include "class/game/ageOfCube/player/resource/ResourceModifier.h"
 

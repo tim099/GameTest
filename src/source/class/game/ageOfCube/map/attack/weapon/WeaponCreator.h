@@ -1,0 +1,14 @@
+#ifndef SOURCE_CLASS_GAME_AGEOFCUBE_MAP_ATTACK_WEAPON_WEAPONCREATOR_H_
+#define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_ATTACK_WEAPON_WEAPONCREATOR_H_
+
+namespace AOC {
+
+class WeaponCreator {
+public:
+	WeaponCreator();
+	virtual ~WeaponCreator();
+};
+
+} /* namespace AOC */
+
+#endif /* SOURCE_CLASS_GAME_AGEOFCUBE_MAP_ATTACK_WEAPON_WEAPONCREATOR_H_ */

@@ -12,7 +12,7 @@
 #include "class/display/UI/page/AutoPageControl.h"
 
 #include "class/display/UI/string/UIString.h"
-#include "class/display/UI/unitUI/BuildingUI.h"
+#include "class/game/ageOfCube/map/unit/unitUI/BuildingUI.h"
 #include <iostream>
 namespace UI {
 

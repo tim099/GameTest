@@ -5,6 +5,7 @@
 #include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/game/entity/EntityPointer.h"
 #include "class/game/ageOfCube/map/unit/UnitController.h"
+#include "class/game/ageOfCube/player/PlayerController.h"
 namespace AOC {
 
 Attack::Attack() {
@@ -13,6 +14,7 @@ Attack::Attack() {
 	target_id=0;
 	attack_created=false;
 	damage=10;
+	player_id=0;
 }
 Attack::~Attack() {
 	if(attack_created){
@@ -20,12 +22,12 @@ Attack::~Attack() {
 	}
 }
 void Attack::save(FILE* file){
-	fprintf(file,"%u %d %d\n",target_id,die,damage);
+	fprintf(file,"%u %d %d %u\n",target_id,die,damage,player_id);
 	save_rigid_body(file);
 	save_attack(file);
 }
 void Attack::load(FILE* file){
-	fscanf(file,"%u %d %d\n",&target_id,&die,&damage);
+	fscanf(file,"%u %d %d %u\n",&target_id,&die,&damage,&player_id);
 	load_rigid_body(file);
 	load_attack(file);
 }
@@ -35,6 +37,14 @@ void Attack::create_attack(){
 }
 void Attack::set_target(Unit* _target){
 	target=_target;target_id=target->get_id();
+}
+void Attack::damage_target(int amount){
+	//std::cout<<"Attack::damage_target"<<std::endl;
+	target->hp_alter(-amount);
+	if(target->get_is_dead()){
+		Player* player=PlayerController::get_cur_object()->search_player(player_id);
+		player->score_alter(target->get_max_hp());
+	}
 }
 void Attack::update(){
 	if(die)return;

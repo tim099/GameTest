@@ -37,7 +37,7 @@ void Field::save(const std::string& path){
 	map->save_map(file);
 	unit_controller->save(file);
 	attack_controller->save(file);
-
+	player_controller->save(file);
 	fclose(file);
 }
 void Field::load(const std::string& path){
@@ -46,7 +46,7 @@ void Field::load(const std::string& path){
 	map->load_map(file);
 	unit_controller->load(file);
 	attack_controller->load(file);
-
+	player_controller->load(file);
 	fclose(file);
 }
 void Field::update(){

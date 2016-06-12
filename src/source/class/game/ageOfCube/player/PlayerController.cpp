@@ -1,10 +1,6 @@
 /*
- * PlayerController.cpp
- *
- *  Created on: 2016¦~6¤ë10¤é
  *      Author: LukeWu
  */
-
 #include <iostream>
 #include "class/game/ageOfCube/player/PlayerController.h"
 #include "class/input/Input.h"
@@ -49,7 +45,7 @@ Player* PlayerController::search_player(unsigned int player_id){
 			return players.at(i);
 		}
 	}
-	std::cerr<<"player id not exist"<<std::endl;
+	std::cerr<<"player id:"<<player_id<<" not exist"<<std::endl;
 	return 0;
 }
 

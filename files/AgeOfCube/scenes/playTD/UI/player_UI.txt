@@ -37,7 +37,7 @@ CreateUIObject:
 CreateUIObject:
 		UIString
 	Name:
-		player_score
+		score
 	Position:
 		0.1 -0.02
 	String:

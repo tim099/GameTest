@@ -23,10 +23,15 @@ public:
 	void update();
 	unsigned int get_id(){return id;}
 	int get_score(){return score;}
+	void score_alter(int amount){set_score(score+amount);}
+	void set_score(int _score);
 	void modify_score(int amount){score += amount;}
 	void init_UI();
 	bool modify_resource(ResourceModifier modifier);
 	bool modify_resource(std::string resource_name, int requested_amount);
+
+	void save(FILE *file);
+	void load(FILE *file);
 private:
 	unsigned int id;
 	int score;

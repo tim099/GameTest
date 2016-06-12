@@ -9,6 +9,7 @@
 #include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
 #include "class/game/ageOfCube/player/PlayerController.h"
 #include <cstdlib>
+#include <ctime>
 namespace AOC {
 void Ball::minion_pre_init(){
 	ball_Drawobj=Display::AllDrawObjects::get_cur_object()->get("minion/ball");
@@ -66,6 +67,8 @@ void Ball::load_minion(FILE * file){
 }
 void Ball::killed(){
 	Player *cur_player=PlayerController::get_cur_object()->get_cur_player();
+	//srand(time(NULL));
+	cur_player->modify_resource("cube",1*(get_max_hp()/30));
 	int ran=rand()%5;
 	switch(ran){
 		case 0:

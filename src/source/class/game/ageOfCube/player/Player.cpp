@@ -4,6 +4,7 @@ namespace AOC {
 
 Player::Player(int _id, PlayerType _type) {
 	player_UI = 0;
+	score=0;
 	type = _type;
 	id = _id;
 	resources.push("cube", new Resource("cube","basic material for construction",100));
@@ -16,7 +17,20 @@ Player::Player(int _id, PlayerType _type) {
 Player::~Player() {
 	if(player_UI)delete player_UI;
 }
+void Player::save(FILE *file){
 
+}
+void Player::load(FILE *file){
+
+}
+void Player::set_score(int _score){
+	//std::cout<<"Player::set_score:"<<_score<<std::endl;
+	score=_score;
+	if(player_UI){
+		player_UI->set_score(score);
+	}
+
+}
 void Player::init_UI(){
 	player_UI=new UI::PlayerUI();
 	player_UI->Load_script("files/AgeOfCube/scenes/playTD/UI/player_UI.txt");

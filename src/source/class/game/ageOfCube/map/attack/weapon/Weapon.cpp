@@ -41,6 +41,7 @@ void Weapon::fire(Unit* target){
 	attack->pos=unit->get_attack_pos();
 	attack->set_target(target);
 	attack->set_damage(unit->attack_damage);
+	attack->set_player(unit->get_player());
 	attack->create_attack();
 }
 void Weapon::update(){

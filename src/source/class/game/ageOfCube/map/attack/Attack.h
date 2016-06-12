@@ -21,7 +21,7 @@ public:
 	void load(FILE* file);
 	void set_target(Unit* _target);
 	void set_damage(int _damage){damage=_damage;}
-
+	void set_player(unsigned _player){player_id=_player;}
 	void draw();
 	void update();
 protected:
@@ -29,9 +29,11 @@ protected:
 	virtual void load_attack(FILE* file){}
 	virtual void draw_attack()=0;
 	virtual void attack_update()=0;
+	void damage_target(int amount);
 	Unit* target;
 	std::vector<Unit*> collied_units;
 	unsigned target_id;
+	unsigned player_id;
 	int die;
 	int damage;
 private:

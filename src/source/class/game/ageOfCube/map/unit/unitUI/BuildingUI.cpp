@@ -26,7 +26,7 @@ void BuildingUI::set_selected_building(AOC::Building *_selected_building){
 	update();
 }
 void BuildingUI::clear_selected_building(){
-
+	selected_building = 0;
 }
 
 void BuildingUI::update(){

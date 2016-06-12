@@ -132,14 +132,39 @@ CreateUIObject:
 	Width:
 		0.1
 	Height:
-		2
+		1
 	Set_string:
-"Basic Tower 1"
+"Tower"
 	String_size:
 		0.01
 	Set_signal:
 		Data:
-			build
+			build_Tower
+		Receiver:
+			ScenePlayTD
+	Parent:
+		ToggleBuilding
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		building2
+	Position:
+		0.00000000 -0.1
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		1
+	Set_string:
+"LaserTower"
+	String_size:
+		0.01
+	Set_signal:
+		Data:
+			build_LaserTower
 		Receiver:
 			ScenePlayTD
 	Parent:

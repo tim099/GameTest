@@ -135,7 +135,7 @@ void Building::draw_hp(){
 void Building::upgrade_building(std::string description){
 	if(description == "fire_upgrade"){
 		//std::cout<<"fire upgrade"<<std::endl;
-		attack_alter(1.0);
+		//attack_alter(1.0);
 		upgrade("fire", 1);
 	}
 	else if(description == "water_upgrade"){

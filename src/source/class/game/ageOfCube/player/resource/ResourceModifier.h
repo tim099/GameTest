@@ -18,6 +18,7 @@ public:
 	virtual ~ResourceModifier();
 	std::string get_name(){return resource_name;}
 	int get_amount(){return amount;}
+	void set_amount(int _amount){amount=_amount;}
 	void amount_alter(int _amount){amount+=_amount;}
 private:
 	std::string resource_name;

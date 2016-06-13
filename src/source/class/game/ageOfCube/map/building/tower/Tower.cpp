@@ -19,7 +19,6 @@ Tower::Tower() {
 	tower_Drawobj=0;
 	size = 3.0;
 	timer=0;
-	attack_damage=250;
 }
 Tower::Tower(Tower* tower) {
 	init(1000,0);
@@ -30,10 +29,11 @@ Tower::Tower(Tower* tower) {
 	size = tower->size;
 	set_attack_cycle(250);
 
-	attack_damage=tower->attack_damage;
+	//attack_damage=tower->attack_damage;
 
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("CubeMissileLauncher");
 	weapon->set_attack_range(20.0);
+	weapon->set_attack_damage(250);
 	push_weapon(weapon);
 	build_cost = ResourceModifier("cube",-10);
 }

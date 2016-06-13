@@ -45,7 +45,7 @@ void BuildingUI::update(){
 	hp_str->set_string(Tim::String::to_string(selected_building->get_hp())+"/"+
 			Tim::String::to_string(selected_building->get_max_hp()));
 	armor_str->set_string(Tim::String::to_string(selected_building->get_armor()));
-	atk_str->set_string(Tim::String::to_string(selected_building->get_atk()));
+	atk_str->set_string(Tim::String::to_string(selected_building->get_atk_ajusted()));
 	upgrade_str[0]->set_string(Tim::String::to_string(selected_building->get_upgrade_amount("fire")));
 	upgrade_str[1]->set_string(Tim::String::to_string(selected_building->get_upgrade_amount("water")));
 	upgrade_str[2]->set_string(Tim::String::to_string(selected_building->get_upgrade_amount("earth")));

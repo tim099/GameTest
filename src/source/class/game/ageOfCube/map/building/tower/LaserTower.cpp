@@ -7,16 +7,16 @@ void LaserTower::building_pre_init(){
 }
 LaserTower::LaserTower() {
 	size=6.0;
-	attack_damage=5;
 }
 LaserTower::LaserTower(LaserTower* tower){
 	init(3000,0);
 	size=tower->size;
 	set_attack_cycle(30);
-	attack_damage=tower->attack_damage;
+	//attack_damage=5;
 
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("LaserCannon");
 	weapon->set_attack_range(12.0);
+	weapon->set_attack_damage(5);
 	push_weapon(weapon);
 	build_cost = ResourceModifier("cube",-50);
 }

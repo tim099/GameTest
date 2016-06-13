@@ -29,10 +29,11 @@ MainTower::MainTower(MainTower* tower){
 	timer=0;
 	loop_time=tower->loop_time;
 	set_attack_cycle(100);
-	attack_damage=100;
+	//attack_damage=100;
 
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("CubeMissileLauncher");
 	weapon->set_attack_range(30.0);
+	weapon->set_attack_damage(100);
 	push_weapon(weapon);
 }
 MainTower::~MainTower() {

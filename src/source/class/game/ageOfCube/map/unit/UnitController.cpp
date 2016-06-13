@@ -6,6 +6,7 @@
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/game/ageOfCube/player/Player.h"
 #include "class/game/ageOfCube/player/PlayerController.h"
+#include "class/tim/string/String.h"
 #include <cstdio>
 #include <iostream>
 namespace AOC {
@@ -146,19 +147,16 @@ void UnitController::upgrade(std::string type){
 }
 void UnitController::handle_signal(){
 	Input::Signal* sig;
+
+
 	while((sig=receiver->get_signal())){
+		std::vector<std::string> strs;
+		Tim::String::split(sig->get_data(),"_",strs);
+
 		if(sig->get_data()=="toggle_panel"){
 			building_UI->hide^=1;
-		}else if(sig->get_data()=="fire_upgrade"){
-			//std::cout<<"fire_upgrade"<<std::endl;
-			upgrade("fire");
-		}else if(sig->get_data()=="water_upgrade"){
-			//std::cout<<"water_upgrade"<<std::endl;
-			upgrade("water");
-		}else if(sig->get_data()=="earth_upgrade"){
-			upgrade("earth");
-		}else if(sig->get_data()=="air_upgrade"){
-			upgrade("air");
+		}else if(strs.size()==2&&strs.at(1)=="upgrade"){
+			upgrade(strs.at(0));
 		}else{
 
 		}

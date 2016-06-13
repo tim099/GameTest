@@ -21,7 +21,6 @@ Ball::Ball() {
 	colli_timer=0;
 	timer=0;
 	finder=0;
-	attack_damage=10;
 	set_max_hp(100);
 }
 Ball::Ball(Ball* ball) {
@@ -31,12 +30,13 @@ Ball::Ball(Ball* ball) {
 	colli_timer=0;
 	timer=0;
 	finder=0;
-	attack_damage=10;
+	//attack_damage=10;
 	set_attack_cycle(300);
 	set_max_hp(ball->get_hp());
 
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("MissileLauncher");
 	weapon->set_attack_range(8.0);
+	weapon->set_attack_damage(10);
 	push_weapon(weapon);
 }
 Ball::~Ball() {

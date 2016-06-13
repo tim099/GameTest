@@ -22,8 +22,9 @@ Unit::~Unit() {
 		delete weapons.at(i);
 	}
 }
-math::vec3<int> Unit::get_mid_pos_int(){
-	return get_pos_int();
+double Unit::get_atk_ajusted(){
+	int amount=upgrades.get("fire")->get_amount();
+	return 1.0+0.1*amount;
 }
 void Unit::create_unit(){
 	UnitController* controller=UnitController::get_cur_object();
@@ -44,7 +45,7 @@ void Unit::init(int _max_hp,int _player){
 	terminate=false;
 	created=false;
 	dead_timer=0;
-	attack_damage=10;
+	//attack_damage=10;
 	attack_cycle=300;
 	set_player(_player);
 }
@@ -60,15 +61,32 @@ void Unit::load_weapons(FILE* file){
 }
 void Unit::save_unit(FILE * file){
 	fprintf(file,"%d %d %u %d %d\n",max_hp,hp,player,is_dead,dead_timer);
-	fprintf(file,"%d %d\n",attack_damage,attack_cycle);
+	fprintf(file,"%d\n",attack_cycle);
 	save_weapons(file);
+	save_upgrades(file);
 	save_entity(file);
 }
 void Unit::load_unit(FILE * file){
 	fscanf(file,"%d %d %u %d %d\n",&max_hp,&hp,&player,&is_dead,&dead_timer);
-	fscanf(file,"%d %d\n",&attack_damage,&attack_cycle);
+	fscanf(file,"%d\n",&attack_cycle);
 	load_weapons(file);
+	load_upgrades(file);
 	load_entity(file);
+}
+void Unit::save_upgrades(FILE* file){
+	fprintf(file,"%d %d %d %d\n",upgrades.get("fire")->get_amount(),
+			upgrades.get("water")->get_amount(),
+			upgrades.get("earth")->get_amount(),
+			upgrades.get("air")->get_amount());
+
+}
+void Unit::load_upgrades(FILE* file){
+	int fire,water,earth,air;
+	fscanf(file,"%d %d %d %d\n",&fire,&water,&earth,&air);
+	upgrades.get("fire")->set_amount(fire);
+	upgrades.get("water")->set_amount(water);
+	upgrades.get("earth")->set_amount(earth);
+	upgrades.get("air")->set_amount(air);
 }
 void Unit::update(){
 	if(is_dead){

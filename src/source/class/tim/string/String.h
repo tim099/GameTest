@@ -9,7 +9,7 @@ public:
 	String();
 	virtual ~String();
 	static std::string to_string(int num);
-	static std::string to_string(float num);
+	static std::string to_string(double num);
 	static bool get_line(std::istream &is,std::string& strline,bool skip_blankline=true,bool skip_blankspace=true);
 	static void put_back_line(std::istream &is,std::string& line);
 

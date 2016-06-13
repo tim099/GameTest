@@ -17,9 +17,9 @@ std::string String::to_string(int num){
 	sprintf(cnum,"%d",num);
 	return std::string(cnum);
 }
-std::string String::to_string(float num){
+std::string String::to_string(double num){
 	char cnum[100];
-	sprintf(cnum,"%.2f",num);
+	sprintf(cnum,"%.2lf",num);
 	return std::string(cnum);
 }
 void String::put_back_line(std::istream &is,std::string& line){
@@ -58,6 +58,7 @@ bool String::within(char c,const std::string& str){
 	return false;
 }
 void String::split(std::string str,std::string delimiter,std::vector<std::string> &out){
+	out.clear();
 	unsigned pos=0;
 	bool start=false;
 	for(unsigned i=0;i<str.size();i++){

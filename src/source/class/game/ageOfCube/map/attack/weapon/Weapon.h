@@ -20,12 +20,14 @@ public:
 	void set_unit(Unit* _unit){unit=_unit;}
 	void set_attack_cycle(int _attack_cycle){attack_cycle=_attack_cycle;}
 	void set_attack_range(double _attack_range){attack_range=_attack_range;}
+	void set_attack_damage(double _damage){attack_damage=_damage;}
 protected:
 	virtual void weapon_update(){}
 	virtual void draw_weapon(){}
 	virtual bool attack();
 	virtual void fire(Unit* target);
 	int attack_timer,attack_cycle;
+	int attack_damage;
 	double attack_range;
 	Unit* unit;
 };

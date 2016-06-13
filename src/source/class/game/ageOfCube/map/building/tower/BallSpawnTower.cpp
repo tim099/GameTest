@@ -110,35 +110,26 @@ void BallSpawnTower::spawn(){
 
 	}else if(spawn_timer<2*loop_time){
 		ball->max_hp_alter(10);
-		ball->attack_alter(1);
 	}else if(spawn_timer<3*loop_time){
 		ball->max_hp_alter(20);
-		ball->attack_alter(2);
 	}else if(spawn_timer<4*loop_time){
 		ball->max_hp_alter(30);
-		ball->attack_alter(3);
 	}else if(spawn_timer<5*loop_time){
 		ball->max_hp_alter(40);
-		ball->attack_alter(4);
 	}else if(spawn_timer<6*loop_time){
 		ball->max_hp_alter(50);
-		ball->attack_alter(5);
 	}else if(spawn_timer<7*loop_time){
 		ball->max_hp_alter(70);
-		ball->attack_alter(7);
 	}else if(spawn_timer<8*loop_time){
 		ball->max_hp_alter(90);
-		ball->attack_alter(9);
 	}else if(spawn_timer<9*loop_time){
 		ball->max_hp_alter(110);
-		ball->attack_alter(11);
 	}else if(spawn_timer<10*loop_time){
 		ball->max_hp_alter(130);
-		ball->attack_alter(13);
 	}else{
 		ball->max_hp_alter((spawn_timer/loop_time)*15);
-		ball->attack_alter((spawn_timer/loop_time)*1.5);
 	}
+	ball->upgrade("fire",(spawn_timer/loop_time));
 	//std::cout<<"ball hp="<<ball->get_hp()<<std::endl;
 	double ball_size=0.16f*size*sqrt(ball->get_hp()/100.0);
 	if(ball_size>0.9)ball_size=0.9;

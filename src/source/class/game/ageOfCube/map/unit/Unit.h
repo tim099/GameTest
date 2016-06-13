@@ -34,7 +34,7 @@ public:
 		}
 	}
 	inline void hp_alter(int amount){set_hp(hp+amount);}
-	inline void attack_alter(int amount){attack_damage += amount;}
+	//inline void attack_alter(int amount){attack_damage += amount;}
 
 	inline void max_hp_alter(int amount){max_hp += amount;hp=max_hp;}
 
@@ -56,7 +56,8 @@ public:
 	void upgrade(std::string upgrade_name, int amount);
 
 	inline int get_max_hp()const{return max_hp;}
-	inline int get_atk(){return attack_damage;}
+	//inline int get_atk(){return attack_damage;}
+	double get_atk_ajusted();
 	inline int get_armor(){return armor;}
 	int get_upgrade_amount(std::string upgrade_name);
 
@@ -66,7 +67,7 @@ public:
 	virtual math::vec3<double> get_pos()=0;
 	virtual math::vec3<int> get_pos_int()=0;
 	virtual math::vec3<double> get_mid_pos(){return get_pos();}
-	virtual math::vec3<int> get_mid_pos_int();
+	virtual math::vec3<int> get_mid_pos_int(){return get_pos_int();}
 	virtual math::vec3<double>get_size()=0;
 	void save_unit(FILE * file);
 	void load_unit(FILE * file);
@@ -80,6 +81,8 @@ protected:
 	virtual void killed(){}
 	void save_weapons(FILE* file);
 	void load_weapons(FILE* file);
+	void save_upgrades(FILE* file);
+	void load_upgrades(FILE* file);
 	void push_weapon(Weapon* weapon){
 		weapon->set_unit(this);
 		weapon->set_attack_cycle(attack_cycle);
@@ -98,7 +101,7 @@ protected:
 	int is_dead;
 	bool created;
 
-	int attack_damage;
+	//int attack_damage;
 private:
 	int attack_cycle;
 };

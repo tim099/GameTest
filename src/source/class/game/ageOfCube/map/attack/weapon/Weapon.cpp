@@ -8,6 +8,7 @@ Weapon::Weapon() {
 	attack_timer=0;
 	attack_cycle=300;
 	attack_range=10;
+	attack_damage=10;
 	unit=0;
 }
 Weapon::~Weapon() {
@@ -40,7 +41,7 @@ void Weapon::fire(Unit* target){
 
 	attack->pos=unit->get_attack_pos();
 	attack->set_target(target);
-	attack->set_damage(unit->attack_damage);
+	attack->set_damage(attack_damage*unit->get_atk_ajusted());
 	attack->set_player(unit->get_player());
 	attack->create_attack();
 }

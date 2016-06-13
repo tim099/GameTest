@@ -70,6 +70,7 @@ void Ball::killed(){
 	//srand(time(NULL));
 	cur_player->modify_resource("cube",1*(get_max_hp()/30));
 	int ran=rand()%5;
+	//std::cout<<"ran="<<ran<<std::endl;
 	switch(ran){
 		case 0:
 			cur_player->modify_resource("cube",1*(get_max_hp()/10));
@@ -88,7 +89,7 @@ void Ball::killed(){
 			break;
 	}
 
-
+	Audio::AudioController::get_cur_object()->play("default_sound_effect/Pickup_Coin2.wav",1.0);
 
 
 

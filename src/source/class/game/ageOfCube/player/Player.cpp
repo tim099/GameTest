@@ -68,7 +68,7 @@ bool Player::modify_resource(ResourceModifier modifier){
 
 bool Player::modify_resource(std::string resource_name, int requested_amount){
 	if(Resource *modified_resource = resources.get(resource_name)){
-		if(modified_resource->get_amount() >= requested_amount){
+		if(requested_amount>0||modified_resource->get_amount()+requested_amount >= 0){
 			 return modified_resource->modifyAmount(requested_amount);
 		}
 	}

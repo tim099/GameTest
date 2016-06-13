@@ -30,6 +30,7 @@ BallSpawnTower::BallSpawnTower() {
 	init_BallSpawnTower();
 }
 BallSpawnTower::BallSpawnTower(BallSpawnTower* tower) {
+	init(50000,0);
 	tower_Drawobj=tower->tower_Drawobj;
 	tower_part1=tower->tower_part1;
 	tower_part2=tower->tower_part2;
@@ -58,10 +59,10 @@ void BallSpawnTower::init_BallSpawnTower(){
 	ball4.set_parent(&pos);
 }
 void BallSpawnTower::save_building(FILE * file){
-	fprintf(file,"%d %d\n",timer,spawn_timer);
+	fprintf(file,"%d %d %d\n",timer,spawn_timer,loop_time);
 }
 void BallSpawnTower::load_building(FILE * file){
-	fscanf(file,"%d %d\n",&timer,&spawn_timer);
+	fscanf(file,"%d %d %d\n",&timer,&spawn_timer,&loop_time);
 }
 void BallSpawnTower::building_set_pos(int x,int y,int z){
 	math::vec3<int> real_size=get_cube_large_size();
@@ -111,20 +112,44 @@ void BallSpawnTower::spawn(){
 	}else if(spawn_timer<2*loop_time){
 		ball->max_hp_alter(10);
 	}else if(spawn_timer<3*loop_time){
+		if(spawn_timer==2*loop_time&&loop_time>400){
+			spawn_timer*=0.8;
+			loop_time=ceil(0.8*loop_time);
+		}
 		ball->max_hp_alter(20);
 	}else if(spawn_timer<4*loop_time){
 		ball->max_hp_alter(30);
 	}else if(spawn_timer<5*loop_time){
+		if(spawn_timer==4*loop_time&&loop_time>400){
+			spawn_timer*=0.8;
+			loop_time=ceil(0.8*loop_time);
+		}
 		ball->max_hp_alter(40);
 	}else if(spawn_timer<6*loop_time){
 		ball->max_hp_alter(50);
 	}else if(spawn_timer<7*loop_time){
+		if(spawn_timer==6*loop_time&&loop_time>400){
+			spawn_timer*=0.8;
+			loop_time=ceil(0.8*loop_time);
+		}
 		ball->max_hp_alter(70);
 	}else if(spawn_timer<8*loop_time){
+		if(spawn_timer==7*loop_time&&loop_time>400){
+			spawn_timer*=0.8;
+			loop_time=ceil(0.8*loop_time);
+		}
 		ball->max_hp_alter(90);
 	}else if(spawn_timer<9*loop_time){
+		if(spawn_timer==8*loop_time&&loop_time>400){
+			spawn_timer*=0.8;
+			loop_time=ceil(0.8*loop_time);
+		}
 		ball->max_hp_alter(110);
-	}else if(spawn_timer<10*loop_time){
+	}else if(spawn_timer<9*loop_time){
+		if(spawn_timer==4*loop_time&&loop_time>400){
+			spawn_timer*=0.8;
+			loop_time=ceil(0.8*loop_time);
+		}
 		ball->max_hp_alter(130);
 	}else{
 		ball->max_hp_alter((spawn_timer/loop_time)*15);
@@ -136,6 +161,8 @@ void BallSpawnTower::spawn(){
 	ball->set_size(ball_size);
 	ball->set_player(get_player());
 	ball->create_minion();
+
+
 }
 void BallSpawnTower::building_update(){
 	if(spawn_timer<1000*loop_time){

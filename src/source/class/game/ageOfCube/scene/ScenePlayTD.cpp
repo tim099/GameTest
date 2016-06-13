@@ -135,9 +135,9 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 		field->save(map_name);
 	}
 	else if(sig->get_data() == "build_Tower"){
-		if(!PlayerController::get_cur_object()->get_cur_player()->modify_resource("cube",-10)){
+		/*if(!PlayerController::get_cur_object()->get_cur_player()->modify_resource("cube",-10)){
 			return;
-		}
+		}*/
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator2=BuildingCreator::get_cur_object();
 		constructing_building = creator2->create("Tower");
@@ -145,10 +145,10 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 		mode = constructing;
 	}
 	else if(sig->get_data() == "build_LaserTower"){
-		if(!PlayerController::get_cur_object()->get_cur_player()->modify_resource("cube",-50)){
-			//std::cout<<"build_LaserTower no resource"<<std::endl;
+
+		/*if(!PlayerController::get_cur_object()->get_cur_player()->modify_resource("cube",-50)){
 			return;
-		}
+		}*/
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
 		constructing_building = creator->create("LaserTower");
@@ -179,14 +179,28 @@ void ScenePlayTD::handle_input() {
 		}
 
 		if(mode == constructing){
-
+			std::cout<<"constructing!"<<std::endl;
 			//BuildingCreator* creator2=BuildingCreator::get_cur_object();
 			//constructing_building = creator2->create("Tower");
-			if(constructing_building->create_building()){
-				constructing_building=0;
-			}else{
+			if(!constructing_building)return;
+			if(constructing_building->buildable(constructing_building->get_pos_int().x,
+					constructing_building->get_pos_int().y,
+					constructing_building->get_pos_int().z)){
+				if(!PlayerController::get_cur_object()->get_cur_player()
+						->modify_resource(constructing_building->get_build_cost())){
+					delete constructing_building;
+					constructing_building = 0;
+					mode = normal;
+					return;
+				}
+				constructing_building->create_building();
+				constructing_building = 0;
+				mode = normal;
+			}
+			else{
 				delete constructing_building;
-				constructing_building=0;
+				constructing_building = 0;
+				mode = normal;
 			}
 
 			/*
@@ -195,7 +209,6 @@ void ScenePlayTD::handle_input() {
 							   map->selected_on.z,
 							   building);
 			*/
-			mode = normal;
 		}else if(mode == removing){
 			field->map->set_cube_type(field->map->selected_cube.x,
 									  field->map->selected_cube.y,

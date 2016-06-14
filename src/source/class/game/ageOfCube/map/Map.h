@@ -30,7 +30,10 @@ class Water;
 class CubeNull;
 class CubeError;
 class AllCubes;
-
+namespace path{
+static const unsigned char standable=1<<0;
+static const unsigned char jumpable=1<<1;
+}
 class Map : public Tim::GlobalObject<Map>{
 
 public:
@@ -51,10 +54,13 @@ public:
 
 	bool set_cube_type(int x,int y,int z,int val);
 	bool remove_cube(int x,int y,int z);
+
 	int get_cube_type(const int &x,const int &y,const int &z)const;
+	Cube *get_cube(math::vec3<double> pos);//get cube by 3D position
+	Cube *get_cube_down(math::vec3<double> pos);//get cube under the 3D position
 	Cube *get_cube(int x,int y,int z);
-	bool get_standable(int x,int y,int z);
-	bool get_jumpable(int x,int y,int z);
+	inline bool get_standable(int x,int y,int z){return path->get(x,y,z)&path::standable;}
+	inline bool get_jumpable(int x,int y,int z){return path->get(x,y,z)&path::jumpable;}
 	//get map_seg by position x and z
 	inline MapSeg* get_map_seg_by_pos(int x,int z){
 		return (map_segs->get((x/segsize.x),(z/segsize.z)));
@@ -65,7 +71,7 @@ public:
 		return (map_segs->get(x,z));
 	}
 
-	void update(Timer* timer);
+
 	glm::ivec3 get_size()const;
 
 	inline double get_wetness(const int &i,const int &k,const double &height){
@@ -99,8 +105,11 @@ public:
 	int get_water_height()const{
 		return ground_height*water_height;
 	}
+
+	void update(Timer* timer);
 	void draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool);
 
+	void find_select_cube();
 	AOC::DisplayMap* dp_map;
 
 
@@ -141,11 +150,14 @@ protected:
 	void save_update_pos(FILE * file);
 	void load_update_pos(FILE * file);
 
-	void find_select_cube();
 	void find_selected_on(glm::vec3 pos);
 	void find_selected_cube(glm::vec3 pos);
+
+	void update_path(int x,int y,int z);
+	void init_path();
 	//Tim::Array3D<Cube> *map;
 	Tim::Array3D<unsigned char> *map;
+	Tim::Array3D<unsigned char> *path;
 	Tim::Array2D<MapSeg*>* map_segs;
 	std::vector<math::vec3<int> >* cur_update_pos;
 	std::vector<math::vec3<int> >* prev_update_pos;
@@ -157,7 +169,7 @@ protected:
 	int ground_height;
 	unsigned seed;
 	double water_height;
-	Tim::Mutex Cube_Mutex;
+	//Tim::Mutex Cube_Mutex;
 
 	MapRigidBody* map_rigid_body;
 

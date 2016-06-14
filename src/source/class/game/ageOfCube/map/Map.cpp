@@ -23,6 +23,7 @@ namespace AOC{
 Map::Map() {
 	dp_map=0;
 	map=0;
+	path=0;
 	map_segs=0;
 	seed=0;
 	times=0;
@@ -50,6 +51,7 @@ Map::~Map() {
 		delete map_segs;
 	}
 	if(map)delete map;
+	if(path)delete path;
 	delete cube_out_of_edge;
 	delete cube_null;
 	delete cube_error;
@@ -60,10 +62,21 @@ void Map::swap_update_pos(){
 	std::swap(update_pos1,update_pos2);
 }
 void Map::init(){
-	if(map)delete map;
-	if(dp_map)delete dp_map;
+	if(map){
+		delete map;
+		map=0;
+	}
+	if(path){
+		delete path;
+		path=0;
+	}
+	if(dp_map){
+		delete dp_map;
+		dp_map=0;
+	}
 
 	map=new Tim::Array3D<unsigned char>(map_size.x,map_size.y,map_size.z);
+	path=new Tim::Array3D<unsigned char>(map_size.x,map_size.y,map_size.z);
 	gen_map_seg();
 	dp_map=new DisplayMap(this);
 }
@@ -139,7 +152,6 @@ void Map::gen_cube_type(int i,int j,int k,
 	}else if(type==Cube::sand){
 		gen_sand(type,i,j,k);
 	}
-	//map->get(i,j,k).set(type);
 	map->get(i,j,k)=type;
 }
 void Map::gen_land_scape(int i,int j,int k,
@@ -334,41 +346,51 @@ void Map::load_map(FILE* file){
 			for(int k=0;k<map_size.z;k++){
 				fscanf(file,"%d",&type);
 				map->get(i,j,k)=type;
+				path->get(i,j,k)=0;
 			}
 		}
 	}
-
-
 
 	for(int i=0;i<seg_num.x;i++){
 		for(int j=0;j<seg_num.z;j++){
 			map_segs->get(i,j)->load(file);
 		}
 	}
+	init_path();
 	load_update_pos(file);
-
-
 
 	dp_map->update_whole_map();
 
+}
+void Map::init_path(){
+	for(int i=0;i<map_size.x;i++){
+		for(int j=0;j<map_size.y;j++){
+			for(int k=0;k<map_size.z;k++){
+				update_path(i,j,k);
+			}
+		}
+	}
+}
+void Map::update_path(int x,int y,int z){
+	path->get(x,y,z)=0;
+	Cube* cube=get_cube(x,y,z);
+	if(cube->standable())path->get(x,y,z)|=path::standable;
+	if(cube->jumpable())path->get(x,y,z)|=path::jumpable;
 }
 void Map::push_CubeEX(int x,int y,int z,CubeEX *cube){
 	if(map->get(x,y,z)!=Cube::cubeNull){
 		std::cerr<<"Map::push_CubeEX fail ,cube already exist"<<std::endl;
 		delete cube;
 	}else{
-		Cube_Mutex.wait_for_this();
 		map->get(x,y,z)=cube->get_type();//.set(Cube::CubeEX);
 		get_map_seg_by_pos(x,z)->push_cube(math::vec3<int>(x,y,z),cube);
-		Cube_Mutex.release();
+		update_path(x,y,z);
 	}
-
 }
 bool Map::remove_cube(int x,int y,int z){
 	return set_cube_type(x,y,z,Cube::cubeNull);
 }
 bool Map::set_cube_type(int x,int y,int z,int type){
-
 	if(x<0||x>=map_size.x||y<0||y>=map_size.y||z<0||z>=map_size.z){
 		//std::cout<<"Map::set_cube_type out of map"<<"x="<<x<<"y="<<y<<"z="<<z<<std::endl;
 		return false;
@@ -378,36 +400,33 @@ bool Map::set_cube_type(int x,int y,int z,int type){
 		return false;
 	}
 
-	Cube_Mutex.wait_for_this();
+	//Cube_Mutex.wait_for_this();
 	if(perv_type==Cube::cubeEX){//.type
 		get_map_seg_by_pos(x,z)->remove_cube(math::vec3<int>(x,y,z));
 	}
-
 	map->get(x,y,z)=type;
+	update_path(x,y,z);
+	//Cube_Mutex.release();
+
 	push_update_cube(x,y,z);
 
 	dp_map->update_map(math::vec3<int>(x,y,z));
-	Cube_Mutex.release();
+
 
 	return true;
 }
 void Map::push_update_cube(int x,int y,int z){
-	//for(unsigned i=0;i<prev_update_pos->size();i++){
-		//if(glm::ivec3(x,y,z)==prev_update_pos->at(i))return;
-	//}
 	prev_update_pos->push_back(math::vec3<int>(x,y,z));
 }
-bool Map::get_standable(int x,int y,int z){
-	Cube_Mutex.wait_for_this();
-	bool flag=get_cube(x,y,z)->standable();
-	Cube_Mutex.release();
-	return flag;
+Cube *Map::get_cube_down(math::vec3<double> pos){
+	return get_cube(floor(pos.x/Map::CUBE_SIZE),
+			floor(pos.y/Map::CUBE_SIZE)-1,
+			floor(pos.z/Map::CUBE_SIZE));
 }
-bool Map::get_jumpable(int x,int y,int z){
-	Cube_Mutex.wait_for_this();
-	bool flag=get_cube(x,y,z)->jumpable();
-	Cube_Mutex.release();
-	return flag;
+Cube *Map::get_cube(math::vec3<double> pos){
+	return get_cube(floor(pos.x/Map::CUBE_SIZE),
+			floor(pos.y/Map::CUBE_SIZE),
+			floor(pos.z/Map::CUBE_SIZE));
 }
 Cube* Map::get_cube(int x,int y,int z){
 	Cube* cube=0;

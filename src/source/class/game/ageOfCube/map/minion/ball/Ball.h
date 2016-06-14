@@ -10,6 +10,7 @@
 namespace AOC {
 
 class Ball: public Minion {
+	static const float gravity=-0.003f;
 public:
 	virtual void minion_pre_init();
 	Ball();

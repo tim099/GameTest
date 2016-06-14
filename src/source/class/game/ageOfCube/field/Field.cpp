@@ -20,13 +20,9 @@ Field::~Field() {
 	std::cout<<"Field::~Field() 1"<<std::endl;
 	delete astar;
 	if(map)delete map;
-	std::cout<<"Field::~Field() 2"<<std::endl;
 	delete player_controller;
-	std::cout<<"Field::~Field() 3"<<std::endl;
 	delete attack_controller;
-	std::cout<<"Field::~Field() 4"<<std::endl;
 	delete unit_controller;
-	std::cout<<"Field::~Field() 5"<<std::endl;
 	delete entity_controller;
 	std::cout<<"Field::~Field() 6"<<std::endl;
 

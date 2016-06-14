@@ -18,7 +18,6 @@ SceneStart::SceneStart() {
 void SceneStart::scene_initialize(){
 
 	resume();
-
 	//std::vector<std::string> files=Tim::File::get_all_dirs("files/texture/");
 	//for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
 }
@@ -34,12 +33,7 @@ SceneStart::~SceneStart() {
 }
 void SceneStart::pause(){
 	music_player.pause();
-	/*
-	if(UI){
-		delete UI;
-		UI=0;
-	}
-	*/
+
 }
 void SceneStart::resume(){
 	std::cout<<"SceneStart::resume()"<<std::endl;
@@ -59,6 +53,7 @@ void SceneStart::resume(){
 	}else{
 		p_control->switch_page("startPage");
 	}
+	std::cout<<"SceneStart::resume() END"<<std::endl;
 }
 void SceneStart::handle_signal(Input::Signal* sig){
 	std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;

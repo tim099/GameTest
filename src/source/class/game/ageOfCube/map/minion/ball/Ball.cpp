@@ -68,31 +68,32 @@ void Ball::load_minion(FILE * file){
 void Ball::killed(){
 	Player *cur_player=PlayerController::get_cur_object()->get_cur_player();
 	//srand(time(NULL));
-	cur_player->modify_resource("cube",1*(get_max_hp()/30));
-	int ran=rand()%5;
+	cur_player->modify_resource("cube",1*(get_max_hp()/50));
+	int ran=rand()%20;
 	//std::cout<<"ran="<<ran<<std::endl;
+
 	switch(ran){
 		case 0:
-			cur_player->modify_resource("cube",1*(get_max_hp()/10));
+			cur_player->modify_resource("cube",1*(get_max_hp()/30));
 			break;
 		case 1:
-			cur_player->modify_resource("water",1*(get_max_hp()/30));
+			cur_player->modify_resource("water",1*(get_max_hp()/100));
 			break;
 		case 2:
-			cur_player->modify_resource("fire",1*(get_max_hp()/30));
+			cur_player->modify_resource("fire",1*(get_max_hp()/100));
 			break;
 		case 3:
-			cur_player->modify_resource("earth",1*(get_max_hp()/30));
+			cur_player->modify_resource("earth",1*(get_max_hp()/100));
 			break;
 		case 4:
-			cur_player->modify_resource("air",1*(get_max_hp()/30));
+			cur_player->modify_resource("air",1*(get_max_hp()/100));
+			break;
+		default:
+			cur_player->modify_resource("cube",1*(get_max_hp()/50));
 			break;
 	}
 
 	Audio::AudioController::get_cur_object()->play("default_sound_effect/Pickup_Coin2.wav",0.3);
-
-
-
 	//cur_player->modify_resource("tech",1*(get_max_hp()/100));
 }
 double Ball::get_attack_size(){
@@ -154,20 +155,19 @@ void Ball::moving(){
 			if(rigid_body.collided){
 				colli_timer=10;
 			}
-			if(colli_timer<=0){
+			if(colli_timer<=0&&Map::get_cur_object()->get_cube_down(get_pos()-rigid_body.radius)->standable()){
 				math::vec3<double> target=path->path.at(path->cur_at);
-				move_to(target,0.02);
+				move_to(target,0.008);
 				stuck_timer++;
 			}else{
 				colli_timer--;
+				rigid_body.vel.y+=gravity;
 			}
 		}else{
 			if(finder)delete finder;
 			finder=0;
 			Audio::AudioController::get_cur_object()->
 					play_by_dis("default_sound_effect/Bomb.wav",rigid_body.pos,500);
-
-			//set_hp(0);
 		}
 	}
 }
@@ -200,9 +200,8 @@ void Ball::ball_move(){
 				finder=0;
 			}
 		}
-
 	}else{
-		rigid_body.vel.y-=0.003f;
+		rigid_body.vel.y+=gravity;
 	}
 }
 void Ball::draw_minion(){

@@ -13,6 +13,12 @@ public:
 	virtual unsigned char get_type(){
 		return Cube::stone;
 	}
+	virtual bool jumpable(){
+		return true;
+	}
+	virtual bool standable(){
+		return true;
+	}
 };
 }
 #endif /* SOURCE_CLASS_GAME_MAP_CUBE_BASIC_STONE_STONE_H_ */

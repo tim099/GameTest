@@ -62,9 +62,11 @@ void Minion::push_minion_to_controller(){
 */
 void Minion::move_to(math::vec3<double> target,double vel){
 	math::vec3<double>pos_del=target-get_pos();
-	//set_vel(vel*pos_del.normalize());
-	rigid_body.vel*=0.6;
-	rigid_body.vel+=vel*pos_del.normalize();
+	math::vec3<double>pos_del_xz=pos_del;
+	pos_del_xz.y=0;
+	rigid_body.vel*=0.85;
+	rigid_body.vel+=vel*pos_del_xz.normalize();
+	rigid_body.vel.y+=0.016*pos_del.normalize().y;
 }
 void Minion::unit_update(){
 	//std::cout<<"unit_update()"<<std::endl;

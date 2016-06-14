@@ -34,10 +34,12 @@ public:
 		if(this!=&that){
 			clear();
 			if(that.ptr){
+				that.mutex->wait_for_this();
 				ptr=that.ptr;
 				mutex=that.mutex;
 				pointed_num=that.pointed_num;
 				(*pointed_num)++;
+				that.mutex->release();
 			}
 		}
 		return *this;
@@ -56,13 +58,14 @@ public:
 			mutex->wait_for_this();
 			--(*pointed_num);
 			bool flag=false;
-			if((*pointed_num)==0){
+			if(*pointed_num==0)flag=true;//last ptr
+
+			mutex->release();
+			if(flag){
 				delete pointed_num;
 				delete ptr;
-				flag=true;
+				delete mutex;
 			}
-			mutex->release();
-			if(flag)delete mutex;
 
 			mutex=0;
 			pointed_num=0;

@@ -312,6 +312,7 @@ void SceneEditMap::scene_update() {
 		field->update();
 		//map->update(&timer);
 	}else{
+		field->map->find_select_cube();
 		//std::cout<<"pause"<<std::endl;
 	}
 }

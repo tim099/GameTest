@@ -90,8 +90,8 @@ CreateUIObject:
 	Position:
 		0.46076 0.5721
 	String:
-		"Map01"
-String_size:
+"Map01"
+	String_size:
 		0.04
 	#EnableInputMode
 	Parent:

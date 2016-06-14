@@ -20,6 +20,60 @@ CreateUIObject:
 #create_end
 
 CreateUIObject:
+		UIString
+	Name:
+		difficulty_string
+	Position:
+		0.405711 0.883901
+	String:
+"set difficulty :"
+	String_size:
+		0.02
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.403515 0.788533
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"easy"
+	String_size:
+		0.02
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.402783 0.670804
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"normal"
+	String_size:
+		0.02
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
 		PictureButton
 	Name:
 		default

@@ -22,13 +22,13 @@ CreateUIObject:
 	Name:
 		ButPanel
 	Position:
-		0.0 1.0
+		0 1
 	Texture:
 		UI/UI/title
 	Width:
-		1.0
+		1
 	Height:
-		1.0
+		1
 	Parent:
 		startPage
 #create_end

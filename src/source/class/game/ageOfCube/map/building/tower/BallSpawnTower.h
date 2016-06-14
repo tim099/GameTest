@@ -46,8 +46,8 @@ protected:
 	math::Position ball3;
 	math::Position ball4;
 	int loop_time;
+	int loop_count;
 	int timer;
-	int spawn_timer;
 };
 
 } /* namespace AOC */

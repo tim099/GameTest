@@ -25,7 +25,6 @@ PlayerController::~PlayerController() {
 		delete players.at(i);
 	}
 	//delete receiver; //delete by input remove_reveiver
-
 }
 void PlayerController::game_over(unsigned player_id){
 
@@ -51,11 +50,14 @@ Player* PlayerController::search_player(unsigned int player_id){
 }
 
 void PlayerController::save(FILE *file){
-
+	for(unsigned i=0;i<players.size();i++){
+		players.at(i)->save(file);
+	}
 }
-
 void PlayerController::load(FILE *file){
-
+	for(unsigned i=0;i<players.size();i++){
+		players.at(i)->load(file);
+	}
 }
 
 } /* namespace AOC */

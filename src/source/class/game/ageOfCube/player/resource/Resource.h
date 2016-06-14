@@ -19,6 +19,7 @@ public:
 	bool modifyAmount(int modifier);
 	std::string get_name(){return name;}
 	int get_amount(){return amount;}
+	void set_amount(int _amount){amount=_amount;}
 private:
 	int amount;
 	std::string name;

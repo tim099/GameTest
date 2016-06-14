@@ -89,7 +89,7 @@ void Ball::killed(){
 			break;
 	}
 
-	Audio::AudioController::get_cur_object()->play("default_sound_effect/Pickup_Coin2.wav",1.0);
+	Audio::AudioController::get_cur_object()->play("default_sound_effect/Pickup_Coin2.wav",0.3);
 
 
 

@@ -24,22 +24,21 @@ BallSpawnTower::BallSpawnTower() {
 	tower_part3=0;
 	tower_part4=0;
 	timer=0;
-	spawn_timer=0;
 	size = 2.0;
 	loop_time=1600;
+	loop_count=0;
 	init_BallSpawnTower();
 }
 BallSpawnTower::BallSpawnTower(BallSpawnTower* tower) {
-	init(50000,0);
+	init(100000,1);
 	tower_Drawobj=tower->tower_Drawobj;
 	tower_part1=tower->tower_part1;
 	tower_part2=tower->tower_part2;
 	tower_part3=tower->tower_part3;
 	tower_part4=tower->tower_part4;
 	timer=0;
-	spawn_timer=0;
 	size = tower->size;
-	init(1000,1);
+	loop_count=0;
 	loop_time=tower->loop_time;
 	init_BallSpawnTower();
 }
@@ -59,10 +58,11 @@ void BallSpawnTower::init_BallSpawnTower(){
 	ball4.set_parent(&pos);
 }
 void BallSpawnTower::save_building(FILE * file){
-	fprintf(file,"%d %d %d\n",timer,spawn_timer,loop_time);
+	fprintf(file,"%d %d %d\n",timer,loop_count,loop_time);
 }
 void BallSpawnTower::load_building(FILE * file){
-	fscanf(file,"%d %d %d\n",&timer,&spawn_timer,&loop_time);
+	fscanf(file,"%d %d %d\n",&timer,&loop_count,&loop_time);
+	loop_count=0;
 }
 void BallSpawnTower::building_set_pos(int x,int y,int z){
 	math::vec3<int> real_size=get_cube_large_size();
@@ -107,67 +107,19 @@ void BallSpawnTower::spawn(){
 			math::vec3<double>::normalize(
 			math::vec3<double>(relative_pos.x,0,relative_pos.z)));
 
-	if(spawn_timer<loop_time){
 
-	}else if(spawn_timer<2*loop_time){
-		ball->max_hp_alter(10);
-	}else if(spawn_timer<3*loop_time){
-		if(spawn_timer==2*loop_time&&loop_time>400){
-			spawn_timer*=0.8;
-			loop_time=ceil(0.8*loop_time);
-		}
-		ball->max_hp_alter(20);
-	}else if(spawn_timer<4*loop_time){
-		ball->max_hp_alter(30);
-	}else if(spawn_timer<5*loop_time){
-		if(spawn_timer==4*loop_time&&loop_time>400){
-			spawn_timer*=0.8;
-			loop_time=ceil(0.8*loop_time);
-		}
-		ball->max_hp_alter(40);
-	}else if(spawn_timer<6*loop_time){
-		ball->max_hp_alter(50);
-	}else if(spawn_timer<7*loop_time){
-		if(spawn_timer==6*loop_time&&loop_time>400){
-			spawn_timer*=0.8;
-			loop_time=ceil(0.8*loop_time);
-		}
-		ball->max_hp_alter(70);
-	}else if(spawn_timer<8*loop_time){
-		if(spawn_timer==7*loop_time&&loop_time>400){
-			spawn_timer*=0.8;
-			loop_time=ceil(0.8*loop_time);
-		}
-		ball->max_hp_alter(90);
-	}else if(spawn_timer<9*loop_time){
-		if(spawn_timer==8*loop_time&&loop_time>400){
-			spawn_timer*=0.8;
-			loop_time=ceil(0.8*loop_time);
-		}
-		ball->max_hp_alter(110);
-	}else if(spawn_timer<9*loop_time){
-		if(spawn_timer==4*loop_time&&loop_time>400){
-			spawn_timer*=0.8;
-			loop_time=ceil(0.8*loop_time);
-		}
-		ball->max_hp_alter(130);
-	}else{
-		ball->max_hp_alter((spawn_timer/loop_time)*15);
-	}
-	ball->upgrade("fire",(spawn_timer/loop_time));
-	//std::cout<<"ball hp="<<ball->get_hp()<<std::endl;
+
+	ball->max_hp_alter(loop_count*15);
+	ball->upgrade("fire",loop_count);
+
 	double ball_size=0.16f*size*sqrt(ball->get_hp()/100.0);
 	if(ball_size>0.9)ball_size=0.9;
 	ball->set_size(ball_size);
 	ball->set_player(get_player());
 	ball->create_minion();
 
-
 }
 void BallSpawnTower::building_update(){
-	if(spawn_timer<1000*loop_time){
-		spawn_timer++;
-	}
 	if((timer)%(loop_time/8)==(loop_time/8)-1){
 		spawn();
 		//std::cout<<"BallSpawnTower::building_update() recruit"<<std::endl;
@@ -176,7 +128,10 @@ void BallSpawnTower::building_update(){
 		timer++;
 	}else{
 		timer=0;
-		//loop_time*=1.5;
+		if(loop_time>400){
+			loop_time*=0.95;
+		}
+		loop_count++;
 	}
 }
 void BallSpawnTower::draw_building(){

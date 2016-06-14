@@ -1,5 +1,5 @@
 #include "class/game/ageOfCube/player/Player.h"
-
+#include <cstdio>
 namespace AOC {
 
 Player::Player(int _id, PlayerType _type) {
@@ -18,10 +18,24 @@ Player::~Player() {
 	if(player_UI)delete player_UI;
 }
 void Player::save(FILE *file){
-
+	fprintf(file,"%d %d %d %d %d %d\n",resources.get("cube")->get_amount(),
+						   resources.get("fire")->get_amount(),
+						   resources.get("water")->get_amount(),
+						   resources.get("earth")->get_amount(),
+						   resources.get("air")->get_amount(),
+						   resources.get("tech")->get_amount());
+	fprintf(file,"%d\n",score);
 }
 void Player::load(FILE *file){
-
+	int cube,fire,water,earth,air,tech;
+	fscanf(file,"%d %d %d %d %d %d\n",&cube,&fire,&water,&earth,&air,&tech);
+	resources.get("cube")->set_amount(cube);
+	resources.get("fire")->set_amount(fire);
+	resources.get("water")->set_amount(water);
+	resources.get("earth")->set_amount(earth);
+	resources.get("air")->set_amount(air);
+	resources.get("tech")->set_amount(tech);
+	fscanf(file,"%d\n",&score);
 }
 void Player::set_score(int _score){
 	//std::cout<<"Player::set_score:"<<_score<<std::endl;

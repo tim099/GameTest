@@ -11,7 +11,7 @@ namespace AOC {
 
 namespace AI{
 namespace search{
-class Astar;
+	class Astar;
 }
 }
 class Field {

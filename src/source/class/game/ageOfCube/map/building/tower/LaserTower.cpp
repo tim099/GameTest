@@ -15,7 +15,7 @@ LaserTower::LaserTower(LaserTower* tower){
 	//attack_damage=5;
 
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("LaserCannon");
-	weapon->set_attack_range(12.0);
+	weapon->set_attack_range(11.0);
 	weapon->set_attack_damage(5);
 	push_weapon(weapon);
 	build_cost = ResourceModifier("cube",-50);

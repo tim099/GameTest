@@ -4,7 +4,7 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
 #include "class/audio/AllAudioSources.h"
-
+#include "class/tim/string/String.h"
 #include <ctime>
 namespace AOC{
 SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
@@ -180,29 +180,15 @@ void SceneEditMap::camera_control(){
 	}
 }
 void SceneEditMap::handle_signal(Input::Signal *sig){
+	std::vector<std::string> strs;
+	Tim::String::split(sig->get_data(),"_",strs);
 	if(sig->get_data()=="save_map"){
-		//map->save_map(map_name);
 		field->save(map_name);
-	}else if(sig->get_data()=="build_BallSpawnTower"){
+		//field->save(map_name+"_save");
+	}else if(strs.size()==2&&strs.at(0)=="build"){
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
-		constructing_building = creator->create("BallSpawnTower");
-		constructing_building->set_player(1);//enemy
-	}else if(sig->get_data()=="build_Tower"){
-		if(constructing_building)delete constructing_building;
-		BuildingCreator* creator=BuildingCreator::get_cur_object();
-		constructing_building = creator->create("Tower");
-		constructing_building->set_player(0);
-	}else if(sig->get_data()=="build_MainTower"){
-		if(constructing_building)delete constructing_building;
-		BuildingCreator* creator=BuildingCreator::get_cur_object();
-		constructing_building = creator->create("MainTower");
-		constructing_building->set_player(0);
-	}else if(sig->get_data()=="build_LaserTower"){
-		if(constructing_building)delete constructing_building;
-		BuildingCreator* creator=BuildingCreator::get_cur_object();
-		constructing_building = creator->create("LaserTower");
-		constructing_building->set_player(0);
+		constructing_building = creator->create(strs.at(1));
 	}
 }
 void SceneEditMap::handle_input() {

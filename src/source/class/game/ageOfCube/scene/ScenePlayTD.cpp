@@ -196,8 +196,7 @@ void ScenePlayTD::handle_input() {
 				constructing_building->create_building();
 				constructing_building = 0;
 				mode = normal;
-			}
-			else{
+			}else{
 				delete constructing_building;
 				constructing_building = 0;
 				mode = normal;

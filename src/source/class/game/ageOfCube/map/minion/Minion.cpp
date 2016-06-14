@@ -3,6 +3,7 @@
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/game/ageOfCube/map/DisplayMap.h"
 #include "class/game/ageOfCube/map/unit/UnitController.h"
+#include "class/display/draw/drawObject/AllDrawObjects.h"
 #include <iostream>
 namespace AOC {
 
@@ -38,6 +39,42 @@ math::vec3<int> Minion::get_pos_int(){
 			get_pos().y/Map::CUBE_SIZE,
 			get_pos().z/Map::CUBE_SIZE);
 }
+void Minion::draw_hp(){
+	if(get_hp()==get_max_hp())return;
+	Display::AllDrawObjects* all_dobj=Display::AllDrawObjects::get_cur_object();
+	double hp_percent=((double)get_hp()/(double)get_max_hp());
+	//std::cout<<"hp_percent="<<hp_percent<<std::endl;
+	math::Position* pos;
+	Display::DrawDataObj* data;
+	if(get_hp()>0){
+		pos=new math::Position();
+		pos->set_pos(glm::vec3(
+				get_pos().x,
+				get_pos().y+1.5*rigid_body.radius,
+				get_pos().z+(1.0-hp_percent)*rigid_body.radius));
+		pos->set_scale(glm::vec3(
+				0.3*rigid_body.radius,
+				0.3*rigid_body.radius,
+				2*hp_percent*rigid_body.radius));
+		data=new Display::DrawDataObj(pos,true,true);
+		all_dobj->get("misc/hp_light")->push_temp_drawdata(data);
+	}
+	if(get_hp()<get_max_hp()){
+		pos=new math::Position();
+		pos->set_pos(glm::vec3(
+				get_pos().x,
+				get_pos().y+1.5*rigid_body.radius,
+				get_pos().z-hp_percent*rigid_body.radius));
+		pos->set_scale(glm::vec3(
+				0.3*rigid_body.radius,
+				0.3*rigid_body.radius,
+				2*(1.0-hp_percent)*rigid_body.radius));
+		data=new Display::DrawDataObj(pos,true,true);
+		all_dobj->get("misc/hp_dark")->push_temp_drawdata(data);
+	}
+
+
+}
 void Minion::draw(){
 	if(is_dead){
 		return;
@@ -46,6 +83,7 @@ void Minion::draw(){
 	math::vec3<double> e=Map::get_cur_object()->dp_map->dp_end;
 	math::vec3<double> pos=get_pos();
 	if(pos>=s&&pos<=e){
+		draw_hp();
 		draw_minion();
 	}else{
 		//draw_minion();

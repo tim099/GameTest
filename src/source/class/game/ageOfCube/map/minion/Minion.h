@@ -39,6 +39,8 @@ protected:
 	virtual void minion_update(){}
 	virtual void miniod_collide(entity::Entity* entity){};
 	virtual void miniod_be_collide(entity::Entity* entity){miniod_collide(entity);};
+
+	void draw_hp();
 	//void push_minion_to_controller();
 	physic::RigidBody rigid_body;
 	bool minion_created;

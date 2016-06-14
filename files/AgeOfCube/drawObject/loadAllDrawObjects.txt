@@ -27,4 +27,8 @@ Map:
 Map:
 	ScriptPath:
 		attack/attackMap.txt
+		
+Map:
+	ScriptPath:
+		misc/miscMap.txt		
 #END

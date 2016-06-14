@@ -12,7 +12,7 @@ Texture:
 	TextureName:
 		basic_cube_tower_1
 	TexturePath:
-		tower/stone.bmp
+		tower/sand.bmp
 
 Texture:
 	TextureName:

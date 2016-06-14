@@ -340,11 +340,11 @@ void Map::load_map(FILE* file){
 		return;
 	}
 	init();
-	int type;
+	unsigned type;
 	for(int i=0;i<map_size.x;i++){
 		for(int j=0;j<map_size.y;j++){
 			for(int k=0;k<map_size.z;k++){
-				fscanf(file,"%d",&type);
+				fscanf(file,"%u",&type);
 				map->get(i,j,k)=type;
 				path->get(i,j,k)=0;
 			}

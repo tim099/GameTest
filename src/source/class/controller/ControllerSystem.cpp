@@ -8,6 +8,11 @@ ControllerSystem::~ControllerSystem() {
 		delete controllers.at(i);
 	}
 }
+void ControllerSystem::pre_update(){
+	for(unsigned i=0;i<controllers.size();i++){
+		controllers.at(i)->pre_update();
+	}
+}
 void ControllerSystem::update(){
 	for(unsigned i=0;i<controllers.size();i++){
 		controllers.at(i)->update();

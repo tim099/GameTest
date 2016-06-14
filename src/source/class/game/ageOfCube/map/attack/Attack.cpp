@@ -65,14 +65,14 @@ void Attack::update(){
 		target=UnitController::get_cur_object()->search_unit(target->get_player(),pos);//"MainTower"
 	}
 	collied_units.clear();
-	if(be_collided_id){
-		entity::Entity* entity=entity::EntityPointer::get_entity(be_collided_id);
+	for(unsigned i=0;i<be_collided_id.size();i++){
+		entity::Entity* entity=entity::EntityPointer::get_entity(be_collided_id.at(i));
 		if(Unit* unit=dynamic_cast<Unit*>(entity)){
 			collied_units.push_back(unit);
 		}
 	}
-	if(collided_id){
-		entity::Entity* entity=entity::EntityPointer::get_entity(collided_id);
+	for(unsigned i=0;i<collided_id.size();i++){
+		entity::Entity* entity=entity::EntityPointer::get_entity(collided_id.at(i));
 		if(Unit* unit=dynamic_cast<Unit*>(entity)){
 			collied_units.push_back(unit);
 		}

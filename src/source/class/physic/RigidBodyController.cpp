@@ -81,7 +81,16 @@ void RigidBodyController::check_collision(){
 	collisions.clear();
 	special_collisions.clear();
 }
+void RigidBodyController::pre_update(){
+
+}
 void RigidBodyController::update(){
+	for(unsigned i=0;i<collisions.size();i++){
+		collisions.at(i)->clear_collision_data();
+	}
+	for(unsigned i=0;i<special_collisions.size();i++){
+		special_collisions.at(i)->clear_collision_data();
+	}
 	check_collision();
 }
 } /* namespace physic */

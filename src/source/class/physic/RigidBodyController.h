@@ -18,6 +18,7 @@ public:
 		special_collisions.push_back(rigid_body);
 	}
 	bool check_collision(RigidBody* rigid_body);
+	virtual void pre_update();
 	virtual void update();
 protected:
 	void check_collision();

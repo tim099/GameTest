@@ -11,7 +11,4 @@ Controller::~Controller() {
 
 }
 
-void Controller::update(){
-
-}
 #endif /* SOURCE_CLASS_GAME_MAP_CONTROLLER_CPP_ */

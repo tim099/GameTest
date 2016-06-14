@@ -14,14 +14,14 @@
 #include <iostream>
 //#include <thread>
 #include "class/game/ageOfCube/AgeOfCubes.h"
-#include "class/game/chessMaster/ChessMaster.h"
+//#include "class/game/chessMaster/ChessMaster.h"
 int main(){
 
 	///*
 
 	//while(true){
 
-	AOC::AgeOfCubes* ageOfCubes=new AOC::AgeOfCubes();
+	Game* ageOfCubes=new AOC::AgeOfCubes();
 	ageOfCubes->initialize();
 	ageOfCubes->mainloop();
 	delete ageOfCubes;
@@ -47,6 +47,5 @@ int main(){
 
 	delete test;
 	*/
-
     return 0;
 }

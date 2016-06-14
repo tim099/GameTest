@@ -3,6 +3,7 @@
 #include "class/tim/math/vec3.h"
 #include "class/game/entity/Component.h"
 #include <cstdio>
+#include <vector>
 #include <string>
 namespace physic {
 
@@ -15,6 +16,8 @@ public:
 	}
 	void save_rigid_body(FILE * file);
 	void load_rigid_body(FILE * file);
+
+	void clear_collision_data();
 	void update_rigid_body();
 
 	void set_detect_collision();//call this function every frame to detect collision
@@ -26,11 +29,16 @@ public:
 
 	double radius;
 	double mass;
-	bool collision_off;
+	int collision_off;//turn of collision
+	int be_collide_off;
+
 	math::vec3<double> vel;
 	math::vec3<double> pos,prev_pos;
-	RigidBody* collided,*be_collided;
-	unsigned collided_id,be_collided_id;
+	std::vector<RigidBody*> collided;
+	std::vector<RigidBody*> be_collided;
+
+	std::vector<unsigned> collided_id;
+	std::vector<unsigned> be_collided_id;
 protected:
 	virtual void collide_action(RigidBody* b);
 	virtual void be_collide_action(RigidBody* b);

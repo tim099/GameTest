@@ -7,6 +7,12 @@ class ControllerSystem {
 public:
 	ControllerSystem();
 	virtual ~ControllerSystem();
+
+	/*
+	 * pre update all controller in this system before scene update
+	 */
+	void pre_update();
+
 	/*
 	 * update all controller in this system
 	 */

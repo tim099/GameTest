@@ -8,10 +8,11 @@ RigidBody::RigidBody() {
 	//std::cout<<"RigidBody::RigidBody()="<<this<<std::endl;
 	//RigidBodyController::get_cur_object()->push(this);
 	radius=1.0;
-	collided=0;
-	be_collided=0;
-	collided_id=0;be_collided_id=0;
+	//collided=0;
+	//be_collided=0;
+	//collided_id=0;be_collided_id=0;
 	collision_off=false;
+	be_collide_off=false;
 	mass=1.0;
 }
 RigidBody::~RigidBody() {
@@ -23,13 +24,14 @@ void RigidBody::save_rigid_body(FILE * file){
 	fprintf(file,"%lf %lf %lf\n",pos.x,pos.y,pos.z);
 	fprintf(file,"%lf %lf %lf\n",prev_pos.x,prev_pos.y,prev_pos.z);
 	fprintf(file,"%lf %lf\n",radius,mass);
-
+	fprintf(file,"%d %d\n",collision_off,be_collide_off);
 }
 void RigidBody::load_rigid_body(FILE * file){
 	fscanf(file,"%lf %lf %lf\n",&vel.x,&vel.y,&vel.z);
 	fscanf(file,"%lf %lf %lf\n",&pos.x,&pos.y,&pos.z);
 	fscanf(file,"%lf %lf %lf\n",&prev_pos.x,&prev_pos.y,&prev_pos.z);
 	fscanf(file,"%lf %lf\n",&radius,&mass);
+	fscanf(file,"%d %d\n",&collision_off,&be_collide_off);
 }
 void RigidBody::set_detect_collision(){
 	RigidBodyController::get_cur_object()->push_collision(this);
@@ -44,9 +46,14 @@ bool RigidBody::check_collision(RigidBody* b){
 	return false;
 }
 void RigidBody::collide(RigidBody* b){
-	collided=b;
-	collided_id=collided->id;
+	collided.push_back(b);
+	if(b->id)collided_id.push_back(b->id);
 	collide_action(b);
+}
+void RigidBody::be_collide(RigidBody* b){
+	be_collided.push_back(b);
+	if(b->id)be_collided_id.push_back(b->id);
+	be_collide_action(b);
 }
 void RigidBody::collide_action(RigidBody* b){
 	math::vec3<double> o_pos=0.5*(b->pos+pos);
@@ -87,19 +94,16 @@ void RigidBody::collide_action(RigidBody* b){
 		//*/
 	}
 }
-void RigidBody::be_collide(RigidBody* b){
-	be_collided=b;
-	be_collided_id=be_collided->id;
-	be_collide_action(b);
-}
 void RigidBody::be_collide_action(RigidBody* b){
 
 }
+void RigidBody::clear_collision_data(){
+	collided.clear();
+	collided_id.clear();
+	be_collided.clear();
+	be_collided_id.clear();
+}
 void RigidBody::update_rigid_body(){
-	collided=0;
-	collided_id=0;
-	be_collided=0;
-	be_collided_id=0;
 	prev_pos=pos;
 	pos+=vel;
 }

@@ -125,6 +125,7 @@ void Ball::find_path(){
 	}
 }
 void Ball::explode(){
+	/*
 	if(rigid_body.radius>0.45){
 		if((rigid_body.be_collided&&rigid_body.be_collided->get_type()=="MapRigidBody")){
 			for(int i=-2;i<=2;i++){
@@ -143,6 +144,7 @@ void Ball::explode(){
 	}else{
 		rigid_body.radius*=1.02;
 	}
+	*/
 }
 void Ball::moving(){
 	AI::search::FindPath* path=dynamic_cast<AI::search::FindPath*>(finder->get());
@@ -152,7 +154,7 @@ void Ball::moving(){
 			stuck_timer=0;
 		}
 		if(path->cur_at<path->path.size()){
-			if(rigid_body.collided){
+			if(rigid_body.collided.size()>0){
 				colli_timer=10;
 			}
 			if(colli_timer<=0&&Map::get_cur_object()->get_cube_down(get_pos()-rigid_body.radius)->standable()){

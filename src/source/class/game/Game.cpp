@@ -155,6 +155,12 @@ void Game::update(){
 	game_update();
 	Scene* cur_scene=get_cur_scene();
 	//std::cout<<"Game::update() cur_scene="<<cur_scene->scene_name()<<std::endl;
+	//===============system pre_update=======================
+	//std::cout<<"Game::update() controller_system->pre_update()"<<std::endl;
+	controller_system->pre_update();
+	//std::cout<<"Game::update() controller_system->pre_update() end"<<std::endl;
+	//===============scene_update()======================
+	//std::cout<<"Game::update() cur_scene="<<cur_scene->scene_name()<<std::endl;
 	cur_scene->update();
 	//std::cout<<"Game::update() cur_scene->update() end"<<std::endl;
 	//===========system update=============

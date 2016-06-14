@@ -6,10 +6,18 @@ class Controller {
 public:
 	Controller();
 	virtual ~Controller();
+
+
+
+	/*
+	 * pre update the controller before scene update
+	 */
+	virtual void pre_update(){}
+
 	/*
 	 * update the controller
 	 */
-	virtual void update();
+	virtual void update(){}
 
 };
 //#include "class/controller/Controller.cpp"

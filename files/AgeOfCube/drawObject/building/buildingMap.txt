@@ -14,7 +14,8 @@ DrawObject:
 		building/basic_cube_tower_1
 	Texture:
 		building/basic_cube_tower_1
-
+	NormalMap:
+		building/tower_nor
 #load_end
 
 DrawObject:
@@ -24,6 +25,8 @@ DrawObject:
 		building/main_tower
 	Texture:
 		building/basic_cube_tower_1
+	NormalMap:
+		building/tower_nor
 #load_end
 
 DrawObject:
@@ -33,6 +36,8 @@ DrawObject:
 		building/laser_tower
 	Texture:
 		building/basic_cube_tower_1
+	NormalMap:
+		building/tower_nor
 #load_end
 
 DrawObject:
@@ -41,7 +46,7 @@ DrawObject:
 	ModelBuffer:
 		building/ball_spawn_tower
 	Texture:
-		building/basic_cube_tower_1
+		building/basic_cube_tower_1		
 #load_end
 
 DrawObject:
@@ -52,7 +57,7 @@ DrawObject:
 	Texture:
 		cube/stone
 	NormalMap:
-		cube/stoneNor
+		building/tower_nor
 #load_end
 
 DrawObject:
@@ -63,7 +68,7 @@ DrawObject:
 	Texture:
 		cube/stone
 	NormalMap:
-		cube/stoneNor
+		building/tower_nor
 #load_end
 
 DrawObject:
@@ -74,7 +79,7 @@ DrawObject:
 	Texture:
 		cube/stone
 	NormalMap:
-		cube/stoneNor
+		building/tower_nor
 #load_end
 
 DrawObject:

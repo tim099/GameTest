@@ -66,7 +66,7 @@ void Missile::draw_attack(){
 void Missile::attack_update(){
 	//std::cout<<"Missile::attack_update()"<<std::endl;
 	timer++;
-	if(be_collided||collided){
+	if(be_collided.size()>0||collided.size()>0){
 		explode();
 	}
 	if(target){

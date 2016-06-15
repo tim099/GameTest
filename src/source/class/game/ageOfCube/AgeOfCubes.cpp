@@ -36,6 +36,7 @@ AgeOfCubes::~AgeOfCubes() {
 void AgeOfCubes::terminate_game(){
 	//delete in reverse of create order
 	std::cout<<"terminate game start"<<std::endl;
+	delete audioSources;
 	delete drawObjects;
 	delete modelBuffers;
 	delete textures;

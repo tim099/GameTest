@@ -16,7 +16,7 @@ Window::Window(math::vec2<int> _size,std::string name,bool full_screen) {
 Window::~Window() {
 	if(glfwinitial){
 		glfwinitial=false;
-		//glfwTerminate();
+		glfwTerminate();
 	}
 	if(glewinitial){
 		//glewinitial=false;

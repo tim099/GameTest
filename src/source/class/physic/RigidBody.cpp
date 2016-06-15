@@ -6,13 +6,11 @@ namespace physic {
 
 RigidBody::RigidBody() {
 	//std::cout<<"RigidBody::RigidBody()="<<this<<std::endl;
-	//RigidBodyController::get_cur_object()->push(this);
 	radius=1.0;
-	//collided=0;
-	//be_collided=0;
-	//collided_id=0;be_collided_id=0;
 	collision_off=false;
 	be_collide_off=false;
+	special_collide_off=false;
+	stop_when_collide=true;
 	mass=1.0;
 }
 RigidBody::~RigidBody() {
@@ -23,15 +21,15 @@ void RigidBody::save_rigid_body(FILE * file){
 	fprintf(file,"%lf %lf %lf\n",vel.x,vel.y,vel.z);
 	fprintf(file,"%lf %lf %lf\n",pos.x,pos.y,pos.z);
 	fprintf(file,"%lf %lf %lf\n",prev_pos.x,prev_pos.y,prev_pos.z);
+	fprintf(file,"%lf %lf %lf\n",rotate.x,rotate.y,rotate.z);
 	fprintf(file,"%lf %lf\n",radius,mass);
-	fprintf(file,"%d %d\n",collision_off,be_collide_off);
 }
 void RigidBody::load_rigid_body(FILE * file){
 	fscanf(file,"%lf %lf %lf\n",&vel.x,&vel.y,&vel.z);
 	fscanf(file,"%lf %lf %lf\n",&pos.x,&pos.y,&pos.z);
 	fscanf(file,"%lf %lf %lf\n",&prev_pos.x,&prev_pos.y,&prev_pos.z);
+	fscanf(file,"%lf %lf %lf\n",&rotate.x,&rotate.y,&rotate.z);
 	fscanf(file,"%lf %lf\n",&radius,&mass);
-	fscanf(file,"%d %d\n",&collision_off,&be_collide_off);
 }
 void RigidBody::set_detect_collision(){
 	RigidBodyController::get_cur_object()->push_collision(this);

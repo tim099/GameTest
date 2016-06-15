@@ -34,6 +34,7 @@ void Unit::create_unit(){
 		std::cerr<<"Unit::create_unit() fail,no controller"<<std::endl;
 	}
 	create_entity();
+	unit_create();
 	//std::cout<<"Unit::create_unit() id="<<id<<std::endl;
 	created=true;
 }

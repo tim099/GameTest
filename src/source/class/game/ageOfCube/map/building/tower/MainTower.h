@@ -24,7 +24,7 @@ public:
 	}
 
 protected:
-	virtual double get_attack_size(){return 0.6;}
+	virtual void unit_create();
 	virtual void killed();
 
 	virtual void building_update();

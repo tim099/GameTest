@@ -40,6 +40,7 @@ void EntityController::push_entity(Entity* entity){
 	}
 	if(entity->get_id()>=entities.size()){
 		entities.resize(entities.size()+entity->get_id()+1,0);
+		std::cout<<"EntityController::push_entity resize:"<<entities.size()<<std::endl;
 	}
 	entities.at(entity->get_id())=entity;
 }

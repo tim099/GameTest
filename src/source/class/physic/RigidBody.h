@@ -29,9 +29,12 @@ public:
 
 	double radius;
 	double mass;
-	int collision_off;//turn of collision
-	int be_collide_off;
+	bool collision_off;//turn of collision
+	bool be_collide_off;
+	bool special_collide_off;
+	bool stop_when_collide;
 
+	math::vec3<double> rotate;
 	math::vec3<double> vel;
 	math::vec3<double> pos,prev_pos;
 	std::vector<RigidBody*> collided;

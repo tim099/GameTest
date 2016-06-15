@@ -20,30 +20,32 @@ bool RigidBodyController::check_collision(RigidBody* a){
 	}
 	return false;
 }
-bool RigidBodyController::detect_collision(RigidBody* a,bool stop_when_collide){
+bool RigidBodyController::detect_collision(RigidBody* a){
 	if(a->collision_off)return false;
 
 	RigidBody *b;
 	bool collided=false;
-	for(unsigned i=0;i<special_collisions.size();i++){
-		b=special_collisions.at(i);
-		if(b!=a&&!b->collision_off){
-			if(b->check_collision(a)){
-				b->collide(a);
-				a->be_collide(b);
-				collided=true;
+	if(!a->special_collide_off){
+		for(unsigned i=0;i<special_collisions.size();i++){
+			b=special_collisions.at(i);
+			if(b!=a&&!b->collision_off){
+				if(b->check_collision(a)){
+					b->collide(a);
+					a->be_collide(b);
+					collided=true;
+				}
 			}
 		}
 	}
 	for(unsigned i=0;i<collisions.size();i++){
 		b=collisions.at(i);
-		if(b!=a&&!b->collision_off){
+		if(b!=a&&!b->collision_off&&!b->be_collide_off){
 			//std::cout<<"a="<<a<<","<<"b="<<b<<std::endl;
 			if(a->check_collision(b)){
 				a->collide(b);
 				b->be_collide(a);
 				collided=true;
-				if(stop_when_collide)break;
+				if(a->stop_when_collide)break;
 			}
 		}
 	}
@@ -69,11 +71,11 @@ void RigidBodyController::check_collision(){
 			for(int i=1;i<=seg;i++){
 				body->prev_pos=body->pos;
 				body->pos=((seg-i)/(double)seg)*prev_pos+(i/(double)seg)*pos;
-				if(detect_collision(body,true))break;
+				if(detect_collision(body))break;
 
 			}
 		}else{
-			detect_collision(body,true);
+			detect_collision(body);
 		}
 
 	}

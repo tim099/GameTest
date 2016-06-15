@@ -26,6 +26,7 @@ public:
 	}
 	virtual void set_pos(int x,int y,int z);
 	virtual math::vec3<double> get_size();
+	virtual math::vec3<double> get_rotate();
 	virtual math::vec3<double> get_pos();
 	virtual math::vec3<double> get_mid_pos();
 	virtual math::vec3<int> get_pos_int();
@@ -33,7 +34,7 @@ public:
 	virtual bool draw_cube(){return true;}
 
 	void set_rotate(int _rotate);
-	inline int get_rotate()const{return rotate;}
+	inline int get_rotate_int()const{return rotate;}
 
 	void draw_buildable(Map *map);
 	void set_size(float size);

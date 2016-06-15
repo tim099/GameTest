@@ -34,7 +34,11 @@ MainTower::MainTower(MainTower* tower){
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("CubeMissileLauncher");
 	weapon->set_attack_range(30.0);
 	weapon->set_attack_damage(80);
+	weapon->set_attack_size(0.6);
 	push_weapon(weapon);
+}
+void MainTower::unit_create(){
+	weapons.at(0)->set_pos(math::vec3<double>(0,0.55*(get_size().y),0));
 }
 MainTower::~MainTower() {
 

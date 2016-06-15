@@ -37,7 +37,13 @@ Ball::Ball(Ball* ball) {
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("MissileLauncher");
 	weapon->set_attack_range(8.0);
 	weapon->set_attack_damage(10);
+	weapon->set_attack_size(0.36);
+
 	push_weapon(weapon);
+}
+void Ball::unit_create(){
+	weapons.at(0)->set_attack_size(1.5*rigid_body.radius);
+	weapons.at(0)->set_pos(math::vec3<double>(0,0.55*(get_size().y),0));
 }
 Ball::~Ball() {
 	if(finder)delete finder;
@@ -95,9 +101,6 @@ void Ball::killed(){
 
 	Audio::AudioController::get_cur_object()->play("default_sound_effect/Pickup_Coin2.wav",0.3);
 	//cur_player->modify_resource("tech",1*(get_max_hp()/100));
-}
-double Ball::get_attack_size(){
-	return 1.5*rigid_body.radius;
 }
 void Ball::minion_update(){
 	//attack_update();

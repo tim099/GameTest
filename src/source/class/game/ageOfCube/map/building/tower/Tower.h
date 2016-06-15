@@ -30,8 +30,7 @@ public:
 
 	unsigned char tower_type;
 protected:
-	virtual double get_attack_size(){return 0.36;}
-
+	virtual void unit_create();
 	virtual void building_set_pos(int x,int y,int z);
 	virtual void building_update();
 	virtual void save_building(FILE * file);

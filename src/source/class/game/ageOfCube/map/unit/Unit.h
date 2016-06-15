@@ -18,8 +18,6 @@ public:
 	virtual ~Unit();
 	virtual std::string get_name()const{return "Unit";}
 
-
-
 	void create_unit();//create this unit will push it into UnitController
 
 	inline bool get_is_dead()const{return is_dead;}
@@ -64,6 +62,7 @@ public:
 	inline unsigned get_player()const{return player;}
 	inline void set_player(unsigned _player){player=_player;}
 
+	virtual math::vec3<double> get_rotate()=0;
 	virtual math::vec3<double> get_pos()=0;
 	virtual math::vec3<int> get_pos_int()=0;
 	virtual math::vec3<double> get_mid_pos(){return get_pos();}
@@ -73,11 +72,8 @@ public:
 	void load_unit(FILE * file);
 	void update();
 protected:
+	virtual void unit_create(){}
 	virtual void unit_update(){}
-	virtual math::vec3<double>get_attack_pos(){
-		return get_mid_pos()+math::vec3<double>(0,0.55*(get_size().y+get_attack_size()),0);
-	}
-	virtual double get_attack_size(){return 0.05;}
 	virtual void killed(){}
 	void save_weapons(FILE* file);
 	void load_weapons(FILE* file);

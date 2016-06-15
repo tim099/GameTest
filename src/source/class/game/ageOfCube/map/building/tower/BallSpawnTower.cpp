@@ -95,7 +95,7 @@ void BallSpawnTower::spawn(){
 			  z*Map::CUBE_SIZE+0.5*size);
 	glm::vec3 relative_pos=recruit_pos-pos.get_pos();
 
-	float angle=0.5*get_rotate()*M_PI;
+	float angle=0.5*get_rotate_int()*M_PI;
 	float nx=relative_pos.x*cosf(angle)+relative_pos.z*sinf(angle);
 	float nz=-relative_pos.x*sinf(angle)+relative_pos.z*cosf(angle);
 	relative_pos.x=nx;relative_pos.z=nz;

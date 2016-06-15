@@ -92,7 +92,7 @@ void SceneEditMap::camera_control(){
 	}
 	if(input->keyboard->get('A')&&constructing_building){
 		std::cout<<"rotate!!"<<std::endl;
-		int cur_rotate=constructing_building->get_rotate();
+		int cur_rotate=constructing_building->get_rotate_int();
 		if(cur_rotate<3)cur_rotate++;
 		else cur_rotate=0;
 		constructing_building->set_rotate(cur_rotate);

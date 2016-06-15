@@ -19,7 +19,7 @@ Missile::Missile(Missile* missile){
 	radius=missile->radius;
 	timer=missile->timer;
 	type=missile->type;
-	explode_timer=missile->explode_timer;
+	explode_timer=0;
 }
 Missile::~Missile() {
 
@@ -44,27 +44,36 @@ void  Missile::explode(){
 	}
 	Audio::AudioController::get_cur_object()->
 			play_by_dis("default_sound_effect/Bomb.wav",pos,100);
-	Display::PointLight *light=new Display::PointLight(
-			glm::vec3(pos.x,pos.y,pos.z),
-			glm::vec3(30.0,1.0,1.0),false);
 
-	Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
-	die=true;
+	explode_timer++;
+	//die=true;
 }
 Display::DrawObject *Missile::get_missile_drawobj(){
 	return Display::AllDrawObjects::get_cur_object()->get("attack/ball_missile_1");
 }
 void Missile::draw_attack(){
-	Display::DrawObject *missile_Drawobj=get_missile_drawobj();
-	math::Position *dp_pos=new math::Position();
-	dp_pos->set_pos(glm::vec3(pos.x,pos.y,pos.z));
-	dp_pos->set_scale(glm::vec3(2*radius,2*radius,2*radius));
-	dp_pos->set_r(glm::vec3((180.0/M_PI)*atan2(sqrt(vel.x*vel.x+vel.z*vel.z),vel.y),
-			(180.0/M_PI)*atan2(vel.x,vel.z),0));
-	missile_Drawobj->push_temp_drawdata(new Display::DrawDataObj(dp_pos,true,true));
+	if(explode_timer){
+		Display::PointLight *light=new Display::PointLight(
+				glm::vec3(pos.x,pos.y,pos.z),
+				glm::vec3(fabs(3.0-explode_timer)*10.0,1.0,1.0),false);
+		Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
+	}else{
+		Display::DrawObject *missile_Drawobj=get_missile_drawobj();
+		math::Position *dp_pos=new math::Position();
+		dp_pos->set_pos(glm::vec3(pos.x,pos.y,pos.z));
+		dp_pos->set_scale(glm::vec3(2*radius,2*radius,2*radius));
+		dp_pos->set_r(glm::vec3((180.0/M_PI)*atan2(sqrt(vel.x*vel.x+vel.z*vel.z),vel.y),
+				(180.0/M_PI)*atan2(vel.x,vel.z),0));
+		missile_Drawobj->push_temp_drawdata(new Display::DrawDataObj(dp_pos,true,true));
+	}
 }
 void Missile::attack_update(){
 	//std::cout<<"Missile::attack_update()"<<std::endl;
+	if(explode_timer){
+		explode_timer++;
+		if(explode_timer>3)die=true;
+		return;
+	}
 	timer++;
 	if(be_collided.size()>0||collided.size()>0){
 		explode();

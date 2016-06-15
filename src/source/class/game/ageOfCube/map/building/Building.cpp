@@ -46,6 +46,9 @@ void Building::building_set_pos(int x,int y,int z){
 			AOC::Map::CUBE_SIZE*z+0.5*real_size.z));
 	pos.set_scale(glm::vec3(size,size,size));
 }
+math::vec3<double> Building::get_rotate(){
+	return math::vec3<double>(0,90*rotate,0);
+}
 math::vec3<double> Building::get_pos(){
 	return math::vec3<double>(x*Map::CUBE_SIZE,y*Map::CUBE_SIZE,z*Map::CUBE_SIZE);
 }

@@ -26,7 +26,7 @@ DrawObject:
 	Texture:
 		cube/stone
 	Material:
-		0.1 0.05 0.02 0.05	
+		0.1 0.05 0.02 0.1	
 #load_end
 
 #END

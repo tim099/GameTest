@@ -17,8 +17,13 @@ LaserTower::LaserTower(LaserTower* tower){
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("LaserCannon");
 	weapon->set_attack_range(11.0);
 	weapon->set_attack_damage(2);
+	weapon->set_attack_size(0.1);
 	push_weapon(weapon);
 	build_cost = ResourceModifier("cube",-50);
+}
+void LaserTower::unit_create(){
+	//std::cout<<"LaserTower::minion_create() get_size().y="<<get_size().y<<std::endl;
+	weapons.at(0)->set_pos(math::vec3<double>(0,0.51*(get_size().y),0));
 }
 LaserTower::~LaserTower() {
 

@@ -33,6 +33,12 @@ public:
 				    x*vec.z+z*vec.x,
 				    x*vec.y+y*vec.x);
 	}
+	inline void rotate_by_y(double degree){
+		double angle=degree*(M_PI/180.0);
+		double nx=x*cosf(angle)+z*sinf(angle);
+		double nz=-x*sinf(angle)+z*cosf(angle);
+		x=nx;z=nz;
+	}
 	static inline vec3 normalize(vec3 vec){
 		double len=vec.get_length();
 		if(len>0){

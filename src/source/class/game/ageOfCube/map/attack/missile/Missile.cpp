@@ -55,7 +55,7 @@ void Missile::draw_attack(){
 	if(explode_timer){
 		Display::PointLight *light=new Display::PointLight(
 				glm::vec3(pos.x,pos.y,pos.z),
-				glm::vec3(fabs(3.0-explode_timer)*10.0,1.0,1.0),false);
+				glm::vec3(fabs(4.0-explode_timer)*8.0,1.0,1.0),false);
 		Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
 	}else{
 		Display::DrawObject *missile_Drawobj=get_missile_drawobj();

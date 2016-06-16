@@ -79,6 +79,7 @@ void Minion::draw(){
 	math::vec3<double> e=Map::get_cur_object()->dp_map->dp_end;
 	math::vec3<double> pos=get_pos();
 	if(pos>=s&&pos<=e){
+		draw_unit();
 		draw_hp();
 		draw_minion();
 	}else{

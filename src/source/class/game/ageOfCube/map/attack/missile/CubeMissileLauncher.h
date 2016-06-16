@@ -18,6 +18,8 @@ public:
 	virtual std::string get_attack_type(){
 		return "CubeMissile";
 	}
+protected:
+	virtual void draw_weapon();
 };
 
 } /* namespace AOC */

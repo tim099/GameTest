@@ -11,7 +11,7 @@
 namespace AOC {
 
 class Unit : public entity::Entity{//
-	friend Weapon;
+	//friend Weapon;
 public:
 	Unit(int _max_hp=1);
 	void init(int max_hp,int player);
@@ -71,6 +71,7 @@ public:
 	void save_unit(FILE * file);
 	void load_unit(FILE * file);
 	void update();
+	void draw_unit();
 protected:
 	virtual void unit_create(){}
 	virtual void unit_update(){}

@@ -102,6 +102,7 @@ void Building::draw_buildable(Map *map){
 	draw();
 }
 void Building::draw(){
+	draw_unit();
 	draw_hp();
 	draw_building();
 }

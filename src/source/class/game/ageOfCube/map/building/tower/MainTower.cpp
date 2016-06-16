@@ -63,7 +63,6 @@ void MainTower::killed(){
 
 }
 void MainTower::draw_building(){
-
 	float light_val=sqrt(fabs(((float)timer/(float)loop_time)-0.5));
 	math::vec3<int> real_size=get_cube_large_size();
 	Display::PointLight *light=new Display::PointLight(

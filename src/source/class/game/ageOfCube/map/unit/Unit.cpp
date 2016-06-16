@@ -105,7 +105,12 @@ void Unit::update(){
 	}
 
 }
-
+void Unit::draw_unit(){
+	if(is_dead)return;
+	for(unsigned i=0;i<weapons.size();i++){
+		weapons.at(i)->draw();
+	}
+}
 void Unit::upgrade(std::string upgrade_name, int amount){
 	upgrades.get(upgrade_name)->amount_alter(amount);
 }

@@ -21,8 +21,15 @@ void Weapon::save(FILE* file){
 void Weapon::load(FILE* file){
 	fscanf(file,"%d %d\n",&attack_timer,&attack_cycle);
 }
+math::vec3<double> Weapon::get_pos(){
+	math::vec3<double>real_pos=pos;
+	real_pos.rotate_by_y(unit->get_rotate().y);
+	real_pos+=unit->get_mid_pos();
+	return real_pos;
+
+}
 math::vec3<double> Weapon::get_attack_pos(){
-	return unit->get_mid_pos()+pos+math::vec3<double>(0,0.55*attack_size,0);
+	return get_pos()+math::vec3<double>(0,0.55*attack_size,0);
 }
 Unit* Weapon::find_target(math::vec3<double> attack_pos){
 	Unit* target;

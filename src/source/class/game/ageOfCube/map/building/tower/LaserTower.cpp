@@ -19,6 +19,8 @@ LaserTower::LaserTower(LaserTower* tower){
 	weapon->set_attack_damage(2);
 	weapon->set_attack_size(0.1);
 	push_weapon(weapon);
+
+
 	build_cost = ResourceModifier("cube",-50);
 }
 void LaserTower::unit_create(){

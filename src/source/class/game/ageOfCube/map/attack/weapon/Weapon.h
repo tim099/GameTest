@@ -14,7 +14,7 @@ public:
 	virtual std::string get_name()=0;
 	virtual std::string get_attack_type()=0;
 	virtual math::vec3<double>get_attack_pos();
-
+	virtual math::vec3<double>get_pos();
 	void save(FILE* file);
 	void load(FILE* file);
 	void update();

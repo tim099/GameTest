@@ -44,12 +44,12 @@ bool RigidBody::check_collision(RigidBody* b){
 	return false;
 }
 void RigidBody::collide(RigidBody* b){
-	collided.push_back(b);
+	//collided.push_back(b);
 	if(b->id)collided_id.push_back(b->id);
 	collide_action(b);
 }
 void RigidBody::be_collide(RigidBody* b){
-	be_collided.push_back(b);
+	//be_collided.push_back(b);
 	if(b->id)be_collided_id.push_back(b->id);
 	be_collide_action(b);
 }
@@ -96,9 +96,9 @@ void RigidBody::be_collide_action(RigidBody* b){
 
 }
 void RigidBody::clear_collision_data(){
-	collided.clear();
+	//collided.clear();
 	collided_id.clear();
-	be_collided.clear();
+	//be_collided.clear();
 	be_collided_id.clear();
 }
 void RigidBody::update_rigid_body(){

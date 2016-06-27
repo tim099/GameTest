@@ -1,6 +1,5 @@
 #include "class/game/Game.h"
 #include "class/input/mouse/selectable/SelectableControl.h"
-#include "class/physic/RigidBodyController.h"
 #include "class/audio/AudioController.h"
 #include "class/game/SceneInitTask.h"
 #include <iostream>
@@ -55,7 +54,7 @@ void Game::initialize(){
 
 	controller_system=new ControllerSystem();
 	controller_system->push(new Input::SelectableControl());
-	controller_system->push(new physic::RigidBodyController());
+	//controller_system->push(new physic::RigidBodyController());
 	controller_system->push(new Audio::AudioController());
 	//controller_system->push(new entity::EntityController());
 
@@ -181,7 +180,7 @@ void Game::update(){
 	//render_thread->join();
 	draw->clear_tmp_data();
 	//std::cout<<"Game::update() draw->clear_tmp_data()"<<std::endl;
-	swap_buffer();
+	swap_buffer();//swap screen buffer
 	//std::cout<<"Game::update() end"<<std::endl;
 }
 void Game::mainloop(){

@@ -310,6 +310,7 @@ void SceneEditMap::scene_update() {
 
 	if(!pause_timer){
 		field->update();
+		//field->update();
 		//map->update(&timer);
 	}else{
 		field->map->find_select_cube();

@@ -157,7 +157,7 @@ void Ball::moving(){
 			stuck_timer=0;
 		}
 		if(path->cur_at<path->path.size()){
-			if(rigid_body.collided.size()>0){
+			if(rigid_body.collided_id.size()>0){
 				colli_timer=10;
 			}
 			if(colli_timer<=0&&Map::get_cur_object()->get_cube_down(get_pos()-rigid_body.radius)->standable()){

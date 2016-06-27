@@ -7,6 +7,9 @@
 #include "class/game/ageOfCube/player/PlayerController.h"
 #include "class/game/timer/Timer.h"
 #include "class/display/light/LightControl.h"
+namespace physic{
+	class RigidBodyController;
+}
 namespace AOC {
 
 namespace AI{
@@ -23,6 +26,7 @@ public:
 	void update();
 	void draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool);
 	void draw_back_ground();
+	physic::RigidBodyController* rigid_body_controller;
 	AttackController* attack_controller;
 	UnitController* unit_controller;
 	PlayerController *player_controller;

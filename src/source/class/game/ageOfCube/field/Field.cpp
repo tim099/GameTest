@@ -2,9 +2,11 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
 #include "class/game/ageOfCube/map/ai/search/Astar.h"
+#include "class/physic/RigidBodyController.h"
 namespace AOC {
 
 Field::Field() {
+	rigid_body_controller=new physic::RigidBodyController();
 	entity_controller=new entity::EntityController();
 	unit_controller=new UnitController();
 	attack_controller=new AttackController();
@@ -24,6 +26,7 @@ Field::~Field() {
 	delete attack_controller;
 	delete unit_controller;
 	delete entity_controller;
+	delete rigid_body_controller;
 	std::cout<<"Field::~Field() 6"<<std::endl;
 
 }
@@ -51,6 +54,7 @@ void Field::update(){
 	unit_controller->update();
 	player_controller->update();
 	attack_controller->update();
+	rigid_body_controller->update();
 }
 void Field::draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool){
 	map->draw(draw,camera,threadpool);

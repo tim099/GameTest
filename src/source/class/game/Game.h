@@ -14,7 +14,6 @@
 #include "class/display/window/Window.h"
 #include "class/display/draw/Draw.h"
 #include "class/display/render/Renderer.h"
-//#include "class/display/render/RenderTask.h"
 #include "class/display/UI/UIObjectCreator.h"
 #include "class/game/scene/LoadingScene.h"
 #include "class/input/Input.h"

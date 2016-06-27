@@ -37,8 +37,8 @@ public:
 	math::vec3<double> rotate;
 	math::vec3<double> vel;
 	math::vec3<double> pos,prev_pos;
-	std::vector<RigidBody*> collided;
-	std::vector<RigidBody*> be_collided;
+	//std::vector<RigidBody*> collided;
+	//std::vector<RigidBody*> be_collided;
 
 	std::vector<unsigned> collided_id;
 	std::vector<unsigned> be_collided_id;

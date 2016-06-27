@@ -75,7 +75,7 @@ void Missile::attack_update(){
 		return;
 	}
 	timer++;
-	if(be_collided.size()>0||collided.size()>0){
+	if(be_collided_id.size()>0||collided_id.size()>0){
 		explode();
 	}
 	if(target){

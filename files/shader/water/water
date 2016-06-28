@@ -4,7 +4,7 @@ float gen_water_height(vec2 pos,float waveWidth,float waveHeight){
 	float z=pos.y/waveWidth;
 	float height=0.0f;
 	height+=0.225*sin((0.41*x+0.59*z)/2.1+1.0*waveTime);
-	height+=0.205*sin((0.851*x+0.249*z)/1.0+1.42*waveTime);
+	height+=0.205*sin((0.851*x+0.249*z)/1.5+1.42*waveTime);
 	height+=0.14*sin((0.549*x+0.451*z)/1.0+1.82*waveTime);
 	height+=0.13*sin((0.21*x+0.79*z)/1.2+2.11*waveTime);
 	height+=0.10*sin((0.63*x+0.37*z)/0.9+2.33*waveTime);
@@ -13,14 +13,14 @@ float gen_water_height(vec2 pos,float waveWidth,float waveHeight){
 	height+=0.06*sin((0.25*x+0.75*z)/0.3+3.92*waveTime);
 	height+=0.042*sin((0.77*x+0.23*z)/0.2+4.713*waveTime);
 	height+=0.038*sin((0.35*x+0.65*z)/0.15+5.523*waveTime);
-	height+=0.015*sin((-0.8*x+0.2*z)/0.12+6.32*waveTime);
-	height+=0.013*sin((-0.25*x+0.75*z)/0.1+7.52*waveTime);
-	height+=0.0078*sin((-0.7*x+0.3*z)/0.06+8.124*waveTime);
-	height+=0.0067*sin((-0.45*x+0.55*z)/0.05+9.51*waveTime);
+	height+=0.014*sin((-0.8*x+0.2*z)/0.12+6.32*waveTime);
+	height+=0.012*sin((-0.25*x+0.75*z)/0.1+7.52*waveTime);
+	height+=0.0088*sin((-0.7*x+0.3*z)/0.06+8.124*waveTime);
+	height+=0.0077*sin((-0.45*x+0.55*z)/0.05+9.51*waveTime);
 	height+=0.00355*sin((0.35*x-0.65*z)/0.035+10.122*waveTime);
 	height+=0.003*sin((0.75*x-0.25*z)/0.033+11.813*waveTime);
-	height+=0.00125*sin((-0.25*x+0.85*z)/0.031+12.342*waveTime);
-	height+=0.00105*sin((-0.85*x+0.15*z)/0.028+13.342*waveTime);
+	height+=0.00125*sin((-0.25*x+0.85*z)/0.025+12.342*waveTime);
+	height+=0.00105*sin((-0.85*x+0.15*z)/0.023+13.342*waveTime);
 	
 	height-=1.0f;
 	height*=waveHeight;

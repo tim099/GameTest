@@ -44,6 +44,7 @@ public:
 	glm::vec3 up;
 	glm::vec3 v;
 	float fovy,z_near,z_far;
+	float shadow_far;
 	float dis_alter_v;
 
 	std::vector<Tim::AABB> PSSM_AABBs;

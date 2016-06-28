@@ -32,11 +32,17 @@ void ScenePlayTD::scene_initialize() {
 	glm::vec3 pos(50,30,50);
 	camera = new Display::Camera(pos,
 			pos+glm::vec3(-50,-35,50), glm::vec3(0, 1, 0), 60.0, 0.1f,
-			400.0f);
+			10000.0f);
+	camera->shadow_far=200.0;
 	lightControl = new Display::LightControl(120);
+	/*
 	lightControl->push_light(
 			new Display::ParallelLight(glm::vec3(1.0, -1.2, 0.2),
 					glm::vec3(0.3, 0.3, 0.3), true));
+	*/
+	lightControl->push_light(
+			new Display::ParallelLight(glm::vec3(0.05, -1.2, -0.2),
+					glm::vec3(0.3, 0.3, 0.3),false));
 	draw->set_lightControl(lightControl);
 
 	UI = new UI::UI();

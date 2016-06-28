@@ -7,7 +7,7 @@ namespace Display{
 Camera::Camera(glm::vec3 _pos,glm::vec3 _look_at,glm::vec3 _up,
 		float _fovy,float _z_near,float _z_far){
 	pos=_pos;look_at=_look_at;up=_up;fovy=_fovy;
-	z_near=_z_near;z_far=_z_far;
+	z_near=_z_near;z_far=_z_far;shadow_far=z_far;PSSM_split_num=0;
 	dis_alter_v=0;
 }
 Camera::~Camera() {
@@ -15,7 +15,7 @@ Camera::~Camera() {
 }
 Camera::Camera(Camera* camera){
 	pos=camera->pos;look_at=camera->look_at;up=camera->up;fovy=camera->fovy;
-	z_near=camera->z_near;z_far=camera->z_far;
+	z_near=camera->z_near;z_far=camera->z_far;shadow_far=z_far;PSSM_split_num=0;
 	dis_alter_v=camera->dis_alter_v;
 }
 glm::mat4 Camera::sent_uniform(GLuint programID,float aspect,std::string name){
@@ -88,8 +88,8 @@ void Camera::gen_PSSM_AABB(int split_num, float aspect){
 
 	PSSM_split_points.push_back(z_near);
 	for(int i=1; i<=split_num; i++){
-		c_log = z_near*glm::pow((z_far/z_near),(float)i/(float)split_num);
-		c_uni = z_near + (z_far-z_near)*(float)i/(float)split_num;
+		c_log = z_near*glm::pow((shadow_far/z_near),(float)i/(float)split_num);
+		c_uni = z_near + (shadow_far-z_near)*(float)i/(float)split_num;
 		PSSM_split_points.push_back(c_ratio*c_log + (1.0f-c_ratio)*c_uni);
 	}//find the distance
 
@@ -122,7 +122,7 @@ void Camera::gen_PSSM_AABB(int split_num, float aspect){
 				AABB_max.z = glm::max(AABB_max.z, AABB_point.z);
 			}
 		}
-		std::cout<<"AABB : "<<(AABB_min.x+AABB_max.x)/2<<","<<(AABB_min.y+AABB_max.y)/2<<","<<(AABB_min.z+AABB_max.z)/2<<std::endl;
+		//std::cout<<"AABB : "<<(AABB_min.x+AABB_max.x)/2<<","<<(AABB_min.y+AABB_max.y)/2<<","<<(AABB_min.z+AABB_max.z)/2<<std::endl;
 		PSSM_AABBs.push_back(Tim::AABB(AABB_max, AABB_min));
 	}
 }

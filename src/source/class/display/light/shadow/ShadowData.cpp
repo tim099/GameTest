@@ -12,9 +12,10 @@ ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow,unsigned _
 	max_l_shadow=_max_l_shadow;
 	max_pl_shadow=_max_pl_shadow;
 	shadow_quality=_shadow_quality;
-	parallellight_shadowmap_per_light=1;
+	parallellight_shadowmap_per_light=3;
 	s_num=0;
 	ps_num=0;
+	PSSM_split_num = 3;
 
 	LVP=new glm::mat4[max_l_shadow];
 	PLVP=new glm::mat4[6*max_pl_shadow];
@@ -55,6 +56,7 @@ void ShadowData::gen_shadow_map(Shader *shaderShadowMapping,
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//clear buffer
 
 	gen_parallelLights_LVP(lights,camera,shadow_dis);
+
 	gen_shadows_texture(shaderShadowMapping,SFBO,LVP,s_num,d_obj,0);
 
 	gen_pointLight_LVP(point_lights);
@@ -65,12 +67,18 @@ void ShadowData::gen_shadow_map(Shader *shaderShadowMapping,
 	//gen_shadows(shaderCubeShadowMapping,PSFBO,PLVP,6*ps_num,d_obj);//shaderMultiShadowMapping
 }
 void ShadowData::gen_parallelLights_LVP(std::vector<ParallelLight*>&para_lights,Camera *camera,double shadow_dis){
-	double shadow_size=(shadow_dis/sqrt(camera->look_dis()+1.0));
-	parallellight_shadowmap_per_light=1;
+	double shadow_size=(shadow_dis/5/sqrt(camera->look_dis()+1.0));
+	//parallellight_shadowmap_per_light=1;
 	s_num=0;
-	for(unsigned i=0;i<para_lights.size();i++){
+	for(unsigned i=1;i<para_lights.size();i++){
+		for(unsigned j=0; j<PSSM_split_num; j++){
+			if(para_lights.at(i)->shadow&&s_num<(int)max_l_shadow){
+				LVP[s_num++]=para_lights.at(i)->get_PSSM_LVP(SFBO->aspect(),shadow_size,camera->look_at,camera->get_PSSM_AABBs()->at(j));
+				//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),shadow_size,camera->look_at);
+			}
+		}//j
 		if(para_lights.at(i)->shadow&&s_num<(int)max_l_shadow){
-			LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),shadow_size,camera->look_at);
+			//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),shadow_size,camera->look_at);
 			//test
 			//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),0.3*shadow_size,camera->look_at);
 			//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),0.1*shadow_size,camera->look_at);

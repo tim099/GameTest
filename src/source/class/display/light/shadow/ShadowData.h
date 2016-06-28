@@ -49,6 +49,7 @@ public:
 	unsigned shadow_quality;
 	unsigned max_l_shadow;
 	unsigned max_pl_shadow;
+	unsigned PSSM_split_num;
 
 };
 }

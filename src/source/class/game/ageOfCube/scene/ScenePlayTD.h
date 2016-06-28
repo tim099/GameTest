@@ -51,6 +51,7 @@ protected:
 	Building* constructing_building;
 	playMode mode;
 	glm::ivec3 map_size;
+	bool pause_timer;
 };
 
 } /* namespace AOC */

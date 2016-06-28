@@ -16,6 +16,7 @@ ScenePlayTD::ScenePlayTD(std::string _map_name, glm::ivec3 _map_size) {
 	constructing_building=0;
 	back_music = 0;
 	mode = normal;
+	pause_timer = true;
 }
 void ScenePlayTD::loading(){
 	if(Tim::File::check_if_file_exist(map_name)){
@@ -28,10 +29,10 @@ void ScenePlayTD::loading(){
 void ScenePlayTD::scene_initialize() {
 
 
-	glm::vec3 pos(10,80,10);
+	glm::vec3 pos(50,30,50);
 	camera = new Display::Camera(pos,
-			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
-			10000.0f);
+			pos+glm::vec3(-50,-35,50), glm::vec3(0, 1, 0), 60.0, 0.1f,
+			400.0f);
 	lightControl = new Display::LightControl(120);
 	lightControl->push_light(
 			new Display::ParallelLight(glm::vec3(1.0, -1.2, 0.2),
@@ -269,6 +270,9 @@ void ScenePlayTD::handle_input() {
 	if(input->keyboard->get('S')){
 		UI->Save_script("files/AgeOfCube/editMap/UI/editMapUI.txt");
 	}
+	if(input->keyboard->get('P')){
+		pause_timer^=1;
+	}
 	if (input->keyboard->pressed('V')) {
 		glm::ivec3 pos = Map::convert_position(camera->look_at);
 		if (field->map->get_cube_type(pos.x, pos.y, pos.z)) {
@@ -291,8 +295,12 @@ void ScenePlayTD::handle_input() {
 }
 void ScenePlayTD::scene_update() {
 	//std::cout<<"scene_update()"<<std::endl;
+
 	UI->update_UIObject();
 	camera->update();
+	if(pause_timer){
+		return;
+	}
 	field->update();
 }
 void ScenePlayTD::scene_update_end(){

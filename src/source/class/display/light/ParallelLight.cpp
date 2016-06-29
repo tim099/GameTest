@@ -31,7 +31,7 @@ glm::mat4 ParallelLight::get_PSSM_LVP(float aspect, double size, glm::vec3 trans
 	if(vec==glm::vec3(0,-1,0)||vec==glm::vec3(0,1,0))up_vec=glm::vec3(0,1,0.0001);
 	glm::mat4 view=glm::lookAt(glm::normalize(vec)+trans,trans,up_vec);
 	//glm::mat4 LVP=glm::scale(glm::vec3(size*0.12,size*0.12*aspect,0.007))*view;
-	glm::mat4 LVP=glm::scale(glm::vec3(15.0f/LVP_scale, 15.0f/LVP_scale*aspect, 10.0f/LVP_scale/*0.007*/))*view;
+	glm::mat4 LVP=glm::scale(glm::vec3(15.0f/LVP_scale, 15.0f/LVP_scale*aspect, 2.0f/LVP_scale/*0.007*/))*view;
 
 	return LVP;
 }

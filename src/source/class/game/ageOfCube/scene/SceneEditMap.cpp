@@ -37,7 +37,7 @@ void SceneEditMap::scene_initialize() {
 	camera = new Display::Camera(pos,
 			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
-	camera->shadow_far=500.0;
+	camera->shadow_far=120.0;
 	lightControl = new Display::LightControl(120);
 
 

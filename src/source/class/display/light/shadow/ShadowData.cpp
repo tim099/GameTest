@@ -12,12 +12,12 @@ ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow,unsigned _
 	max_l_shadow=_max_l_shadow;
 	max_pl_shadow=_max_pl_shadow;
 	shadow_quality=_shadow_quality;
-	parallellight_shadowmap_per_light=3;
+	//parallellight_shadowmap_per_light=3;
 	s_num=0;
 	ps_num=0;
 	PSSM_split_num = 3;
 
-	LVP=new glm::mat4[max_l_shadow];
+	LVP=new glm::mat4[PSSM_split_num*max_l_shadow];
 	PLVP=new glm::mat4[6*max_pl_shadow];
 
 	SFBO=new FrameBuffer(math::vec2<int>(shadow_quality,shadow_quality));
@@ -39,7 +39,7 @@ ShadowData::~ShadowData() {
 void ShadowData::sent_uniform(Shader *shader){
 	Uniform::sentMat4Arr(shader->programID,LVP,s_num,std::string("parallelLVP[0]"));
 	Uniform::sentMat4Arr(shader->programID,PLVP,6*ps_num,std::string("pointLVP[0]"));
-	shader->sent_Uniform("parallellight_shadowmap_per_light",parallellight_shadowmap_per_light);
+	shader->sent_Uniform("parallellight_shadowmap_per_light",PSSM_split_num);
 	SFBO->depth_textures.at(0)->sent_uniform(shader,10,"depthMaps");
 	//SFBO->color_textures.at(0)->sent_uniform(shader,10,"depthMaps");
 	//Texture::usetextureVec(shader,SFBO->depth_textures,3,"depthMap");
@@ -56,8 +56,17 @@ void ShadowData::gen_shadow_map(Shader *shaderShadowMapping,
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//clear buffer
 
 	gen_parallelLights_LVP(lights,camera,shadow_dis);
-
-	gen_shadows_texture(shaderShadowMapping,SFBO,LVP,s_num,d_obj,0);
+	int num;
+	int shadow_render_times=ceil(s_num/6.0);
+	for(int i=0;i<shadow_render_times;i++){
+		if(i<shadow_render_times-1){
+			num=6;
+		}else{
+			num=s_num%6;
+		}
+		gen_shadows_texture(shaderShadowMapping,SFBO,&LVP[6*i],num,d_obj,6*i);
+	}
+	//gen_shadows_texture(shaderShadowMapping,SFBO,LVP,s_num,d_obj,0);
 
 	gen_pointLight_LVP(point_lights);
 	for(int i=0;i<ps_num;i++){
@@ -71,7 +80,7 @@ void ShadowData::gen_parallelLights_LVP(std::vector<ParallelLight*>&para_lights,
 	//parallellight_shadowmap_per_light=1;
 	s_num=0;
 	for(unsigned i=1;i<para_lights.size();i++){
-		for(unsigned j=0; j<PSSM_split_num; j++){
+		for(int j=0; j<PSSM_split_num; j++){
 			if(para_lights.at(i)->shadow&&s_num<(int)max_l_shadow){
 				LVP[s_num++]=para_lights.at(i)->get_PSSM_LVP(SFBO->aspect(),shadow_size,camera->look_at,camera->get_PSSM_AABBs()->at(j));
 				//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),shadow_size,camera->look_at);

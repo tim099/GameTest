@@ -8,24 +8,19 @@ AgeOfCubes::AgeOfCubes() {
 	modelBuffers = 0;
 	drawObjects = 0;
 	audioSources = 0;
+	folder_path="files/AgeOfCube/";
 }
-/*
-Display::Window* AgeOfCubes::create_window(){
-	return (new Display::Window(glm::ivec2(1366, 733), "Age of Cube", false));
-	//return (new Window(glm::ivec2(900, 900), "Age of Cube", false));
-}
-*/
 void AgeOfCubes::initialize_game(){
 
 	//============================
-	textures = new Display::AllTextures("files/AgeOfCube/texture/script/loadAllTexture.txt");
+	textures = new Display::AllTextures(folder_path+"texture/script/loadAllTexture.txt");
 	textures->register_cur();	//set as cur using textures
-	modelBuffers=new Display::AllModelBuffers("files/AgeOfCube/models/script/loadAllModelBuffers.txt");
+	modelBuffers=new Display::AllModelBuffers(folder_path+"/models/script/loadAllModelBuffers.txt");
 	modelBuffers->register_cur();
-	drawObjects = new Display::AllDrawObjects("files/AgeOfCube/drawObject/loadAllDrawObjects.txt");
+	drawObjects = new Display::AllDrawObjects(folder_path+"/drawObject/loadAllDrawObjects.txt");
 	drawObjects->register_cur();
 
-	audioSources = new Audio::AllAudioSources("files/AgeOfCube/audio/loadAllAudios.txt");
+	audioSources = new Audio::AllAudioSources(folder_path+"/audio/loadAllAudios.txt");
 	audioSources->register_cur();
 
 	push_scene(new AOC::SceneStart());

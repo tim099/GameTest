@@ -23,6 +23,14 @@ Window::~Window() {
 	}
 
 }
+math::vec2<int> Window::get_screen_resolution(){
+	math::vec2<int> res;
+    const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+    res.x= mode->width;
+    res.y= mode->height;
+    return res;
+}
 void Window::close_window(){
 	glfwSetWindowShouldClose(get_window(),1);
 }

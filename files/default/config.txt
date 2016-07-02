@@ -1,3 +1,6 @@
 #Config
+
 screen_resoultion:
-	1280,720
+	1920,1080
+	
+#full_screen

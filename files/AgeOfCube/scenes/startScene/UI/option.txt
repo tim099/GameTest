@@ -22,11 +22,11 @@ CreateUIObject:
 CreateUIObject:
 		UIString
 	Name:
-		difficulty_string
+		resolution_string
 	Position:
 		0.405711 0.883901
 	String:
-"set difficulty :"
+"set resolution :"
 	String_size:
 		0.02
 	Parent:
@@ -38,15 +38,20 @@ CreateUIObject:
 	Name:
 		default
 	Position:
-		0.403515 0.788533
+		0.403515 0.8
 	Texture:
 		UI/UI/button2
 	Width:
 		0.2
 	Height:
 		0
+	Set_signal:
+		Data:
+			resolution_1280_720
+		Receiver:
+			Game
 	Set_string:
-"easy"
+"1280x720"
 	String_size:
 		0.02
 	Parent:
@@ -58,15 +63,95 @@ CreateUIObject:
 	Name:
 		default
 	Position:
-		0.402783 0.670804
+		0.403515 0.7
 	Texture:
 		UI/UI/button2
 	Width:
 		0.2
 	Height:
 		0
+	Set_signal:
+		Data:
+			resolution_1366_733
+		Receiver:
+			Game
 	Set_string:
-"normal"
+"1366x733"
+	String_size:
+		0.02
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.403515 0.6
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_signal:
+		Data:
+			resolution_1920_1080
+		Receiver:
+			Game
+	Set_string:
+"1920x1080"
+	String_size:
+		0.02
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.403515 0.5
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_signal:
+		Data:
+			Full_Screen
+		Receiver:
+			Game
+	Set_string:
+"Full Screen"
+	String_size:
+		0.02
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.403515 0.4
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_signal:
+		Data:
+			Window_Mode
+		Receiver:
+			Game
+	Set_string:
+"Window Mode"
 	String_size:
 		0.02
 	Parent:

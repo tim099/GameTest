@@ -13,6 +13,7 @@ public:
 	static const int AlphaTexture=1<<2;
 	static const int Clipping=1<<3;
 	static const int SkyMap=1<<4;
+	static const int Back_culling=1<<5;
 
 	static const int SobelMode=1<<10;
 	static const int AddOnMode=1<<11;

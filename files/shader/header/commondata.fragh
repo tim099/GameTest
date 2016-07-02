@@ -37,6 +37,13 @@ void clipping(){
 	}
 	
 }
+void culling(){
+	if((shaderData&Back_culling)==0)return;
+	if(dot(vert.Normal,camera_pos-vert.position.xyz)<0){
+		discard;
+	}
+
+}
 vec3 get_tex_color(){
 	if((shaderData&SkyMap)!=0){
 		return get_skybox();
@@ -71,6 +78,7 @@ vec3 get_skybox(){
 }
 void common_frag(){
 	clipping();
+	culling();
 }
 
 

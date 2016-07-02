@@ -22,6 +22,7 @@ public:
 	int WindowShouldClose()const;
 	void swap_buffer()const;
 	void close_window();
+	static math::vec2<int> get_screen_resolution();
 	/*
 	 * make current thread draw on this window
 	 * must call render_off to release this window for other thread

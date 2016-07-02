@@ -23,7 +23,7 @@ class ShadowData{
 public:
 	/*max_l_shadow=max shadows number for the parallel lights
 	 * max_pl_shadow=max shadows number for the point lights
-	 * shadow_quality si the quality of the shadow
+	 * shadow_quality is the quality of the shadow
 	 */
 	ShadowData(unsigned max_l_shadow,unsigned max_pl_shadow,
 			unsigned shadow_quality=ShadowNormalQuality);
@@ -45,7 +45,7 @@ public:
 
 	int s_num;
 	int ps_num;
-	//int parallellight_shadowmap_per_light;
+
 	unsigned shadow_quality;
 	unsigned max_l_shadow;
 	unsigned max_pl_shadow;

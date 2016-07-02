@@ -20,11 +20,14 @@ int main(){
 	///*
 
 	//while(true){
+	Game* game;
+	do{
+		game=new AOC::AgeOfCubes();
+		game->initialize();
+		game->mainloop();
+		delete game;
+	}while(game->restart);
 
-	Game* ageOfCubes=new AOC::AgeOfCubes();
-	ageOfCubes->initialize();
-	ageOfCubes->mainloop();
-	delete ageOfCubes;
 
 
 	//}

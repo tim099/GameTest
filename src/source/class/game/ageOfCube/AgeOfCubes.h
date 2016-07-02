@@ -22,16 +22,11 @@ public:
 	AgeOfCubes();
 	virtual ~AgeOfCubes();
 private:
-	//virtual Display::Window* create_window();
-	virtual math::vec2<int> window_size(){
-		return math::vec2<int>(1366,733);
-	}
+
 	virtual std::string window_name(){
 		return std::string("Age of Cube");
 	}
-	virtual bool full_screen(){
-		return false;
-	}
+
 	virtual void initialize_game();
 	virtual void terminate_game();
 	virtual void game_update();

@@ -105,7 +105,8 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 
 	    waterRefractFBO->bind_buffer();
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
-	    shader->Enable(Shader::Clipping);
+	    shader->Enable(Shader::Clipping|Shader::Back_culling);
+
 	    clip_plane=glm::vec4(0,-1.0,0,water_height-0.01);
 	    shader->sent_Uniform("clipping_plane",clip_plane);
 		//sent uniform
@@ -117,7 +118,7 @@ void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,Fram
 	    for(unsigned i=0;i<d_objs.size();i++){//100
 	    	d_objs.at(i)->draw_object(shader);//draw all obj
 	    }
-	    shader->Disable(Shader::Clipping);
+	    shader->Disable(Shader::Clipping|Shader::Back_culling);
 	}
 
 

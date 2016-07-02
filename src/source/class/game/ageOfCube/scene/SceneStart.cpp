@@ -117,7 +117,8 @@ void SceneStart::create_map(){
 		return ;
 	}
 	for(int i=0;i<3;i++){
-		sscanf(size.at(i).c_str(),"%u",&map_size[i]);
+		map_size[i]=Tim::String::str_to_int(size.at(i).c_str());
+		//sscanf(size.at(i).c_str(),"%u",&map_size[i]);
 		std::cout<<map_size[i]<<",";
 	}std::cout<<std::endl;
 	Input::Signal *sig=new Input::Signal("push_scene","Game");

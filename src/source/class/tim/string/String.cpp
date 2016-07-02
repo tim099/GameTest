@@ -12,6 +12,11 @@ String::String() {
 String::~String() {
 
 }
+int String::str_to_int(std::string str){
+	int val;
+	sscanf(str.c_str(),"%d",&val);
+	return val;
+}
 std::string String::to_string(int num){
 	char cnum[100];
 	sprintf(cnum,"%d",num);
@@ -77,7 +82,6 @@ void String::split(std::string str,std::string delimiter,std::vector<std::string
 	if(start){
 		out.push_back(str.substr(pos,str.size()-pos));
 	}
-
 }
 void String::get_between(std::istream &is,std::string& strline,std::string delimiter){
 	strline="";

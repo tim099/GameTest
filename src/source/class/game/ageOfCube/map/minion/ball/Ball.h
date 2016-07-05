@@ -32,7 +32,7 @@ protected:
 	virtual void unit_create();
 	void ball_move();
 	void find_path();
-	void explode();
+	//void explode();
 	void moving();
 	//unsigned target_id;
 	Display::DrawObject *ball_Drawobj;

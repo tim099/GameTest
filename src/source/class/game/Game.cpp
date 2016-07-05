@@ -3,6 +3,7 @@
 #include "class/audio/AudioController.h"
 #include "class/game/SceneInitTask.h"
 #include "class/tim/string/String.h"
+#include "class/display/light/shadow/ShadowData.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -27,8 +28,6 @@ Game::Game() {
 	s_loading=0;
 	//render_thread = 0;
 	thread_pool = 0;
-	window_size=math::vec2<int>(1366,733);
-	full_screen=false;
 	folder_path="files/default/";
 }
 Game::~Game() {
@@ -36,53 +35,16 @@ Game::~Game() {
 	//std::cout<<"delete window"<<std::endl;
 
 }
-void Game::save_config(){
-	std::filebuf file;
-	file.open((folder_path+"config.txt").c_str(), std::ios::out);
-	std::ostream os(&file);
-	os <<"#Config"<< std::endl;
-	os <<"screen_resoultion:"<< std::endl;
-	os <<"	"<<window_size.x<<","<<window_size.y<< std::endl;
-	if(full_screen)os <<"#full_screen"<< std::endl;
-	file.close();
-}
-void Game::load_config(){
-	std::filebuf file;
-
-	file.open((folder_path+"config.txt").c_str(), std::ios::in);
-	if (!file.is_open()) {
-		std::cerr << "file "<<folder_path<<"config.txt not find!!" << std::endl;
-		return;
-	}
-	std::istream is(&file);
-	std::string line;
-	if (Tim::String::get_line(is, line, true, true) && line != "#Config") {
-		std::cerr << "Load_script fail,not a " << "#Config" << " script:"<< std::endl;
-		return;
-	}
-	while(Tim::String::get_line(is, line, true, true)){
-		if(line=="screen_resoultion:"){
-			Tim::String::get_line(is, line, true, true);
-			std::vector<std::string>strs;
-			Tim::String::split(line,",",strs);
-			window_size.x=Tim::String::str_to_int(strs.at(0));
-			window_size.y=Tim::String::str_to_int(strs.at(1));
-		}else if(line=="#full_screen"){
-			full_screen=true;
-		}
-	}
-
-	file.close();
-}
 Display::Window* Game::create_window(){
-	return (new Display::Window(window_size,window_name(),full_screen));
+	return (new Display::Window(config.window_size,window_name(),config.full_screen));
 }
 Tim::ThreadPool* Game::create_thread_pool(){
 	return new Tim::ThreadPool(8,REALTIME_PRIORITY_CLASS);
 }
 void Game::initialize(){
-	load_config();
+	config.load(folder_path+"config.txt");
 	window=create_window();
+
 	//window->render_on();
 	draw = new Display::Draw();
 	draw->register_cur();
@@ -137,7 +99,7 @@ void Game::terminate(){
 	delete draw;
 
 	delete window;
-	save_config();
+	config.save(folder_path+"config.txt");
 	//std::cout<<"terminate end"<<std::endl;
 }
 Scene* Game::get_cur_scene(){
@@ -193,16 +155,35 @@ void Game::handle_game_signal(){
 			pop_scene();
 		}else if(strs.at(0)=="resolution"){
 			std::cout <<"set_resolution:"<<strs.at(1)<<","<<strs.at(2)<< std::endl;
-			window_size.x=Tim::String::str_to_int(strs.at(1));
-			window_size.y=Tim::String::str_to_int(strs.at(2));
-			full_screen=false;
+			config.window_size.x=Tim::String::str_to_int(strs.at(1));
+			config.window_size.y=Tim::String::str_to_int(strs.at(2));
+			config.full_screen=false;
 			restart=true;
 		}else if(sig->get_data()=="Window_Mode"){
-			full_screen=false;
+			config.full_screen=false;
 			restart=true;
 		}else if(sig->get_data()=="Full_Screen"){
-			full_screen=true;
-			window_size=Display::Window::get_screen_resolution();
+			config.full_screen=true;
+			config.window_size=Display::Window::get_screen_resolution();
+			restart=true;
+		}else if(strs.at(0)=="shadow"){
+			if(strs.at(1)=="quality"){
+				if(strs.at(2)=="low"){
+					config.shadow_quality=Display::ShadowLowQuality;
+				}else if(strs.at(2)=="normal"){
+					config.shadow_quality=Display::ShadowNormalQuality;
+				}else if(strs.at(2)=="high"){
+					config.shadow_quality=Display::ShadowHighQuality;
+				}
+			}else if(strs.at(1)=="enable"){
+				if(strs.at(2)=="pssm"){
+					config.enable_pssm=true;
+				}
+			}else if(strs.at(1)=="disable"){
+				if(strs.at(2)=="pssm"){
+					config.enable_pssm=false;
+				}
+			}
 			restart=true;
 		}
 	}

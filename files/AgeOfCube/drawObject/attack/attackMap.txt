@@ -20,6 +20,28 @@ DrawObject:
 
 DrawObject:
 	Name:
+		cube_missile_launcher
+	ModelBuffer:
+		attack/cube_missile_launcher
+	Texture:
+		building/basic_cube_tower_1
+	Material:
+		0.4 0.05 0.02 0.2	
+#load_end
+
+DrawObject:
+	Name:
+		missile_launcher
+	ModelBuffer:
+		attack/missile_launcher
+	Texture:
+		building/basic_cube_tower_1
+	Material:
+		0.4 0.05 0.02 0.2	
+#load_end
+
+DrawObject:
+	Name:
 		ball_missile_1
 	ModelBuffer:
 		attack/ball_missile

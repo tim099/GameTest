@@ -6,11 +6,21 @@
 #include "class/display/buffer/frameBuffer/FrameBuffer.h"
 #include "class/display/uniform/Uniform.h"
 #include "class/display/draw/Draw.h"
+#include "class/game/Config.h"
 #include <cstdio>
 namespace Display{
 LightControl::LightControl(float _draw_dis) {
+	game::Config* config=game::Config::get_cur_object();
+
 	draw_dis=_draw_dis;
-	shadowData=new ShadowData(3,4);
+	if(config){
+		//std::cout<<"LightControl::LightControl config!!"<<std::endl;
+		shadowData=new ShadowData(3,4,config->shadow_quality);
+		shadowData->enable_PSSM=config->enable_pssm;
+	}else{
+		shadowData=new ShadowData(3,4);
+	}
+
 	shadow_dis=1.0;
 }
 LightControl::~LightControl() {

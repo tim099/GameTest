@@ -20,6 +20,31 @@ CreateUIObject:
 #create_end
 
 CreateUIObject:
+		SortGroup
+	Name:
+		sortGroup
+	Position:
+		0.1 0.9
+	Interval:
+		0 -0.06
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
+		SortGroup
+	Name:
+		shadow_sortGroup
+	Position:
+		0.4 0.9
+	Interval:
+		0 -0.06
+	Parent:
+		option
+#create_end
+
+
+CreateUIObject:
 		UIString
 	Name:
 		resolution_string
@@ -30,15 +55,13 @@ CreateUIObject:
 	String_size:
 		0.02
 	Parent:
-		option
+		sortGroup
 #create_end
 
 CreateUIObject:
 		PictureButton
 	Name:
 		default
-	Position:
-		0.403515 0.8
 	Texture:
 		UI/UI/button2
 	Width:
@@ -55,15 +78,13 @@ CreateUIObject:
 	String_size:
 		0.02
 	Parent:
-		option
+		sortGroup
 #create_end
 
 CreateUIObject:
 		PictureButton
 	Name:
 		default
-	Position:
-		0.403515 0.7
 	Texture:
 		UI/UI/button2
 	Width:
@@ -80,15 +101,13 @@ CreateUIObject:
 	String_size:
 		0.02
 	Parent:
-		option
+		sortGroup
 #create_end
 
 CreateUIObject:
 		PictureButton
 	Name:
 		default
-	Position:
-		0.403515 0.6
 	Texture:
 		UI/UI/button2
 	Width:
@@ -105,15 +124,13 @@ CreateUIObject:
 	String_size:
 		0.02
 	Parent:
-		option
+		sortGroup
 #create_end
 
 CreateUIObject:
 		PictureButton
 	Name:
 		default
-	Position:
-		0.403515 0.5
 	Texture:
 		UI/UI/button2
 	Width:
@@ -130,15 +147,13 @@ CreateUIObject:
 	String_size:
 		0.02
 	Parent:
-		option
+		sortGroup
 #create_end
 
 CreateUIObject:
 		PictureButton
 	Name:
 		default
-	Position:
-		0.403515 0.4
 	Texture:
 		UI/UI/button2
 	Width:
@@ -155,7 +170,134 @@ CreateUIObject:
 	String_size:
 		0.02
 	Parent:
-		option
+		sortGroup
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		shadow_string
+	String:
+"set shadow quality:"
+	String_size:
+		0.02
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_signal:
+		Data:
+			shadow_quality_low
+		Receiver:
+			Game
+	Set_string:
+"Low"
+	String_size:
+		0.02
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_signal:
+		Data:
+			shadow_quality_normal
+		Receiver:
+			Game
+	Set_string:
+"Normal"
+	String_size:
+		0.02
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_signal:
+		Data:
+			shadow_quality_high
+		Receiver:
+			Game
+	Set_string:
+"High"
+	String_size:
+		0.02
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_signal:
+		Data:
+			shadow_enable_pssm
+		Receiver:
+			Game
+	Set_string:
+"enable_PSSM"
+	String_size:
+		0.02
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_signal:
+		Data:
+			shadow_disable_pssm
+		Receiver:
+			Game
+	Set_string:
+"disable_PSSM"
+	String_size:
+		0.02
+	Parent:
+		shadow_sortGroup
 #create_end
 
 CreateUIObject:

@@ -51,12 +51,15 @@ void Unit::init(int _max_hp,int _player){
 	set_player(_player);
 }
 void Unit::save_weapons(FILE* file){
+	fprintf(file,"%u\n",weapons.size());
 	for(unsigned i=0;i<weapons.size();i++){
 		weapons.at(i)->save(file);
 	}
 }
 void Unit::load_weapons(FILE* file){
-	for(unsigned i=0;i<weapons.size();i++){
+	unsigned weapons_size;
+	fscanf(file,"%u\n",&weapons_size);
+	for(unsigned i=0;i<weapons.size()&&i<weapons_size;i++){
 		weapons.at(i)->load(file);
 	}
 }

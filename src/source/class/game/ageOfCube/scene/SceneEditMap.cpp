@@ -10,14 +10,12 @@ namespace AOC{
 SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 	map_name = _map_name;
 	map_size = _map_size;
-	//map = 0;
 	field=0;
 	cube_type=0;
 	camera = 0;
 	lightControl = 0;
 	UI = 0;
 	back_music=0;
-	//sun_light=0;
 	destruct_mode=false;
 	pause_timer=false;
 	constructing_building=0;
@@ -25,7 +23,6 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
 void SceneEditMap::loading(){
 	if(Tim::File::check_if_file_exist(map_name)){
 		field->load(map_name);
-		//map->load_map(map_name);
 	}else{
 		field->map->gen_map(map_size,time(NULL));
 	}

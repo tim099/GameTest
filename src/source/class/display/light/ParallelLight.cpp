@@ -15,7 +15,7 @@ glm::mat4 ParallelLight::get_LVP(float aspect,double size,glm::vec3 trans)const{
 	//std::cout<<"ParallelLight vec : "<<vec.x<<","<<vec.y<<","<<vec.z<<std::endl;
 	if(vec==glm::vec3(0,-1,0)||vec==glm::vec3(0,1,0))up_vec=glm::vec3(0,1,0.0001);
 	glm::mat4 view=glm::lookAt(glm::normalize(vec)+trans,trans,up_vec);
-	glm::mat4 LVP=glm::scale(glm::vec3(size*0.12,size*0.12*aspect,0.007))*view;
+	glm::mat4 LVP=glm::scale(glm::vec3(size*0.52,size*0.52*aspect,0.007))*view;
 	return LVP;
 }
 

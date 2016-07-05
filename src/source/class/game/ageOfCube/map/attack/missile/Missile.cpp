@@ -75,9 +75,16 @@ void Missile::attack_update(){
 		return;
 	}
 	timer++;
-	if(be_collided_id.size()>0||collided_id.size()>0){
+	if(be_collided==true||collided==true){
 		explode();
 	}
+	/*
+	if(timer<50){
+		this->collision_off=true;
+	}else{
+		this->collision_off=false;
+	}
+	*/
 	if(target){
 		vel*=0.8;
 		math::vec3<double> target_pos=target->get_mid_pos();

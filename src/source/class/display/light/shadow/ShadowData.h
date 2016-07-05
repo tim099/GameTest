@@ -15,10 +15,16 @@
  */
 class Shader;
 
+
+namespace Display{
 static const unsigned ShadowHighQuality=4096;
 static const unsigned ShadowNormalQuality=2048;
 static const unsigned ShadowLowQuality=1024;
-namespace Display{
+/*
+enum shadowMode{
+	Normal,PSSM
+};
+*/
 class ShadowData{
 public:
 	/*max_l_shadow=max shadows number for the parallel lights
@@ -43,6 +49,8 @@ public:
 	FrameBuffer* SFBO;
 	FrameBuffer* PSFBO;
 
+	bool enable_PSSM;
+	//shadowMode shadow_mode;
 	int s_num;
 	int ps_num;
 

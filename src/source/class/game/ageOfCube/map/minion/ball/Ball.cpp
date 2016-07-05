@@ -127,28 +127,6 @@ void Ball::find_path(){
 		AI::search::Astar::get_cur_object()->push_task(task);
 	}
 }
-void Ball::explode(){
-	/*
-	if(rigid_body.radius>0.45){
-		if((rigid_body.be_collided&&rigid_body.be_collided->get_type()=="MapRigidBody")){
-			for(int i=-2;i<=2;i++){
-				for(int j=-2;j<=2;j++){
-					for(int k=-2;k<=2;k++){
-						Map::get_cur_object()->set_cube_type(
-								rigid_body.pos.x/Map::CUBE_SIZE+i,
-								rigid_body.pos.y/Map::CUBE_SIZE+j,
-								rigid_body.pos.z/Map::CUBE_SIZE+k,
-								Cube::cubeNull);
-					}
-				}
-			}
-			set_hp(0);
-		}
-	}else{
-		rigid_body.radius*=1.02;
-	}
-	*/
-}
 void Ball::moving(){
 	AI::search::FindPath* path=dynamic_cast<AI::search::FindPath*>(finder->get());
 	if(path&&path->cur_at<path->path.size()){

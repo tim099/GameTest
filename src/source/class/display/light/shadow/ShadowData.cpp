@@ -12,11 +12,12 @@ ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow,unsigned _
 	max_l_shadow=_max_l_shadow;
 	max_pl_shadow=_max_pl_shadow;
 	shadow_quality=_shadow_quality;
-	//parallellight_shadowmap_per_light=3;
+
 	s_num=0;
 	ps_num=0;
 	PSSM_split_num = 3;
-
+	//shadow_mode=Normal;//PSSM
+	enable_PSSM=false;
 	LVP=new glm::mat4[PSSM_split_num*max_l_shadow];
 	PLVP=new glm::mat4[6*max_pl_shadow];
 
@@ -39,7 +40,12 @@ ShadowData::~ShadowData() {
 void ShadowData::sent_uniform(Shader *shader){
 	Uniform::sentMat4Arr(shader->programID,LVP,s_num,std::string("parallelLVP[0]"));
 	Uniform::sentMat4Arr(shader->programID,PLVP,6*ps_num,std::string("pointLVP[0]"));
-	shader->sent_Uniform("parallellight_shadowmap_per_light",PSSM_split_num);
+	if(enable_PSSM){
+		shader->sent_Uniform("parallellight_shadowmap_per_light",PSSM_split_num);
+	}else{
+		shader->sent_Uniform("parallellight_shadowmap_per_light",1);
+	}
+
 	SFBO->depth_textures.at(0)->sent_uniform(shader,10,"depthMaps");
 	//SFBO->color_textures.at(0)->sent_uniform(shader,10,"depthMaps");
 	//Texture::usetextureVec(shader,SFBO->depth_textures,3,"depthMap");
@@ -76,23 +82,27 @@ void ShadowData::gen_shadow_map(Shader *shaderShadowMapping,
 	//gen_shadows(shaderCubeShadowMapping,PSFBO,PLVP,6*ps_num,d_obj);//shaderMultiShadowMapping
 }
 void ShadowData::gen_parallelLights_LVP(std::vector<ParallelLight*>&para_lights,Camera *camera,double shadow_dis){
+
 	double shadow_size=(shadow_dis/5/sqrt(camera->look_dis()+1.0));
-	//parallellight_shadowmap_per_light=1;
 	s_num=0;
-	for(unsigned i=1;i<para_lights.size();i++){
-		for(int j=0; j<PSSM_split_num; j++){
-			if(para_lights.at(i)->shadow&&s_num<(int)max_l_shadow){
-				LVP[s_num++]=para_lights.at(i)->get_PSSM_LVP(SFBO->aspect(),shadow_size,camera->look_at,camera->get_PSSM_AABBs()->at(j));
-				//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),shadow_size,camera->look_at);
+	if(enable_PSSM){
+		for(unsigned i=0;i<para_lights.size();i++){
+			for(int j=0; j<PSSM_split_num; j++){
+				if(para_lights.at(i)->shadow&&s_num<(int)(PSSM_split_num*max_l_shadow)){
+					LVP[s_num++]=para_lights.at(i)->get_PSSM_LVP(SFBO->aspect(),shadow_size,
+							camera->look_at,camera->get_PSSM_AABBs()->at(j));
+					//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),shadow_size,camera->look_at);
+				}
+			}//j
+		}
+	}else{
+		for(unsigned i=0;i<para_lights.size();i++){
+			if(para_lights.at(i)->shadow&&s_num<(int)(PSSM_split_num*max_l_shadow)){
+				LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),shadow_size,camera->look_at);
 			}
-		}//j
-		if(para_lights.at(i)->shadow&&s_num<(int)max_l_shadow){
-			//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),shadow_size,camera->look_at);
-			//test
-			//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),0.3*shadow_size,camera->look_at);
-			//LVP[s_num++]=para_lights.at(i)->get_LVP(SFBO->aspect(),0.1*shadow_size,camera->look_at);
 		}
 	}
+
 }
 void ShadowData::gen_shadows_texture(Shader* shader,FrameBuffer* FBO,glm::mat4 *LVP,int s_num
 		,Display::Draw *d_obj,int start_layer){

@@ -23,6 +23,8 @@
 
 #include "class/game/SceneInitTask.h"
 #include "class/tim/math/vec2.h"
+
+#include "class/game/Config.h"
 #include <vector>
 
 class Game {
@@ -48,22 +50,19 @@ protected:
 
 	Scene* get_cur_scene();
 
-	void save_config();
-	void load_config();
-
 	void handle_game_signal();
 	void swap_buffer();
 	void push_scene(Scene* scene);
 	void scene_loading(Scene* scene);
 	void pop_scene();
+	game::Config config;
+
 	std::vector<Scene*>scenes;
 	Display::Window* window;
 	Display::Draw *draw;
-	//RenderTask *render_task;
 	Display::Renderer *renderer;
 
 	Input::Receiver* game_receiver;
-	//Tim::Thread *render_thread;
 	Tim::ThreadPool *thread_pool;
 
 	Input::Input* input;
@@ -71,10 +70,9 @@ protected:
 	UI::UIObjectCreator *UIObj_Creator;
 
 	LoadingScene* s_loading;
-	math::vec2<int> window_size;
 
 	std::string folder_path;
-	bool full_screen;
+
 	bool loading;
 	bool end,terminated;
 	double fps,max_fps;

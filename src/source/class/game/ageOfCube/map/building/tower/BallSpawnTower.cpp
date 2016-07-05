@@ -106,7 +106,7 @@ void BallSpawnTower::spawn(){
 
 
 
-	ball->max_hp_alter(loop_count*15);
+	ball->max_hp_alter(loop_count*10);
 	ball->upgrade("fire",loop_count);
 
 	double ball_size=0.16f*size*sqrt(ball->get_hp()/100.0);

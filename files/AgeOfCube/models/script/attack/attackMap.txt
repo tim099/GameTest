@@ -21,6 +21,28 @@ ModelBuffer:
 
 ModelBuffer:
 	Name:
+		cube_missile_launcher
+	Path:
+		missile/cubeMissileLauncher.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
+		missile_launcher
+	Path:
+		missile/missileLauncher.obj
+	Size:
+		1
+	Align_center:
+		true
+#load_end
+
+ModelBuffer:
+	Name:
 		ball_missile
 	Path:
 		missile/ball.obj

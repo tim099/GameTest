@@ -11,6 +11,8 @@ RigidBody::RigidBody() {
 	be_collide_off=false;
 	special_collide_off=false;
 	stop_when_collide=true;
+	collided=false;
+	be_collided=false;
 	mass=1.0;
 }
 RigidBody::~RigidBody() {
@@ -44,12 +46,12 @@ bool RigidBody::check_collision(RigidBody* b){
 	return false;
 }
 void RigidBody::collide(RigidBody* b){
-	//collided.push_back(b);
+	collided=true;
 	if(b->id)collided_id.push_back(b->id);
 	collide_action(b);
 }
 void RigidBody::be_collide(RigidBody* b){
-	//be_collided.push_back(b);
+	be_collided=true;
 	if(b->id)be_collided_id.push_back(b->id);
 	be_collide_action(b);
 }
@@ -96,9 +98,9 @@ void RigidBody::be_collide_action(RigidBody* b){
 
 }
 void RigidBody::clear_collision_data(){
-	//collided.clear();
+	collided=false;
+	be_collided=false;
 	collided_id.clear();
-	//be_collided.clear();
 	be_collided_id.clear();
 }
 void RigidBody::update_rigid_body(){

@@ -5,8 +5,11 @@
 Name:
 	root
 FolderPath:
-	files/game/chessMaster/
+	files/game/chessMaster/script/modelbuffer/
 #HEADER_END
 
+Map:
+	ScriptPath:
+		default.txt
 
 #END

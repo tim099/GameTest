@@ -14,36 +14,12 @@
 #include <iostream>
 //#include <thread>
 #include "class/game/ageOfCube/AgeOfCubes.h"
-//#include "class/game/chessMaster/ChessMaster.h"
+#include "class/game/chessMaster/ChessMaster.h"
+#include "class/game/GamePlayer.h"
 int main(){
-
-	///*
-
-	//while(true){
-	bool restart;
-	do{
-		Game* game=new AOC::AgeOfCubes();
-		game->initialize();
-		game->mainloop();
-		restart=game->restart;
-		delete game;
-	}while(restart);
-
-
-
-	//}
-
-	//*/
-
-	/*
-	//while(true){
-	ChessMaster* cm=new ChessMaster();
-	cm->initialize();
-
-	cm->mainloop();
-	delete cm;
-	//}
-	*/
+	game::GamePlayer player;
+	//player.play(new AOC::AgeOfCubes());
+	player.play(new ChessMaster());
 
 	/*
 	Test *test=new Test();

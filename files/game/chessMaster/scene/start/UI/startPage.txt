@@ -1,0 +1,103 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		startPage
+#HEADER_END
+
+CreateUIObject:
+		Panel
+	Name:
+		default
+	Position:
+		0.25 1
+	Texture:
+		UI/UI/panel2
+	Width:
+		0.5
+	Height:
+		1.1
+	Parent:
+		startPage
+#create_end
+
+CreateUIObject:
+		SortGroup
+	Name:
+		sortGroup
+	Position:
+		0.4 0.9
+	Interval:
+		0 -0.06
+	Parent:
+		startPage
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Play Chess"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			play_chess
+		Receiver:
+			SceneStart
+	Parent:
+		sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Edit Chess"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			edit_chess
+		Receiver:
+			SceneStart
+	Parent:
+		sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Option"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			option
+		Receiver:
+			pageControl
+	Parent:
+		sortGroup
+#create_end
+#END

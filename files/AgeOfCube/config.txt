@@ -1,5 +1,5 @@
 #Config
 screen_resoultion:
-	1280,720
+	1366,733
 shadow_quality:
 	2048

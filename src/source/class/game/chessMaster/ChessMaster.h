@@ -5,12 +5,15 @@
 #include "class/display/texture/AllTextures.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/model/modelBuffer/AllModelBuffers.h"
+#include "class/audio/AllAudioSources.h"
 class ChessMaster : public Game{
 public:
 	ChessMaster();
 	virtual ~ChessMaster();
 protected:
-	virtual Display::Window* create_window();
+	virtual std::string window_name(){
+		return std::string("Chess Master");
+	}
 	virtual void initialize_game();
 	virtual void terminate_game();
 	virtual void game_update();
@@ -18,6 +21,7 @@ protected:
 	Display::AllDrawObjects *drawObjects;
 	Display::AllTextures* textures;
 	Display::AllModelBuffers* modelBuffers;
+	Audio::AllAudioSources *audioSources;
 };
 
 #endif /* SOURCE_CLASS_GAME_CHESSMASTER_CHESSMASTER_H_ */

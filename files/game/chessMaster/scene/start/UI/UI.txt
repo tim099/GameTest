@@ -1,0 +1,43 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		root
+#HEADER_END
+
+CreateUIObject:
+		PageControl
+	Name:
+		pageControl
+	Position:
+		0 0
+	Parent:
+		root
+	Set_receiver:
+		pageControl
+#create_end
+
+CreateUIObject:
+		UI
+	Name:
+		startPage
+	Position:
+		0 0
+	ScriptPath:
+		files/game/chessMaster/scene/start/UI/startPage.txt
+	Parent:
+		pageControl
+#create_end
+
+CreateUIObject:
+		UI
+	Name:
+		option
+	Position:
+		0 0
+	ScriptPath:
+		files/game/chessMaster/scene/start/UI/option.txt
+	Parent:
+		pageControl
+#create_end
+
+#END

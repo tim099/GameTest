@@ -37,6 +37,7 @@ public:
 	void terminate();
 	bool restart;
 protected:
+	void init();
 	virtual void update();
 	virtual void initialize_game()=0;
 	virtual void terminate_game()=0;

@@ -1,0 +1,19 @@
+#LOAD_ALL_AUDIOSOURCES_SCRIPT
+
+#HEADER
+
+Name:
+	root
+FolderPath:
+	files/AgeOfCube/audio/
+#HEADER_END
+
+Map:
+	ScriptPath:
+		default_music.txt
+
+Map:
+	ScriptPath:
+		default_sound_effect.txt
+
+#END

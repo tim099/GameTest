@@ -1,6 +1,6 @@
 #Config
-
 screen_resoultion:
 	1920,1080
-	
 #full_screen
+shadow_quality:
+	2048

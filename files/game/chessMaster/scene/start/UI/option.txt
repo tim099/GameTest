@@ -1,0 +1,350 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		option
+#HEADER_END
+
+CreateUIObject:
+		Panel
+	Name:
+		default
+	Position:
+		0 1
+	Texture:
+		UI/UI/panel2
+	Width:
+		1
+	Height:
+		0.55
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
+		SortGroup
+	Name:
+		sortGroup
+	Position:
+		0.1 0.9
+	Interval:
+		0 -0.06
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		resolution_string
+	Position:
+		0.405711 0.883901
+	String:
+"set resolution :"
+	String_size:
+		0.02
+	Parent:
+		sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"1280x720"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			resolution_1280_720
+		Receiver:
+			Game
+	Parent:
+		sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"1366x733"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			resolution_1366_733
+		Receiver:
+			Game
+	Parent:
+		sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"1920x1080"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			resolution_1920_1080
+		Receiver:
+			Game
+	Parent:
+		sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Full Screen"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			Full_Screen
+		Receiver:
+			Game
+	Parent:
+		sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Window Mode"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			Window_Mode
+		Receiver:
+			Game
+	Parent:
+		sortGroup
+#create_end
+
+CreateUIObject:
+		SortGroup
+	Name:
+		shadow_sortGroup
+	Position:
+		0.4 0.9
+	Interval:
+		0 -0.06
+	Parent:
+		option
+#create_end
+
+CreateUIObject:
+		UIString
+	Name:
+		shadow_string
+	Position:
+		0 0
+	String:
+"set shadow quality:"
+	String_size:
+		0.02
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Low"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			shadow_quality_low
+		Receiver:
+			Game
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Normal"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			shadow_quality_normal
+		Receiver:
+			Game
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"High"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			shadow_quality_high
+		Receiver:
+			Game
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"enable_PSSM"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			shadow_enable_pssm
+		Receiver:
+			Game
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0 0
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"disable_PSSM"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			shadow_disable_pssm
+		Receiver:
+			Game
+	Parent:
+		shadow_sortGroup
+#create_end
+
+CreateUIObject:
+		PictureButton
+	Name:
+		default
+	Position:
+		0.136165 0.166575
+	Texture:
+		UI/UI/button2
+	Width:
+		0.2
+	Height:
+		0
+	Set_string:
+"Back"
+	String_size:
+		0.02
+	Set_signal:
+		Data:
+			startPage
+		Receiver:
+			pageControl
+	Parent:
+		option
+#create_end
+
+#END

@@ -1,0 +1,210 @@
+#LOAD_UI_SCRIPT
+#HEADER
+	Name:
+		root
+#HEADER_END
+
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.9 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"SaveBoard"	
+	
+	Set_signal:
+		Data:
+			save_board
+		Receiver:
+			SceneEdit
+	Parent:
+		root			
+#create_end
+
+
+CreateUIObject:
+		SortGroup
+	Name:
+		sortGroup
+	Position:
+		0.05 0.98
+	Interval:
+		0.11 0
+	Parent:
+		root
+#create_end
+
+
+CreateUIObject:
+	PictureButton
+
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		0.0
+			
+	Set_string:
+		"Edit_chess"	
+	
+	Set_signal:
+		Data:
+			edit_chess
+		Receiver:
+			SceneEdit
+	Parent:
+		sortGroup			
+#create_end
+
+CreateUIObject:
+	PictureButton
+
+	Texture:
+		UI/UI/button2
+	Width:
+		0.1
+	Height:
+		0.0
+			
+	Set_string:
+		"Edit_board"	
+	
+	Set_signal:
+		Data:
+			edit_board
+		Receiver:
+			SceneEdit
+	Parent:
+		sortGroup			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.9 0.85
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"LoadBoard"	
+	
+	Set_signal:
+		Data:
+			load_board
+		Receiver:
+			SceneEdit
+	Parent:
+		root			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.02 0.4
+	Texture:
+		UI/UI/button2
+	Width:
+		0.12
+	Height:
+		0.0
+			
+	Set_string:
+		"	edit
+chineseChess"	
+	
+	Set_signal:
+		Data:
+			edit_chineseChess
+		Receiver:
+			SceneEdit
+	Parent:
+		root			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.02 0.3
+	Texture:
+		UI/UI/button2
+	Width:
+		0.12
+	Height:
+		0.0
+			
+	Set_string:
+		"edit chess"	
+	
+	Set_signal:
+		Data:
+			edit_chess
+		Receiver:
+			SceneEdit
+	Parent:
+		root			
+#create_end
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.02 0.2
+	Texture:
+		UI/UI/button2
+	Width:
+		0.12
+	Height:
+		0.0
+			
+	Set_string:
+		"edit Renju"	
+	
+	Set_signal:
+		Data:
+			edit_renju
+		Receiver:
+			SceneEdit
+	Parent:
+		root			
+#create_end
+
+CreateUIObject:
+	PictureButton
+	
+	Position:
+		0.8 0.9
+	Texture:
+		UI/UI/button2
+	Width:
+		0.08
+	Height:
+		0.0
+			
+	Set_string:
+		"Back"	
+	
+	Set_signal:
+		Data:
+			pop_scene
+		Receiver:
+			Game
+	Parent:
+		root			
+#create_end
+
+#END

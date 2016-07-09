@@ -1,0 +1,5 @@
+#Config
+screen_resoultion:
+	1366,733
+shadow_quality:
+	2048

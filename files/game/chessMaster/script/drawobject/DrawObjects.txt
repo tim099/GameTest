@@ -5,7 +5,10 @@
 Name:
 	root
 FolderPath:
-	files/game/chessMaster/
+	files/game/chessMaster/script/drawobject/
 #HEADER_END
 
+Map:
+	ScriptPath:
+		default.txt
 #END

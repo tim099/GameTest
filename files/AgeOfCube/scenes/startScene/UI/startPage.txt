@@ -3,6 +3,7 @@
 	Name:
 		startPage
 #HEADER_END
+
 CreateUIObject:
 		UIString
 	Name:
@@ -75,7 +76,7 @@ CreateUIObject:
 	Name:
 		default
 	Position:
-		0 -0.111814
+		0 -0.106667
 	Texture:
 		UI/UI/button2
 	Width:
@@ -100,7 +101,7 @@ CreateUIObject:
 	Name:
 		Basic
 	Position:
-		0 -0.223629
+		0 -0.213333
 	Texture:
 		UI/UI/button2
 	Width:
@@ -125,7 +126,7 @@ CreateUIObject:
 	Name:
 		default
 	Position:
-		0 -0.335443
+		0 -0.32
 	Texture:
 		UI/UI/button2
 	Width:
@@ -150,7 +151,7 @@ CreateUIObject:
 	Name:
 		default
 	Position:
-		0 -0.447258
+		0 -0.426667
 	Texture:
 		UI/UI/button2
 	Width:

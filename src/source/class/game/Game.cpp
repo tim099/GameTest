@@ -8,6 +8,10 @@
 #include <iostream>
 #include <fstream>
 Game::Game() {
+	init();
+	folder_path="files/default/";
+}
+void Game::init(){
 	end=false;
 	restart=false;
 	terminated=false;
@@ -28,7 +32,6 @@ Game::Game() {
 	s_loading=0;
 	//render_thread = 0;
 	thread_pool = 0;
-	folder_path="files/default/";
 }
 Game::~Game() {
 
@@ -42,6 +45,7 @@ Tim::ThreadPool* Game::create_thread_pool(){
 	return new Tim::ThreadPool(8,REALTIME_PRIORITY_CLASS);
 }
 void Game::initialize(){
+	init();
 	config.load(folder_path+"config.txt");
 	window=create_window();
 
@@ -62,19 +66,15 @@ void Game::initialize(){
 
 	controller_system=new ControllerSystem();
 	controller_system->push(new Input::SelectableControl());
-	//controller_system->push(new physic::RigidBodyController());
 	controller_system->push(new Audio::AudioController());
-	//controller_system->push(new entity::EntityController());
 
 
-	//render_thread = new Tim::Thread(REALTIME_PRIORITY_CLASS);
 	thread_pool = create_thread_pool();
 
 	s_loading = new LoadingScene();
 	s_loading->initialize(draw,input,thread_pool);
-	initialize_game();
 
-	//window->render_off();
+	initialize_game();
 }
 void Game::terminate(){
 	//std::cout<<"terminate start"<<std::endl;

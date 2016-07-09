@@ -71,7 +71,6 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,i
 
 	start_time=glfwGetTime();
 
-
 	CM::Board<short int> *cb=new CM::Board<short int>(board->chess_board);
 	CM::Step best=find_best_step(pool,cb,player,depth,pruning,true);
 	delete cb;
